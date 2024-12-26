@@ -1,0 +1,9 @@
+		 __    __  .__   __.   ______   
+		|  |  |  | |  \ |  |  /  __  \  
+		|  |  |  | |   \|  | |  |  |  | 
+		|  |  |  | |  . `  | |  |  |  | 
+		|  `--'  | |  |\   | |  `--'  | 
+		 \______/  |__| \__|  \______/  
+
+${AnsiColor.BRIGHT_BLUE}:: UNO Application 🤓 :: Running Spring Boot ${spring-boot.version} :: Startup profile(s) ${spring.profiles.active} ::
+:: Welcome to the UNO project! ::${AnsiColor.DEFAULT}
