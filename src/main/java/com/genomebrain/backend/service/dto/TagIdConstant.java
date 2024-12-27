@@ -1,0 +1,90 @@
+package com.genomebrain.backend.service.dto;
+
+public enum TagIdConstant {
+
+    HBOCTAG1("HBOCTag1"),
+    HBOCTAG3("HBOCTag3"),
+    HBOCTAG29("HBOCTag29"),
+    HBOCTAG30("HBOCTag30"),
+    HBOCTAG31("HBOCTag31"),
+    HBOCTAG34("HBOCTag34"),
+    HBOCTAG36("HBOCTag36"),
+    HBOCTAG37("HBOCTag37"),
+    HBOCTAG38("HBOCTag38"),
+    HBOCTAG39("HBOCTag39"),
+    HBOCTAG40("HBOCTag40"),
+    HBOCTAG41("HBOCTag41"),
+    HBOCTAG42("HBOCTag42"),
+    HBOCTAG43("HBOCTag43"),
+    HBOCTAG64("HBOCTag64"),
+    HBOCTAG65("HBOCTag65"),
+    HBOCTAG67("HBOCTag67"),
+    HBOCTAG68("HBOCTag68"),
+    HBOCTAG76("HBOCTag76"),
+    HBOCTAG77("HBOCTag77"),
+    HBOCTAG78("HBOCTag78"),
+    HBOCTAG79("HBOCTag79"),
+    HBOCTAG53("HBOCTag53"),
+    HBOCTAG54("HBOCTag54"),
+    HBOCTAG55("HBOCTag55"),
+    HBOCTAG56("HBOCTag56"),
+    HBOCTAG57("HBOCTag57"),
+    HBOCTAG58("HBOCTag58"),
+    HBOCTAG59("HBOCTag59"),
+    HBOCTAG82("HBOCTag82"),
+    HBOCTAG83("HBOCTag83"),
+    HBOCTAG88("HBOCTag88"),
+    HBOCTAG89("HBOCTag89"),
+    HBOCTAG105("HBOCTag105"),
+    HBOCTAG106("HBOCTag106"),
+    HBOCTAG90("HBOCTag90"),
+    HBOCTAG91("HBOCTag91"),
+    HBOCTAG92("HBOCTag92"),
+    HBOCTAG93("HBOCTag93"),
+    HBOCTAG94("HBOCTag94"),
+    HBOCTAG95("HBOCTag95"),
+    HBOCTAG96("HBOCTag96"),
+    HBOCTAG97("HBOCTag97"),
+    HBOCTAG98("HBOCTag98"),
+    HBOCTAG99("HBOCTag99"),
+    HBOCTAG100("HBOCTag100"),
+    HBOCTAG101("HBOCTag101"),
+    HBOCTAG102("HBOCTag102"),
+    HBOCTAG103("HBOCTag103"),
+    HBOCTAG104("HBOCTag104"),
+    HBOCTAG107("HBOCTag107"),
+    HBOCTAG108("HBOCTag108"),
+    HBOCTAG109("HBOCTag109"),
+    HBOCTAG110("HBOCTag110"),
+    HBOCTAG111("HBOCTAG111"),
+    HBOCTAG112("HBOCTAG112"),
+    CRCTAG1("CRCTag1"),
+    CRCTAG5("CRCTag5"),
+    CRCTAG8("CRCTag8"),
+    CRCTag21("CRCTag21"),
+    CRCTag22("CRCTag22"),
+    CRCTag20("CRCTag20"),
+    CRCTag19("CRCTag19"),
+    CRCTag15("CRCTag15"),
+    CRCTag13("CRCTag13"),
+    CRCTag12("CRCTag12"),
+    CRCTag14("CRCTag14"),
+    CRCTAG23("CRCTag23"),
+    CRCTAG24("CRCTag24"),
+    CRCTag25("CRCTag25"),
+    CRCTag26("CRCTag26"),
+    CRCTAG27("CRCTag27"),
+    CRCTAG28("CRCTag28"),
+    CRCTAG29("CRCTag29");
+
+
+    private final String tagId;
+
+    TagIdConstant(String tagId) {
+        this.tagId = tagId;
+    }
+
+    public String getTagId() {
+        return this.tagId;
+    }
+}

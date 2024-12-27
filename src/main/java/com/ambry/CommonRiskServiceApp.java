@@ -26,7 +26,7 @@ import jakarta.annotation.PostConstruct;
 
 @SpringBootApplication
 @EnableConfigurationProperties({UnoFrameworkConfig.class, LiquibaseProperties.class, ApplicationProperties.class })
-@ComponentScan(basePackages = {"com.ambry", "com.objex.progeny.risk.services"})
+@ComponentScan(basePackages = {"com.ambry", "com.objex.progeny.risk.services", "com.genomebrain.backend"})
 public class CommonRiskServiceApp {
 
     private static final Logger LOG = LoggerFactory.getLogger(CommonRiskServiceApp.class);
