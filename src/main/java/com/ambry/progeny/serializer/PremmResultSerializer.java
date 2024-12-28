@@ -15,6 +15,8 @@ public class PremmResultSerializer extends JsonSerializer<PREMMResult> {
     public void serialize(PREMMResult premmResult, JsonGenerator jsonGenerator, SerializerProvider serializers) throws IOException {
         jsonGenerator.writeStartObject();
 
+        jsonGenerator.writeNumberField("probabilityCarrier",
+                premmResult.getProbabilityCarrier() != null ? premmResult.getProbabilityCarrier() : 0.0);
         jsonGenerator.writeNumberField("probabilityMutationMLH1",
                 premmResult.getProbabilityMutationMLH1() != null ? premmResult.getProbabilityMutationMLH1() : 0.0);
         jsonGenerator.writeNumberField("probabilityMutationMSH2",

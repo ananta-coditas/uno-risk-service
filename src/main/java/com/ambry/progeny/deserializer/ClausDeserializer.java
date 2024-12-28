@@ -74,9 +74,12 @@ public class ClausDeserializer extends JsonDeserializer<Risk> {
         if (affectedBreastType != null) {
             person.setAffectedBreastType(parseAffectedType(affectedBreastType));
         }
+        String affectedOvarianType = getTextValue(node, "affectedOvarianType", null);
+        if (affectedOvarianType != null) {
+            person.setAffectedOvarianType(parseAffectedType(affectedOvarianType));
+        }
 
         person.setDiagnoseBreastAge(getIntValue(node, "diagnoseBreastAge", 0));
-        person.setAffectedOvarianType(getIntValue(node, "affectedOvarianType", 0));
         person.setDiagnoseOvarianAge(getIntValue(node, "diagnoseOvarianAge", 0));
         return person;
     }
