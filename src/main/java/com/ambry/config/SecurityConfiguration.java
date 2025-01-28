@@ -56,6 +56,8 @@ public class SecurityConfiguration {
                     .requestMatchers(mvc.pattern("/management/prometheus")).permitAll()
                     .requestMatchers(mvc.pattern("/resources/**")).permitAll()
                     .requestMatchers(mvc.pattern("/calculate/**")).permitAll()
+                    .requestMatchers(mvc.pattern("/bayescalculate/**")).permitAll()
+                    .requestMatchers(mvc.pattern("/pcalculate/**")).permitAll()
                     .requestMatchers(mvc.pattern("/management/**")).hasAuthority(AuthoritiesConstants.ADMIN)
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

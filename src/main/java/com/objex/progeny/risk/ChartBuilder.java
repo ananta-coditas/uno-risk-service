@@ -89,7 +89,7 @@ public class ChartBuilder {
         return chart;
     }
 
-    ChartVO getPrototype(Integer chartCode, String model) {
+    public ChartVO getPrototype(Integer chartCode, String model) {
        ChartVO chart = null;
         if (prototypes.get(model) != null) {
            chart = prototypes.get(model).get(chartCode);

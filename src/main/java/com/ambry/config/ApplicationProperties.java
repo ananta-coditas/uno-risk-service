@@ -10,9 +10,16 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class ApplicationProperties {
 
     private TyrerConfig tyrer = new TyrerConfig();
+    private BayesMendelConfig bayesMendel = new BayesMendelConfig();
     
     public TyrerConfig getTyrer() {
         return tyrer;
+    }
+    public BayesMendelConfig getBayesMendel() {
+        return bayesMendel;
+    }
+    public void setBayesMendel(BayesMendelConfig bayesMendel) {
+        this.bayesMendel = bayesMendel;
     }
 
     public void setTyrer(TyrerConfig tyrer) {
@@ -58,6 +65,84 @@ public class ApplicationProperties {
 
             public void setSavePath(String savePath) {
                 this.savePath = savePath;
+            }
+        }
+    }
+    
+    public class BayesMendelConfig {
+
+        private Platform linux;
+        private Platform windows;
+        private String maxConnections;
+        private String saveAll;
+        private String print;
+
+        public Platform getLinux() {
+            return linux;
+        }
+
+        public void setLinux(Platform linux) {
+            this.linux = linux;
+        }
+
+        public Platform getWindows() {
+            return windows;
+        }
+
+        public void setWindows(Platform windows) {
+            this.windows = windows;
+        }
+
+        public String getSaveAll() {
+			return saveAll;
+		}
+
+		public void setSaveAll(String saveAll) {
+			this.saveAll = saveAll;
+		}
+
+		public String getMaxConnections() {
+			return maxConnections;
+		}
+
+		public void setMaxConnections(String maxConnections) {
+			this.maxConnections = maxConnections;
+		}
+
+		public String getPrint() {
+			return print;
+		}
+
+		public void setPrint(String print) {
+			this.print = print;
+		}
+
+		public static class Platform {
+            private String command;
+            private String savePath;
+            private String spawn;
+
+            public String getCommand() {
+                return command;
+            }
+
+            public void setCommand(String command) {
+                this.command = command;
+            }
+
+            public String getSavePath() {
+                return savePath;
+            }
+
+            public void setSavePath(String savePath) {
+                this.savePath = savePath;
+            }
+            public String getSpawn() {
+                return spawn;
+            }
+
+            public void setSpawn(String spawn) {
+                this.spawn = spawn;
             }
         }
     }
