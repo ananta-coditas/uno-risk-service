@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.genomebrain.backend.service.NonCareQuestionnaireImpl;
+import com.genomebrain.backend.service.NCCNExecuter;
 import com.genomebrain.backend.service.dto.CustomResponseDTO;
-import com.genomebrain.backend.service.dto.NonCareQuestionnaireDTO;
+import com.genomebrain.backend.service.dto.NCCNCoreRequest;
 
 @RestController
 @RequestMapping("/api/v2/")
@@ -19,12 +19,12 @@ public class NCCNResourceV2 {
     private final Logger log = LoggerFactory.getLogger(NCCNResourceV2.class);
 
     @Autowired
-    NonCareQuestionnaireImpl nonCareQuestionnaire;
+    NCCNExecuter nonCareQuestionnaire;
 
     private final String SUCCESS = "SUCCESS";
 
     @PostMapping("evaluateNCCN")
-    public CustomResponseDTO evaluateNCCN(@RequestBody NonCareQuestionnaireDTO nonCareQuestionnaireDTO  ) {
+    public CustomResponseDTO evaluateNCCN(@RequestBody NCCNCoreRequest nonCareQuestionnaireDTO  ) {
         log.info("evaluateNCCN");
         CustomResponseDTO customResponseDTO = new CustomResponseDTO();
         customResponseDTO= nonCareQuestionnaire.getNonCareQuestionnaireDTO(nonCareQuestionnaireDTO);

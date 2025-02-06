@@ -1,11 +1,10 @@
 package com.genomebrain.backend.service.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
-public class NonCareQuestionnaireDTO {
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public class NCCNCoreRequest {
 
      @JsonProperty("clinical_history")
      private List<ClinicalHistory> clinicalHistory;

@@ -56,13 +56,13 @@ import com.genomebrain.backend.quesstionnaire.relative.Niece;
 import com.genomebrain.backend.quesstionnaire.relative.Sister;
 import com.genomebrain.backend.quesstionnaire.relative.Son;
 import com.genomebrain.backend.quesstionnaire.relative.Uncle;
-import com.genomebrain.backend.service.dto.CAREAPIResponseDTO;
+import com.genomebrain.backend.service.dto.NCCNCoreResponse;
 import com.genomebrain.backend.service.dto.CancerFeatureDetails;
 import com.genomebrain.backend.service.dto.ClinicalHistory;
 import com.genomebrain.backend.service.dto.ClinicalSummary;
 import com.genomebrain.backend.service.dto.FamilyHistory;
 import com.genomebrain.backend.service.dto.GuidelineDetailsDTO;
-import com.genomebrain.backend.service.dto.NonCareQuestionnaireDTO;
+import com.genomebrain.backend.service.dto.NCCNCoreRequest;
 import com.genomebrain.backend.service.dto.PolypDetails;
 
 @Component
@@ -183,8 +183,8 @@ public class CareAPIUtil{
     List<String> otherDXAge = Arrays.asList("PRENATAL", "BIRTH", "NEWBORN", "INFANCY", "CHILDHOOD", "TEENS", "EARLY TEENS", "MID TEENS", "LATE TEENS", "EARLY", "YOUNG", "PREMENOPAUSAL");
     List<String> apsRSIds = Arrays.asList("CRCRS1","CRCRS2","CRCRS12");
     List<String> lynchRSIds = Arrays.asList("CRCRS3", "CRCRS4", "CRCRS5", "CRCRS6", "CRCRS7", "CRCRS8", "CRCRS9", "CRCRS10", "CRCRS11","CRCRS13");
-    public CAREAPIResponseDTO getQuestionObject(NonCareQuestionnaireDTO nonCareQuestionnaireDTO) {
-        CAREAPIResponseDTO careapiResponseDTO = new CAREAPIResponseDTO();
+    public NCCNCoreResponse getQuestionObject(NCCNCoreRequest nonCareQuestionnaireDTO) {
+        NCCNCoreResponse careapiResponseDTO = new NCCNCoreResponse();
         List<QuestionSet> demographic = new ArrayList<>();
         PersonalHistory personalHistory = new PersonalHistory();
         List<QuestionSet> basicQuestions = new ArrayList<>();
@@ -769,8 +769,8 @@ public class CareAPIUtil{
     }
 
 
-    public CAREAPIResponseDTO CAREAPIResponseMapper(GuidelineDetailsDTO guidelineDetailsDTO, NonCareQuestionnaireDTO nonCareQuestionnaireDTO) throws Exception {
-        CAREAPIResponseDTO careapiResponseDTO = new CAREAPIResponseDTO();
+    public NCCNCoreResponse CAREAPIResponseMapper(GuidelineDetailsDTO guidelineDetailsDTO, NCCNCoreRequest nonCareQuestionnaireDTO) throws Exception {
+        NCCNCoreResponse careapiResponseDTO = new NCCNCoreResponse();
 
         ClinicalSummary clinicalSummary = guidelineDetailsDTO.getClinicalSummary();
         List<String> inputList = parseJson(guidelineDetailsDTO.getReasoningStatementAndTagsSet());

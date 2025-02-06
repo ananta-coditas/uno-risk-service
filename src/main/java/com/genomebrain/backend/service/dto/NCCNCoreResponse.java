@@ -1,9 +1,8 @@
 package com.genomebrain.backend.service.dto;
 
-import java.util.List;
 import java.util.Set;
 
-public class CAREAPIResponseDTO {
+public class NCCNCoreResponse {
     private String portalOrderId;
     private String portalPatientId;
     private String careAssessmentVersion;
