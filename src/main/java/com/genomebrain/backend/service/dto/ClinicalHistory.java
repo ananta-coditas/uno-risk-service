@@ -2,6 +2,7 @@ package com.genomebrain.backend.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ClinicalHistory {
@@ -27,7 +28,7 @@ public class ClinicalHistory {
     private String clinicalFeatureOverall;
 
     @JsonProperty("cancer_feature_details")
-    private List<CancerFeatureDetails> cancerFeatureDetails;
+    private List<CancerFeatureDetails> cancerFeatureDetails = new ArrayList<>();
 
     @JsonProperty("polyp_overall")
     private String polypOverall;

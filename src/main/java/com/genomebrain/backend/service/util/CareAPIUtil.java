@@ -110,9 +110,9 @@ public class CareAPIUtil{
     private final String Ethnicity = "ethnicity";
     private final String cancerOverall = "cancerOverall";
     private final String cancerFeature = "cancerFeature";
-    private final String YES = "Yes";
-    private final String NO = "No";
-    private final String NOT_PROVIDED = "Not Provided";
+    private final String YES = "YES";
+    private final String NO = "NO";
+    private final String NOT_PROVIDED = "NOT_PROVIDED";
     private final String multiplePrimaries = "multiplePrimaries";
     private final String HBOCNCCN = "HBOC NCCN met";
     private final String LYNCHNCCN = "Lynch NCCN met";
@@ -205,7 +205,7 @@ public class CareAPIUtil{
                 if (probandClinicalHistory.getEthnicity().size() > 0) {
                     List<String> ethnicity = probandClinicalHistory.getEthnicity();
                     if (!StringUtils.isEmpty(probandClinicalHistory.getEthnicityOther())) {
-                        ethnicity.add(probandClinicalHistory.getEthnicityOther());
+                        //ethnicity.add(probandClinicalHistory.getEthnicityOther());
                     }
                     questionSet = NCCNQuestionMapper.getQuestionSetForMultipleAnswer(Ethnicity, ethnicity);
                     demographic.add(questionSet);
@@ -1161,28 +1161,28 @@ public class CareAPIUtil{
         conversionMap.put("SON", SON);
         conversionMap.put("NIECE", NIECE);
         conversionMap.put("NEPHEW", NEPHEW);
-        conversionMap.put("HALF SISTER", HALF_SISTER);
-        conversionMap.put("HALF BROTHER", HALF_BROTHER);
+        conversionMap.put("HALF_SISTER", HALF_SISTER);
+        conversionMap.put("HALF_BROTHER", HALF_BROTHER);
         conversionMap.put("GRANDMOTHER", GRANDMOTHER);
         conversionMap.put("GRANDFATHER", GRANDFATHER);
         conversionMap.put("GRANDDAUGHTER", GRANDDAUGHTER);
         conversionMap.put("GRANDSON", GRANDSON);
         conversionMap.put("AUNT", AUNT);
         conversionMap.put("UNCLE", UNCLE);
-        conversionMap.put(FIRST_COUSIN_MALE, FIRST_COUSIN_MALE);
-        conversionMap.put(FIRST_COUSIN_FEMALE, FIRST_COUSIN_FEMALE);
-        conversionMap.put("GR GRANDMOTHER", GREAT_GRANDMOTHER);
-        conversionMap.put("GR GRANDFATHER", GREAT_GRANDFATHER);
-        conversionMap.put("G AUNT", GREAT_AUNT);
-        conversionMap.put("G UNCLE", GREAT_UNCLE);
-        conversionMap.put("G NIECE", GREAT_NIECE);
-        conversionMap.put("G NEPHEW", GREAT_NEPHEW);
-        conversionMap.put("G GRANDDAUGHTER", GREAT_GRANDDAUGHTER);
-        conversionMap.put("GR GRANDSON", GREAT_GRANDSON);
-        conversionMap.put("HALF AUNT", HALF_AUNT);
-        conversionMap.put("HALF UNCLE", HALF_UNCLE);
-        conversionMap.put("HALF NIECE", HALF_NIECE);
-        conversionMap.put("HALF NEPHEW", HALF_NEPHEW);
+        conversionMap.put("FIRST_COUSIN_MALE", FIRST_COUSIN_MALE);
+        conversionMap.put("FIRST_COUSIN_FEMALE", FIRST_COUSIN_FEMALE);
+        conversionMap.put("GREAT_GRANDMOTHER", GREAT_GRANDMOTHER);
+        conversionMap.put("GREAT_GRANDFATHER", GREAT_GRANDFATHER);
+        conversionMap.put("GREAT_AUNT", GREAT_AUNT);
+        conversionMap.put("GREAT_UNCLE", GREAT_UNCLE);
+        conversionMap.put("GREAT_NIECE", GREAT_NIECE);
+        conversionMap.put("GREAT_NEPHEW", GREAT_NEPHEW);
+        conversionMap.put("GREAT_GRANDDAUGHTER", GREAT_GRANDDAUGHTER);
+        conversionMap.put("GREAT_GRANDSON", GREAT_GRANDSON);
+        conversionMap.put("HALF_AUNT", HALF_AUNT);
+        conversionMap.put("HALF_UNCLE", HALF_UNCLE);
+        conversionMap.put("HALF_NIECE", HALF_NIECE);
+        conversionMap.put("HALF_NEPHEW", HALF_NEPHEW);
         conversionMap.put("OTHER", OTHERS);
         return conversionMap;
     }

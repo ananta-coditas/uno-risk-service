@@ -34,7 +34,7 @@ public class NCCNExecuter{
     List <String> relationShip = Arrays.asList("PROBAND", "MOTHER", "FATHER", "SISTER", "BROTHER", "DAUGHTER", "SON", "NIECE", "NEPHEW", "HALF SISTER", "HALF BROTHER", "GRANDMOTHER", "GRANDFATHER", "GRANDDAUGHTER", "GRANDSON", "AUNT", "UNCLE", "COUSIN - 1ST", "GR GRANDMOTHER", "GR GRANDFATHER", "G AUNT", "G UNCLE", "G NIECE", "G NEPHEW", "G GRANDDAUGHTER", "GR GRANDSON", "HALF AUNT", "HALF UNCLE", "HALF NIECE", "HALF NEPHEW", "OTHER");
     List <String> sideOfFamily = Arrays.asList("PROBAND", "MATERNAL", "PATERNAL", "OTHER");
     List <String> sexATBirth = Arrays.asList("MALE", "FEMALE", "UNKNOWN");
-    List <String> inputOptions = Arrays.asList("YES", "NO", "NOT PROVIDED");
+    List <String> inputOptions = Arrays.asList("YES", "NO", "NOT_PROVIDED");
     public final  String cousin ="COUSIN - 1ST";
     public final  String PROBAND ="PROBAND";
 
@@ -63,7 +63,7 @@ public class NCCNExecuter{
             }
         }
         log.info("Exit NonCareQuestionnaireImpl from getNonCareQuestionnaireDTO : request to get NCCN criteria ");
-        return null;
+        return careapiResponseDTO;
     }
     
     /**
@@ -78,8 +78,6 @@ public class NCCNExecuter{
         NCCNCoreResponse careapiResponseDTO = new NCCNCoreResponse();
         CustomResponseDTO customResponseDTO = new CustomResponseDTO();
         if (!ObjectUtils.isEmpty(nonCareQuestionnaireDTO)) {
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
             customResponseDTO = getDataValidation(nonCareQuestionnaireDTO);
             if (!customResponseDTO.getStatus().equalsIgnoreCase(MessageConstants.FAILURE)) {
                 try {
@@ -135,9 +133,6 @@ public class NCCNExecuter{
             }
             if (!(clinicalHistory.getSexAtBirth() == null) && !clinicalHistory.getSexAtBirth().isEmpty() && !sexATBirth.contains(clinicalHistory.getSexAtBirth().toUpperCase()) ) {
                 return customResponseDTO = new CustomResponseDTO(MessageConstants.FAILURE, StatusCode.FAILURE.getstatusCode(), APIConstants.VALID_SEX_AT_BIRTH, null);
-            }
-            if (clinicalHistory.getClinicalFeatureOverall() == null || clinicalHistory.getClinicalFeatureOverall().isEmpty() || !inputOptions.contains(clinicalHistory.getClinicalFeatureOverall().toUpperCase())) {
-                return customResponseDTO = new CustomResponseDTO(MessageConstants.FAILURE, StatusCode.FAILURE.getstatusCode(), APIConstants.VALID_CLINICAL_FEATURE_OVERALL, null);
             }
             if (clinicalHistory.getCancerOverall() == null || clinicalHistory.getCancerOverall().isEmpty() || !inputOptions.contains(clinicalHistory.getCancerOverall().toUpperCase())) {
                 return customResponseDTO = new CustomResponseDTO(MessageConstants.FAILURE, StatusCode.FAILURE.getstatusCode(), APIConstants.VALID_CANCER_OVERALL, null);

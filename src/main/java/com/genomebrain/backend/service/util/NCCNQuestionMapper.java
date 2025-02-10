@@ -69,11 +69,11 @@ public enum NCCNQuestionMapper {
             "Great grandson", "AMBRY053_027", "Half aunt", "AMBRY053_028", "Half uncle", "AMBRY053_029", "Half niece", "AMBRY053_030", "Half nephew", "AMBRY053_031")),
     sideOfFamAnswer(Arrays.asList("MATERNAL", "AMBRY054_001", "PATERNAL", "AMBRY054_002", "OTHER", "AMBRY054_003")),
     sexAtBirthAnswer(Arrays.asList("MALE", "AMBRY002_001", "FEMALE", "AMBRY002_002")),
-    ethnicityAnswer(Arrays.asList("African American", "AMBRY003_001", "Asian", "AMBRY003_002", "Caucasian", "AMBRY003_003", "French Canadian/Cajun", "AMBRY003_004",
-            "Hispanic/Latino", "AMBRY003_005", "Jewish (Ashkenazi)", "AMBRY003_006","Ashkenazi Jewish", "AMBRY003_006", "Jewish(Ashkenazi)", "AMBRY003_006", "Jewish (Sephardic/non-Ashkenazi)", "AMBRY003_007", "Middle Eastern", "AMBRY003_008",
-            "Native American", "AMBRY003_009", "Portuguese", "AMBRY003_010", "Other/not listed", "AMBRY003_011", "I don't know", "AMBRY003_012")),
+    ethnicityAnswer(Arrays.asList("AfricanAmerican", "AMBRY003_001", "Asian", "AMBRY003_002", "Caucasian", "AMBRY003_003", "FrenchCanadian", "AMBRY003_004",
+            "HispanicLatino", "AMBRY003_005", "Jewish_Ashkenazi", "AMBRY003_006","Ashkenazi Jewish", "AMBRY003_006", "Jewish(Ashkenazi)", "AMBRY003_006", "Jewish_Non_Ashkenazi", "AMBRY003_007", "MiddleEastern", "AMBRY003_008",
+            "NativeAmerican", "AMBRY003_009", "Portuguese", "AMBRY003_010", "Other", "AMBRY003_011", "UNKNOWN", "AMBRY003_012")),
 
-    cancerOverallAnswer(Arrays.asList("Yes", "AMBRY004_001", "No", "AMBRY004_002")),
+    cancerOverallAnswer(Arrays.asList("YES", "AMBRY004_001", "NO", "AMBRY004_002")),
 
 
     cancerFeatureAnswer(Arrays.asList("BREAST", "AMBRY005_001", "OVARIAN", "AMBRY005_002", "FALLOPIAN TUBE OR PERITONEAL", "AMBRY005_003", "PROSTATE", "AMBRY005_004",
@@ -87,35 +87,35 @@ public enum NCCNQuestionMapper {
     // cancerFeatureOtherRelativeQuestion(Arrays.asList("What type of cancer was this relative diagnosed with?", "AMBRY055","Other","AMBRY055_016")),
 
     // cancerfeaturetypeanswer(),
-    DESMOIDSAnswer(Arrays.asList("Yes", "AMBRY118_001","No","AMBRY118_002","I don't know","AMBRY118_003")),
+    DESMOIDSAnswer(Arrays.asList("YES", "AMBRY118_001","NO","AMBRY118_002","UNKNOWN","AMBRY118_003")),
     colorectalMultiplePrimariesAnswer(Arrays.asList("YES", "AMBRY020_002", "NO", "AMBRY020_001")),
-    metastaticAnswer(Arrays.asList("yes", "AMBRY018_001", "no", "AMBRY018_002", "I don't know", "AMBRY018_003")),
-    multiplePrimariesAnswer(Arrays.asList("No", "AMBRY007_001", "Yes", "AMBRY007_002")), //need to check and discuss for option
-    pathologyAnswer(Arrays.asList("DCIS", "AMBRY009_001", "IDC", "AMBRY009_002", "ILC", "AMBRY009_003", "Other", "AMBRY009_004", "I don't know", "AMBRY009_005")),
+    metastaticAnswer(Arrays.asList("yes", "AMBRY018_001", "no", "AMBRY018_002", "UNKNOWN", "AMBRY018_003")),
+    multiplePrimariesAnswer(Arrays.asList("NO", "AMBRY007_001", "YES", "AMBRY007_002")), //need to check and discuss for option
+    pathologyAnswer(Arrays.asList("DCIS", "AMBRY009_001", "IDC", "AMBRY009_002", "ILC", "AMBRY009_003", "Other", "AMBRY009_004", "UNKNOWN", "AMBRY009_005")),
     breastIpsilateralAnswer(Arrays.asList("Both breasts (bilateral)", "AMBRY010_003")),
-    breastErAnswer(Arrays.asList("Yes", "AMBRY011_001", "No", "AMBRY011_002", "I don't know", "AMBRY011_003")),
+    breastErAnswer(Arrays.asList("YES", "AMBRY011_001", "NO", "AMBRY011_002", "UNKNOWN", "AMBRY011_003")),
     breastPrAnswer(Arrays.asList("")),// Need to discuss
     breastHer2Answer(Arrays.asList("")),
-    prostateGleasonScoreAnswer(Arrays.asList("7 or less", "AMBRY017_001", "Higher than 7", "AMBRY017_002", "I don't know", "AMBRY017_003")),
+    prostateGleasonScoreAnswer(Arrays.asList("7 or less", "AMBRY017_001", "Higher than 7", "AMBRY017_002", "UNKNOWN", "AMBRY017_003")),
     ProstateRiskGroupAnswer(Arrays.asList()),  // Need to check
     prostateGradeGroupAnswer(Arrays.asList()),  // Need to check
-    polypOverallAnswer(Arrays.asList("Yes", "AMBRY051_001", "No", "AMBRY051_002", "I don't know", "AMBRY051_003")),
-    polypTypeAnswer(Arrays.asList("Yes", "AMBRY116_001", "No", "AMBRY116_002", "I don't know", "AMBRY116_003")),// NEED to check
-    exactNumOfPolypsAnswer(Arrays.asList("1-4", "AMBRY117_001", "5-9", "AMBRY117_002", "10-19", "AMBRY117_003", "20 or more", "AMBRY117_005", "I don't know", "AMBRY117_004")),
+    polypOverallAnswer(Arrays.asList("YES", "AMBRY051_001", "NO", "AMBRY051_002", "UNKNOWN", "AMBRY051_003")),
+    polypTypeAnswer(Arrays.asList("YES", "AMBRY116_001", "NO", "AMBRY116_002", "UNKNOWN", "AMBRY116_003")),// NEED to check
+    exactNumOfPolypsAnswer(Arrays.asList("1-4", "AMBRY117_001", "5-9", "AMBRY117_002", "10-19", "AMBRY117_003", "20 or more", "AMBRY117_005", "UNKNOWN", "AMBRY117_004")),
     relativeColorectalMultiplePrimariesAnswer(Arrays.asList("YES", "AMBRY067_002", "NO", "AMBRY067_001")),
     relativeBreastIpsilateralAnswer(Arrays.asList("Both breasts (bilateral)", "AMBRY124_001")),
-    relativeMetastaticAnswer(Arrays.asList("yes", "AMBRY066_001", "no", "AMBRY066_002", "I don't know", "AMBRY066_003")),
-    relativeMultiplePrimariesAnswer(Arrays.asList("No", "AMBRY057_001", "Yes", "AMBRY057_002")), //need to check and discuss for option
-    relativePathologyAnswer(Arrays.asList("DCIS", "AMBRY009_001", "IDC", "AMBRY009_002", "ILC", "AMBRY009_003", "Other", "AMBRY009_004", "I don't know", "AMBRY009_005")),
-    relativeBreastErAnswer(Arrays.asList("Yes", "AMBRY059_001", "No", "AMBRY059_002", "I don't know", "AMBRY059_003")),
-    relativeProstateGleasonScoreAnswer(Arrays.asList("7 or less", "AMBRY065_001", "Higher than 7", "AMBRY065_002", "I don't know", "AMBRY065_003")),
+    relativeMetastaticAnswer(Arrays.asList("yes", "AMBRY066_001", "no", "AMBRY066_002", "UNKNOWN", "AMBRY066_003")),
+    relativeMultiplePrimariesAnswer(Arrays.asList("NO", "AMBRY057_001", "YES", "AMBRY057_002")), //need to check and discuss for option
+    relativePathologyAnswer(Arrays.asList("DCIS", "AMBRY009_001", "IDC", "AMBRY009_002", "ILC", "AMBRY009_003", "Other", "AMBRY009_004", "UNKNOWN", "AMBRY009_005")),
+    relativeBreastErAnswer(Arrays.asList("YES", "AMBRY059_001", "NO", "AMBRY059_002", "UNKNOWN", "AMBRY059_003")),
+    relativeProstateGleasonScoreAnswer(Arrays.asList("7 or less", "AMBRY065_001", "Higher than 7", "AMBRY065_002", "UNKNOWN", "AMBRY065_003")),
     relativeCancerFeatureAnswer(Arrays.asList("BREAST", "AMBRY055_001", "OVARIAN", "AMBRY055_002", "FALLOPIAN TUBE OR PERITONEAL", "AMBRY055_003", "PROSTATE",
             "AMBRY055_004", "COLORECTAL", "AMBRY055_005", "PANCREATIC", "AMBRY055_006", "UTERINE (ENDOMETRIAL)", "AMBRY055_007", "STOMACH", "AMBRY055_008", "SMALL INTESTINE (SMALL BOWEL)", "AMBRY055_009",
             "BILIARY TRACT", "AMBRY055_010", "KIDNEY", "AMBRY055_011", "URETER OR RENAL PELVIS", "AMBRY055_012", "BRAIN", "AMBRY055_013", "SKIN", "AMBRY055_015", "OTHER", "AMBRY055_016")),
     relativeCancerFeatureAnswerOther(Arrays.asList("LEUKEMIA", "AMBRY056_001", "LYMPHOMA", "AMBRY056_002", "GALLBLADDER", "AMBRY056_003", "CERVICAL", "AMBRY056_004", "BLADDER", "AMBRY056_005",
             "THROAT", "AMBRY056_006", "THYROID", "AMBRY056_007", "ORAL", "AMBRY056_008", "LIVER", "AMBRY056_009", "TESTICULAR", "AMBRY056_010",
             "PARAGANGLIOMA", "AMBRY056_011", "PHEOCHROMOCYTOMA", "AMBRY056_012", "LUNG", "AMBRY056_013", "SARCOMA", "AMBRY056_014", "UNKNOWN/OTHER CANCER NOT LISTED HERE", "AMBRY056_015")),
-    relativeCancerOverallAnswer(Arrays.asList("Yes", "AMBRY052_001", "No", "AMBRY052_002", "I don't know", "AMBRY052_003", "I am adopted", "AMBRY052_004")),
+    relativeCancerOverallAnswer(Arrays.asList("YES", "AMBRY052_001", "NO", "AMBRY052_002", "UNKNOWN", "AMBRY052_003", "I am adopted", "AMBRY052_004")),
     SkinCancerTypeAnswer(Arrays.asList("Sebaceous Adenoma or Carcinoma", "AMBRY121_001")),
     RELATIVE_SkinCancerTypeAnswer(Arrays.asList("Sebaceous Adenoma or Carcinoma", "AMBRY123_001")),
 //Age of  diagnosis

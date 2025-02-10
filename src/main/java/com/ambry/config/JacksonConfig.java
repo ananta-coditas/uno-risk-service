@@ -27,6 +27,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
+import com.objex.risk.beans.BaseResult;
 import com.objex.risk.beans.Prediction;
 import com.objex.risk.beans.claus.ClausResult;
 import com.objex.risk.beans.gail.GailResult;
@@ -37,12 +38,15 @@ import com.objex.risk.beans.tcuzick.TyrerResult;
 import com.objex.risk.beans.brca.BRCAResult;
 import com.objex.risk.beans.mela.MelaResult;
 import com.objex.risk.beans.panc.PancResult;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Configuration
 public class JacksonConfig {
 
     /**
      * Support for Java date and time API.
+     * 
      * @return the corresponding Jackson module.
      */
     @Bean
@@ -54,7 +58,7 @@ public class JacksonConfig {
     public Jdk8Module jdk8TimeModule() {
         return new Jdk8Module();
     }
-    
+
     @Bean
     public SimpleModule customSerializer() {
         SimpleModule module = new SimpleModule();
@@ -67,8 +71,8 @@ public class JacksonConfig {
         module.addSerializer(MMRResult.class, new MMRResultSerializer());
         module.addSerializer(MelaResult.class, new MelaResultSerializer());
         module.addSerializer(PancResult.class, new PancResultSerializer());
-        
-        module.addDeserializer(Risk.class, new GailRiskDeserializer()); 
+
+        module.addDeserializer(Risk.class, new GailRiskDeserializer());
         module.addDeserializer(com.objex.risk.beans.claus.Risk.class, new ClausDeserializer());
         module.addDeserializer(com.objex.risk.beans.premm.Risk.class, new PremmDeserializer());
         module.addDeserializer(com.objex.risk.beans.tcuzick.Risk.class, new TyrerDeserializer());
@@ -78,13 +82,15 @@ public class JacksonConfig {
         module.addDeserializer(com.objex.risk.beans.panc.Risk.class, new PancDeserializer());
         return module;
     }
-    
+
     @Bean
     public ObjectMapper objectMapper(SimpleModule customSerializer) {
         ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(customSerializer);  
+        objectMapper.addMixIn(BaseResult.class, BaseResultMixIn.class);
+        objectMapper.registerModule(customSerializer);
         return objectMapper;
     }
+
     @Bean
     public Jackson2ObjectMapperBuilderCustomizer customizer() {
         return builder -> {
@@ -92,5 +98,10 @@ public class JacksonConfig {
             builder.modulesToInstall(new JaxbAnnotationModule()); // Optional: Support JAXB annotations
         };
     }
-    
+
+}
+
+abstract class BaseResultMixIn {
+    @JsonIgnore
+    public abstract byte[] getChart();
 }

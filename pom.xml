@@ -274,11 +274,26 @@
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.rosuda.REngine</groupId>
+      <artifactId>REngine</artifactId>
+      <version>2.1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.rosuda.REngine</groupId>
+      <artifactId>Rserve</artifactId>
+      <version>1.8.1</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+      <version>2.6</version>
+    </dependency>
   </dependencies>
 
   <build>
     <defaultGoal>spring-boot:run</defaultGoal>
-    <finalName>common-risk-service</finalName>    
+    <finalName>common-risk-service</finalName>
     <resources>
       <resource>
         <directory>${basedir}/src/main/resources/</directory>
