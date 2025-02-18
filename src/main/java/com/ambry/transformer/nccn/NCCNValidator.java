@@ -12,7 +12,6 @@ public class NCCNValidator extends RiskModelValidator<NCCNCoreRequest>{
 
     @Override
     public void validate(NCCNCoreRequest request, ValidationErrors validationErros) {
-        
     }
 
     @Override

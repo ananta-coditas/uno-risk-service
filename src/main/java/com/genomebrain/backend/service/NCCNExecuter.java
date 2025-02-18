@@ -31,11 +31,11 @@ public class NCCNExecuter{
 
     private final String VERSION = "V1";
 
-    List <String> relationShip = Arrays.asList("PROBAND", "MOTHER", "FATHER", "SISTER", "BROTHER", "DAUGHTER", "SON", "NIECE", "NEPHEW", "HALF SISTER", "HALF BROTHER", "GRANDMOTHER", "GRANDFATHER", "GRANDDAUGHTER", "GRANDSON", "AUNT", "UNCLE", "COUSIN - 1ST", "GR GRANDMOTHER", "GR GRANDFATHER", "G AUNT", "G UNCLE", "G NIECE", "G NEPHEW", "G GRANDDAUGHTER", "GR GRANDSON", "HALF AUNT", "HALF UNCLE", "HALF NIECE", "HALF NEPHEW", "OTHER");
-    List <String> sideOfFamily = Arrays.asList("PROBAND", "MATERNAL", "PATERNAL", "OTHER");
+    List <String> relationShip = Arrays.asList("PROBAND","MOTHER","FATHER","SISTER","BROTHER","DAUGHTER","SON","NIECE","NEPHEW","HALF_SISTER","HALF_BROTHER","GRANDMOTHER","GRANDFATHER","GRANDDAUGHTER","GRANDSON","AUNT","UNCLE","FIRST_COUSIN_MALE","FIRST_COUSIN_FEMALE","GREAT_GRANDMOTHER","GREAT_GRANDFATHER","GREAT_AUNT","GREAT_UNCLE","GREAT_NEPHEW","GREAT_NIECE","GREAT_GRANDDAUGHTER","GREAT_GRANDSON","HALF_AUNT","HALF_UNCLE","HALF_NIECE","HALF_NEPHEW","OTHERS");
+    List <String> sideOfFamily = Arrays.asList("MATERNAL", "PATERNAL", "OTHER");
     List <String> sexATBirth = Arrays.asList("MALE", "FEMALE", "UNKNOWN");
     List <String> inputOptions = Arrays.asList("YES", "NO", "NOT_PROVIDED");
-    public final  String cousin ="COUSIN - 1ST";
+    public final  String cousin ="FIRST_COUSIN";
     public final  String PROBAND ="PROBAND";
 
     /**
@@ -124,7 +124,7 @@ public class NCCNExecuter{
             if (clinicalHistory.getRelationship() == null || clinicalHistory.getRelationship().isEmpty() || !relationShip.contains(clinicalHistory.getRelationship().toUpperCase()) ) {
                 return customResponseDTO = new CustomResponseDTO(MessageConstants.FAILURE, StatusCode.FAILURE.getstatusCode(), APIConstants.VALID_RELATIONSHIP, null);
             }
-            if(clinicalHistory.getRelationship().equalsIgnoreCase(cousin) && (clinicalHistory.getSexAtBirth()==null || StringUtils.isEmpty(clinicalHistory.getSexAtBirth()) || !sexATBirth.contains(clinicalHistory.getSexAtBirth().toUpperCase())))
+            if(clinicalHistory.getRelationship().contains(cousin) && (clinicalHistory.getSexAtBirth()==null || StringUtils.isEmpty(clinicalHistory.getSexAtBirth()) || !sexATBirth.contains(clinicalHistory.getSexAtBirth().toUpperCase())))
             {
                 return customResponseDTO = new CustomResponseDTO(MessageConstants.FAILURE, StatusCode.FAILURE.getstatusCode(), APIConstants.VALID_SEX_AT_BIRTH_COUSIN_1ST, null);
             }

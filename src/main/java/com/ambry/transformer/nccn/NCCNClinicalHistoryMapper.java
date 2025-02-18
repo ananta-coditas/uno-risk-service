@@ -3,6 +3,7 @@ package com.ambry.transformer.nccn;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
@@ -13,11 +14,13 @@ import com.objex.risk.beans.uno.Person;
 
 @Component
 public class NCCNClinicalHistoryMapper {
-    
-    public ClinicalHistory transform(Person person, Map<Integer, NCCNPersonRelationShipDetails> familyRelativesRelationshipDetails) {
+
+    public ClinicalHistory transform(Person person,
+            Map<Integer, NCCNPersonRelationShipDetails> familyRelativesRelationshipDetails) {
         ClinicalHistory clinicalHistory = new ClinicalHistory();
-        NCCNPersonRelationShipDetails nccnPersonRelationShipDetails = familyRelativesRelationshipDetails.get(person.getId());
-        if(nccnPersonRelationShipDetails == null) {
+        NCCNPersonRelationShipDetails nccnPersonRelationShipDetails = familyRelativesRelationshipDetails
+                .get(person.getId());
+        if (nccnPersonRelationShipDetails == null) {
             nccnPersonRelationShipDetails = new NCCNPersonRelationShipDetails("OTHER", "OTHER");
         }
         clinicalHistory.setRelationship(nccnPersonRelationShipDetails.getRelationShip());
@@ -26,7 +29,8 @@ public class NCCNClinicalHistoryMapper {
         clinicalHistory.setEthnicity(List.of(person.getFamilyRace().toString()));
         clinicalHistory.setEthnicityOther(person.getFamilyRace().toString());
         clinicalHistory.setPolypOverall(person.getPolypOverall().toString());
-        clinicalHistory.setCancerOverall((person.getCancers() != null && !person.getCancers().isEmpty()) ? "Yes" : "No");
+        clinicalHistory
+                .setCancerOverall((person.getCancers() != null && !person.getCancers().isEmpty()) ? "Yes" : "No");
         clinicalHistory.setClinicalFeatureOverall("Not Provided");
 
         if (person.getCancers() != null) {
@@ -37,13 +41,17 @@ public class NCCNClinicalHistoryMapper {
                 details.setExactDxAge(String.valueOf(cancer.getDiagnoseAge() + 0.5));
                 details.setMetastatic(cancer.getCancerDetails().getMetastatic().toLowerCase());
                 details.setMultiplePrimaries(cancer.getCancerDetails().getBreastMultiplePrimaries());
-                details.setPathology(Collections.singletonList(cancer.getCancerDetails().getPathology()));
+                if (cancer.getCancerDetails().getBreastCancerTypes() != null) {
+                    List<String> cancerTypes = cancer.getCancerDetails().getBreastCancerTypes().stream().map(Enum::name)
+                            .collect(Collectors.toList());
+                    details.setBreastCancerTypes(cancerTypes);
+                }
                 clinicalHistory.getCancerFeatureDetails().add(details);
             }
         }
         return clinicalHistory;
     }
-    
+
     private String getSexAtBirth(int gender) {
         return (gender == 1) ? "male" : "female";
     }

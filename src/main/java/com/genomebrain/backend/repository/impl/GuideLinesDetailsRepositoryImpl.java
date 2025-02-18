@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,48 +20,39 @@ public class GuideLinesDetailsRepositoryImpl implements CustomGuideLinesDetailsR
 
     private final Logger log = LoggerFactory.getLogger(GuideLinesDetailsRepositoryImpl.class);
 
-    private String guidelinesDataFilePath = "classpath:risk_model_data/nccn_guide_lines_details.json"; // The
-                                                                                                       // path
-                                                                                                       // to
-                                                                                                       // your
-                                                                                                       // JSON
-                                                                                                       // file
+    private String guidelinesDataFilePath = "classpath:risk_model_data/nccn_guide_lines_details.json"; 
 
+    private final List<GuideLinesDetails> lstGuideLinesDetails;
+    
+    public GuideLinesDetailsRepositoryImpl() {
+        lstGuideLinesDetails = findAll();
+    }
+    
     public List<GuideLinesDetails> findAll() {
         log.info("Fetching all guidelines data from JSON file");
-
-        // Load all data from the JSON file
         return loadDataFromJson(guidelinesDataFilePath);
     }
 
     @Override
     public List<GuideLinesDetails> getAllTheGuidelines(List<List<String>> tags) {
         log.info("Query to get all the guidelines");
-
-        // Load all data from the JSON file
-        List<GuideLinesDetails> guidelines = loadDataFromJson(guidelinesDataFilePath);
-
-        // Ensure tags list is not empty to avoid unnecessary processing
+        List<GuideLinesDetails> guidelines = lstGuideLinesDetails;
         if (tags == null || tags.isEmpty()) {
             return new ArrayList<>();
         }
-
         Integer limit = tags.size();
         if (limit >= 100000) {
             limit = 100000;
         }
-
         try {
             List<GuideLinesDetails> filteredGuidelines = new ArrayList<>();
-
             for (GuideLinesDetails guideline : guidelines) {
                 for (List<String> tagGroup : tags.subList(0, limit)) {
-                    if (guideline.getTagsList().stream().anyMatch(tags::contains)) {
+                    if (guideline.getTagsList().stream().allMatch(tagGroup::contains)) {
                         filteredGuidelines.add(guideline);
                     }
                 }
             }
-
             return filteredGuidelines;
         } catch (Exception e) {
             e.printStackTrace();
@@ -70,7 +60,6 @@ public class GuideLinesDetailsRepositoryImpl implements CustomGuideLinesDetailsR
         }
     }
 
-    // Helper method to load data from a JSON file
     private List<GuideLinesDetails> loadDataFromJson(String filePath) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();

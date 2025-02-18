@@ -151,7 +151,7 @@ public class GuideLineServiceImpl implements GuideLineService {
         return genomeBrainResponseDTO;
     }
 
-    private List<List<String>> getTagsSorted(List<String> tags) {
+    public List<List<String>> getTagsSorted(List<String> tags) {
         List<List<String>> tagsList = new LinkedList<>();
         IntStream range = IntStream.rangeClosed(minCountTagInCombination, maxCountTagInCombination);
         range.forEach(x -> {

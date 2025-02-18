@@ -5,6 +5,8 @@ import static com.genomebrain.backend.service.util.APIConstants.GRADE_GROUP_5;
 import static com.genomebrain.backend.service.util.APIConstants.HIGH_RISK_GROUP;
 import static com.genomebrain.backend.service.util.APIConstants.VERY_HIGH_RISK_GROUP;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -56,13 +58,13 @@ import com.genomebrain.backend.quesstionnaire.relative.Niece;
 import com.genomebrain.backend.quesstionnaire.relative.Sister;
 import com.genomebrain.backend.quesstionnaire.relative.Son;
 import com.genomebrain.backend.quesstionnaire.relative.Uncle;
-import com.genomebrain.backend.service.dto.NCCNCoreResponse;
 import com.genomebrain.backend.service.dto.CancerFeatureDetails;
 import com.genomebrain.backend.service.dto.ClinicalHistory;
 import com.genomebrain.backend.service.dto.ClinicalSummary;
 import com.genomebrain.backend.service.dto.FamilyHistory;
 import com.genomebrain.backend.service.dto.GuidelineDetailsDTO;
 import com.genomebrain.backend.service.dto.NCCNCoreRequest;
+import com.genomebrain.backend.service.dto.NCCNCoreResponse;
 import com.genomebrain.backend.service.dto.PolypDetails;
 
 @Component
@@ -336,7 +338,7 @@ public class CareAPIUtil{
             if(cancerFeatureDetails.getCancerFeature().equalsIgnoreCase("Sebaceous Carcinoma") || cancerFeatureDetails.getCancerFeature().equalsIgnoreCase("Sebaceous adenomas"))
             {
                 cancerFeatureDetails.setCancerFeature(Skin);
-                cancerFeatureDetails.setPathology(Collections.singletonList(Sebaceous_C));
+                cancerFeatureDetails.setBreastCancerTypes(Collections.singletonList(Sebaceous_C));
             }
             QuestionSet questionSet = new QuestionSet();
             String relativeCancerName = "";
@@ -395,9 +397,9 @@ public class CareAPIUtil{
                             questionSet = NCCNQuestionMapper.getQuestionSet(multiplePrimaries, YES);
                             personalCancerQuestions.add(questionSet);
                         }
-                        if (cancerFeatureDetails.getPathology() != null) {
-                            if (cancerFeatureDetails.getPathology().size() > 0) {
-                                List<String> pathology = cancerFeatureDetails.getPathology();
+                        if (cancerFeatureDetails.getBreastCancerTypes() != null) {
+                            if (cancerFeatureDetails.getBreastCancerTypes().size() > 0) {
+                                List<String> pathology = cancerFeatureDetails.getBreastCancerTypes();
                                 if (!StringUtils.isEmpty(cancerFeatureDetails.getPathologyOther())) {
                                     pathology.add(cancerFeatureDetails.getPathologyOther());
                                 }
@@ -405,7 +407,7 @@ public class CareAPIUtil{
                                 personalCancerQuestions.add(questionSet);
                             }
                         }
-                        if ((!StringUtils.isEmpty(cancerFeatureDetails.getBreastContralateral()) && cancerFeatureDetails.getBreastContralateral().equalsIgnoreCase("Yes")) || (!StringUtils.isEmpty(cancerFeatureDetails.getBreastIpsilateral()) && cancerFeatureDetails.getBreastIpsilateral().equalsIgnoreCase("Yes"))) {
+                        if ((!StringUtils.isEmpty(cancerFeatureDetails.getBreastBilateral()) && cancerFeatureDetails.getBreastBilateral().equalsIgnoreCase("Yes")) || (!StringUtils.isEmpty(cancerFeatureDetails.getBreastIpsilateral()) && cancerFeatureDetails.getBreastIpsilateral().equalsIgnoreCase("Yes"))) {
                             questionSet = NCCNQuestionMapper.getQuestionSet(APIConstants.BREAST_IPSILATERAL, APIConstants.BOTH_BREASTS);
                             personalCancerQuestions.add(questionSet);
                         }
@@ -421,6 +423,10 @@ public class CareAPIUtil{
                                 questionSet = NCCNQuestionMapper.getQuestionSet(APIConstants.BREAST_ER, NO);
                                 personalCancerQuestions.add(questionSet);
                             }
+                        }
+                        else {
+                            questionSet = NCCNQuestionMapper.getQuestionSet(APIConstants.BREAST_ER, NOT_PROVIDED);
+                            relativeCancerQuestions.add(questionSet);
                         }
                         personalCancer.setBreast(personalCancerQuestions);
                     } else {
@@ -439,7 +445,7 @@ public class CareAPIUtil{
 //                                relativeCancerQuestions.add(questionSet);
 //                            }
 //                        }
-                        if ((!StringUtils.isEmpty(cancerFeatureDetails.getBreastContralateral()) && cancerFeatureDetails.getBreastContralateral().equalsIgnoreCase("Yes")) || (!StringUtils.isEmpty(cancerFeatureDetails.getBreastIpsilateral()) && cancerFeatureDetails.getBreastIpsilateral().equalsIgnoreCase("Yes"))) {
+                        if ((!StringUtils.isEmpty(cancerFeatureDetails.getBreastBilateral()) && cancerFeatureDetails.getBreastBilateral().equalsIgnoreCase("Yes")) || (!StringUtils.isEmpty(cancerFeatureDetails.getBreastIpsilateral()) && cancerFeatureDetails.getBreastIpsilateral().equalsIgnoreCase("Yes"))) {
                             questionSet = NCCNQuestionMapper.getQuestionSet(APIConstants.RELATIVE_BREAST_IPSILATERAL, APIConstants.BOTH_BREASTS);
                             relativeCancerQuestions.add(questionSet);
                         }
@@ -455,6 +461,10 @@ public class CareAPIUtil{
                             questionSet = NCCNQuestionMapper.getQuestionSet(APIConstants.RELATIVE_BREAST_ER, NO);
                                 relativeCancerQuestions.add(questionSet);
                             }
+                        }
+                        else {
+                            questionSet = NCCNQuestionMapper.getQuestionSet(APIConstants.RELATIVE_BREAST_ER, NOT_PROVIDED);
+                            relativeCancerQuestions.add(questionSet);
                         }
                         relativeHistory.setBreast(relativeCancerQuestions);
                     }
@@ -595,7 +605,7 @@ public class CareAPIUtil{
                         relativeHistory.setUreter(relativeCancerQuestions);
                     break;
                 case Skin:
-                    if ((cancerFeatureDetails.getPathology().contains(Sebaceous) ||  cancerFeatureDetails.getPathology().contains(Sebaceous_C))) {
+                    if ((cancerFeatureDetails.getBreastCancerTypes().contains(Sebaceous) ||  cancerFeatureDetails.getBreastCancerTypes().contains(Sebaceous_C))) {
                         if (isProband) {
                             if ((!StringUtils.isEmpty(cancerFeatureDetails.getExactDxAge()) || !StringUtils.isEmpty(cancerFeatureDetails.getMaxDxAge()) || !StringUtils.isEmpty(cancerFeatureDetails.getOtherDxAge()) || !StringUtils.isEmpty(cancerFeatureDetails.getMinDxAge())) && (!StringUtils.isEmpty(cancerFeatureDetails.getCancerFeature()))) {
                                 if (!StringUtils.isEmpty(cancerFeatureDetails.getExactDxAge()))
@@ -1108,49 +1118,6 @@ public class CareAPIUtil{
 
     }
 
-    public String cancerConversion(CancerFeatureDetails cancerFeatureDetails) {
-        String cancerName = cancerFeatureDetails.getCancerFeature();
-        cancerName = cancerName != null ? cancerName.trim().toUpperCase() : null;
-        if (cancerName == null) {
-            return "";
-        }
-        List<String> pathology = cancerFeatureDetails.getPathology();
-
-        if (cancerName.equalsIgnoreCase(APIConstants.BLOOD) && !pathology.isEmpty()) {
-            if (pathology.stream().anyMatch(p -> p.equalsIgnoreCase(Leukemia) && (!p.contains(APIConstants.PRELEUKEMIA) && !p.contains(APIConstants.MYELODYSPLASTIC_SYNDROMES)))) {
-                return Leukemia;
-            }
-            if (pathology.stream().anyMatch(p -> p.equalsIgnoreCase(Lymphoma))) {
-                return Lymphoma;
-            }
-        }
-
-        if (cancerName.equalsIgnoreCase(APIConstants.FALLOPIAN_TUBE) || cancerName.equalsIgnoreCase(APIConstants.PERITONEAL) || cancerName.equalsIgnoreCase(APIConstants.FALLOPIAN_TUBE_OR_PERITONEAL)) {
-            return FallopianTube;
-        }
-
-        if (cancerName.equalsIgnoreCase(APIConstants.ADRENAL) && !pathology.isEmpty()) {
-            if (pathology.stream().anyMatch(p -> p.equalsIgnoreCase(Pheochromocytoma))) {
-                return Pheochromocytoma;
-            }
-        }
-
-        if (cancerName.equalsIgnoreCase(APIConstants.UTERINE_ENDOMETRIAL) || cancerName.equalsIgnoreCase(APIConstants.UTERINE)) {
-            return Uterine;
-        }
-
-        if (cancerName.equalsIgnoreCase(APIConstants.SMALL_INTESTINE)) {
-            return SmallIntestine;
-        }
-
-        if (cancerName.equalsIgnoreCase(APIConstants.BILIARY_TRACT_NOS) || cancerName.equalsIgnoreCase(APIConstants.BILIARY_TRACT)) {
-            return BiliaryTract;
-        }
-
-        return cancerName;
-    }
-
-
     public HashMap<String, String> relationConversionMap() {
         HashMap<String, String> conversionMap = new HashMap<>();
         conversionMap.put("MOTHER", MOTHER);
@@ -1196,13 +1163,6 @@ public class CareAPIUtil{
         for (ClinicalHistory clinicalHistory : clinicalHistories) {
             String relationShip = clinicalHistory.getRelationship().trim().toUpperCase();
             List<CancerFeatureDetails> featureDetails = clinicalHistory.getCancerFeatureDetails();
-            featureDetails.removeIf(cancerFeatureDetails -> {
-                String cancerFeature = cancerConversion(cancerFeatureDetails);
-                cancerFeatureDetails.setCancerFeature(cancerFeature);
-                return !cancerTypes.contains(cancerFeature);
-            });
-
-            clinicalHistory.setCancerFeatureDetails(featureDetails);
             if (PROBAND.equalsIgnoreCase(relationShip)) {
                 probandClinicalHistory = clinicalHistory;
                 isPersonalHistory = true;

@@ -1,2871 +1,2580 @@
 [{
-  "_id": {
-    "$oid": "6502d8c2c878270f94346c89"
-  },
-  "tags": [
-    "PrAdPolyps",
-    "PrPolyp>10Dx"
-  ],
-  "tag_id": "CRCTag1",
-  "guideline_name": "NCCN APS",
-  "reasoning_statement_en": "Personal history of ≥10 adenomatous colorectal polyps",
-  "reasoning_statement_id": "CRCRS1",
-  "associated_genes": [
-    "APC",
-    "MUYTH",
-    "POLE",
-    "POLD1"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "6502d8c2c878270f94346c88"
-  },
-  "tags": [
-    "PrAdPolyps",
-    "PrPolyp>20Dx"
-  ],
-  "tag_id": "CRCTag1",
-  "guideline_name": "NCCN APS",
-  "reasoning_statement_en": "Personal history of ≥10 adenomatous colorectal polyps",
-  "reasoning_statement_id": "CRCRS1",
-  "associated_genes": [
-    "APC",
-    "MUYTH",
-    "POLE",
-    "POLD1"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "64a6b8217af96d6e187e180e"
-  },
-  "tags": [
-    "PrDesmoid"
-  ],
-  "tag_id": "CRCTag23",
-  "guideline_name": "NCCN APS",
-  "reasoning_statement_en": "Personal history of desmoid tumor",
-  "reasoning_statement_id": "CRCRS12",
-  "associated_genes": [
-    "APC",
-    "MUYTH",
-    "POLE",
-    "POLD1"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "618e5d2558f3ec4ca83ea4cf"
-  },
-  "tags": [
-    "Female",
-    "FmBreastMalePatTDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag10",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with breast cancer diagnosed at age ≤50y or with male breast cancer at any age",
-  "reasoning_statement_id": "HBOCRS10",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "618e5d2558f3ec4ca83ea4ce"
-  },
-  "tags": [
-    "Female",
-    "FmBreastMaleMatTDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag10",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with breast cancer diagnosed at age ≤50y or with male breast cancer at any age",
-  "reasoning_statement_id": "HBOCRS10",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "618e5d2558f3ec4ca83ea4cd"
-  },
-  "tags": [
-    "Female",
-    "FmBreastMalePatSDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag10",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with breast cancer diagnosed at age ≤50y or with male breast cancer at any age",
-  "reasoning_statement_id": "HBOCRS10",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "618e5d2558f3ec4ca83ea4cc"
-  },
-  "tags": [
-    "Female",
-    "FmBreastMaleMatSDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag10",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with breast cancer diagnosed at age ≤50y or with male breast cancer at any age",
-  "reasoning_statement_id": "HBOCRS10",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "618e5d2558f3ec4ca83ea4cb"
-  },
-  "tags": [
-    "Female",
-    "FmBreastMalePatFDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag10",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with breast cancer diagnosed at age ≤50y or with male breast cancer at any age",
-  "reasoning_statement_id": "HBOCRS10",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "618e5d2558f3ec4ca83ea4ca"
-  },
-  "tags": [
-    "Female",
-    "FmBreastMaleMatFDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag10",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with breast cancer diagnosed at age ≤50y or with male breast cancer at any age",
-  "reasoning_statement_id": "HBOCRS10",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "618d42008fc9134ac868c784"
-  },
-  "tags": [
-    "FmBreast>=3PplPat",
-    "FmBreastUnknownAgePatSDR"
-  ],
-  "tag_id": "HBOCTag46",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of breast cancer diagnosed at any age in a first- or second- degree blood relative with ≥3 total diagnoses of breast cancer on the same side of the family",
-  "reasoning_statement_id": "HBOCRS34",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "618d42008fc9134ac868c783"
-  },
-  "tags": [
-    "FmBreast>=3PplPat",
-    "FmBreastUnknownAgePatFDR"
-  ],
-  "tag_id": "HBOCTag46",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of breast cancer diagnosed at any age in a first- or second- degree blood relative with ≥3 total diagnoses of breast cancer on the same side of the family",
-  "reasoning_statement_id": "HBOCRS34",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "618d42008fc9134ac868c782"
-  },
-  "tags": [
-    "FmBreast>=3PplMat",
-    "FmBreastUnknownAgeMatSDR"
-  ],
-  "tag_id": "HBOCTag45",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of breast cancer diagnosed at any age in a first- or second- degree blood relative with ≥3 total diagnoses of breast cancer on the same side of the family",
-  "reasoning_statement_id": "HBOCRS34",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "618d42008fc9134ac868c781"
-  },
-  "tags": [
-    "FmBreast>=3PplMat",
-    "FmBreastUnknownAgeMatFDR"
-  ],
-  "tag_id": "HBOCTag45",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of breast cancer diagnosed at any age in a first- or second- degree blood relative with ≥3 total diagnoses of breast cancer on the same side of the family",
-  "reasoning_statement_id": "HBOCRS34",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "614d5a7536922410e0aebfa4"
-  },
-  "tags": [
-    "FmBreastTrpNegPatSDR"
-  ],
-  "tag_id": "HBOCTag35",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of triple negative breast cancer in a first- or second- degree blood relative",
-  "reasoning_statement_id": "HBOCRS29",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "614d5a7536922410e0aebfa3"
-  },
-  "tags": [
-    "FmBreastTrpNegPatFDR"
-  ],
-  "tag_id": "HBOCTag35",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of triple negative breast cancer in a first- or second- degree blood relative",
-  "reasoning_statement_id": "HBOCRS29",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "614d5a7536922410e0aebfa2"
-  },
-  "tags": [
-    "FmBreastTrpNegMatSDR"
-  ],
-  "tag_id": "HBOCTag35",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of triple negative breast cancer in a first- or second- degree blood relative",
-  "reasoning_statement_id": "HBOCRS29",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "614d5a7536922410e0aebfa1"
-  },
-  "tags": [
-    "FmBreastTrpNegMatFDR"
-  ],
-  "tag_id": "HBOCTag35",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of triple negative breast cancer in a first- or second- degree blood relative",
-  "reasoning_statement_id": "HBOCRS29",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "614d567e36922410e0aebfa0"
-  },
-  "tags": [
-    "FmProstateGL7MatFDR",
-    "Male",
-    "PrProstate"
-  ],
-  "tag_id": "HBOCTag28",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of prostate cancer and ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
-  "reasoning_statement_id": "HBOCRS24",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "614d567e36922410e0aebf9f"
-  },
-  "tags": [
-    "FmProstateGL7PatFDR",
-    "Male",
-    "PrProstate"
-  ],
-  "tag_id": "HBOCTag28",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of prostate cancer and ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
-  "reasoning_statement_id": "HBOCRS24",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "614d567e36922410e0aebf9e"
-  },
-  "tags": [
-    "FmProstateGL7MatSDR",
-    "Male",
-    "PrProstate"
-  ],
-  "tag_id": "HBOCTag28",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of prostate cancer and ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
-  "reasoning_statement_id": "HBOCRS24",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "614d567e36922410e0aebf9d"
-  },
-  "tags": [
-    "FmProstateGL7PatSDR",
-    "Male",
-    "PrProstate"
-  ],
-  "tag_id": "HBOCTag28",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of prostate cancer and ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
-  "reasoning_statement_id": "HBOCRS24",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "614d567e36922410e0aebf9c"
-  },
-  "tags": [
-    "FmProstateGL7MatTDR",
-    "Male",
-    "PrProstate"
-  ],
-  "tag_id": "HBOCTag28",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of prostate cancer and ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
-  "reasoning_statement_id": "HBOCRS24",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "614d567e36922410e0aebf9b"
-  },
-  "tags": [
-    "FmProstateGL7PatTDR",
-    "Male",
-    "PrProstate"
-  ],
-  "tag_id": "HBOCTag28",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of prostate cancer and ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
-  "reasoning_statement_id": "HBOCRS24",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "60d1affbc6532f2874f51ff3"
-  },
-  "tags": [
-    "FmFalloPeritonealMatFDR",
-    "Male",
-    "PrProstate"
-  ],
-  "tag_id": "HBOCTag26",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of prostate cancer and ≥1 close blood relative with ovarian cancer (including fallopian tube or peritoneal cancer) at any age",
-  "reasoning_statement_id": "HBOCRS22",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "60d1affbc6532f2874f51ff2"
-  },
-  "tags": [
-    "FmFalloPeritonealPatFDR",
-    "Male",
-    "PrProstate"
-  ],
-  "tag_id": "HBOCTag26",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of prostate cancer and ≥1 close blood relative with ovarian cancer (including fallopian tube or peritoneal cancer) at any age",
-  "reasoning_statement_id": "HBOCRS22",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "60d1affbc6532f2874f51ff1"
-  },
-  "tags": [
-    "FmFalloPeritonealMatSDR",
-    "Male",
-    "PrProstate"
-  ],
-  "tag_id": "HBOCTag26",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of prostate cancer and ≥1 close blood relative with ovarian cancer (including fallopian tube or peritoneal cancer) at any age",
-  "reasoning_statement_id": "HBOCRS22",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "60d1affbc6532f2874f51ff0"
-  },
-  "tags": [
-    "FmFalloPeritonealPatSDR",
-    "Male",
-    "PrProstate"
-  ],
-  "tag_id": "HBOCTag26",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of prostate cancer and ≥1 close blood relative with ovarian cancer (including fallopian tube or peritoneal cancer) at any age",
-  "reasoning_statement_id": "HBOCRS22",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "60d1affbc6532f2874f51fef"
-  },
-  "tags": [
-    "FmFalloPeritonealMatTDR",
-    "Male",
-    "PrProstate"
-  ],
-  "tag_id": "HBOCTag26",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of prostate cancer and ≥1 close blood relative with ovarian cancer (including fallopian tube or peritoneal cancer) at any age",
-  "reasoning_statement_id": "HBOCRS22",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "60d1affbc6532f2874f51fee"
-  },
-  "tags": [
-    "FmFalloPeritonealPatTDR",
-    "Male",
-    "PrProstate"
-  ],
-  "tag_id": "HBOCTag26",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of prostate cancer and ≥1 close blood relative with ovarian cancer (including fallopian tube or peritoneal cancer) at any age",
-  "reasoning_statement_id": "HBOCRS22",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "608181a30adb4525c07d4503"
-  },
-  "tags": [
-    "AshkenaziBoth",
-    "FmProstateMatFDR"
-  ],
-  "tag_id": "HBOCTag74",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of prostate cancer in a first-degree blood relative and Ashkenazi Jewish ancestry on the same side of the family",
-  "reasoning_statement_id": "HBOCRS47",
-  "associated_genes": [
-    "APC",
-    "MUYTH",
-    "POLE",
-    "POLD1"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "608181a30adb4525c07d4501"
-  },
-  "tags": [
-    "AshkenaziBoth",
-    "FmProstatePatFDR"
-  ],
-  "tag_id": "HBOCTag74",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of prostate cancer in a first-degree blood relative and Ashkenazi Jewish ancestry on the same side of the family",
-  "reasoning_statement_id": "HBOCRS47",
-  "associated_genes": [
-    "APC",
-    "MUYTH",
-    "POLE",
-    "POLD1"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "608181a30adb4525c07d44ff"
-  },
-  "tags": [
-    "AshkenaziPat",
-    "FmProstatePatFDR"
-  ],
-  "tag_id": "HBOCTag73",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of prostate cancer in a first-degree blood relative and Ashkenazi Jewish ancestry on the same side of the family",
-  "reasoning_statement_id": "HBOCRS47",
-  "associated_genes": [
-    "APC",
-    "MUYTH",
-    "POLE",
-    "POLD1"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "608181a30adb4525c07d44fd"
-  },
-  "tags": [
-    "AshkenaziMat",
-    "FmProstateMatFDR"
-  ],
-  "tag_id": "HBOCTag72",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of prostate cancer in a first-degree blood relative and Ashkenazi Jewish ancestry on the same side of the family",
-  "reasoning_statement_id": "HBOCRS47",
-  "associated_genes": [
-    "APC",
-    "MUYTH",
-    "POLE",
-    "POLD1"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "608181a30adb4525c07d44fc"
-  },
-  "tags": [
-    "AshkenaziBoth",
-    "FmBreastMatSDR"
-  ],
-  "tag_id": "HBOCTag69",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of breast cancer at any age in first- or second- degree blood relative(s) and Ashkenazi Jewish ancestry on the same side of the family",
-  "reasoning_statement_id": "HBOCRS46",
-  "associated_genes": [
-    "APC",
-    "MUYTH",
-    "POLE",
-    "POLD1"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "608181a30adb4525c07d44fb"
-  },
-  "tags": [
-    "AshkenaziBoth",
-    "FmBreastMatFDR"
-  ],
-  "tag_id": "HBOCTag69",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of breast cancer at any age in first- or second- degree blood relative(s) and Ashkenazi Jewish ancestry on the same side of the family",
-  "reasoning_statement_id": "HBOCRS46",
-  "associated_genes": [
-    "APC",
-    "MUYTH",
-    "POLE",
-    "POLD1"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "608181a30adb4525c07d44fa"
-  },
-  "tags": [
-    "AshkenaziBoth",
-    "FmBreastPatSDR"
-  ],
-  "tag_id": "HBOCTag69",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of breast cancer at any age in first- or second- degree blood relative(s) and Ashkenazi Jewish ancestry on the same side of the family",
-  "reasoning_statement_id": "HBOCRS46",
-  "associated_genes": [
-    "APC",
-    "MUYTH",
-    "POLE",
-    "POLD1"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "608181a30adb4525c07d44f9"
-  },
-  "tags": [
-    "AshkenaziBoth",
-    "FmBreastPatFDR"
-  ],
-  "tag_id": "HBOCTag69",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of breast cancer at any age in first- or second- degree blood relative(s) and Ashkenazi Jewish ancestry on the same side of the family",
-  "reasoning_statement_id": "HBOCRS46",
-  "associated_genes": [
-    "APC",
-    "MUYTH",
-    "POLE",
-    "POLD1"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "608181a30adb4525c07d44f8"
-  },
-  "tags": [
-    "AshkenaziPat",
-    "FmBreastPatSDR"
-  ],
-  "tag_id": "HBOCTag69",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of breast cancer at any age in first- or second- degree blood relative(s) and Ashkenazi Jewish ancestry on the same side of the family",
-  "reasoning_statement_id": "HBOCRS46",
-  "associated_genes": [
-    "APC",
-    "MUYTH",
-    "POLE",
-    "POLD1"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "608181a30adb4525c07d44f7"
-  },
-  "tags": [
-    "AshkenaziPat",
-    "FmBreastPatFDR"
-  ],
-  "tag_id": "HBOCTag69",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of breast cancer at any age in first- or second- degree blood relative(s) and Ashkenazi Jewish ancestry on the same side of the family",
-  "reasoning_statement_id": "HBOCRS46",
-  "associated_genes": [
-    "APC",
-    "MUYTH",
-    "POLE",
-    "POLD1"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "608181a30adb4525c07d44f6"
-  },
-  "tags": [
-    "AshkenaziMat",
-    "FmBreastMatSDR"
-  ],
-  "tag_id": "HBOCTag69",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of breast cancer at any age in first- or second- degree blood relative(s) and Ashkenazi Jewish ancestry on the same side of the family",
-  "reasoning_statement_id": "HBOCRS46",
-  "associated_genes": [
-    "APC",
-    "MUYTH",
-    "POLE",
-    "POLD1"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "608181a30adb4525c07d44f5"
-  },
-  "tags": [
-    "AshkenaziMat",
-    "FmBreastMatFDR"
-  ],
-  "tag_id": "HBOCTag69",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of breast cancer at any age in first- or second- degree blood relative(s) and Ashkenazi Jewish ancestry on the same side of the family",
-  "reasoning_statement_id": "HBOCRS46",
-  "associated_genes": [
-    "APC",
-    "MUYTH",
-    "POLE",
-    "POLD1"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5fa0048c22aa4b2d08ab0a1f"
-  },
-  "tags": [
-    "Female",
-    "FmProstateGL7MatFDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag66",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
-  "reasoning_statement_id": "HBOCRS13",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5fa0048c22aa4b2d08ab0a1e"
-  },
-  "tags": [
-    "Female",
-    "FmProstateGL7MatSDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag66",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
-  "reasoning_statement_id": "HBOCRS13",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5fa0048c22aa4b2d08ab0a1d"
-  },
-  "tags": [
-    "Female",
-    "FmProstateGL7MatTDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag66",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
-  "reasoning_statement_id": "HBOCRS13",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5fa0048c22aa4b2d08ab0a1c"
-  },
-  "tags": [
-    "Female",
-    "FmProstateGL7PatFDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag66",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
-  "reasoning_statement_id": "HBOCRS13",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5fa0048c22aa4b2d08ab0a1b"
-  },
-  "tags": [
-    "Female",
-    "FmProstateGL7PatSDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag66",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
-  "reasoning_statement_id": "HBOCRS13",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5fa0048c22aa4b2d08ab0a1a"
-  },
-  "tags": [
-    "Female",
-    "FmProstateGL7PatTDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag66",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
-  "reasoning_statement_id": "HBOCRS13",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5f85c9a0de3c3534a8d73059"
-  },
-  "tags": [
-    "FmProstateGL7MatFDR"
-  ],
-  "tag_id": "HBOCTag52",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of high-risk prostate cancer at any age in a first-degree blood relative",
-  "reasoning_statement_id": "HBOCRS39",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5f85c9a0de3c3534a8d73057"
-  },
-  "tags": [
-    "FmProstateGL7PatFDR"
-  ],
-  "tag_id": "HBOCTag52",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of high-risk prostate cancer at any age in a first-degree blood relative",
-  "reasoning_statement_id": "HBOCRS39",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5f85a6ccde3c3534a8d73040"
-  },
-  "tags": [
-    "FmBreast>=2PplMat",
-    "FmProstate>=1PplMat",
-    "FmProstateMatFDR"
-  ],
-  "tag_id": "HBOCTag60",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of prostate cancer in a first-degree blood relative and ≥2 close blood relatives with breast and/or prostate cancer at any age on the same side of the family",
-  "reasoning_statement_id": "HBOCRS43",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5f85a6ccde3c3534a8d7303e"
-  },
-  "tags": [
-    "FmBreast>=2PplPat",
-    "FmProstate>=1PplPat",
-    "FmProstatePatFDR"
-  ],
-  "tag_id": "HBOCTag62",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of prostate cancer in a first-degree blood relative and ≥2 close blood relatives with breast and/or prostate cancer at any age on the same side of the family",
-  "reasoning_statement_id": "HBOCRS43",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5f85a6ccde3c3534a8d7303c"
-  },
-  "tags": [
-    "FmProstate>=3PplMat",
-    "FmProstateMatFDR"
-  ],
-  "tag_id": "HBOCTag61",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of prostate cancer in a first-degree blood relative and ≥2 close blood relatives with breast and/or prostate cancer at any age on the same side of the family",
-  "reasoning_statement_id": "HBOCRS43",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5f85a6ccde3c3534a8d7303a"
-  },
-  "tags": [
-    "FmProstate>=3PplPat",
-    "FmProstatePatFDR"
-  ],
-  "tag_id": "HBOCTag63",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of prostate cancer in a first-degree blood relative and ≥2 close blood relatives with breast and/or prostate cancer at any age on the same side of the family",
-  "reasoning_statement_id": "HBOCRS43",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5f856f89de3c3534a8d72fe6"
-  },
-  "tags": [
-    "FmProstateMetaPatTDR",
-    "Male",
-    "PrProstate"
-  ],
-  "tag_id": "HBOCTag28",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of prostate cancer and ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
-  "reasoning_statement_id": "HBOCRS24",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5f856f89de3c3534a8d72fe5"
-  },
-  "tags": [
-    "FmProstateMetaMatTDR",
-    "Male",
-    "PrProstate"
-  ],
-  "tag_id": "HBOCTag28",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of prostate cancer and ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
-  "reasoning_statement_id": "HBOCRS24",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5f856f89de3c3534a8d72fe4"
-  },
-  "tags": [
-    "FmProstateMetaPatSDR",
-    "Male",
-    "PrProstate"
-  ],
-  "tag_id": "HBOCTag28",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of prostate cancer and ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
-  "reasoning_statement_id": "HBOCRS24",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5f856f89de3c3534a8d72fe3"
-  },
-  "tags": [
-    "FmProstateMetaMatSDR",
-    "Male",
-    "PrProstate"
-  ],
-  "tag_id": "HBOCTag28",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of prostate cancer and ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
-  "reasoning_statement_id": "HBOCRS24",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5f856f89de3c3534a8d72fe2"
-  },
-  "tags": [
-    "FmProstateMetaPatFDR",
-    "Male",
-    "PrProstate"
-  ],
-  "tag_id": "HBOCTag28",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of prostate cancer and ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
-  "reasoning_statement_id": "HBOCRS24",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5f856f89de3c3534a8d72fe1"
-  },
-  "tags": [
-    "FmProstateMetaMatFDR",
-    "Male",
-    "PrProstate"
-  ],
-  "tag_id": "HBOCTag28",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of prostate cancer and ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
-  "reasoning_statement_id": "HBOCRS24",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5f856e6cde3c3534a8d72fe0"
-  },
-  "tags": [
-    "FmPancreaticPatTDR",
-    "Male",
-    "PrProstate"
-  ],
-  "tag_id": "HBOCTag27",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of prostate cancer and ≥1 close blood relative with pancreatic cancer at any age",
-  "reasoning_statement_id": "HBOCRS23",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5f856e6cde3c3534a8d72fdf"
-  },
-  "tags": [
-    "FmPancreaticMatTDR",
-    "Male",
-    "PrProstate"
-  ],
-  "tag_id": "HBOCTag27",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of prostate cancer and ≥1 close blood relative with pancreatic cancer at any age",
-  "reasoning_statement_id": "HBOCRS23",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5f856e6cde3c3534a8d72fde"
-  },
-  "tags": [
-    "FmPancreaticPatSDR",
-    "Male",
-    "PrProstate"
-  ],
-  "tag_id": "HBOCTag27",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of prostate cancer and ≥1 close blood relative with pancreatic cancer at any age",
-  "reasoning_statement_id": "HBOCRS23",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5f856e6cde3c3534a8d72fdd"
-  },
-  "tags": [
-    "FmPancreaticMatSDR",
-    "Male",
-    "PrProstate"
-  ],
-  "tag_id": "HBOCTag27",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of prostate cancer and ≥1 close blood relative with pancreatic cancer at any age",
-  "reasoning_statement_id": "HBOCRS23",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5f856e6cde3c3534a8d72fdc"
-  },
-  "tags": [
-    "FmPancreaticPatFDR",
-    "Male",
-    "PrProstate"
-  ],
-  "tag_id": "HBOCTag27",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of prostate cancer and ≥1 close blood relative with pancreatic cancer at any age",
-  "reasoning_statement_id": "HBOCRS23",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5f856e6cde3c3534a8d72fdb"
-  },
-  "tags": [
-    "FmPancreaticMatFDR",
-    "Male",
-    "PrProstate"
-  ],
-  "tag_id": "HBOCTag27",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of prostate cancer and ≥1 close blood relative with pancreatic cancer at any age",
-  "reasoning_statement_id": "HBOCRS23",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5f856dbdde3c3534a8d72fda"
-  },
-  "tags": [
-    "FmOvarianEpithPatTDR",
-    "Male",
-    "PrProstate"
-  ],
-  "tag_id": "HBOCTag26",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of prostate cancer and ≥1 close blood relative with ovarian cancer (including fallopian tube or peritoneal cancer) at any age",
-  "reasoning_statement_id": "HBOCRS22",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5f856dbdde3c3534a8d72fd9"
-  },
-  "tags": [
-    "FmOvarianEpithMatTDR",
-    "Male",
-    "PrProstate"
-  ],
-  "tag_id": "HBOCTag26",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of prostate cancer and ≥1 close blood relative with ovarian cancer (including fallopian tube or peritoneal cancer) at any age",
-  "reasoning_statement_id": "HBOCRS22",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5f856dbdde3c3534a8d72fd8"
-  },
-  "tags": [
-    "FmOvarianEpithPatSDR",
-    "Male",
-    "PrProstate"
-  ],
-  "tag_id": "HBOCTag26",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of prostate cancer and ≥1 close blood relative with ovarian cancer (including fallopian tube or peritoneal cancer) at any age",
-  "reasoning_statement_id": "HBOCRS22",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5f856dbdde3c3534a8d72fd7"
-  },
-  "tags": [
-    "FmOvarianEpithMatSDR",
-    "Male",
-    "PrProstate"
-  ],
-  "tag_id": "HBOCTag26",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of prostate cancer and ≥1 close blood relative with ovarian cancer (including fallopian tube or peritoneal cancer) at any age",
-  "reasoning_statement_id": "HBOCRS22",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5f856dbdde3c3534a8d72fd6"
-  },
-  "tags": [
-    "FmOvarianEpithPatFDR",
-    "Male",
-    "PrProstate"
-  ],
-  "tag_id": "HBOCTag26",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of prostate cancer and ≥1 close blood relative with ovarian cancer (including fallopian tube or peritoneal cancer) at any age",
-  "reasoning_statement_id": "HBOCRS22",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5f856dbdde3c3534a8d72fd5"
-  },
-  "tags": [
-    "FmOvarianEpithMatFDR",
-    "Male",
-    "PrProstate"
-  ],
-  "tag_id": "HBOCTag26",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of prostate cancer and ≥1 close blood relative with ovarian cancer (including fallopian tube or peritoneal cancer) at any age",
-  "reasoning_statement_id": "HBOCRS22",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5f856c7fde3c3534a8d72fd4"
-  },
-  "tags": [
-    "FmBreast<=50PatTDR",
-    "Male",
-    "PrProstate"
-  ],
-  "tag_id": "HBOCTag25",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of prostate cancer and ≥1 close blood relative with breast cancer diagnosed at ≤50y",
-  "reasoning_statement_id": "HBOCRS21",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5f856c7fde3c3534a8d72fd3"
-  },
-  "tags": [
-    "FmBreast<=50MatTDR",
-    "Male",
-    "PrProstate"
-  ],
-  "tag_id": "HBOCTag25",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of prostate cancer and ≥1 close blood relative with breast cancer diagnosed at ≤50y",
-  "reasoning_statement_id": "HBOCRS21",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5f856c7fde3c3534a8d72fd2"
-  },
-  "tags": [
-    "FmBreast<=50PatSDR",
-    "Male",
-    "PrProstate"
-  ],
-  "tag_id": "HBOCTag25",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of prostate cancer and ≥1 close blood relative with breast cancer diagnosed at ≤50y",
-  "reasoning_statement_id": "HBOCRS21",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5f856c7fde3c3534a8d72fd1"
-  },
-  "tags": [
-    "FmBreast<=50MatSDR",
-    "Male",
-    "PrProstate"
-  ],
-  "tag_id": "HBOCTag25",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of prostate cancer and ≥1 close blood relative with breast cancer diagnosed at ≤50y",
-  "reasoning_statement_id": "HBOCRS21",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5f856c7fde3c3534a8d72fd0"
-  },
-  "tags": [
-    "FmBreast<=50PatFDR",
-    "Male",
-    "PrProstate"
-  ],
-  "tag_id": "HBOCTag25",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of prostate cancer and ≥1 close blood relative with breast cancer diagnosed at ≤50y",
-  "reasoning_statement_id": "HBOCRS21",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5f856c7fde3c3534a8d72fcf"
-  },
-  "tags": [
-    "FmBreast<=50MatFDR",
-    "Male",
-    "PrProstate"
-  ],
-  "tag_id": "HBOCTag25",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of prostate cancer and ≥1 close blood relative with breast cancer diagnosed at ≤50y",
-  "reasoning_statement_id": "HBOCRS21",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5f85684fde3c3534a8d72fce"
-  },
-  "tags": [
-    "Male",
-    "PrProstateGL7"
-  ],
-  "tag_id": "HBOCTag23",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of metastatic or high-risk group prostate cancer at any age",
-  "reasoning_statement_id": "HBOCRS19",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5f2d1159584038375468f0d6"
-  },
-  "tags": [
-    "Female",
-    "FmBreastBilatPatTDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag16",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥3 diagnoses of breast cancer including the patient and/or close blood relatives on the same side of the family",
-  "reasoning_statement_id": "HBOCRS14",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5f2d1159584038375468f0d5"
-  },
-  "tags": [
-    "Female",
-    "FmBreastBilatPatSDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag16",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥3 diagnoses of breast cancer including the patient and/or close blood relatives on the same side of the family",
-  "reasoning_statement_id": "HBOCRS14",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5f2d1159584038375468f0d4"
-  },
-  "tags": [
-    "Female",
-    "FmBreastBilatPatFDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag16",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥3 diagnoses of breast cancer including the patient and/or close blood relatives on the same side of the family",
-  "reasoning_statement_id": "HBOCRS14",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5f2d1159584038375468f0d3"
-  },
-  "tags": [
-    "Female",
-    "FmBreastBilatMatTDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag16",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥3 diagnoses of breast cancer including the patient and/or close blood relatives on the same side of the family",
-  "reasoning_statement_id": "HBOCRS14",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5f2d1159584038375468f0d2"
-  },
-  "tags": [
-    "Female",
-    "FmBreastBilatMatSDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag16",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥3 diagnoses of breast cancer including the patient and/or close blood relatives on the same side of the family",
-  "reasoning_statement_id": "HBOCRS14",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5f2d1159584038375468f0d1"
-  },
-  "tags": [
-    "Female",
-    "FmBreastBilatMatFDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag16",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥3 diagnoses of breast cancer including the patient and/or close blood relatives on the same side of the family",
-  "reasoning_statement_id": "HBOCRS14",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e86e8957fe5de11cc74d2f7"
-  },
-  "tags": [
-    "FmColon<50MatFDR"
-  ],
-  "tag_id": "CRCTag16",
-  "guideline_name": "NCCN LYNCH",
-  "reasoning_statement_en": "Family history of ≥1 first-degree blood relative with colorectal or endometrial cancer diagnosed <50y",
-  "reasoning_statement_id": "CRCRS8",
-  "associated_genes": [
-    "APC",
-    "MUYTH",
-    "POLE",
-    "POLD1"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e86e8957fe5de11cc74d2f6"
-  },
-  "tags": [
-    "FmColon<50PatFDR"
-  ],
-  "tag_id": "CRCTag16",
-  "guideline_name": "NCCN LYNCH",
-  "reasoning_statement_en": "Family history of ≥1 first-degree blood relative with colorectal or endometrial cancer diagnosed <50y",
-  "reasoning_statement_id": "CRCRS8",
-  "associated_genes": [
-    "APC",
-    "MUYTH",
-    "POLE",
-    "POLD1"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e86e8957fe5de11cc74d2f5"
-  },
-  "tags": [
-    "FmEndometrial<50MatFDR"
-  ],
-  "tag_id": "CRCTag16",
-  "guideline_name": "NCCN LYNCH",
-  "reasoning_statement_en": "Family history of ≥1 first-degree blood relative with colorectal or endometrial cancer diagnosed <50y",
-  "reasoning_statement_id": "CRCRS8",
-  "associated_genes": [
-    "APC",
-    "MUYTH",
-    "POLE",
-    "POLD1"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e86e8957fe5de11cc74d2f4"
-  },
-  "tags": [
-    "FmEndometrial<50PatFDR"
-  ],
-  "tag_id": "CRCTag16",
-  "guideline_name": "NCCN LYNCH",
-  "reasoning_statement_en": "Family history of ≥1 first-degree blood relative with colorectal or endometrial cancer diagnosed <50y",
-  "reasoning_statement_id": "CRCRS8",
-  "associated_genes": [
-    "APC",
-    "MUYTH",
-    "POLE",
-    "POLD1"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa63df"
-  },
-  "tags": [
-    "FmBreast>=3PplMat",
-    "FmBreastMatFDR"
-  ],
-  "tag_id": "HBOCTag45",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of breast cancer diagnosed at any age in a first- or second- degree blood relative with ≥3 total diagnoses of breast cancer on the same side of the family",
-  "reasoning_statement_id": "HBOCRS34",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa63de"
-  },
-  "tags": [
-    "FmBreast>=3PplMat",
-    "FmBreastMatSDR"
-  ],
-  "tag_id": "HBOCTag45",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of breast cancer diagnosed at any age in a first- or second- degree blood relative with ≥3 total diagnoses of breast cancer on the same side of the family",
-  "reasoning_statement_id": "HBOCRS34",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa63dd"
-  },
-  "tags": [
-    "FmBreast>=3PplPat",
-    "FmBreastPatFDR"
-  ],
-  "tag_id": "HBOCTag46",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of breast cancer diagnosed at any age in a first- or second- degree blood relative with ≥3 total diagnoses of breast cancer on the same side of the family",
-  "reasoning_statement_id": "HBOCRS34",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa63dc"
-  },
-  "tags": [
-    "FmBreast>=3PplPat",
-    "FmBreastPatSDR"
-  ],
-  "tag_id": "HBOCTag46",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of breast cancer diagnosed at any age in a first- or second- degree blood relative with ≥3 total diagnoses of breast cancer on the same side of the family",
-  "reasoning_statement_id": "HBOCRS34",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa63a3"
-  },
-  "tags": [
-    "FmProstateMetaMatFDR"
-  ],
-  "tag_id": "HBOCTag51",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of metastatic prostate cancer at any age in a first-degree blood relative",
-  "reasoning_statement_id": "HBOCRS38",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa63a1"
-  },
-  "tags": [
-    "FmProstateMetaPatFDR"
-  ],
-  "tag_id": "HBOCTag51",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of metastatic prostate cancer at any age in a first-degree blood relative",
-  "reasoning_statement_id": "HBOCRS38",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa639f"
-  },
-  "tags": [
-    "FmPancreaticMatFDR"
-  ],
-  "tag_id": "HBOCTag50",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of pancreatic cancer at any age in a first-degree blood relative",
-  "reasoning_statement_id": "HBOCRS37",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa639d"
-  },
-  "tags": [
-    "FmPancreaticPatFDR"
-  ],
-  "tag_id": "HBOCTag50",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of pancreatic cancer at any age in a first-degree blood relative",
-  "reasoning_statement_id": "HBOCRS37",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa639b"
-  },
-  "tags": [
-    "FmFalloPeritonealMatFDR"
-  ],
-  "tag_id": "HBOCTag49",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of ovarian cancer (including fallopian tube cancer or peritoneal cancer) at any age in a first- or second- degree blood relative",
-  "reasoning_statement_id": "HBOCRS36",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa639a"
-  },
-  "tags": [
-    "FmFalloPeritonealMatSDR"
-  ],
-  "tag_id": "HBOCTag49",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of ovarian cancer (including fallopian tube cancer or peritoneal cancer) at any age in a first- or second- degree blood relative",
-  "reasoning_statement_id": "HBOCRS36",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa6399"
-  },
-  "tags": [
-    "FmFalloPeritonealPatFDR"
-  ],
-  "tag_id": "HBOCTag49",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of ovarian cancer (including fallopian tube cancer or peritoneal cancer) at any age in a first- or second- degree blood relative",
-  "reasoning_statement_id": "HBOCRS36",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa6398"
-  },
-  "tags": [
-    "FmFalloPeritonealPatSDR"
-  ],
-  "tag_id": "HBOCTag49",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of ovarian cancer (including fallopian tube cancer or peritoneal cancer) at any age in a first- or second- degree blood relative",
-  "reasoning_statement_id": "HBOCRS36",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa6397"
-  },
-  "tags": [
-    "FmOvarianEpithMatFDR"
-  ],
-  "tag_id": "HBOCTag48",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of ovarian cancer (including fallopian tube cancer or peritoneal cancer) at any age in a first- or second- degree blood relative",
-  "reasoning_statement_id": "HBOCRS36",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa6396"
-  },
-  "tags": [
-    "FmOvarianEpithMatSDR"
-  ],
-  "tag_id": "HBOCTag48",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of ovarian cancer (including fallopian tube cancer or peritoneal cancer) at any age in a first- or second- degree blood relative",
-  "reasoning_statement_id": "HBOCRS36",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa6395"
-  },
-  "tags": [
-    "FmOvarianEpithPatFDR"
-  ],
-  "tag_id": "HBOCTag48",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of ovarian cancer (including fallopian tube cancer or peritoneal cancer) at any age in a first- or second- degree blood relative",
-  "reasoning_statement_id": "HBOCRS36",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa6394"
-  },
-  "tags": [
-    "FmOvarianEpithPatSDR"
-  ],
-  "tag_id": "HBOCTag48",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of ovarian cancer (including fallopian tube cancer or peritoneal cancer) at any age in a first- or second- degree blood relative",
-  "reasoning_statement_id": "HBOCRS36",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa638b"
-  },
-  "tags": [
-    "FmBreast<=50MatFDR"
-  ],
-  "tag_id": "HBOCTag32",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of breast cancer diagnosed at ≤50y in a first- or second- degree blood relative",
-  "reasoning_statement_id": "HBOCRS26",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa638a"
-  },
-  "tags": [
-    "FmBreast<=50MatSDR"
-  ],
-  "tag_id": "HBOCTag32",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of breast cancer diagnosed at ≤50y in a first- or second- degree blood relative",
-  "reasoning_statement_id": "HBOCRS26",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa6389"
-  },
-  "tags": [
-    "FmBreast<=50PatFDR"
-  ],
-  "tag_id": "HBOCTag32",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of breast cancer diagnosed at ≤50y in a first- or second- degree blood relative",
-  "reasoning_statement_id": "HBOCRS26",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa6388"
-  },
-  "tags": [
-    "FmBreast<=50PatSDR"
-  ],
-  "tag_id": "HBOCTag32",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of breast cancer diagnosed at ≤50y in a first- or second- degree blood relative",
-  "reasoning_statement_id": "HBOCRS26",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa6387"
-  },
-  "tags": [
-    "FmBreastMaleMatFDR"
-  ],
-  "tag_id": "HBOCTag47",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of male breast cancer at any age in a first- or second- degree blood relative",
-  "reasoning_statement_id": "HBOCRS35",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa6386"
-  },
-  "tags": [
-    "FmBreastMaleMatSDR"
-  ],
-  "tag_id": "HBOCTag47",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of male breast cancer at any age in a first- or second- degree blood relative",
-  "reasoning_statement_id": "HBOCRS35",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa6385"
-  },
-  "tags": [
-    "FmBreastMalePatFDR"
-  ],
-  "tag_id": "HBOCTag47",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of male breast cancer at any age in a first- or second- degree blood relative",
-  "reasoning_statement_id": "HBOCRS35",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa6384"
-  },
-  "tags": [
-    "FmBreastMalePatSDR"
-  ],
-  "tag_id": "HBOCTag47",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Family history of male breast cancer at any age in a first- or second- degree blood relative",
-  "reasoning_statement_id": "HBOCRS35",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa6383"
-  },
-  "tags": [
-    "PrPancreatic"
-  ],
-  "tag_id": "HBOCTag20",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of pancreatic cancer at any age",
-  "reasoning_statement_id": "HBOCRS18",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa6360"
-  },
-  "tags": [
-    "Ashkenazi",
-    "Male",
-    "PrProstate"
-  ],
-  "tag_id": "HBOCTag24",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of prostate cancer and Ashkenazi Jewish ancestry",
-  "reasoning_statement_id": "HBOCRS20",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa635f"
-  },
-  "tags": [
-    "Male",
-    "PrProstateMeta"
-  ],
-  "tag_id": "HBOCTag21",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of metastatic or high-risk group prostate cancer at any age",
-  "reasoning_statement_id": "HBOCRS19",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa635d"
-  },
-  "tags": [
-    "Male",
-    "PrBreastMale"
-  ],
-  "tag_id": "HBOCTag17",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of male breast cancer at any age",
-  "reasoning_statement_id": "HBOCRS16",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa635c"
-  },
-  "tags": [
-    "Female",
-    "PrFalloPeritoneal"
-  ],
-  "tag_id": "HBOCTag19",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of ovarian cancer (including fallopian tube cancer or peritoneal cancer) at any age",
-  "reasoning_statement_id": "HBOCRS17",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa635b"
-  },
-  "tags": [
-    "Female",
-    "PrOvarianEpith"
-  ],
-  "tag_id": "HBOCTag18",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of ovarian cancer (including fallopian tube cancer or peritoneal cancer) at any age",
-  "reasoning_statement_id": "HBOCRS17",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa635a"
-  },
-  "tags": [
-    "Female",
-    "FmBreast>=1PplPat",
-    "PrBreastBilat"
-  ],
-  "tag_id": "HBOCTag15",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥3 diagnoses of breast cancer including the patient and/or close blood relatives on the same side of the family",
-  "reasoning_statement_id": "HBOCRS14",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa6359"
-  },
-  "tags": [
-    "Female",
-    "FmBreast>=1PplMat",
-    "PrBreastBilat"
-  ],
-  "tag_id": "HBOCTag15",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥3 diagnoses of breast cancer including the patient and/or close blood relatives on the same side of the family",
-  "reasoning_statement_id": "HBOCRS14",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa6358"
-  },
-  "tags": [
-    "Female",
-    "FmBreast>=2PplMat",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag14",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥3 diagnoses of breast cancer including the patient and/or close blood relatives on the same side of the family",
-  "reasoning_statement_id": "HBOCRS14",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa6357"
-  },
-  "tags": [
-    "Female",
-    "FmBreast>=2PplPat",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag14",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥3 diagnoses of breast cancer including the patient and/or close blood relatives on the same side of the family",
-  "reasoning_statement_id": "HBOCRS14",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa6356"
-  },
-  "tags": [
-    "Female",
-    "FmProstateMetaMatFDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag13",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
-  "reasoning_statement_id": "HBOCRS13",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa6355"
-  },
-  "tags": [
-    "Female",
-    "FmProstateMetaPatFDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag13",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
-  "reasoning_statement_id": "HBOCRS13",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa6354"
-  },
-  "tags": [
-    "Female",
-    "FmProstateMetaMatSDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag13",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
-  "reasoning_statement_id": "HBOCRS13",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa6353"
-  },
-  "tags": [
-    "Female",
-    "FmProstateMetaPatSDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag13",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
-  "reasoning_statement_id": "HBOCRS13",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa6352"
-  },
-  "tags": [
-    "Female",
-    "FmProstateMetaMatTDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag13",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
-  "reasoning_statement_id": "HBOCRS13",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa6351"
-  },
-  "tags": [
-    "Female",
-    "FmProstateMetaPatTDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag13",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
-  "reasoning_statement_id": "HBOCRS13",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa6350"
-  },
-  "tags": [
-    "Female",
-    "FmPancreaticMatFDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag12",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with pancreatic cancer at any age",
-  "reasoning_statement_id": "HBOCRS12",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa634f"
-  },
-  "tags": [
-    "Female",
-    "FmPancreaticPatFDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag12",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with pancreatic cancer at any age",
-  "reasoning_statement_id": "HBOCRS12",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa634e"
-  },
-  "tags": [
-    "Female",
-    "FmPancreaticMatSDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag12",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with pancreatic cancer at any age",
-  "reasoning_statement_id": "HBOCRS12",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa634d"
-  },
-  "tags": [
-    "Female",
-    "FmPancreaticPatSDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag12",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with pancreatic cancer at any age",
-  "reasoning_statement_id": "HBOCRS12",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa634c"
-  },
-  "tags": [
-    "Female",
-    "FmPancreaticMatTDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag12",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with pancreatic cancer at any age",
-  "reasoning_statement_id": "HBOCRS12",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa634b"
-  },
-  "tags": [
-    "Female",
-    "FmPancreaticPatTDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag12",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with pancreatic cancer at any age",
-  "reasoning_statement_id": "HBOCRS12",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa634a"
-  },
-  "tags": [
-    "Female",
-    "FmOvarianEpithMatFDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag11",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with ovarian cancer (or fallopian tube or peritoneal cancer) at any age",
-  "reasoning_statement_id": "HBOCRS11",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa6349"
-  },
-  "tags": [
-    "Female",
-    "FmOvarianEpithPatFDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag11",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with ovarian cancer (or fallopian tube or peritoneal cancer) at any age",
-  "reasoning_statement_id": "HBOCRS11",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa6348"
-  },
-  "tags": [
-    "Female",
-    "FmOvarianEpithMatSDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag11",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with ovarian cancer (or fallopian tube or peritoneal cancer) at any age",
-  "reasoning_statement_id": "HBOCRS11",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa6347"
-  },
-  "tags": [
-    "Female",
-    "FmOvarianEpithPatSDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag11",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with ovarian cancer (or fallopian tube or peritoneal cancer) at any age",
-  "reasoning_statement_id": "HBOCRS11",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa6346"
-  },
-  "tags": [
-    "Female",
-    "FmOvarianEpithMatTDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag11",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with ovarian cancer (or fallopian tube or peritoneal cancer) at any age",
-  "reasoning_statement_id": "HBOCRS11",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa6345"
-  },
-  "tags": [
-    "Female",
-    "FmOvarianEpithPatTDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag11",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with ovarian cancer (or fallopian tube or peritoneal cancer) at any age",
-  "reasoning_statement_id": "HBOCRS11",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa6344"
-  },
-  "tags": [
-    "Female",
-    "FmFalloPeritonealMatFDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag11",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with ovarian cancer (or fallopian tube or peritoneal cancer) at any age",
-  "reasoning_statement_id": "HBOCRS11",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa6343"
-  },
-  "tags": [
-    "Female",
-    "FmFalloPeritonealPatFDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag11",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with ovarian cancer (or fallopian tube or peritoneal cancer) at any age",
-  "reasoning_statement_id": "HBOCRS11",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa6342"
-  },
-  "tags": [
-    "Female",
-    "FmFalloPeritonealMatSDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag11",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with ovarian cancer (or fallopian tube or peritoneal cancer) at any age",
-  "reasoning_statement_id": "HBOCRS11",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa6341"
-  },
-  "tags": [
-    "Female",
-    "FmFalloPeritonealPatSDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag11",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with ovarian cancer (or fallopian tube or peritoneal cancer) at any age",
-  "reasoning_statement_id": "HBOCRS11",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa6340"
-  },
-  "tags": [
-    "Female",
-    "FmFalloPeritonealMatTDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag11",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with ovarian cancer (or fallopian tube or peritoneal cancer) at any age",
-  "reasoning_statement_id": "HBOCRS11",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa633f"
-  },
-  "tags": [
-    "Female",
-    "FmFalloPeritonealPatTDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag11",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with ovarian cancer (or fallopian tube or peritoneal cancer) at any age",
-  "reasoning_statement_id": "HBOCRS11",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa633e"
-  },
-  "tags": [
-    "Female",
-    "FmBreast<=50MatFDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag10",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with breast cancer diagnosed at age ≤50y or with male breast cancer at any age",
-  "reasoning_statement_id": "HBOCRS10",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa633d"
-  },
-  "tags": [
-    "Female",
-    "FmBreast<=50PatFDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag10",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with breast cancer diagnosed at age ≤50y or with male breast cancer at any age",
-  "reasoning_statement_id": "HBOCRS10",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa633c"
-  },
-  "tags": [
-    "Female",
-    "FmBreast<=50MatSDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag10",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with breast cancer diagnosed at age ≤50y or with male breast cancer at any age",
-  "reasoning_statement_id": "HBOCRS10",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa633b"
-  },
-  "tags": [
-    "Female",
-    "FmBreast<=50PatSDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag10",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with breast cancer diagnosed at age ≤50y or with male breast cancer at any age",
-  "reasoning_statement_id": "HBOCRS10",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa633a"
-  },
-  "tags": [
-    "Female",
-    "FmBreast<=50MatTDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag10",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with breast cancer diagnosed at age ≤50y or with male breast cancer at any age",
-  "reasoning_statement_id": "HBOCRS10",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa6339"
-  },
-  "tags": [
-    "Female",
-    "FmBreast<=50PatTDR",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag10",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with breast cancer diagnosed at age ≤50y or with male breast cancer at any age",
-  "reasoning_statement_id": "HBOCRS10",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa6338"
-  },
-  "tags": [
-    "Ashkenazi",
-    "Female",
-    "PrBreast"
-  ],
-  "tag_id": "HBOCTag9",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of breast cancer diagnosed at any age with Ashkenazi Jewish ancestry",
-  "reasoning_statement_id": "HBOCRS9",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-},
-{
-  "_id": {
-    "$oid": "5e85ede0dbdc894558aa6337"
-  },
-  "tags": [
-    "Female",
-    "PrBreast",
-    "PrBreastTrpNeg"
-  ],
-  "tag_id": "HBOCTag8",
-  "guideline_name": "NCCN HBOC",
-  "reasoning_statement_en": "Personal history of triple negative breast cancer",
-  "reasoning_statement_id": "HBOCRS8",
-  "associated_genes": [
-    "BRCA1",
-    "BRCA2"
-  ],
-  "_class": "com.genomebrain.backend.domain.GuideLinesDetails"
+    "_id" : "64a6b8217af96d6e187e180e",
+    "tags" : [
+        "PrDesmoid"
+    ],
+    "tag_id" : "CRCTag23",
+    "guideline_name" : "NCCN APS",
+    "reasoning_statement_en" : "Personal history of desmoid tumor",
+    "reasoning_statement_id" : "CRCRS12",
+    "associated_genes" : [
+        "APC",
+        "MUYTH",
+        "POLE",
+        "POLD1"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "618e5d2558f3ec4ca83ea4cf",
+    "tags" : [
+        "Female",
+        "FmBreastMalePatTDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag10",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with breast cancer diagnosed at age ≤50y or with male breast cancer at any age",
+    "reasoning_statement_id" : "HBOCRS10",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "618e5d2558f3ec4ca83ea4ce",
+    "tags" : [
+        "Female",
+        "FmBreastMaleMatTDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag10",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with breast cancer diagnosed at age ≤50y or with male breast cancer at any age",
+    "reasoning_statement_id" : "HBOCRS10",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "618e5d2558f3ec4ca83ea4cd",
+    "tags" : [
+        "Female",
+        "FmBreastMalePatSDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag10",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with breast cancer diagnosed at age ≤50y or with male breast cancer at any age",
+    "reasoning_statement_id" : "HBOCRS10",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "618e5d2558f3ec4ca83ea4cc",
+    "tags" : [
+        "Female",
+        "FmBreastMaleMatSDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag10",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with breast cancer diagnosed at age ≤50y or with male breast cancer at any age",
+    "reasoning_statement_id" : "HBOCRS10",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "618e5d2558f3ec4ca83ea4cb",
+    "tags" : [
+        "Female",
+        "FmBreastMalePatFDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag10",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with breast cancer diagnosed at age ≤50y or with male breast cancer at any age",
+    "reasoning_statement_id" : "HBOCRS10",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "618e5d2558f3ec4ca83ea4ca",
+    "tags" : [
+        "Female",
+        "FmBreastMaleMatFDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag10",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with breast cancer diagnosed at age ≤50y or with male breast cancer at any age",
+    "reasoning_statement_id" : "HBOCRS10",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "618d42008fc9134ac868c784",
+    "tags" : [
+        "FmBreast>=3PplPat",
+        "FmBreastUnknownAgePatSDR"
+    ],
+    "tag_id" : "HBOCTag46",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of breast cancer diagnosed at any age in a first- or second- degree blood relative with ≥3 total diagnoses of breast cancer on the same side of the family",
+    "reasoning_statement_id" : "HBOCRS34",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "618d42008fc9134ac868c783",
+    "tags" : [
+        "FmBreast>=3PplPat",
+        "FmBreastUnknownAgePatFDR"
+    ],
+    "tag_id" : "HBOCTag46",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of breast cancer diagnosed at any age in a first- or second- degree blood relative with ≥3 total diagnoses of breast cancer on the same side of the family",
+    "reasoning_statement_id" : "HBOCRS34",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "618d42008fc9134ac868c782",
+    "tags" : [
+        "FmBreast>=3PplMat",
+        "FmBreastUnknownAgeMatSDR"
+    ],
+    "tag_id" : "HBOCTag45",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of breast cancer diagnosed at any age in a first- or second- degree blood relative with ≥3 total diagnoses of breast cancer on the same side of the family",
+    "reasoning_statement_id" : "HBOCRS34",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "618d42008fc9134ac868c781",
+    "tags" : [
+        "FmBreast>=3PplMat",
+        "FmBreastUnknownAgeMatFDR"
+    ],
+    "tag_id" : "HBOCTag45",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of breast cancer diagnosed at any age in a first- or second- degree blood relative with ≥3 total diagnoses of breast cancer on the same side of the family",
+    "reasoning_statement_id" : "HBOCRS34",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "614d5a7536922410e0aebfa4",
+    "tags" : [
+        "FmBreastTrpNegPatSDR"
+    ],
+    "tag_id" : "HBOCTag35",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of triple negative breast cancer in a first- or second- degree blood relative",
+    "reasoning_statement_id" : "HBOCRS29",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "614d5a7536922410e0aebfa3",
+    "tags" : [
+        "FmBreastTrpNegPatFDR"
+    ],
+    "tag_id" : "HBOCTag35",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of triple negative breast cancer in a first- or second- degree blood relative",
+    "reasoning_statement_id" : "HBOCRS29",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "614d5a7536922410e0aebfa2",
+    "tags" : [
+        "FmBreastTrpNegMatSDR"
+    ],
+    "tag_id" : "HBOCTag35",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of triple negative breast cancer in a first- or second- degree blood relative",
+    "reasoning_statement_id" : "HBOCRS29",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "614d5a7536922410e0aebfa1",
+    "tags" : [
+        "FmBreastTrpNegMatFDR"
+    ],
+    "tag_id" : "HBOCTag35",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of triple negative breast cancer in a first- or second- degree blood relative",
+    "reasoning_statement_id" : "HBOCRS29",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "614d567e36922410e0aebfa0",
+    "tags" : [
+        "FmProstateGL7MatFDR",
+        "Male",
+        "PrProstate"
+    ],
+    "tag_id" : "HBOCTag28",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of prostate cancer and ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
+    "reasoning_statement_id" : "HBOCRS24",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "614d567e36922410e0aebf9f",
+    "tags" : [
+        "FmProstateGL7PatFDR",
+        "Male",
+        "PrProstate"
+    ],
+    "tag_id" : "HBOCTag28",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of prostate cancer and ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
+    "reasoning_statement_id" : "HBOCRS24",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "614d567e36922410e0aebf9e",
+    "tags" : [
+        "FmProstateGL7MatSDR",
+        "Male",
+        "PrProstate"
+    ],
+    "tag_id" : "HBOCTag28",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of prostate cancer and ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
+    "reasoning_statement_id" : "HBOCRS24",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "614d567e36922410e0aebf9d",
+    "tags" : [
+        "FmProstateGL7PatSDR",
+        "Male",
+        "PrProstate"
+    ],
+    "tag_id" : "HBOCTag28",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of prostate cancer and ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
+    "reasoning_statement_id" : "HBOCRS24",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "614d567e36922410e0aebf9c",
+    "tags" : [
+        "FmProstateGL7MatTDR",
+        "Male",
+        "PrProstate"
+    ],
+    "tag_id" : "HBOCTag28",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of prostate cancer and ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
+    "reasoning_statement_id" : "HBOCRS24",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "614d567e36922410e0aebf9b",
+    "tags" : [
+        "FmProstateGL7PatTDR",
+        "Male",
+        "PrProstate"
+    ],
+    "tag_id" : "HBOCTag28",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of prostate cancer and ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
+    "reasoning_statement_id" : "HBOCRS24",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "60d1affbc6532f2874f51ff3",
+    "tags" : [
+        "FmFalloPeritonealMatFDR",
+        "Male",
+        "PrProstate"
+    ],
+    "tag_id" : "HBOCTag26",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of prostate cancer and ≥1 close blood relative with ovarian cancer (including fallopian tube or peritoneal cancer) at any age",
+    "reasoning_statement_id" : "HBOCRS22",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "60d1affbc6532f2874f51ff2",
+    "tags" : [
+        "FmFalloPeritonealPatFDR",
+        "Male",
+        "PrProstate"
+    ],
+    "tag_id" : "HBOCTag26",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of prostate cancer and ≥1 close blood relative with ovarian cancer (including fallopian tube or peritoneal cancer) at any age",
+    "reasoning_statement_id" : "HBOCRS22",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "60d1affbc6532f2874f51ff1",
+    "tags" : [
+        "FmFalloPeritonealMatSDR",
+        "Male",
+        "PrProstate"
+    ],
+    "tag_id" : "HBOCTag26",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of prostate cancer and ≥1 close blood relative with ovarian cancer (including fallopian tube or peritoneal cancer) at any age",
+    "reasoning_statement_id" : "HBOCRS22",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "60d1affbc6532f2874f51ff0",
+    "tags" : [
+        "FmFalloPeritonealPatSDR",
+        "Male",
+        "PrProstate"
+    ],
+    "tag_id" : "HBOCTag26",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of prostate cancer and ≥1 close blood relative with ovarian cancer (including fallopian tube or peritoneal cancer) at any age",
+    "reasoning_statement_id" : "HBOCRS22",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "60d1affbc6532f2874f51fef",
+    "tags" : [
+        "FmFalloPeritonealMatTDR",
+        "Male",
+        "PrProstate"
+    ],
+    "tag_id" : "HBOCTag26",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of prostate cancer and ≥1 close blood relative with ovarian cancer (including fallopian tube or peritoneal cancer) at any age",
+    "reasoning_statement_id" : "HBOCRS22",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "60d1affbc6532f2874f51fee",
+    "tags" : [
+        "FmFalloPeritonealPatTDR",
+        "Male",
+        "PrProstate"
+    ],
+    "tag_id" : "HBOCTag26",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of prostate cancer and ≥1 close blood relative with ovarian cancer (including fallopian tube or peritoneal cancer) at any age",
+    "reasoning_statement_id" : "HBOCRS22",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "608181a30adb4525c07d4503",
+    "tags" : [
+        "AshkenaziBoth",
+        "FmProstateMatFDR"
+    ],
+    "tag_id" : "HBOCTag74",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of prostate cancer in a first-degree blood relative and Ashkenazi Jewish ancestry on the same side of the family",
+    "reasoning_statement_id" : "HBOCRS47",
+    "associated_genes" : [
+        "APC",
+        "MUYTH",
+        "POLE",
+        "POLD1"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "608181a30adb4525c07d4501",
+    "tags" : [
+        "AshkenaziBoth",
+        "FmProstatePatFDR"
+    ],
+    "tag_id" : "HBOCTag74",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of prostate cancer in a first-degree blood relative and Ashkenazi Jewish ancestry on the same side of the family",
+    "reasoning_statement_id" : "HBOCRS47",
+    "associated_genes" : [
+        "APC",
+        "MUYTH",
+        "POLE",
+        "POLD1"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "608181a30adb4525c07d44ff",
+    "tags" : [
+        "AshkenaziPat",
+        "FmProstatePatFDR"
+    ],
+    "tag_id" : "HBOCTag73",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of prostate cancer in a first-degree blood relative and Ashkenazi Jewish ancestry on the same side of the family",
+    "reasoning_statement_id" : "HBOCRS47",
+    "associated_genes" : [
+        "APC",
+        "MUYTH",
+        "POLE",
+        "POLD1"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "608181a30adb4525c07d44fd",
+    "tags" : [
+        "AshkenaziMat",
+        "FmProstateMatFDR"
+    ],
+    "tag_id" : "HBOCTag72",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of prostate cancer in a first-degree blood relative and Ashkenazi Jewish ancestry on the same side of the family",
+    "reasoning_statement_id" : "HBOCRS47",
+    "associated_genes" : [
+        "APC",
+        "MUYTH",
+        "POLE",
+        "POLD1"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "608181a30adb4525c07d44fc",
+    "tags" : [
+        "AshkenaziBoth",
+        "FmBreastMatSDR"
+    ],
+    "tag_id" : "HBOCTag69",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of breast cancer at any age in first- or second- degree blood relative(s) and Ashkenazi Jewish ancestry on the same side of the family",
+    "reasoning_statement_id" : "HBOCRS46",
+    "associated_genes" : [
+        "APC",
+        "MUYTH",
+        "POLE",
+        "POLD1"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "608181a30adb4525c07d44fb",
+    "tags" : [
+        "AshkenaziBoth",
+        "FmBreastMatFDR"
+    ],
+    "tag_id" : "HBOCTag69",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of breast cancer at any age in first- or second- degree blood relative(s) and Ashkenazi Jewish ancestry on the same side of the family",
+    "reasoning_statement_id" : "HBOCRS46",
+    "associated_genes" : [
+        "APC",
+        "MUYTH",
+        "POLE",
+        "POLD1"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "608181a30adb4525c07d44fa",
+    "tags" : [
+        "AshkenaziBoth",
+        "FmBreastPatSDR"
+    ],
+    "tag_id" : "HBOCTag69",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of breast cancer at any age in first- or second- degree blood relative(s) and Ashkenazi Jewish ancestry on the same side of the family",
+    "reasoning_statement_id" : "HBOCRS46",
+    "associated_genes" : [
+        "APC",
+        "MUYTH",
+        "POLE",
+        "POLD1"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "608181a30adb4525c07d44f9",
+    "tags" : [
+        "AshkenaziBoth",
+        "FmBreastPatFDR"
+    ],
+    "tag_id" : "HBOCTag69",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of breast cancer at any age in first- or second- degree blood relative(s) and Ashkenazi Jewish ancestry on the same side of the family",
+    "reasoning_statement_id" : "HBOCRS46",
+    "associated_genes" : [
+        "APC",
+        "MUYTH",
+        "POLE",
+        "POLD1"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "608181a30adb4525c07d44f8",
+    "tags" : [
+        "AshkenaziPat",
+        "FmBreastPatSDR"
+    ],
+    "tag_id" : "HBOCTag69",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of breast cancer at any age in first- or second- degree blood relative(s) and Ashkenazi Jewish ancestry on the same side of the family",
+    "reasoning_statement_id" : "HBOCRS46",
+    "associated_genes" : [
+        "APC",
+        "MUYTH",
+        "POLE",
+        "POLD1"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "608181a30adb4525c07d44f7",
+    "tags" : [
+        "AshkenaziPat",
+        "FmBreastPatFDR"
+    ],
+    "tag_id" : "HBOCTag69",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of breast cancer at any age in first- or second- degree blood relative(s) and Ashkenazi Jewish ancestry on the same side of the family",
+    "reasoning_statement_id" : "HBOCRS46",
+    "associated_genes" : [
+        "APC",
+        "MUYTH",
+        "POLE",
+        "POLD1"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "608181a30adb4525c07d44f6",
+    "tags" : [
+        "AshkenaziMat",
+        "FmBreastMatSDR"
+    ],
+    "tag_id" : "HBOCTag69",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of breast cancer at any age in first- or second- degree blood relative(s) and Ashkenazi Jewish ancestry on the same side of the family",
+    "reasoning_statement_id" : "HBOCRS46",
+    "associated_genes" : [
+        "APC",
+        "MUYTH",
+        "POLE",
+        "POLD1"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "608181a30adb4525c07d44f5",
+    "tags" : [
+        "AshkenaziMat",
+        "FmBreastMatFDR"
+    ],
+    "tag_id" : "HBOCTag69",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of breast cancer at any age in first- or second- degree blood relative(s) and Ashkenazi Jewish ancestry on the same side of the family",
+    "reasoning_statement_id" : "HBOCRS46",
+    "associated_genes" : [
+        "APC",
+        "MUYTH",
+        "POLE",
+        "POLD1"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5fa0048c22aa4b2d08ab0a1f",
+    "tags" : [
+        "Female",
+        "FmProstateGL7MatFDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag66",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
+    "reasoning_statement_id" : "HBOCRS13",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5fa0048c22aa4b2d08ab0a1e",
+    "tags" : [
+        "Female",
+        "FmProstateGL7MatSDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag66",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
+    "reasoning_statement_id" : "HBOCRS13",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5fa0048c22aa4b2d08ab0a1d",
+    "tags" : [
+        "Female",
+        "FmProstateGL7MatTDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag66",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
+    "reasoning_statement_id" : "HBOCRS13",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5fa0048c22aa4b2d08ab0a1c",
+    "tags" : [
+        "Female",
+        "FmProstateGL7PatFDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag66",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
+    "reasoning_statement_id" : "HBOCRS13",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5fa0048c22aa4b2d08ab0a1b",
+    "tags" : [
+        "Female",
+        "FmProstateGL7PatSDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag66",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
+    "reasoning_statement_id" : "HBOCRS13",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5fa0048c22aa4b2d08ab0a1a",
+    "tags" : [
+        "Female",
+        "FmProstateGL7PatTDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag66",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
+    "reasoning_statement_id" : "HBOCRS13",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5f85c9a0de3c3534a8d73059",
+    "tags" : [
+        "FmProstateGL7MatFDR"
+    ],
+    "tag_id" : "HBOCTag52",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of high-risk prostate cancer at any age in a first-degree blood relative",
+    "reasoning_statement_id" : "HBOCRS39",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5f85c9a0de3c3534a8d73057",
+    "tags" : [
+        "FmProstateGL7PatFDR"
+    ],
+    "tag_id" : "HBOCTag52",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of high-risk prostate cancer at any age in a first-degree blood relative",
+    "reasoning_statement_id" : "HBOCRS39",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5f85a6ccde3c3534a8d73040",
+    "tags" : [
+        "FmBreast>=2PplMat",
+        "FmProstate>=1PplMat",
+        "FmProstateMatFDR"
+    ],
+    "tag_id" : "HBOCTag60",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of prostate cancer in a first-degree blood relative and ≥2 close blood relatives with breast and/or prostate cancer at any age on the same side of the family",
+    "reasoning_statement_id" : "HBOCRS43",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5f85a6ccde3c3534a8d7303e",
+    "tags" : [
+        "FmBreast>=2PplPat",
+        "FmProstate>=1PplPat",
+        "FmProstatePatFDR"
+    ],
+    "tag_id" : "HBOCTag62",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of prostate cancer in a first-degree blood relative and ≥2 close blood relatives with breast and/or prostate cancer at any age on the same side of the family",
+    "reasoning_statement_id" : "HBOCRS43",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5f85a6ccde3c3534a8d7303c",
+    "tags" : [
+        "FmProstate>=3PplMat",
+        "FmProstateMatFDR"
+    ],
+    "tag_id" : "HBOCTag61",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of prostate cancer in a first-degree blood relative and ≥2 close blood relatives with breast and/or prostate cancer at any age on the same side of the family",
+    "reasoning_statement_id" : "HBOCRS43",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5f85a6ccde3c3534a8d7303a",
+    "tags" : [
+        "FmProstate>=3PplPat",
+        "FmProstatePatFDR"
+    ],
+    "tag_id" : "HBOCTag63",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of prostate cancer in a first-degree blood relative and ≥2 close blood relatives with breast and/or prostate cancer at any age on the same side of the family",
+    "reasoning_statement_id" : "HBOCRS43",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5f856f89de3c3534a8d72fe6",
+    "tags" : [
+        "FmProstateMetaPatTDR",
+        "Male",
+        "PrProstate"
+    ],
+    "tag_id" : "HBOCTag28",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of prostate cancer and ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
+    "reasoning_statement_id" : "HBOCRS24",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5f856f89de3c3534a8d72fe5",
+    "tags" : [
+        "FmProstateMetaMatTDR",
+        "Male",
+        "PrProstate"
+    ],
+    "tag_id" : "HBOCTag28",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of prostate cancer and ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
+    "reasoning_statement_id" : "HBOCRS24",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5f856f89de3c3534a8d72fe4",
+    "tags" : [
+        "FmProstateMetaPatSDR",
+        "Male",
+        "PrProstate"
+    ],
+    "tag_id" : "HBOCTag28",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of prostate cancer and ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
+    "reasoning_statement_id" : "HBOCRS24",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5f856f89de3c3534a8d72fe3",
+    "tags" : [
+        "FmProstateMetaMatSDR",
+        "Male",
+        "PrProstate"
+    ],
+    "tag_id" : "HBOCTag28",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of prostate cancer and ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
+    "reasoning_statement_id" : "HBOCRS24",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5f856f89de3c3534a8d72fe2",
+    "tags" : [
+        "FmProstateMetaPatFDR",
+        "Male",
+        "PrProstate"
+    ],
+    "tag_id" : "HBOCTag28",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of prostate cancer and ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
+    "reasoning_statement_id" : "HBOCRS24",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5f856f89de3c3534a8d72fe1",
+    "tags" : [
+        "FmProstateMetaMatFDR",
+        "Male",
+        "PrProstate"
+    ],
+    "tag_id" : "HBOCTag28",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of prostate cancer and ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
+    "reasoning_statement_id" : "HBOCRS24",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5f856e6cde3c3534a8d72fe0",
+    "tags" : [
+        "FmPancreaticPatTDR",
+        "Male",
+        "PrProstate"
+    ],
+    "tag_id" : "HBOCTag27",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of prostate cancer and ≥1 close blood relative with pancreatic cancer at any age",
+    "reasoning_statement_id" : "HBOCRS23",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5f856e6cde3c3534a8d72fdf",
+    "tags" : [
+        "FmPancreaticMatTDR",
+        "Male",
+        "PrProstate"
+    ],
+    "tag_id" : "HBOCTag27",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of prostate cancer and ≥1 close blood relative with pancreatic cancer at any age",
+    "reasoning_statement_id" : "HBOCRS23",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5f856e6cde3c3534a8d72fde",
+    "tags" : [
+        "FmPancreaticPatSDR",
+        "Male",
+        "PrProstate"
+    ],
+    "tag_id" : "HBOCTag27",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of prostate cancer and ≥1 close blood relative with pancreatic cancer at any age",
+    "reasoning_statement_id" : "HBOCRS23",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5f856e6cde3c3534a8d72fdd",
+    "tags" : [
+        "FmPancreaticMatSDR",
+        "Male",
+        "PrProstate"
+    ],
+    "tag_id" : "HBOCTag27",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of prostate cancer and ≥1 close blood relative with pancreatic cancer at any age",
+    "reasoning_statement_id" : "HBOCRS23",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5f856e6cde3c3534a8d72fdc",
+    "tags" : [
+        "FmPancreaticPatFDR",
+        "Male",
+        "PrProstate"
+    ],
+    "tag_id" : "HBOCTag27",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of prostate cancer and ≥1 close blood relative with pancreatic cancer at any age",
+    "reasoning_statement_id" : "HBOCRS23",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5f856e6cde3c3534a8d72fdb",
+    "tags" : [
+        "FmPancreaticMatFDR",
+        "Male",
+        "PrProstate"
+    ],
+    "tag_id" : "HBOCTag27",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of prostate cancer and ≥1 close blood relative with pancreatic cancer at any age",
+    "reasoning_statement_id" : "HBOCRS23",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5f856dbdde3c3534a8d72fda",
+    "tags" : [
+        "FmOvarianEpithPatTDR",
+        "Male",
+        "PrProstate"
+    ],
+    "tag_id" : "HBOCTag26",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of prostate cancer and ≥1 close blood relative with ovarian cancer (including fallopian tube or peritoneal cancer) at any age",
+    "reasoning_statement_id" : "HBOCRS22",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5f856dbdde3c3534a8d72fd9",
+    "tags" : [
+        "FmOvarianEpithMatTDR",
+        "Male",
+        "PrProstate"
+    ],
+    "tag_id" : "HBOCTag26",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of prostate cancer and ≥1 close blood relative with ovarian cancer (including fallopian tube or peritoneal cancer) at any age",
+    "reasoning_statement_id" : "HBOCRS22",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5f856dbdde3c3534a8d72fd8",
+    "tags" : [
+        "FmOvarianEpithPatSDR",
+        "Male",
+        "PrProstate"
+    ],
+    "tag_id" : "HBOCTag26",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of prostate cancer and ≥1 close blood relative with ovarian cancer (including fallopian tube or peritoneal cancer) at any age",
+    "reasoning_statement_id" : "HBOCRS22",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5f856dbdde3c3534a8d72fd7",
+    "tags" : [
+        "FmOvarianEpithMatSDR",
+        "Male",
+        "PrProstate"
+    ],
+    "tag_id" : "HBOCTag26",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of prostate cancer and ≥1 close blood relative with ovarian cancer (including fallopian tube or peritoneal cancer) at any age",
+    "reasoning_statement_id" : "HBOCRS22",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5f856dbdde3c3534a8d72fd6",
+    "tags" : [
+        "FmOvarianEpithPatFDR",
+        "Male",
+        "PrProstate"
+    ],
+    "tag_id" : "HBOCTag26",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of prostate cancer and ≥1 close blood relative with ovarian cancer (including fallopian tube or peritoneal cancer) at any age",
+    "reasoning_statement_id" : "HBOCRS22",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5f856dbdde3c3534a8d72fd5",
+    "tags" : [
+        "FmOvarianEpithMatFDR",
+        "Male",
+        "PrProstate"
+    ],
+    "tag_id" : "HBOCTag26",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of prostate cancer and ≥1 close blood relative with ovarian cancer (including fallopian tube or peritoneal cancer) at any age",
+    "reasoning_statement_id" : "HBOCRS22",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5f856c7fde3c3534a8d72fd4",
+    "tags" : [
+        "FmBreast<=50PatTDR",
+        "Male",
+        "PrProstate"
+    ],
+    "tag_id" : "HBOCTag25",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of prostate cancer and ≥1 close blood relative with breast cancer diagnosed at ≤50y",
+    "reasoning_statement_id" : "HBOCRS21",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5f856c7fde3c3534a8d72fd3",
+    "tags" : [
+        "FmBreast<=50MatTDR",
+        "Male",
+        "PrProstate"
+    ],
+    "tag_id" : "HBOCTag25",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of prostate cancer and ≥1 close blood relative with breast cancer diagnosed at ≤50y",
+    "reasoning_statement_id" : "HBOCRS21",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5f856c7fde3c3534a8d72fd2",
+    "tags" : [
+        "FmBreast<=50PatSDR",
+        "Male",
+        "PrProstate"
+    ],
+    "tag_id" : "HBOCTag25",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of prostate cancer and ≥1 close blood relative with breast cancer diagnosed at ≤50y",
+    "reasoning_statement_id" : "HBOCRS21",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5f856c7fde3c3534a8d72fd1",
+    "tags" : [
+        "FmBreast<=50MatSDR",
+        "Male",
+        "PrProstate"
+    ],
+    "tag_id" : "HBOCTag25",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of prostate cancer and ≥1 close blood relative with breast cancer diagnosed at ≤50y",
+    "reasoning_statement_id" : "HBOCRS21",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5f856c7fde3c3534a8d72fd0",
+    "tags" : [
+        "FmBreast<=50PatFDR",
+        "Male",
+        "PrProstate"
+    ],
+    "tag_id" : "HBOCTag25",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of prostate cancer and ≥1 close blood relative with breast cancer diagnosed at ≤50y",
+    "reasoning_statement_id" : "HBOCRS21",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5f856c7fde3c3534a8d72fcf",
+    "tags" : [
+        "FmBreast<=50MatFDR",
+        "Male",
+        "PrProstate"
+    ],
+    "tag_id" : "HBOCTag25",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of prostate cancer and ≥1 close blood relative with breast cancer diagnosed at ≤50y",
+    "reasoning_statement_id" : "HBOCRS21",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5f85684fde3c3534a8d72fce",
+    "tags" : [
+        "Male",
+        "PrProstateGL7"
+    ],
+    "tag_id" : "HBOCTag23",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of metastatic or high-risk group prostate cancer at any age",
+    "reasoning_statement_id" : "HBOCRS19",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5f2d1159584038375468f0d6",
+    "tags" : [
+        "Female",
+        "FmBreastBilatPatTDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag16",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥3 diagnoses of breast cancer including the patient and/or close blood relatives on the same side of the family",
+    "reasoning_statement_id" : "HBOCRS14",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5f2d1159584038375468f0d5",
+    "tags" : [
+        "Female",
+        "FmBreastBilatPatSDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag16",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥3 diagnoses of breast cancer including the patient and/or close blood relatives on the same side of the family",
+    "reasoning_statement_id" : "HBOCRS14",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5f2d1159584038375468f0d4",
+    "tags" : [
+        "Female",
+        "FmBreastBilatPatFDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag16",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥3 diagnoses of breast cancer including the patient and/or close blood relatives on the same side of the family",
+    "reasoning_statement_id" : "HBOCRS14",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5f2d1159584038375468f0d3",
+    "tags" : [
+        "Female",
+        "FmBreastBilatMatTDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag16",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥3 diagnoses of breast cancer including the patient and/or close blood relatives on the same side of the family",
+    "reasoning_statement_id" : "HBOCRS14",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5f2d1159584038375468f0d2",
+    "tags" : [
+        "Female",
+        "FmBreastBilatMatSDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag16",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥3 diagnoses of breast cancer including the patient and/or close blood relatives on the same side of the family",
+    "reasoning_statement_id" : "HBOCRS14",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5f2d1159584038375468f0d1",
+    "tags" : [
+        "Female",
+        "FmBreastBilatMatFDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag16",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥3 diagnoses of breast cancer including the patient and/or close blood relatives on the same side of the family",
+    "reasoning_statement_id" : "HBOCRS14",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e86e8957fe5de11cc74d2f7",
+    "tags" : [
+        "FmColon<50MatFDR"
+    ],
+    "tag_id" : "CRCTag16",
+    "guideline_name" : "NCCN LYNCH",
+    "reasoning_statement_en" : "Family history of ≥1 first-degree blood relative with colorectal or endometrial cancer diagnosed <50y",
+    "reasoning_statement_id" : "CRCRS8",
+    "associated_genes" : [
+        "APC",
+        "MUYTH",
+        "POLE",
+        "POLD1"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e86e8957fe5de11cc74d2f6",
+    "tags" : [
+        "FmColon<50PatFDR"
+    ],
+    "tag_id" : "CRCTag16",
+    "guideline_name" : "NCCN LYNCH",
+    "reasoning_statement_en" : "Family history of ≥1 first-degree blood relative with colorectal or endometrial cancer diagnosed <50y",
+    "reasoning_statement_id" : "CRCRS8",
+    "associated_genes" : [
+        "APC",
+        "MUYTH",
+        "POLE",
+        "POLD1"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e86e8957fe5de11cc74d2f5",
+    "tags" : [
+        "FmEndometrial<50MatFDR"
+    ],
+    "tag_id" : "CRCTag16",
+    "guideline_name" : "NCCN LYNCH",
+    "reasoning_statement_en" : "Family history of ≥1 first-degree blood relative with colorectal or endometrial cancer diagnosed <50y",
+    "reasoning_statement_id" : "CRCRS8",
+    "associated_genes" : [
+        "APC",
+        "MUYTH",
+        "POLE",
+        "POLD1"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e86e8957fe5de11cc74d2f4",
+    "tags" : [
+        "FmEndometrial<50PatFDR"
+    ],
+    "tag_id" : "CRCTag16",
+    "guideline_name" : "NCCN LYNCH",
+    "reasoning_statement_en" : "Family history of ≥1 first-degree blood relative with colorectal or endometrial cancer diagnosed <50y",
+    "reasoning_statement_id" : "CRCRS8",
+    "associated_genes" : [
+        "APC",
+        "MUYTH",
+        "POLE",
+        "POLD1"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa63df",
+    "tags" : [
+        "FmBreast>=3PplMat",
+        "FmBreastMatFDR"
+    ],
+    "tag_id" : "HBOCTag45",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of breast cancer diagnosed at any age in a first- or second- degree blood relative with ≥3 total diagnoses of breast cancer on the same side of the family",
+    "reasoning_statement_id" : "HBOCRS34",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa63de",
+    "tags" : [
+        "FmBreast>=3PplMat",
+        "FmBreastMatSDR"
+    ],
+    "tag_id" : "HBOCTag45",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of breast cancer diagnosed at any age in a first- or second- degree blood relative with ≥3 total diagnoses of breast cancer on the same side of the family",
+    "reasoning_statement_id" : "HBOCRS34",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa63dd",
+    "tags" : [
+        "FmBreast>=3PplPat",
+        "FmBreastPatFDR"
+    ],
+    "tag_id" : "HBOCTag46",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of breast cancer diagnosed at any age in a first- or second- degree blood relative with ≥3 total diagnoses of breast cancer on the same side of the family",
+    "reasoning_statement_id" : "HBOCRS34",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa63dc",
+    "tags" : [
+        "FmBreast>=3PplPat",
+        "FmBreastPatSDR"
+    ],
+    "tag_id" : "HBOCTag46",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of breast cancer diagnosed at any age in a first- or second- degree blood relative with ≥3 total diagnoses of breast cancer on the same side of the family",
+    "reasoning_statement_id" : "HBOCRS34",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa63a3",
+    "tags" : [
+        "FmProstateMetaMatFDR"
+    ],
+    "tag_id" : "HBOCTag51",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of metastatic prostate cancer at any age in a first-degree blood relative",
+    "reasoning_statement_id" : "HBOCRS38",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa63a1",
+    "tags" : [
+        "FmProstateMetaPatFDR"
+    ],
+    "tag_id" : "HBOCTag51",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of metastatic prostate cancer at any age in a first-degree blood relative",
+    "reasoning_statement_id" : "HBOCRS38",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa639f",
+    "tags" : [
+        "FmPancreaticMatFDR"
+    ],
+    "tag_id" : "HBOCTag50",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of pancreatic cancer at any age in a first-degree blood relative",
+    "reasoning_statement_id" : "HBOCRS37",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa639d",
+    "tags" : [
+        "FmPancreaticPatFDR"
+    ],
+    "tag_id" : "HBOCTag50",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of pancreatic cancer at any age in a first-degree blood relative",
+    "reasoning_statement_id" : "HBOCRS37",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa639b",
+    "tags" : [
+        "FmFalloPeritonealMatFDR"
+    ],
+    "tag_id" : "HBOCTag49",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of ovarian cancer (including fallopian tube cancer or peritoneal cancer) at any age in a first- or second- degree blood relative",
+    "reasoning_statement_id" : "HBOCRS36",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa639a",
+    "tags" : [
+        "FmFalloPeritonealMatSDR"
+    ],
+    "tag_id" : "HBOCTag49",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of ovarian cancer (including fallopian tube cancer or peritoneal cancer) at any age in a first- or second- degree blood relative",
+    "reasoning_statement_id" : "HBOCRS36",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa6399",
+    "tags" : [
+        "FmFalloPeritonealPatFDR"
+    ],
+    "tag_id" : "HBOCTag49",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of ovarian cancer (including fallopian tube cancer or peritoneal cancer) at any age in a first- or second- degree blood relative",
+    "reasoning_statement_id" : "HBOCRS36",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa6398",
+    "tags" : [
+        "FmFalloPeritonealPatSDR"
+    ],
+    "tag_id" : "HBOCTag49",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of ovarian cancer (including fallopian tube cancer or peritoneal cancer) at any age in a first- or second- degree blood relative",
+    "reasoning_statement_id" : "HBOCRS36",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa6397",
+    "tags" : [
+        "FmOvarianEpithMatFDR"
+    ],
+    "tag_id" : "HBOCTag48",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of ovarian cancer (including fallopian tube cancer or peritoneal cancer) at any age in a first- or second- degree blood relative",
+    "reasoning_statement_id" : "HBOCRS36",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa6396",
+    "tags" : [
+        "FmOvarianEpithMatSDR"
+    ],
+    "tag_id" : "HBOCTag48",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of ovarian cancer (including fallopian tube cancer or peritoneal cancer) at any age in a first- or second- degree blood relative",
+    "reasoning_statement_id" : "HBOCRS36",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa6395",
+    "tags" : [
+        "FmOvarianEpithPatFDR"
+    ],
+    "tag_id" : "HBOCTag48",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of ovarian cancer (including fallopian tube cancer or peritoneal cancer) at any age in a first- or second- degree blood relative",
+    "reasoning_statement_id" : "HBOCRS36",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa6394",
+    "tags" : [
+        "FmOvarianEpithPatSDR"
+    ],
+    "tag_id" : "HBOCTag48",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of ovarian cancer (including fallopian tube cancer or peritoneal cancer) at any age in a first- or second- degree blood relative",
+    "reasoning_statement_id" : "HBOCRS36",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa638b",
+    "tags" : [
+        "FmBreast<=50MatFDR"
+    ],
+    "tag_id" : "HBOCTag32",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of breast cancer diagnosed at ≤50y in a first- or second- degree blood relative",
+    "reasoning_statement_id" : "HBOCRS26",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa638a",
+    "tags" : [
+        "FmBreast<=50MatSDR"
+    ],
+    "tag_id" : "HBOCTag32",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of breast cancer diagnosed at ≤50y in a first- or second- degree blood relative",
+    "reasoning_statement_id" : "HBOCRS26",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa6389",
+    "tags" : [
+        "FmBreast<=50PatFDR"
+    ],
+    "tag_id" : "HBOCTag32",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of breast cancer diagnosed at ≤50y in a first- or second- degree blood relative",
+    "reasoning_statement_id" : "HBOCRS26",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa6388",
+    "tags" : [
+        "FmBreast<=50PatSDR"
+    ],
+    "tag_id" : "HBOCTag32",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of breast cancer diagnosed at ≤50y in a first- or second- degree blood relative",
+    "reasoning_statement_id" : "HBOCRS26",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa6387",
+    "tags" : [
+        "FmBreastMaleMatFDR"
+    ],
+    "tag_id" : "HBOCTag47",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of male breast cancer at any age in a first- or second- degree blood relative",
+    "reasoning_statement_id" : "HBOCRS35",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa6386",
+    "tags" : [
+        "FmBreastMaleMatSDR"
+    ],
+    "tag_id" : "HBOCTag47",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of male breast cancer at any age in a first- or second- degree blood relative",
+    "reasoning_statement_id" : "HBOCRS35",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa6385",
+    "tags" : [
+        "FmBreastMalePatFDR"
+    ],
+    "tag_id" : "HBOCTag47",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of male breast cancer at any age in a first- or second- degree blood relative",
+    "reasoning_statement_id" : "HBOCRS35",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa6384",
+    "tags" : [
+        "FmBreastMalePatSDR"
+    ],
+    "tag_id" : "HBOCTag47",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Family history of male breast cancer at any age in a first- or second- degree blood relative",
+    "reasoning_statement_id" : "HBOCRS35",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa6383",
+    "tags" : [
+        "PrPancreatic"
+    ],
+    "tag_id" : "HBOCTag20",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of pancreatic cancer at any age",
+    "reasoning_statement_id" : "HBOCRS18",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa6360",
+    "tags" : [
+        "Ashkenazi",
+        "Male",
+        "PrProstate"
+    ],
+    "tag_id" : "HBOCTag24",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of prostate cancer and Ashkenazi Jewish ancestry",
+    "reasoning_statement_id" : "HBOCRS20",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa635f",
+    "tags" : [
+        "Male",
+        "PrProstateMeta"
+    ],
+    "tag_id" : "HBOCTag21",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of metastatic or high-risk group prostate cancer at any age",
+    "reasoning_statement_id" : "HBOCRS19",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa635d",
+    "tags" : [
+        "Male",
+        "PrBreastMale"
+    ],
+    "tag_id" : "HBOCTag17",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of male breast cancer at any age",
+    "reasoning_statement_id" : "HBOCRS16",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa635c",
+    "tags" : [
+        "Female",
+        "PrFalloPeritoneal"
+    ],
+    "tag_id" : "HBOCTag19",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of ovarian cancer (including fallopian tube cancer or peritoneal cancer) at any age",
+    "reasoning_statement_id" : "HBOCRS17",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa635b",
+    "tags" : [
+        "Female",
+        "PrOvarianEpith"
+    ],
+    "tag_id" : "HBOCTag18",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of ovarian cancer (including fallopian tube cancer or peritoneal cancer) at any age",
+    "reasoning_statement_id" : "HBOCRS17",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa635a",
+    "tags" : [
+        "Female",
+        "FmBreast>=1PplPat",
+        "PrBreastBilat"
+    ],
+    "tag_id" : "HBOCTag15",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥3 diagnoses of breast cancer including the patient and/or close blood relatives on the same side of the family",
+    "reasoning_statement_id" : "HBOCRS14",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa6359",
+    "tags" : [
+        "Female",
+        "FmBreast>=1PplMat",
+        "PrBreastBilat"
+    ],
+    "tag_id" : "HBOCTag15",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥3 diagnoses of breast cancer including the patient and/or close blood relatives on the same side of the family",
+    "reasoning_statement_id" : "HBOCRS14",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa6358",
+    "tags" : [
+        "Female",
+        "FmBreast>=2PplMat",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag14",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥3 diagnoses of breast cancer including the patient and/or close blood relatives on the same side of the family",
+    "reasoning_statement_id" : "HBOCRS14",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa6357",
+    "tags" : [
+        "Female",
+        "FmBreast>=2PplPat",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag14",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥3 diagnoses of breast cancer including the patient and/or close blood relatives on the same side of the family",
+    "reasoning_statement_id" : "HBOCRS14",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa6356",
+    "tags" : [
+        "Female",
+        "FmProstateMetaMatFDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag13",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
+    "reasoning_statement_id" : "HBOCRS13",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa6355",
+    "tags" : [
+        "Female",
+        "FmProstateMetaPatFDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag13",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
+    "reasoning_statement_id" : "HBOCRS13",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa6354",
+    "tags" : [
+        "Female",
+        "FmProstateMetaMatSDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag13",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
+    "reasoning_statement_id" : "HBOCRS13",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa6353",
+    "tags" : [
+        "Female",
+        "FmProstateMetaPatSDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag13",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
+    "reasoning_statement_id" : "HBOCRS13",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa6352",
+    "tags" : [
+        "Female",
+        "FmProstateMetaMatTDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag13",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
+    "reasoning_statement_id" : "HBOCRS13",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa6351",
+    "tags" : [
+        "Female",
+        "FmProstateMetaPatTDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag13",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with metastatic or high-risk prostate cancer at any age",
+    "reasoning_statement_id" : "HBOCRS13",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa6350",
+    "tags" : [
+        "Female",
+        "FmPancreaticMatFDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag12",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with pancreatic cancer at any age",
+    "reasoning_statement_id" : "HBOCRS12",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa634f",
+    "tags" : [
+        "Female",
+        "FmPancreaticPatFDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag12",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with pancreatic cancer at any age",
+    "reasoning_statement_id" : "HBOCRS12",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa634e",
+    "tags" : [
+        "Female",
+        "FmPancreaticMatSDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag12",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with pancreatic cancer at any age",
+    "reasoning_statement_id" : "HBOCRS12",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa634d",
+    "tags" : [
+        "Female",
+        "FmPancreaticPatSDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag12",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with pancreatic cancer at any age",
+    "reasoning_statement_id" : "HBOCRS12",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa634c",
+    "tags" : [
+        "Female",
+        "FmPancreaticMatTDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag12",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with pancreatic cancer at any age",
+    "reasoning_statement_id" : "HBOCRS12",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa634b",
+    "tags" : [
+        "Female",
+        "FmPancreaticPatTDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag12",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with pancreatic cancer at any age",
+    "reasoning_statement_id" : "HBOCRS12",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa634a",
+    "tags" : [
+        "Female",
+        "FmOvarianEpithMatFDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag11",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with ovarian cancer (or fallopian tube or peritoneal cancer) at any age",
+    "reasoning_statement_id" : "HBOCRS11",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa6349",
+    "tags" : [
+        "Female",
+        "FmOvarianEpithPatFDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag11",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with ovarian cancer (or fallopian tube or peritoneal cancer) at any age",
+    "reasoning_statement_id" : "HBOCRS11",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa6348",
+    "tags" : [
+        "Female",
+        "FmOvarianEpithMatSDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag11",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with ovarian cancer (or fallopian tube or peritoneal cancer) at any age",
+    "reasoning_statement_id" : "HBOCRS11",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa6347",
+    "tags" : [
+        "Female",
+        "FmOvarianEpithPatSDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag11",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with ovarian cancer (or fallopian tube or peritoneal cancer) at any age",
+    "reasoning_statement_id" : "HBOCRS11",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa6346",
+    "tags" : [
+        "Female",
+        "FmOvarianEpithMatTDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag11",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with ovarian cancer (or fallopian tube or peritoneal cancer) at any age",
+    "reasoning_statement_id" : "HBOCRS11",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa6345",
+    "tags" : [
+        "Female",
+        "FmOvarianEpithPatTDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag11",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with ovarian cancer (or fallopian tube or peritoneal cancer) at any age",
+    "reasoning_statement_id" : "HBOCRS11",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa6344",
+    "tags" : [
+        "Female",
+        "FmFalloPeritonealMatFDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag11",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with ovarian cancer (or fallopian tube or peritoneal cancer) at any age",
+    "reasoning_statement_id" : "HBOCRS11",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa6343",
+    "tags" : [
+        "Female",
+        "FmFalloPeritonealPatFDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag11",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with ovarian cancer (or fallopian tube or peritoneal cancer) at any age",
+    "reasoning_statement_id" : "HBOCRS11",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa6342",
+    "tags" : [
+        "Female",
+        "FmFalloPeritonealMatSDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag11",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with ovarian cancer (or fallopian tube or peritoneal cancer) at any age",
+    "reasoning_statement_id" : "HBOCRS11",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa6341",
+    "tags" : [
+        "Female",
+        "FmFalloPeritonealPatSDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag11",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with ovarian cancer (or fallopian tube or peritoneal cancer) at any age",
+    "reasoning_statement_id" : "HBOCRS11",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa6340",
+    "tags" : [
+        "Female",
+        "FmFalloPeritonealMatTDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag11",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with ovarian cancer (or fallopian tube or peritoneal cancer) at any age",
+    "reasoning_statement_id" : "HBOCRS11",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa633f",
+    "tags" : [
+        "Female",
+        "FmFalloPeritonealPatTDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag11",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with ovarian cancer (or fallopian tube or peritoneal cancer) at any age",
+    "reasoning_statement_id" : "HBOCRS11",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa633e",
+    "tags" : [
+        "Female",
+        "FmBreast<=50MatFDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag10",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with breast cancer diagnosed at age ≤50y or with male breast cancer at any age",
+    "reasoning_statement_id" : "HBOCRS10",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa633d",
+    "tags" : [
+        "Female",
+        "FmBreast<=50PatFDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag10",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with breast cancer diagnosed at age ≤50y or with male breast cancer at any age",
+    "reasoning_statement_id" : "HBOCRS10",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa633c",
+    "tags" : [
+        "Female",
+        "FmBreast<=50MatSDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag10",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with breast cancer diagnosed at age ≤50y or with male breast cancer at any age",
+    "reasoning_statement_id" : "HBOCRS10",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa633b",
+    "tags" : [
+        "Female",
+        "FmBreast<=50PatSDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag10",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with breast cancer diagnosed at age ≤50y or with male breast cancer at any age",
+    "reasoning_statement_id" : "HBOCRS10",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa633a",
+    "tags" : [
+        "Female",
+        "FmBreast<=50MatTDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag10",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with breast cancer diagnosed at age ≤50y or with male breast cancer at any age",
+    "reasoning_statement_id" : "HBOCRS10",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa6339",
+    "tags" : [
+        "Female",
+        "FmBreast<=50PatTDR",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag10",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with ≥1 close blood relative with breast cancer diagnosed at age ≤50y or with male breast cancer at any age",
+    "reasoning_statement_id" : "HBOCRS10",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa6338",
+    "tags" : [
+        "Ashkenazi",
+        "Female",
+        "PrBreast"
+    ],
+    "tag_id" : "HBOCTag9",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of breast cancer diagnosed at any age with Ashkenazi Jewish ancestry",
+    "reasoning_statement_id" : "HBOCRS9",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "5e85ede0dbdc894558aa6337",
+    "tags" : [
+        "Female",
+        "PrBreast",
+        "PrBreastTrpNeg"
+    ],
+    "tag_id" : "HBOCTag8",
+    "guideline_name" : "NCCN HBOC",
+    "reasoning_statement_en" : "Personal history of triple negative breast cancer",
+    "reasoning_statement_id" : "HBOCRS8",
+    "associated_genes" : [
+        "BRCA1",
+        "BRCA2"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "6502d8ddc878270f94346c8a",
+    "tags" : [
+        "PrAdPolyps",
+        "PrPolyp>20Dx"
+    ],
+    "tag_id" : "CRCTag1",
+    "guideline_name" : "NCCN APS",
+    "reasoning_statement_en" : "Personal history of ≥10 adenomatous colorectal polyps",
+    "reasoning_statement_id" : "CRCRS1",
+    "associated_genes" : [
+        "APC",
+        "MUYTH",
+        "POLE",
+        "POLD1"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "6502d8ddc878270f94346c8b",
+    "tags" : [
+        "PrAdPolyps",
+        "PrPolyp>10Dx"
+    ],
+    "tag_id" : "CRCTag1",
+    "guideline_name" : "NCCN APS",
+    "reasoning_statement_en" : "Personal history of ≥10 adenomatous colorectal polyps",
+    "reasoning_statement_id" : "CRCRS1",
+    "associated_genes" : [
+        "APC",
+        "MUYTH",
+        "POLE",
+        "POLD1"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
+},
+{
+    "_id" : "6718a85fbc10b0b41710fbeb",
+    "tags" : [
+        "FmPolyp>10"
+    ],
+    "tag_id" : "CRCTag2",
+    "guideline_name" : "NCCN APS",
+    "reasoning_statement_en" : "Family history of ≥10 adenomatous polyps. Testing is recommended if affected relative is unwilling/unable for testing",
+    "reasoning_statement_id" : "CRCRS2",
+    "associated_genes" : [
+        "APC",
+        "MUYTH",
+        "POLE",
+        "POLD1"
+    ],
+    "_class" : "com.genomebrain.backend.domain.GuideLinesDetails"
 }]

@@ -53,10 +53,6 @@ public class TagGenerationUtility {
 
     public final static String UNKNOWN = "Unknown";
 
-    public final static List<String> ABNORMAL_BREAST_BIOPSY_ANSWER_KEY = Arrays.asList("AMBRY106_001", "AMBRY106_002", "AMBRY106_003", "AMBRY106_004");
-
-    public final static String ABNORMAL = "Abnormal";
-
     private final Logger log = LoggerFactory.getLogger(TagGenerationUtility.class);
 
     @Autowired
@@ -482,7 +478,7 @@ public class TagGenerationUtility {
      * @return value present againg OptionConstants enum
      */
     private String getSelectedOption(String answerKey) {
-        //log.debug("Entered into getSelectedOption method of TagGenerationUtility with answerKey: {}", answerKey);
+        log.debug("Entered into getSelectedOption method of TagGenerationUtility with answerKey: {}", answerKey);
         String answerText = "";
         try {
             if (OptionConstants.valueOf(answerKey) != null) {
@@ -491,7 +487,7 @@ public class TagGenerationUtility {
         } catch (Exception e) {
             log.error("Exception in getSelectedOption method of TagGenerationUtility msg: No value found for answer key: {}", answerKey);
         }
-        //log.debug("Exit from getSelectedOption method of TagGenerationUtility with answerText: {}", answerText);
+        log.debug("Exit from getSelectedOption method of TagGenerationUtility with answerText: {}", answerText);
         return answerText;
     }
 
@@ -1934,7 +1930,7 @@ public class TagGenerationUtility {
      * @return
      */
     public ClinicalSummary checkFamilyColorectalPolypsHistory(List<QuestionSet> basicQuestions, ClinicalSummary clinicalSummary) {
-        //log.info("Entered into checkColorectalPolypsHistory method of TagGenerationUtility with basicQuestions(QuestionSet)");
+        log.info("Entered into checkColorectalPolypsHistory method of TagGenerationUtility with basicQuestions(QuestionSet)");
         for (QuestionSet questionSet : basicQuestions) {
             if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY111")) {
                 clinicalSummary.setFamilyHistoryOfColorectalPolyps(OptionConstants.valueOf(questionSet.getAnswerKey().toUpperCase()).getValue());
@@ -1945,7 +1941,7 @@ public class TagGenerationUtility {
                 clinicalSummary.setRelativeWithPolypsHistory(answerText);
             }
         }
-        //log.info("Exit from checkFamilyColorectalPolypsHistory method of TagGenerationUtility with historyOfPolyps");
+        log.info("Exit from checkFamilyColorectalPolypsHistory method of TagGenerationUtility with historyOfPolyps");
         return clinicalSummary;
     }
 
@@ -2090,9 +2086,6 @@ public class TagGenerationUtility {
                 // we need to nullify the abnormal biopsy hx (old question) to hide it on CS
                 if (OptionConstants.valueOf(filteredQuestion.get(BIOPSY_RESULT)).getValue().equalsIgnoreCase(I_DONT_KNOW)) {
                     personalHistoryDetails.setBreastBiopsyResult(UNKNOWN);
-                } else if (filteredQuestion.values().stream().anyMatch(ABNORMAL_BREAST_BIOPSY_ANSWER_KEY::contains)) {
-                    personalHistoryDetails.setBreastBiopsyResult(ABNORMAL);
-                    personalHistoryDetails.setAbnormalBreastBiopsyResult(OptionConstants.valueOf(filteredQuestion.get(BIOPSY_RESULT)).getValue());
                 } else {
                     personalHistoryDetails.setBreastBiopsyResult(OptionConstants.valueOf(filteredQuestion.get(BIOPSY_RESULT)).getValue());
                 }

@@ -31,7 +31,7 @@ public class CancerFeatureDetails {
     private String multiplePrimaries;
 
     @JsonProperty("pathology")
-    private List<String> pathology;
+    private List<String> breastCancerTypes;
 
     @JsonProperty("pathology_other")
     private String pathologyOther;
@@ -127,12 +127,12 @@ public class CancerFeatureDetails {
         this.multiplePrimaries = multiplePrimaries;
     }
 
-    public List<String> getPathology() {
-        return pathology;
+    public List<String> getBreastCancerTypes() {
+        return breastCancerTypes;
     }
 
-    public void setPathology(List<String> pathology) {
-        this.pathology = pathology;
+    public void setBreastCancerTypes(List<String> pathology) {
+        this.breastCancerTypes = pathology;
     }
 
     public String getPathologyOther() {
@@ -226,7 +226,7 @@ public class CancerFeatureDetails {
                 ", otherDxAge='" + otherDxAge + '\'' +
                 ", metastatic='" + metastatic + '\'' +
                 ", multiplePrimaries='" + multiplePrimaries + '\'' +
-                ", pathology=" + pathology +
+                ", pathology=" + breastCancerTypes +
                 ", pathologyOther='" + pathologyOther + '\'' +
                 ", breastContralateral='" + breastContralateral + '\'' +
                 ", breastIpsilateral='" + breastIpsilateral + '\'' +
