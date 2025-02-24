@@ -1,5 +1,6 @@
 package com.ambry.transformer.nccn;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import com.genomebrain.backend.service.dto.CancerFeatureDetails;
 import com.genomebrain.backend.service.dto.ClinicalHistory;
+import com.genomebrain.backend.service.dto.PolypDetails;
 import com.objex.risk.beans.uno.Cancer;
 import com.objex.risk.beans.uno.Person;
 
@@ -26,9 +28,12 @@ public class NCCNClinicalHistoryMapper {
         clinicalHistory.setRelationship(nccnPersonRelationShipDetails.getRelationShip());
         clinicalHistory.setSideOfFam(nccnPersonRelationShipDetails.getFamilySide());
         clinicalHistory.setSexAtBirth(getSexAtBirth(person.getGender()));
-        clinicalHistory.setEthnicity(List.of(person.getFamilyRace().toString()));
+        clinicalHistory.setEthnicity(List.of(person.getFamilyRace().toString().toUpperCase()));
         clinicalHistory.setEthnicityOther(person.getFamilyRace().toString());
         clinicalHistory.setPolypOverall(person.getPolypOverall().toString());
+        if(clinicalHistory.getPolypOverall().equals("YES")) {
+            clinicalHistory.setPolypDetails(getPolypListDetails(person.getPolypDetails()));
+        }
         clinicalHistory
                 .setCancerOverall((person.getCancers() != null && !person.getCancers().isEmpty()) ? "Yes" : "No");
         clinicalHistory.setClinicalFeatureOverall("Not Provided");
@@ -40,7 +45,7 @@ public class NCCNClinicalHistoryMapper {
                 details.setCancerFeatureType("cancer");
                 details.setExactDxAge(String.valueOf(cancer.getDiagnoseAge() + 0.5));
                 details.setMetastatic(cancer.getCancerDetails().getMetastatic().toLowerCase());
-                details.setMultiplePrimaries(cancer.getCancerDetails().getBreastMultiplePrimaries());
+                details.setMultiplePrimaries(cancer.getCancerDetails().getMultiplePrimaries());
                 if (cancer.getCancerDetails().getBreastCancerTypes() != null) {
                     List<String> cancerTypes = cancer.getCancerDetails().getBreastCancerTypes().stream().map(Enum::name)
                             .collect(Collectors.toList());
@@ -50,6 +55,16 @@ public class NCCNClinicalHistoryMapper {
             }
         }
         return clinicalHistory;
+    }
+
+    private List<PolypDetails> getPolypListDetails(com.objex.risk.beans.uno.PolypDetails polypDetails) {
+        List<PolypDetails> corePloypDetails = new ArrayList<>();
+        PolypDetails corePolypObject = new PolypDetails();
+        corePolypObject.setExactNumOfPolyps(String.valueOf(polypDetails.getNumOfColorectalPolyps()));
+        corePolypObject.setOtherNumOfPolyps(polypDetails.getOtherNumOfPolyps());
+        corePolypObject.setPolypType(polypDetails.getPolypType());
+        corePloypDetails.add(corePolypObject);
+        return corePloypDetails;
     }
 
     private String getSexAtBirth(int gender) {

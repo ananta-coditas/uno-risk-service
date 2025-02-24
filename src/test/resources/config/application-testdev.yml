@@ -7,4 +7,23 @@
 #
 # More information on database containers: https://www.testcontainers.org/modules/databases/
 # ===================================================================
-
+application:
+  tyrer:
+    linux:
+      command: "/opt/tyrer-server/tcuzick"
+      save-path: "/tmp/risk"
+    windows:
+      command: "C:\\programs\\tyrer\\tyrercuzickV8b.exe"
+      save-path: "C:\\temp\\risk"
+  bayesMendel:
+    max-connections: "10"
+    save-all: "false"
+    print: "false"
+    windows:
+      spawn: "true"
+      command: "C:\\Programs\\R\\R-4.0.3\\bin\\x64\\Rserve_d.exe"
+      save-path: "/temp"
+    linux:
+      spawn: "false"
+      command: "/bin/sh /opt/bayes-server/startRserv.sh"
+      save-path: "/tmp"

@@ -7,32 +7,43 @@ import org.springframework.util.CollectionUtils;
 import com.genomebrain.backend.service.dto.NCCNCoreResponse;
 import com.objex.risk.beans.nccn.NCCNResult;
 
+import net.logstash.logback.util.StringUtils;
+
 public class NCCNResultMapper {
 
     public static NCCNResult convertTo(NCCNCoreResponse source) {
         NCCNResult target = new NCCNResult();
         target.setHbocVersion(source.getHbocVersion());
         target.setCrcVersion(source.getCrcVersion());
-        target.setHbocOverall(source.getHbocOverall());
-        if (!CollectionUtils.isEmpty(source.getHbocCriteriaMet())) {
-            target.setHbocCriteriaMet(new HashSet<>(source.getHbocCriteriaMet()));
+        if (!StringUtils.isEmpty(source.getHbocOverall())) {
+            target.setHbocOverall(Boolean.TRUE);
+            target.setNccnCriteriaMet(Boolean.TRUE);
+            if (!CollectionUtils.isEmpty(source.getHbocCriteriaMet())) {
+                target.setHbocCriteriaMet(new HashSet<>(source.getHbocCriteriaMet()));
+            }
+            if (!CollectionUtils.isEmpty(source.getHbocCriteriaMetIds())) {
+                target.setHbocCriteriaMetIds(new HashSet<>(source.getHbocCriteriaMetIds()));
+            }
         }
-        if (!CollectionUtils.isEmpty(source.getHbocCriteriaMetIds())) {
-            target.setHbocCriteriaMetIds(new HashSet<>(source.getHbocCriteriaMetIds()));
+        if (!StringUtils.isEmpty(source.getLynchOverall())) {
+            target.setLynchOverall(Boolean.TRUE);
+            target.setNccnCriteriaMet(Boolean.TRUE);
+            if (!CollectionUtils.isEmpty(source.getLynchCriteriaMet())) {
+                target.setLynchCriteriaMet(new HashSet<>(source.getLynchCriteriaMet()));
+            }
+            if (!CollectionUtils.isEmpty(source.getLynchCriteriaMetIds())) {
+                target.setLynchCriteriaMetIds(new HashSet<>(source.getLynchCriteriaMetIds()));
+            }
         }
-        target.setLynchOverall(source.getLynchOverall());
-        if (!CollectionUtils.isEmpty(source.getLynchCriteriaMet())) {
-            target.setLynchCriteriaMet(new HashSet<>(source.getLynchCriteriaMet()));
-        }
-        if (!CollectionUtils.isEmpty(source.getLynchCriteriaMetIds())) {
-            target.setLynchCriteriaMetIds(new HashSet<>(source.getLynchCriteriaMetIds()));
-        }
-        target.setApsApcOverall(source.getApsApcOverall());
-        if (!CollectionUtils.isEmpty(source.getApsApcCriteriaMet())) {
-            target.setApsApcCriteriaMet(new HashSet<>(source.getApsApcCriteriaMet()));
-        }
-        if (!CollectionUtils.isEmpty(source.getApsApcCriteriaMetIds())) {
-            target.setApsApcCriteriaMetIds(new HashSet<>(source.getApsApcCriteriaMetIds()));
+        if (!StringUtils.isEmpty(source.getApsApcOverall())) {
+            target.setApsApcOverall(Boolean.TRUE);
+            target.setNccnCriteriaMet(Boolean.TRUE);
+            if (!CollectionUtils.isEmpty(source.getApsApcCriteriaMet())) {
+                target.setApsApcCriteriaMet(new HashSet<>(source.getApsApcCriteriaMet()));
+            }
+            if (!CollectionUtils.isEmpty(source.getApsApcCriteriaMetIds())) {
+                target.setApsApcCriteriaMetIds(new HashSet<>(source.getApsApcCriteriaMetIds()));
+            }
         }
         target.setDateAssessed(source.getDateAssessed());
         return target;

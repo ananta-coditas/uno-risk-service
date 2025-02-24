@@ -503,6 +503,9 @@ public class TagGenerationUtility {
         List<String> optionsSelected = new ArrayList<>();
         Set<String> tagsSet = new HashSet<>();
         for (QuestionSet questionSet : questionSetList) {
+            if(StringUtils.isEmpty(questionSet.getAnswerKey())) {
+                throw new IllegalArgumentException("Answer key cannot be null or empty "+questionSet.getQuestionKey());
+            }
             optionsSelected.addAll(Stream.of(questionSet.getAnswerKey().split(",", -1)).collect(Collectors.toList()));
         }
         optionsSelected.forEach(x -> {

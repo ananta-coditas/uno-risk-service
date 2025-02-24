@@ -53,16 +53,16 @@ public class NCCNRiskModelUtils {
                 continue;
             }
             if (relative.isFather(proband)) {
-                relativesIdsAndRelationShip.put(proband.getId(), new NCCNPersonRelationShipDetails("FATHER", "OTHER"));
+                relativesIdsAndRelationShip.put(relative.getId(), new NCCNPersonRelationShipDetails("FATHER", "OTHER"));
             }
             if (relative.isMother(proband)) {
-                relativesIdsAndRelationShip.put(proband.getId(), new NCCNPersonRelationShipDetails("MOTHER", "OTHER"));
+                relativesIdsAndRelationShip.put(relative.getId(), new NCCNPersonRelationShipDetails("MOTHER", "OTHER"));
             }
             if (relative.isSibling(proband)) {
-                relativesIdsAndRelationShip.put(proband.getId(), new NCCNPersonRelationShipDetails(relative.getGender() == 0 ? "SISTER" : "BROTHER", "OTHER"));
+                relativesIdsAndRelationShip.put(relative.getId(), new NCCNPersonRelationShipDetails(relative.getGender() == 0 ? "SISTER" : "BROTHER", "OTHER"));
             }
             if (relative.isChild(proband)) {
-                relativesIdsAndRelationShip.put(proband.getId(), new NCCNPersonRelationShipDetails(relative.getGender() == 0 ? "DAUGHTER" : "SON", "OTHER"));
+                relativesIdsAndRelationShip.put(relative.getId(), new NCCNPersonRelationShipDetails(relative.getGender() == 0 ? "DAUGHTER" : "SON", "OTHER"));
             }
         }
         return relativesIdsAndRelationShip;
@@ -103,16 +103,16 @@ public class NCCNRiskModelUtils {
                 continue;
             }
             if (person.isParent(parent)) {
-                relativesIdsAndRelationShip.put(proband.getId(), new NCCNPersonRelationShipDetails(person.getGender() == 0 ? "GRANDMOTHER" : "GRANDFATHER", "MATERNAL"));
+                relativesIdsAndRelationShip.put(person.getId(), new NCCNPersonRelationShipDetails(person.getGender() == 0 ? "GRANDMOTHER" : "GRANDFATHER", "MATERNAL"));
             } else if (person.isSibling(parent)) {
-                relativesIdsAndRelationShip.put(proband.getId(), new NCCNPersonRelationShipDetails(person.getGender() == 0 ? "AUNT" : "UNCLE", "MATERNAL"));
+                relativesIdsAndRelationShip.put(person.getId(), new NCCNPersonRelationShipDetails(person.getGender() == 0 ? "AUNT" : "UNCLE", "MATERNAL"));
             } else if (children.contains(person.getMotherId()) || children.contains(person.getFatherId())) {
-                relativesIdsAndRelationShip.put(proband.getId(), new NCCNPersonRelationShipDetails(person.getGender() == 0 ? "GRANDDAUGHTER" : "GRANDSON", "MATERNAL"));
+                relativesIdsAndRelationShip.put(person.getId(), new NCCNPersonRelationShipDetails(person.getGender() == 0 ? "GRANDDAUGHTER" : "GRANDSON", "MATERNAL"));
             } else if (siblings.contains(person.getMotherId()) || siblings.contains(person.getFatherId())) {
-                relativesIdsAndRelationShip.put(proband.getId(), new NCCNPersonRelationShipDetails(person.getGender() == 0 ? "NIECE" : "NEPHEW", "MATERNAL"));
+                relativesIdsAndRelationShip.put(person.getId(), new NCCNPersonRelationShipDetails(person.getGender() == 0 ? "NIECE" : "NEPHEW", "MATERNAL"));
             } else if (!siblings.contains(person.getId()) && ((parentId != 0 && parentId.equals(person.getMotherId()))
                     || (parentId.equals(person.getFatherId())))) {
-                relativesIdsAndRelationShip.put(proband.getId(), new NCCNPersonRelationShipDetails(person.getGender() == 0 ? "HALF_SISTER" : "HALF_BROTHER", "MATERNAL"));
+                relativesIdsAndRelationShip.put(person.getId(), new NCCNPersonRelationShipDetails(person.getGender() == 0 ? "HALF_SISTER" : "HALF_BROTHER", "MATERNAL"));
             }
         }
         return relativesIdsAndRelationShip;

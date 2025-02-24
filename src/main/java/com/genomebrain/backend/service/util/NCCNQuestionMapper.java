@@ -73,9 +73,9 @@ public enum NCCNQuestionMapper {
             "GREAT_GRANDSON", "AMBRY053_027", "HALF_AUNT", "AMBRY053_028", "HALF_UNCLE", "AMBRY053_029", "HALF_NIECE", "AMBRY053_030", "HALF_NEPHEW", "AMBRY053_031")),
     sideOfFamAnswer(Arrays.asList("MATERNAL", "AMBRY054_001", "PATERNAL", "AMBRY054_002", "OTHER", "AMBRY054_003")),
     sexAtBirthAnswer(Arrays.asList("MALE", "AMBRY002_001", "FEMALE", "AMBRY002_002")),
-    ethnicityAnswer(Arrays.asList("African American", "AMBRY003_001", "Asian", "AMBRY003_002", "Caucasian", "AMBRY003_003", "French Canadian/Cajun", "AMBRY003_004",
-            "Hispanic/Latino", "AMBRY003_005", "Jewish (Ashkenazi)", "AMBRY003_006","Ashkenazi Jewish", "AMBRY003_006", "Jewish(Ashkenazi)", "AMBRY003_006", "Jewish (Sephardic/non-Ashkenazi)", "AMBRY003_007", "Middle Eastern", "AMBRY003_008",
-            "Native American", "AMBRY003_009", "Portuguese", "AMBRY003_010", "Other/not listed", "AMBRY003_011", "I don't know", "AMBRY003_012")),
+    ethnicityAnswer(Arrays.asList("AFRICANAMERICAN", "AMBRY003_001", "ASIAN", "AMBRY003_002", "CAUCASIAN", "AMBRY003_003", "FRENCHCANADIAN", "AMBRY003_004",
+            "HISPANICLATINO", "AMBRY003_005", "JEWISH_ASHKENAZI", "AMBRY003_006","ASHKENAZI_JEWISH", "AMBRY003_006", "JEWISH(ASHKENAZI)", "AMBRY003_006", "JEWISH_NON_ASHKENAZI", "AMBRY003_007", "MIDDLEEASTERN", "AMBRY003_008",
+            "NATIVEAMERICAN", "AMBRY003_009", "PORTUGUESE", "AMBRY003_010", "OTHER", "AMBRY003_011", "UNKNOWN", "AMBRY003_012")),
 
     cancerOverallAnswer(Arrays.asList("YES", "AMBRY004_001", "NO", "AMBRY004_002")),
 
@@ -110,14 +110,14 @@ public enum NCCNQuestionMapper {
             "Half sister", "AMBRY114_011", "Half brother", "AMBRY114_012", "Grandmother", "AMBRY114_013", "Grandfather", "AMBRY114_014", "Aunt", "AMBRY114_015",
             "Uncle", "AMBRY114_016", "First cousin (male)", "AMBRY114_017", "First cousin (female)", "AMBRY114_018", "Great grandmother", "AMBRY114_019",
             "Great grandfather", "AMBRY114_020","Great aunt", "AMBRY114_021", "Great uncle", "AMBRY114_022", "Other", "AMBRY114_023")),
-    polypTypeAnswer(Arrays.asList("Yes", "AMBRY116_001", "No", "AMBRY116_002", "I don't know", "AMBRY116_003")),// NEED to check
+    polypTypeAnswer(Arrays.asList("YES", "AMBRY116_001", "NO", "AMBRY116_002", "UNKNOWN", "AMBRY116_003")),// NEED to check
     exactNumOfPolypsAnswer(Arrays.asList("1-4", "AMBRY117_001", "5-9", "AMBRY117_002", "10-19", "AMBRY117_003", "20 or more", "AMBRY117_005", "I don't know", "AMBRY117_004")),
     gastricDiffuseAnswer(Arrays.asList("Yes", "AMBRY186_001", "No", "AMBRY186_002","I don't know", "AMBRY186_03")),
     relativeGastricDiffuseAnswer(Arrays.asList("Yes", "AMBRY187_001", "No", "AMBRY187_002", "I don't know", "AMBRY187_003")),
     relativeColorectalMultiplePrimariesAnswer(Arrays.asList("YES", "AMBRY067_002", "NO", "AMBRY067_001")),
     relativeBreastIpsilateralAnswer(Arrays.asList("Both breasts (bilateral)", "AMBRY124_001")),
-    relativeMetastaticAnswer(Arrays.asList("yes", "AMBRY066_001", "no", "AMBRY066_002", "I don't know", "AMBRY066_003")),
-    relativeMultiplePrimariesAnswer(Arrays.asList("No", "AMBRY057_001", "Yes", "AMBRY057_002")), //need to check and discuss for option
+    relativeMetastaticAnswer(Arrays.asList("YES", "AMBRY066_001", "NO", "AMBRY066_002", "UNKNOWN", "AMBRY066_003")),
+    relativeMultiplePrimariesAnswer(Arrays.asList("NO", "AMBRY057_001", "YES", "AMBRY057_002")), //need to check and discuss for option
     relativePathologyAnswer(Arrays.asList("DCIS", "AMBRY009_001", "IDC", "AMBRY009_002", "ILC", "AMBRY009_003", "Other", "AMBRY009_004", "I don't know", "AMBRY009_005")),
     relativeBreastErAnswer(Arrays.asList("YES", "AMBRY059_001", "NO", "AMBRY059_002", "NOT_PROVIDED", "AMBRY059_003")),
     relativeProstateGleasonScoreAnswer(Arrays.asList("7 or less", "AMBRY065_001", "Higher than 7", "AMBRY065_002", "I don't know", "AMBRY065_003")),

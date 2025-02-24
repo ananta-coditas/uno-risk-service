@@ -1,0 +1,50 @@
+{
+    "family": [
+        {
+            "id": 1,
+            "gender": 2,
+            "proband": true,
+            "transId": null,
+            "age": null,
+            "ageOfDeath": null,
+            "fatherId": 0,
+            "motherId": 0,
+            "testOrder": 0,
+            "vitalStatus": "ALIVE",
+            "ethnic": "NA",
+            "familyRace": "Unknown",
+            "performedBiopsy": false,
+            "biopsyCount": 0,
+            "menarcheAge": 0,
+            "hasLiveBirth": false,
+            "liveBirthAge": 0,
+            "hyperplasiaType": "NONE",
+            "hasHyperplasia": false,
+            "hasAtypicalHyperplasia": false,
+            "hasLCIS": false,
+            "hasDCIS": false,
+            "hasMantleRadiation": false,
+            "densityMeasure": "NONE",
+            "densityValue": -99.0,
+            "hrtType": null,
+            "usedHRT": "NEVER",
+            "yearsPastHRT": 0.0,
+            "yearsFutureHRT": 0.0,
+            "yearsSinceHRT": 0.0,
+            "polypOverall": "YES",
+            "polypDetails": {
+                "polypType": "Adenoma",
+                "numOfColorectalPolyps":10
+            }
+        }
+    ],
+    "requestedModels": [
+        {
+            "name": "NCCN",
+            "ageBy": 0,
+            "ageTo": 0,
+            "saveIncoming": null,
+            "chartCode": null
+        }
+    ]
+}
