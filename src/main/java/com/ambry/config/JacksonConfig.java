@@ -12,6 +12,7 @@ import com.ambry.progeny.deserializer.BRCADeserializer;
 import com.ambry.progeny.deserializer.MMRDeserializer;
 import com.ambry.progeny.deserializer.MelaDeserializer;
 import com.ambry.progeny.deserializer.PancDeserializer;
+import com.ambry.progeny.deserializer.BRCADeserializer;
 import com.ambry.progeny.serializer.ClausResultSerializer;
 import com.ambry.progeny.serializer.GailResultSerializer;
 import com.ambry.progeny.serializer.PredictionSerializer;
@@ -62,24 +63,24 @@ public class JacksonConfig {
     @Bean
     public SimpleModule customSerializer() {
         SimpleModule module = new SimpleModule();
-        module.addSerializer(GailResult.class, new GailResultSerializer());
-        module.addSerializer(Prediction.class, new PredictionSerializer());
-        module.addSerializer(ClausResult.class, new ClausResultSerializer());
-        module.addSerializer(PREMMResult.class, new PremmResultSerializer());
-        module.addSerializer(TyrerResult.class, new TyrerResultSerializer());
-        module.addSerializer(BRCAResult.class, new BrcaResultSerializer());
-        module.addSerializer(MMRResult.class, new MMRResultSerializer());
-        module.addSerializer(MelaResult.class, new MelaResultSerializer());
-        module.addSerializer(PancResult.class, new PancResultSerializer());
+        //module.addSerializer(GailResult.class, new GailResultSerializer());
+        //module.addSerializer(Prediction.class, new PredictionSerializer());
+        //module.addSerializer(ClausResult.class, new ClausResultSerializer());
+        //module.addSerializer(PREMMResult.class, new PremmResultSerializer());
+        //module.addSerializer(TyrerResult.class, new TyrerResultSerializer());
+        //module.addSerializer(BRCAResult.class, new BrcaResultSerializer());
+        //module.addSerializer(MMRResult.class, new MMRResultSerializer());
+        //module.addSerializer(MelaResult.class, new MelaResultSerializer());
+        //module.addSerializer(PancResult.class, new PancResultSerializer());
 
-        module.addDeserializer(Risk.class, new GailRiskDeserializer());
-        module.addDeserializer(com.objex.risk.beans.claus.Risk.class, new ClausDeserializer());
-        module.addDeserializer(com.objex.risk.beans.premm.Risk.class, new PremmDeserializer());
-        module.addDeserializer(com.objex.risk.beans.tcuzick.Risk.class, new TyrerDeserializer());
-        module.addDeserializer(com.objex.risk.beans.brca.Risk.class, new BRCADeserializer());
-        module.addDeserializer(com.objex.risk.beans.mmr.Risk.class, new MMRDeserializer());
-        module.addDeserializer(com.objex.risk.beans.mela.Risk.class, new MelaDeserializer());
-        module.addDeserializer(com.objex.risk.beans.panc.Risk.class, new PancDeserializer());
+        //module.addDeserializer(Risk.class, new GailRiskDeserializer());
+        //module.addDeserializer(com.objex.risk.beans.claus.Risk.class, new ClausDeserializer());
+        //module.addDeserializer(com.objex.risk.beans.premm.Risk.class, new PremmDeserializer());
+        //module.addDeserializer(com.objex.risk.beans.tcuzick.Risk.class, new TyrerDeserializer());
+        //module.addDeserializer(com.objex.risk.beans.brca.Risk.class, new BRCADeserializer());
+        //module.addDeserializer(com.objex.risk.beans.mmr.Risk.class, new MMRDeserializer());
+        //module.addDeserializer(com.objex.risk.beans.mela.Risk.class, new MelaDeserializer());
+        //module.addDeserializer(com.objex.risk.beans.panc.Risk.class, new PancDeserializer());
         return module;
     }
 
