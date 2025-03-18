@@ -12,6 +12,7 @@ import com.objex.risk.beans.BasePerson;
 import com.objex.risk.beans.BaseResult;
 import com.objex.risk.beans.BaseRisk;
 import com.objex.risk.beans.brca.BRCAResult;
+import com.objex.risk.beans.brca.Marker;
 import com.objex.risk.beans.uno.Cancer;
 import com.objex.risk.beans.uno.Cancer.CancerType;
 import com.objex.risk.beans.uno.CancerDetails;
@@ -97,10 +98,20 @@ public class BRCAProRiskModelTransformer extends RiskModelTransformer implements
 		}
 		member.setAgeMasectomy(person.getAgeMasectomy());
 		member.setAgeOophorectomy(person.getAgeOophorectomy());
-	    //member.setEthnic(person.getEthnic());
+	    member.setEthnic(person.getEthnic());
 	    member.setPerformedMasectomy(person.isPerformedMasectomy());
 	    member.setPerformedOophorectomy(person.isPerformedOophorectomy());
-		//member.setMarker();
+	    if (person.getMarker() != null) {
+	    		Marker marker = new Marker();
+	    		marker.setCK14(person.getMarker().getCK14());
+	    		marker.setCK56(person.getMarker().getCK56());
+	    		marker.setCK5_6(person.getMarker().getCK5_6());
+	    		marker.setER(person.getMarker().getER());
+	    		marker.setHER2(person.getMarker().getHER2());
+	    		marker.setPR(person.getMarker().getPR());
+	    		marker.setTransId(person.getTransId());
+	    		member.setMarker(marker);
+	    }
 
 	}
 

@@ -11,6 +11,7 @@ import com.objex.risk.beans.AffectedType;
 import com.objex.risk.beans.BasePerson;
 import com.objex.risk.beans.BaseResult;
 import com.objex.risk.beans.BaseRisk;
+import com.objex.risk.beans.mmr.Marker;
 import com.objex.risk.beans.mmr.MMRResult;
 import com.objex.risk.beans.uno.Cancer;
 import com.objex.risk.beans.uno.Cancer.CancerType;
@@ -87,7 +88,13 @@ public class MMRProRiskModelTransformer extends RiskModelTransformer implements 
 				member.setDiagnoseEndometriumAge(endometrium.getDiagnoseAge());
 			}
 		}
-		member.setMarker(null); //TODO
+	    if (person.getMarker() != null) {
+    		Marker marker = new Marker();
+    		marker.setLocation(person.getMarker().getLocation());
+    		marker.setMsi(person.getMarker().getMsi());
+    		marker.setTransId(person.getTransId());
+    		member.setMarker(marker);
+	    }
 
 	}
 
