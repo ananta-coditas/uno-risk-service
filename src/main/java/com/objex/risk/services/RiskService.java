@@ -71,7 +71,7 @@ import org.rosuda.REngine.Rserve.RserveException;
 public class RiskService {
     
     final static Logger LOG = LoggerFactory.getLogger(RiskService.class);
-    public static final String BAYES_VERSION = "BayesMendel v2.1.8";
+    public static final String BAYES_VERSION = "BayesMendel v2.1.8 © 2020 DFCI. All Rights Reserved.";
     private static int maxConnections = 0;
     private static int connectionCount = 0;
     private static List<RConnection> connections = Collections.synchronizedList(new ArrayList<RConnection>());

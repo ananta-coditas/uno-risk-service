@@ -18,15 +18,17 @@ import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author jason
  */
+@Service
 public class PremmDelegate {
     final static Logger LOG = LoggerFactory.getLogger(PremmDelegate.class);
     
-    public static final String PREMM_VERSION = "PREMM 5";
+    public static final String PREMM_VERSION = "PREMM5 © 2018 DFCI. All Rights Reserved. PREMM® is a registered trademark of Dana-Farber Cancer Institute, Inc.";
     public static final Integer PROB_ENDO_MIN = 31;
     public static final Integer PROB_ENDO_MAX = 67;
     public static final Integer FDR_ENDO_MIN = 28;
