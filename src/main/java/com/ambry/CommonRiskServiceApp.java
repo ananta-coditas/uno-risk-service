@@ -3,6 +3,7 @@ package com.ambry;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -33,6 +34,9 @@ public class CommonRiskServiceApp {
 
     private final Environment env;
 
+    public CommonRiskServiceApp() {
+    	
+    }
     public CommonRiskServiceApp(Environment env) {
         this.env = env;
     }
@@ -45,7 +49,8 @@ public class CommonRiskServiceApp {
      */
     @PostConstruct
     public void initApplication() {
-        Collection<String> activeProfiles = Arrays.asList(env.getActiveProfiles());
+        LOG.info("Environment in initApplication " + env);
+        Collection<String> activeProfiles = env == null ? new ArrayList() : Arrays.asList(env.getActiveProfiles());
         if (
             activeProfiles.contains(UnoFrameworkConstants.SPRING_PROFILE_DEVELOPMENT) &&
             activeProfiles.contains(UnoFrameworkConstants.SPRING_PROFILE_PRODUCTION)
