@@ -96,15 +96,14 @@ public class BRCAProRiskModelTransformer extends RiskModelTransformer implements
 				member.setDiagnoseOvarianAge(ovarian.getDiagnoseAge());
 			}
 		}
-		member.setAgeMasectomy(person.getAgeMasectomy());
+		member.setAgeMasectomy(person.getAgeMastectomy());
 		member.setAgeOophorectomy(person.getAgeOophorectomy());
 	    member.setEthnic(person.getEthnic());
-	    member.setPerformedMasectomy(person.isPerformedMasectomy());
+	    member.setPerformedMasectomy(person.isPerformedMastectomy());
 	    member.setPerformedOophorectomy(person.isPerformedOophorectomy());
 	    if (person.getMarker() != null) {
 	    		Marker marker = new Marker();
 	    		marker.setCK14(person.getMarker().getCK14());
-	    		marker.setCK56(person.getMarker().getCK56());
 	    		marker.setCK5_6(person.getMarker().getCK5_6());
 	    		marker.setER(person.getMarker().getER());
 	    		marker.setHER2(person.getMarker().getHER2());
