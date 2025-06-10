@@ -18,11 +18,13 @@ import com.objex.risk.beans.gail.Person.Race;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author jason
  */
+@Service
 public class GailDelegate {
      final static Logger LOG = LoggerFactory.getLogger(GailDelegate.class);
     
@@ -110,7 +112,7 @@ public class GailDelegate {
             result.addError(new RiskError(MENARCHE_ERROR));
         }
         if (predictionAge > risk.getAgeTo()) {
-            result.addError(new RiskError(proband.getId(),"Proband age is too hight or not set"));
+            result.addError(new RiskError(proband.getId(),"Proband age is too hight or not set","ProbandAgeHigh"));
         }
     }
 

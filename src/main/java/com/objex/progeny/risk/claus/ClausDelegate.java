@@ -27,11 +27,13 @@ import java.util.List;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author jason
  */
+@Service
 public class ClausDelegate {
     
      final static Logger LOG = LoggerFactory.getLogger(ClausDelegate.class);
