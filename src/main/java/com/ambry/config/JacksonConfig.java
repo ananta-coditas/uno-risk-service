@@ -22,6 +22,7 @@ import com.ambry.progeny.serializer.BrcaResultSerializer;
 import com.ambry.progeny.serializer.MMRResultSerializer;
 import com.ambry.progeny.serializer.MelaResultSerializer;
 import com.ambry.progeny.serializer.PancResultSerializer;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -87,6 +88,7 @@ public class JacksonConfig {
     @Bean
     public ObjectMapper objectMapper(SimpleModule customSerializer) {
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         objectMapper.addMixIn(BaseResult.class, BaseResultMixIn.class);
         objectMapper.registerModule(customSerializer);
         return objectMapper;
