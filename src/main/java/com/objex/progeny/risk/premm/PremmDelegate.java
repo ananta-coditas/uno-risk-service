@@ -14,6 +14,9 @@ import static com.objex.risk.beans.premm.Person.MSH2;
 import static com.objex.risk.beans.premm.Person.MSH6;
 import static com.objex.risk.beans.premm.Person.PMS2;
 import com.objex.risk.beans.premm.Risk;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
@@ -65,17 +68,24 @@ public class PremmDelegate {
         }
         
         List<Person> secondDegreeRelatives = Utils.getSideOfFamilySecondDegreeRelatives(risk,Person.class,true);
-        PREMMResult matResult = calculate(risk,matFDRs,secondDegreeRelatives);
+        PREMMResult matResult = calculate(risk,firstDegreeRelatives,secondDegreeRelatives);
         
         secondDegreeRelatives = Utils.getSideOfFamilySecondDegreeRelatives(risk,Person.class,false);
-        PREMMResult patResult = calculate(risk,patFDRs,secondDegreeRelatives);
+        PREMMResult patResult = calculate(risk,firstDegreeRelatives,secondDegreeRelatives);
         
         LOG.debug("maternal: " + matResult.getProbabilityCarrier() + " paternal: " + patResult.getProbabilityCarrier());
         result = matResult.getProbabilityCarrier() > patResult.getProbabilityCarrier() ? matResult : patResult;
+        roundResultValues(result);
         return result;
     }
 
-    protected PREMMResult calculate(Risk risk, List<Person> firstDegreeRelatives, List<Person> secondDegreeRelatives) {
+    private void roundResultValues(PREMMResult result) {
+    	if (result.getProbabilityCarrier() != null && !result.getProbabilityCarrier().isNaN()) 
+    		result.setProbabilityCarrier(BigDecimal.valueOf(result.getProbabilityCarrier()).setScale(3,RoundingMode.HALF_UP).doubleValue());
+		
+	}
+
+	protected PREMMResult calculate(Risk risk, List<Person> firstDegreeRelatives, List<Person> secondDegreeRelatives) {
         PREMMResult result;
         //List<Person> secondDegreeRelatives = Utils.getSecondDegreeRelatives(risk,Person.class);
         Person proband = risk.getFamily().get(0);
@@ -271,7 +281,7 @@ public class PremmDelegate {
         int v4 = presence(proband.getAffectedRelatedType().isAffected());
         int ageV10 = proband.getAge();  //TODO complicate this
         
-        int countColFDR = countAffectedColon(firstDegreeRelatives);
+        int countColFDR = countAffectedColon(firstDegreeRelatives); 
         int countColSDR = countAffectedColon(secondDegreeRelatives);
         Integer affectedFamAgeEndoMult = calcFamEndometriumAgeMultiplier(proband,firstDegreeRelatives, secondDegreeRelatives);
         
