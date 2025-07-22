@@ -12,6 +12,9 @@
 # ===================================================================
 
 logging:
+  file:
+    path: ${catalina.base:${user.home}}/logs
+    name: ${catalina.base:${user.home}}/logs/common-risk-server.log
   level:
     ROOT: DEBUG
     org.hibernate.SQL: DEBUG
