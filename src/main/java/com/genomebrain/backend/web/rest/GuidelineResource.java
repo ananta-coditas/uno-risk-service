@@ -2,13 +2,17 @@ package com.genomebrain.backend.web.rest;
 
 import com.genomebrain.backend.service.GuideLineService;
 import com.genomebrain.backend.service.dto.GenomeBrainResponseDTO;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+//import javax.servlet.http.HttpServletRequest;
+//import javax.servlet.http.HttpSession;
 
 /**
  * REST controller for managing guideline requests.

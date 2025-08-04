@@ -29,8 +29,14 @@ public class GuideLinesDetailsRepositoryImpl implements CustomGuideLinesDetailsR
     }
     
     public List<GuideLinesDetails> findAll() {
+    	List<GuideLinesDetails> details = new ArrayList<>();
         log.info("Fetching all guidelines data from JSON file");
-        return loadDataFromJson(guidelinesDataFilePath);
+        try {
+        	details = loadDataFromJson(guidelinesDataFilePath);
+        } catch (Throwable f) {
+            log.warn("Fetching all guidelines data from JSON file has failed " + f);
+		}
+        return details;
     }
 
     @Override
