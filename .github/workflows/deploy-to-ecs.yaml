@@ -1,0 +1,96 @@
+name: Deploy to Amazon ECS
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  IMAGE_TAG: ${{ github.sha }}
+
+jobs:
+  deploy:
+    environment: development  # Specify the environment for deployment so environment variables and secrets can be used from there
+    name: Build and Deploy to ECS
+    runs-on: ubuntu-latest
+
+    env:
+      ECR_REPOSITORY: 034362031415.dkr.ecr.us-west-2.amazonaws.com/uno-risk-service-ecr
+      ECS_CLUSTER_NAME: uno-dev-ecs
+      ECS_SERVICE_NAME: uno-order-service-td-service-pg0nzjgo
+      ECS_TASK_DEFINITION_FAMILY: uno-order-service-td
+      CONTAINER_NAME: uno-order-service
+      AWS_REGION: ${{ vars.AWS_REGION_DEV }}
+      AWS_ACCESS_KEY_ID: ${{ vars.AWS_ACCESS_KEY_ID_DEV }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_DEV }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and tag Docker image
+        run: |
+          docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
+          docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_REPOSITORY:latest
+          docker images
+
+      - name: Push Docker image to ECR
+        run: |
+          docker push $ECR_REPOSITORY:$IMAGE_TAG
+          #docker push $ECR_REPOSITORY:latest
+
+      - name: Download ECS Task Definition with relevant fields
+        run: |
+          aws ecs describe-task-definition \
+            --task-definition ${{ env.ECS_TASK_DEFINITION_FAMILY }} \
+            --query "taskDefinition | {
+              family: family,
+              taskRoleArn: taskRoleArn,
+              executionRoleArn: executionRoleArn,
+              networkMode: networkMode,
+              containerDefinitions: containerDefinitions,
+              volumes: volumes,
+              placementConstraints: placementConstraints,
+              requiresCompatibilities: requiresCompatibilities,
+              cpu: cpu,
+              memory: memory,
+              runtimePlatform: runtimePlatform
+            }" \
+            --output json > task-definition.json
+
+
+      - name: Update Task Definition with new image tag
+        run: |
+          jq --arg IMAGE "$ECR_REPOSITORY:$IMAGE_TAG" \
+            --arg CONTAINER "${{ env.CONTAINER_NAME }}" \
+            '.containerDefinitions |= map(if .name == $CONTAINER then .image = $IMAGE else . end)' \
+            task-definition.json >> new-task-def.json
+
+
+      - name: Create new Task Definition revision
+        id: register-task-def
+        run: |
+          aws ecs register-task-definition \
+            --cli-input-json file://new-task-def.json > task-def-out.json
+          echo "TASK_DEF_ARN=$(jq -r '.taskDefinition.taskDefinitionArn' task-def-out.json)" >> $GITHUB_ENV
+
+      - name: Force new Deployment with updated task Definition
+        run: |
+          aws ecs update-service \
+            --cluster ${{ env.ECS_CLUSTER_NAME }} \
+            --service ${{ env.ECS_SERVICE_NAME }} \
+            --task-definition ${{ env.TASK_DEF_ARN }} \
+            --force-new-deployment
+
