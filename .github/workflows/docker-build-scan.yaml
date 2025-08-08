@@ -1,0 +1,30 @@
+name: Docker ECR Scan
+
+on:
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+
+jobs:
+  docker-scan:
+    uses: ambrygen/github-reusable-workflows/.github/workflows/docker-build-scan-source.yaml@v2
+    if: github.event.repository.name != 'github-reusable-workflows'
+    with:
+      ecr_repository: uno-risk-service-ecr      ## ECR repository name. For example, if your ECR repository is named "my-ecr-repo", set this to "my-ecr-repo".
+      working_directory: myimage                ## Path to the directory containing Dockerfile. For example, if your Dockerfile is in the root directory, set this to "." or "myimage".
+      fail_on_severities: "CRITICAL,HIGH"       ## Comma-separated list of severities to fail on. Example: "CRITICAL,HIGH". To bypass, set to empty string ""
+      env_file_name: "infrastructure/.env.test" ## Name of the .env file containing environment variables. This file should be present in the .github/workflows directory.
+      service_name: uno-risk-service-ecr        ## Name of the service to build, example "sample-app"
+      dockerfile: "Dockerfile"                  ## Optional: Path to the Dockerfile (relative to working_directory). Defaults to 'Dockerfile'. Example: "docker/Dockerfile.prod"
+      runs_on: "ubuntu-latest"                  ## Optional: Runner to use for jobs. Defaults to 'ubuntu-latest'. For self-hosted runners, specify the runner label like "self-hosted"
+      environment: "test"                        # Optional: Environment to run the workflow in, used to determine the environment variables to load.
+    secrets: inherit
