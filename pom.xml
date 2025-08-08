@@ -4,11 +4,11 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>common-risk-service</artifactId>
+  <artifactId>uno-risk-service</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <packaging>war</packaging>
-  <name>common-risk-service</name>
-  <description>Description for common-risk-service</description>
+  <packaging>jar</packaging>
+  <name>uno-risk-service</name>
+  <description>Description for uno-risk-service</description>
   <parent>
     <groupId>com.ambry</groupId>
     <artifactId>uno-spring-boot-foundation-bom</artifactId>
@@ -305,7 +305,7 @@
 
   <build>
     <defaultGoal>spring-boot:run</defaultGoal>
-    <finalName>common-risk-service</finalName>
+    <finalName>uno-risk-service</finalName>
     <resources>
       <resource>
         <directory>${basedir}/src/main/resources/</directory>
