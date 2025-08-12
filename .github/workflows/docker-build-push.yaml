@@ -5,13 +5,13 @@ description: "Builds, scans, and pushes the container image to ECR for the speci
 on:
   pull_request:
     branches:
-      - develop
+      - dev
       - release/**/*
     paths:
       - "**"
   push:
     branches:
-      - develop
+      - dev
       - release/**/*
     paths:
       - "**"
