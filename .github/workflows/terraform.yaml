@@ -1,91 +1,78 @@
-name: "Build Infrastructure: tracker"
-permissions:
-  id-token: write
-  contents: write
-  pull-requests: write
-  actions: read
-  security-events: write
-on:
-  pull_request:
-    branches:
-      - develop
-      - release/**/*
-    paths:
-      - infrastructure/**/*
-      - "!**.md"
-  push:
-    branches:
-      - develop
-      - release/**/*
-    paths:
-      - infrastructure/**/*
-      - "!**.md"
-  workflow_dispatch:
-    inputs:
-      terraform_action:
-        description: "Which Terraform action to take"
-        required: true
-        type: choice
-        options:
-          - apply
-          - plan
-          - destroy
-      target_environment:
-        description: "Which environment to deploy to"
-        required: true
-        type: choice
-        options:
-          - int
-          - test
-          - stage
-          - prod
-jobs:
-  terraform-int:
-    name: "TF-Int"
-    if: github.base_ref == 'develop' || github.ref == 'refs/heads/develop' || github.event.inputs.target_environment == 'int'
-    uses: ambrygen/github-reusable-workflows/.github/workflows/terraform-workflow-source.yaml@v2
-    with:
-      terraform_action: ${{ ( github.event_name == 'push' || github.event.inputs.terraform_action == 'apply' ) && 'apply' || github.event.inputs.terraform_action == 'destroy' && 'destroy' || 'plan' }}
-      working_directory: "infrastructure"
-      tfvars: "environment/tf_vars/test.tfvars"
-      env_file_name: "infrastructure/.env.int"
-      environment: int
-    secrets: inherit
-
-  terraform-test:
-    name: "TF-Test"
-    if: startsWith(github.ref, 'refs/heads/release/') || github.event.inputs.target_environment == 'test'
-    uses: ambrygen/github-reusable-workflows/.github/workflows/terraform-workflow-source.yaml@v2
-    with:
-      terraform_action: ${{ (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/release/')) || github.event.inputs.terraform_action == 'apply' && 'apply' || github.event.inputs.terraform_action == 'destroy' && 'destroy' || 'plan' }}
-      working_directory: "infrastructure"
-      tfvars: "environment/tf_vars/test.tfvars"
-      env_file_name: "infrastructure/.env.test"
-      environment: test
-    secrets: inherit
-
-  terraform-stage:
-    needs: [terraform-test]
-    name: "TF-Stage"
-    if: startsWith(github.ref, 'refs/heads/release/') || github.event.inputs.target_environment == 'stage'
-    uses: ambrygen/github-reusable-workflows/.github/workflows/terraform-workflow-source.yaml@v2
-    with:
-      terraform_action: ${{ (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/release/')) || github.event.inputs.terraform_action == 'apply' && 'apply' || github.event.inputs.terraform_action == 'destroy' && 'destroy' || 'plan' }}
-      working_directory: "infrastructure"
-      tfvars: "environment/tf_vars/stage.tfvars"
-      env_file_name: "infrastructure/.env.stage"
-      environment: stage
-    secrets: inherit
-
-  terraform-prod:
-    needs: [terraform-stage]
-    name: "TF-Prod"
-    if: startsWith(github.ref, 'refs/heads/release/') || github.event.inputs.target_environment == 'prod'
-    uses: ambrygen/github-reusable-workflows/.github/workflows/terraform-workflow-source.yaml@v2
-    with:
-      terraform_action: ${{ (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/release/')) || github.event.inputs.terraform_action == 'apply' && 'apply' || github.event.inputs.terraform_action == 'destroy' && 'destroy' || 'plan' }}
-      working_directory: "infrastructure"
-      tfvars: "environment/tf_vars/prod.tfvars"
-      env_file_name: "infrastructure/.env.prod"
-      environment: prod
-    secrets: inherit
+#name: "Build Infrastructure: uno-risk-service"
+#permissions:
+#  id-token: write
+#  contents: write
+#  pull-requests: write
+#  actions: read
+#  security-events: write
+#on:
+#  pull_request:
+#    branches:
+#      - develop
+#      - release/**/*
+#    paths:
+#      - infrastructure/**/*
+#      - "!**.md"
+#  push:
+#    branches:
+#      - develop
+#      - release/**/*
+#    paths:
+#      - infrastructure/**/*
+#      - "!**.md"
+#  workflow_dispatch:
+#    inputs:
+#      terraform_action:
+#        description: "Which Terraform action to take"
+#        required: true
+#        type: choice
+#        options:
+#          - apply
+#          - plan
+#          - destroy
+#      target_environment:
+#        description: "Which environment to deploy to"
+#        required: true
+#        type: choice
+#        options:
+#          - test
+#          - stage
+#          - prod
+#jobs:
+#  terraform-test:
+#    name: "TF-Test"
+#    if: startsWith(github.ref, 'refs/heads/release/') || github.event.inputs.target_environment == 'test'
+#    uses: ambrygen/github-reusable-workflows/.github/workflows/terraform-workflow-source.yaml@v2
+#    with:
+#      terraform_action: ${{ (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/release/')) || github.event.inputs.terraform_action == 'apply' && 'apply' || github.event.inputs.terraform_action == 'destroy' && 'destroy' || 'plan' }}
+#      working_directory: "infrastructure"
+#      tfvars: "environment/tf_vars/test.tfvars"
+#      env_file_name: "infrastructure/.env.test"
+#      environment: test
+#    secrets: inherit
+#
+#  terraform-stage:
+#    needs: [terraform-test]
+#    name: "TF-Stage"
+#    if: startsWith(github.ref, 'refs/heads/release/') || github.event.inputs.target_environment == 'stage'
+#    uses: ambrygen/github-reusable-workflows/.github/workflows/terraform-workflow-source.yaml@v2
+#    with:
+#      terraform_action: ${{ (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/release/')) || github.event.inputs.terraform_action == 'apply' && 'apply' || github.event.inputs.terraform_action == 'destroy' && 'destroy' || 'plan' }}
+#      working_directory: "infrastructure"
+#      tfvars: "environment/tf_vars/stage.tfvars"
+#      env_file_name: "infrastructure/.env.stage"
+#      environment: stage
+#    secrets: inherit
+#
+#  terraform-prod:
+#    needs: [terraform-stage]
+#    name: "TF-Prod"
+#    if: startsWith(github.ref, 'refs/heads/release/') || github.event.inputs.target_environment == 'prod'
+#    uses: ambrygen/github-reusable-workflows/.github/workflows/terraform-workflow-source.yaml@v2
+#    with:
+#      terraform_action: ${{ (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/release/')) || github.event.inputs.terraform_action == 'apply' && 'apply' || github.event.inputs.terraform_action == 'destroy' && 'destroy' || 'plan' }}
+#      working_directory: "infrastructure"
+#      tfvars: "environment/tf_vars/prod.tfvars"
+#      env_file_name: "infrastructure/.env.prod"
+#      environment: prod
+#    secrets: inherit

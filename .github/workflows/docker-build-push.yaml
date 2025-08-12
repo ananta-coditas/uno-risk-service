@@ -1,0 +1,50 @@
+# ---------------------------------------------------- #
+name: Build, Scan, and Push Container Image
+# ---------------------------------------------------- #
+description: "Builds, scans, and pushes the container image to ECR for the specified environment."
+on:
+  pull_request:
+    branches:
+      - develop
+      - release/**/*
+    paths:
+      - "**"
+  push:
+    branches:
+      - develop
+      - release/**/*
+    paths:
+      - "**"
+  workflow_dispatch:
+  # ---------------------------------------------------- #
+  id-token: write
+  contents: read
+  pull-requests: write
+# ---------------------------------------------------- #
+jobs:
+  build-docker-image-develop:
+    name: Build-ECR-Image-Develop ${{ matrix.service.name }}
+    if: github.ref == 'refs/heads/develop' || github.base_ref == 'develop'
+    uses: ambrygen/github-reusable-workflows/.github/workflows/docker-build-scan-source.yaml@v2
+    with:
+      working_directory: .
+      service_name: uno-risk-service
+      ecr_repository: uno-risk-service
+      env_file_name: "infrastructure/.env.shared_services"
+      environment: shared_services
+      fail_on_severities: CRITICAL
+    secrets: inherit
+
+#  build-docker-image-prod:
+#    name: Build-ECR-Image-Prod ${{ matrix.service.name }}
+#    if: startsWith(github.ref, 'refs/heads/release/') || startsWith(github.base_ref, 'release/')
+#    uses: ambrygen/github-reusable-workflows/.github/workflows/docker-build-scan-source.yaml@v2
+#    with:
+#      working_directory: .
+#      service_name: uno-risk-service
+#      ecr_repository: uno-risk-service
+#      env_file_name: "infrastructure/.env.shared_services"
+#      environment: shared_services
+#      fail_on_severities: CRITICAL
+#    secrets: inherit
+# ---------------------------------------------------- #
