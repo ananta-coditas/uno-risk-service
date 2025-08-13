@@ -7,6 +7,9 @@ WORKDIR /app
 # Add a non-root user for security (optional but recommended)
 RUN adduser -D -u 1000 appuser
 
+# Creates JAR file in target directory
+RUN mvn clean package
+
 # Copy the JAR file
 COPY target/uno-risk-service.jar app.jar
 
