@@ -13,7 +13,7 @@
 
 spring:
   application:
-    name: uno-web-biolerplate
+    name: uno-risk-service
   cloud:
   # Replace by 'prod, faker' to add the faker context and have sample data loaded in production
   liquibase:
@@ -35,13 +35,13 @@ spring:
           authorities-claim-name: auth
   task:
     execution:
-      thread-name-prefix: uno-web-biolerplate-task-
+      thread-name-prefix: uno-risk-service-task-
       pool:
         core-size: 1
         max-size: 50
         queue-capacity: 10000
     scheduling:
-      thread-name-prefix: uno-web-biolerplate-scheduling-
+      thread-name-prefix: uno-risk-service-scheduling-
       pool:
         size: 20
   thymeleaf:
@@ -53,9 +53,9 @@ server:
 
 uno:
   clientApp:
-    name: 'uno-web-biolerplate'
+    name: uno-risk-service
   mail:
-    from: uno-web-biolerplate@localhost.com
+    from: uno-risk-service@localhost.com
     base-url: http://127.0.0.1:8080
   logging:
     # To test json console appender

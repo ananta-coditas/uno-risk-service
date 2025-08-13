@@ -1,6 +1,6 @@
 # Use a minimal OpenJDK 17 base image
 # FROM eclipse-temurin:17-jdk-alpine as base
-FROM maven:3.8.5-openjdk-17-slim AS base
+FROM maven:3.9.6-eclipse-temurin-17 AS base
 
 # Set working directory
 WORKDIR /app
@@ -52,4 +52,4 @@ EXPOSE 8080
 
 
 # Run the Spring Boot app
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "uno-risk-service.jar"]
