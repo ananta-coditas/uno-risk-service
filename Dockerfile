@@ -36,7 +36,7 @@ COPY src .
 COPY pom.xml .
 COPY sonar-project.properties .
 # Creates JAR file in target directory
-RUN mvn package 
+RUN mvn clean package 
 
 # Copy the JAR file
 COPY target/uno-risk-service.jar app.jar
