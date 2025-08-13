@@ -1,6 +1,6 @@
 # Use a minimal OpenJDK 17 base image
 # FROM eclipse-temurin:17-jdk-alpine as base
-FROM maven:3.8.5-openjdk-17-slim AS base
+FROM maven:3.9.6-eclipse-temurin-17 AS base
 
 # Set working directory
 WORKDIR /app
@@ -8,7 +8,7 @@ WORKDIR /app
 # Add a non-root user for security (optional but recommended)
 
 #RUN adduser -D -u 1000 appuser
-COPY dependencies .
+COPY dependencies/ dependencies/
 
 # Go to the extracted 'dependencies' folder and execute below commands to manually install the maven dependency.
 
@@ -32,14 +32,15 @@ RUN mvn install:install-file -Dfile=Rserve.jar -DgroupId=org.rosouda -DartifactI
 
 RUN mvn install:install-file -Dfile=RiskObjects-1.4.jar -DgroupId=com.objex -DartifactId=RiskObjects -Dversion=1.4 -Dpackaging=jar
 
-COPY src .
+COPY src/ src/
 COPY pom.xml .
 COPY sonar-project.properties .
 # Creates JAR file in target directory
-RUN mvn clean package 
+RUN mvn package
 
+RUN ls -l target
 # Copy the JAR file
-COPY target/uno-risk-service.jar app.jar
+COPY --from=build /app/target/*.jar ./uno-risk-service.jar
 
 #Expose the port
 EXPOSE 8080
