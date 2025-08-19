@@ -49,7 +49,7 @@ module "uno-risk-service_ecs_service" {
   # checkov:skip=CKV_AWS_333: assign_public_ip is set to "false" by default within core module for EC2 ecs_launch_type
   source = "github.com/ambrygen/terraform-aws-module-ecs-service.git?ref=v7.0"
 
-  ecs_cluster_arn  = module.ecs_cluster.arn
+  ecs_cluster_arn  = var.ecs_cluster.arn
   application_name = var.application_name
   service_name     = var.uno-risk-service.service_name
   service_node_setting = {
