@@ -1,0 +1,25 @@
+# .github/workflows/main.yml (or any other workflow)
+name: Deploy Pipeline for Uno Risk Service
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+#  replace-image-tag-placeholder:
+#    steps:
+#      - name: Render ECS task definition
+#        run: |
+#          sed -e "s|IMAGE_TAG|${GITHUB_SHA}|g" ecs-task-def.json > ecs-task-def-out.json
+
+  call-fargate-deploy:
+    uses: ./.github/workflows/docker-deploy-ecs.yaml
+    with:
+      service_name: uno-risk-service
+      cluster_name: uno-test-cluster
+      task_definition_family: uno-shared-services-task-definition
+      ecr_repository_name: uno-risk-service
+      image_tag: uno-risk-service-202508132148-e2ec9b7-UNO-433-infrastructure
+      aws_region: us-west-2
