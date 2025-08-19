@@ -18,8 +18,8 @@ profile = "ambry-uno-test" # this can be set to your local AWS profile to test l
 module "uno-risk-service_security_group" {
   # checkov:skip=CKV_TF_1: Referring to git tag instead of commit hash
   # checkov:skip=CKV_AWS_382: SG need egress rule to allow connectivity to internet to install external packages
-  #source = "github.com/ambrygen/terraform-aws-module-security-group.git?ref=v3.0"
-  source = "../../terraform-aws-module-repos/terraform-aws-module-security-group"
+  source = "github.com/ambrygen/terraform-aws-module-security-group.git?ref=v3.0"
+  #source = "../../terraform-aws-module-repos/terraform-aws-module-security-group"
 
   identifier = local.identifier.prefix
   created_for = {
