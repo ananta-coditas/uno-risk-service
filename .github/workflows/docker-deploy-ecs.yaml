@@ -2,30 +2,10 @@ name: uno-risk-service
 
 on:
   workflow_dispatch:
-    inputs:
-      service_name:
-        description: 'uno-risk-service'
-        required: true
-      cluster_name:
-        description: 'ECS Cluster Name'
-        required: true
-      task_definition_family:
-        description: 'ECS Task Definition Family'
-        required: true
-      ecr_repository_name:
-        description: 'ECR Repository Name'
-        required: true
-      image_tag:
-        description: 'Docker Image Tag'
-        required: true
-      aws_region:
-        description: 'AWS Region'
-        required: true
 
 jobs:
   deploy-ecs-develop:
       name: Deploy-ECR-Image-To-ECS-Develop ${{ matrix.service.name }}
-      runs-on: ubuntu-latest
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
         task-definition: ecs-task-def.json

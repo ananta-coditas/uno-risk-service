@@ -2,9 +2,6 @@
 name: Deploy Pipeline for Uno Risk Service
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 jobs:
