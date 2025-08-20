@@ -120,6 +120,9 @@ variable "uno-risk-service" {
       #   mode              = string
       #   max_buffer_size   = string
       # })
+      sg_rule_config = object({
+        allowed_ingress_cidr = list(string)
+      })
       environment_variables     = optional(object({
         ssm_based_variables_file = optional(string)
       }))

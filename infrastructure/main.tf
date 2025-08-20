@@ -1,16 +1,17 @@
 #------------------------------------------------------------------------------
 # Provider configuration
 #------------------------------------------------------------------------------
-
 provider "aws" {
- region  = var.aws_region
+  region  = var.aws_region  
+  profile = "ambry-uno-test"
+  
+}
 
 # profile = "ambry-uno-sandbox" # this can be set to your local AWS profile to test locally
-profile = "ambry-uno-test" # this can be set to your local AWS profile to test locally
-    # Uncomment below to use access_key and secret_key directly (Not recommended)
-  #access_key = var.aws_access_key
-  #secret_key = var.aws_secret_key
-}
+# this can be set to your local AWS profile to test locally
+# Uncomment below to use access_key and secret_key directly (Not recommended)
+#access_key = var.aws_access_key
+#secret_key = var.aws_secret_key
 
 #------------------------------------------------------------------------------
 # Microservice specific Security Group
@@ -18,8 +19,8 @@ profile = "ambry-uno-test" # this can be set to your local AWS profile to test l
 module "uno-risk-service_security_group" {
   # checkov:skip=CKV_TF_1: Referring to git tag instead of commit hash
   # checkov:skip=CKV_AWS_382: SG need egress rule to allow connectivity to internet to install external packages
-  #source = "github.com/ambrygen/terraform-aws-module-security-group.git?ref=v3.0"
-  source = "../../terraform-aws-module-repos/terraform-aws-module-security-group"
+  source = "github.com/ambrygen/terraform-aws-module-security-group.git?ref=v3.0"
+  #source = "../../terraform-aws-module-repos/terraform-aws-module-security-group"
 
   identifier = local.identifier.prefix
   created_for = {
@@ -33,8 +34,8 @@ module "uno-risk-service_security_group" {
         from_port        = container.container_port
         to_port          = container.container_port
         network_protocol = "tcp"
-        source_type      = "custom"
-        source_values    = "0.0.0.0/0"
+        source_type      = "security_groups"
+        source_values    = ["0.0.0.0/0"]
         description      = "Allow all ingress traffic"
       },
       {
@@ -88,8 +89,8 @@ module "uno-risk-service_ecs_service" {
   # checkov:skip=CKV_TF_1: Referring to git tag instead of commit hash
   # checkov:skip=CKV_AWS_333: assign_public_ip is set to "false" by default within core module for EC2 ecs_launch_type
   # checkov:skip=CKV_AWS_333: assign_public_ip is set to "false" by default within core module for EC2 ecs_launch_type
-  #source = "github.com/ambrygen/terraform-aws-module-ecs-service.git?ref=v7.0"
-  source = "../../terraform-aws-module-repos/terraform-aws-module-ecs-service-7.0/"
+  source = "github.com/ambrygen/terraform-aws-module-ecs-service.git?ref=v7.0"
+  #source = "../../terraform-aws-module-repos/terraform-aws-module-ecs-service-7.0/"
   ecs_cluster_arn  = var.ecs_cluster_arn
   application_name = var.application_name
   service_name     = var.uno-risk-service.service_name
@@ -118,7 +119,7 @@ module "uno-risk-service_ecs_service" {
   service_task_setting = {
     desired_task_count        = var.uno-risk-service.desired_task_count
     task_execution_role_arn   = var.ecs_task_execution_role_arn # use module. insted var.  this need to be created
-    task_role_arn             = var.ecs_task_role_arn # use module. insted var.  - this need to be created
+    task_role_arn             = var.ecs_task_role_arn           # use module. insted var.  - this need to be created
     cpu_units                 = var.uno-risk-service.task_setting["required_cpu_units"]
     memory_MiB_units          = var.uno-risk-service.task_setting["required_memory_MiB_units"]
     os_family                 = var.uno-risk-service.task_setting["os_family"]
