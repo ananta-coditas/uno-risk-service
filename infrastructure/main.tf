@@ -18,8 +18,8 @@ profile = "ambry-uno-test" # this can be set to your local AWS profile to test l
 module "uno-risk-service_security_group" {
   # checkov:skip=CKV_TF_1: Referring to git tag instead of commit hash
   # checkov:skip=CKV_AWS_382: SG need egress rule to allow connectivity to internet to install external packages
-  source = "github.com/ambrygen/terraform-aws-module-security-group.git?ref=v3.0"
-  #source = "../../terraform-aws-module-repos/terraform-aws-module-security-group"
+  #source = "github.com/ambrygen/terraform-aws-module-security-group.git?ref=v3.0"
+  source = "../../terraform-aws-module-repos/terraform-aws-module-security-group"
 
   identifier = local.identifier.prefix
   created_for = {
@@ -30,16 +30,16 @@ module "uno-risk-service_security_group" {
   ingress_config = flatten([
     for container in(var.uno-risk-service.containers_list) : [
       {
-        from_port        = var.container_port
-        to_port          = var.container_port
+        from_port        = container.container_port
+        to_port          = container.container_port
         network_protocol = "tcp"
         source_type      = "custom"
         source_values    = "0.0.0.0/0"
         description      = "Allow all ingress traffic"
       },
       {
-        from_port        = var.container_port
-        to_port          = var.container_port
+        from_port        = container.container_port
+        to_port          = container.container_port
         network_protocol = "tcp"
         source_type      = "cidr_blocks"
         source_values    = container.sg_rule_config.allowed_ingress_cidr
@@ -61,8 +61,8 @@ module "uno-risk-service_security_group" {
 # task definition for uno-risk-service
 #------------------------------------------------------------------------------
 # module "uno-risk-service_task_definition" {
-#   source = "ambrygen/terraform-aws-module-ecs-task-definition/tree/feat-v2"
-  
+#   #source = "ambrygen/terraform-aws-module-ecs-task-definition/tree/feat-v2"
+#   source = "../../terraform-aws-module-repos/terraform-aws-module-ecs-task-definition?ref=feat-v2"
 #   service_name    = "uno-risk-service"
 #   service_node_setting = {
 #     ecs_launch_type = "FARGATE"
@@ -72,7 +72,7 @@ module "uno-risk-service_security_group" {
 #   service_network_config = {
 #     container_networking_mode = "awsvpc"
 #     target_subnets = var.vpc_config.private_target_subnets
-#     target_sgs = ["sg-12345678"]
+#     target_sgs = ["${module.uno-risk-service_security_group.id}"]
 #     fargate_assign_public_ip = false
 #   }
 
@@ -81,110 +81,111 @@ module "uno-risk-service_security_group" {
 
 
 
-# #------------------------------------------------------------------------------
-# # Microservice ECS Service
-# #------------------------------------------------------------------------------
-# module "uno-risk-service_ecs_service" {
-#   # checkov:skip=CKV_TF_1: Referring to git tag instead of commit hash
-#   # checkov:skip=CKV_AWS_333: assign_public_ip is set to "false" by default within core module for EC2 ecs_launch_type
-#   # checkov:skip=CKV_AWS_333: assign_public_ip is set to "false" by default within core module for EC2 ecs_launch_type
-#   source = "github.com/ambrygen/terraform-aws-module-ecs-service.git?ref=v7.0"
+#------------------------------------------------------------------------------
+# Microservice ECS Service
+#------------------------------------------------------------------------------
+module "uno-risk-service_ecs_service" {
+  # checkov:skip=CKV_TF_1: Referring to git tag instead of commit hash
+  # checkov:skip=CKV_AWS_333: assign_public_ip is set to "false" by default within core module for EC2 ecs_launch_type
+  # checkov:skip=CKV_AWS_333: assign_public_ip is set to "false" by default within core module for EC2 ecs_launch_type
+  #source = "github.com/ambrygen/terraform-aws-module-ecs-service.git?ref=v7.0"
+  source = "../../terraform-aws-module-repos/terraform-aws-module-ecs-service-7.0/"
+  ecs_cluster_arn  = var.ecs_cluster_arn
+  application_name = var.application_name
+  service_name     = var.uno-risk-service.service_name
+  service_node_setting = {
+    ecs_launch_type = var.uno-risk-service.ecs_launch_type
+    capacity_provider_strategy = {
+      capacity_provider = "${var.application_name}-${var.ecs_capacity_provider_setting.default_provider_configuration.provider_name}"
+      base              = var.ecs_capacity_provider_setting.default_provider_configuration.base
+      weight            = var.ecs_capacity_provider_setting.default_provider_configuration.weight
+    }
+  }
+  service_network_config = {
+    container_networking_mode = "awsvpc"
+    target_subnets            = var.vpc_config.private_target_subnets
+    target_sgs                = [module.uno-risk-service_security_group.id]
+    fargate_assign_public_ip  = false
+  }
+  service_deployment_setting = {
+    service_deployment_controller_type = "ECS"
+    enable_service_deployment_rollback = true
+  }
+  service_connect_settings = {
+    enable_service_connect = true
+    namespace              = var.namespace
+  }
+  service_task_setting = {
+    desired_task_count        = var.uno-risk-service.desired_task_count
+    task_execution_role_arn   = var.ecs_task_execution_role_arn # use module. insted var.  this need to be created
+    task_role_arn             = var.ecs_task_role_arn # use module. insted var.  - this need to be created
+    cpu_units                 = var.uno-risk-service.task_setting["required_cpu_units"]
+    memory_MiB_units          = var.uno-risk-service.task_setting["required_memory_MiB_units"]
+    os_family                 = var.uno-risk-service.task_setting["os_family"]
+    cpu_architecture          = var.uno-risk-service.task_setting["cpu_architecture"]
+    enable_execute_command    = false
+    rebalance_task_across_azs = true
+    task_placement_constraint = []
+    task_placement_strategy = [
+      {
+        type  = "spread"
+        field = "attribute:ecs.availability-zone"
+      }
+    ]
+  }
+  service_task_volume_setting = [
+    for volume in var.uno-risk-service.task_setting.task_volume_config : {
+      volume_name               = volume.volume_name
+      host_path                 = volume.host_path
+      volume_configuration_type = "nfs"
+    }
+  ]
+  containers_list = [
+    for container in var.uno-risk-service.containers_list : {
+      container_name           = container["container_name"]
+      container_port           = container["container_port"]
+      container_protocol       = null //container["application_protocol"]
+      network_protocol         = "tcp"
+      target_subnets           = var.vpc_config.private_target_subnets
+      target_sgs               = [module.uno-risk-service_security_group.id]
+      fargate_assign_public_ip = false
+      ecr_image                = "${container["ecr_image_uri"]}:${container["ecr_image_tag"]}"
+      cpu_units                = container["required_cpu_units"]
+      memory_MiB_units         = container["required_memory_MiB_units"]
+      essential_container      = container["essential_container"]
+      container_logs_setting = {
+        log_destination   = var.container_log_destination
+        cw_log_group_name = local.cloudwatch_log_group_name
+        create_log_group  = false
+        log_group_region  = var.aws_region
+        mode              = "non-blocking"
+        max_buffer_size   = "25m"
+      }
+      load_balancer_target_group_arn = container.lb_config != null ? container.lb_config.target_group_arn : null
+      environment_files_s3_arn       = null
+      environment_variables = container.environment_variables != null ? {
+        ssm_based_variables = container.environment_variables.ssm_based_variables_file != null ? jsonencode({ for pair in split("\n", trimspace(file("${path.module}${container.environment_variables.ssm_based_variables_file}"))) : trimspace(split("=", pair)[0]) => tostring(trimspace(split("=", pair)[1])) }) : jsonencode({})
+        local_variables     = jsonencode({})
+        create_secret       = container.environment_variables.create_secret
+        } : {
+        ssm_based_variables = jsonencode({})
+        local_variables     = jsonencode({})
+        create_secret       = false
+      }
+      docker_labels = container.docker_labels
+      volume_mount_point = container.mount_nfs_drive ? [
+        for volume in var.uno-risk-service.task_setting.task_volume_config : {
+          container_path     = volume.host_path
+          mount_as_read_only = false
+          source_volume_name = volume.volume_name
+        }
+      ] : []
+      docker_configuration = container.docker_configuration
+    }
+  ]
+  service_secret_path_prefix = join("/", ["/${var.organization_name}", var.application_name, var.environment_name, var.uno-risk-service.service_name, "environment_variable"])
+}
 
-#   ecs_cluster_arn  = var.ecs_cluster.arn
-#   application_name = var.application_name
-#   service_name     = var.uno-risk-service.service_name
-#   service_node_setting = {
-#     ecs_launch_type = var.uno-risk-service.ecs_launch_type
-#     capacity_provider_strategy = {
-#       capacity_provider = "${var.application_name}-${var.ecs_capacity_provider_setting.default_provider_configuration.provider_name}"
-#       base              = var.ecs_capacity_provider_setting.default_provider_configuration.base
-#       weight            = var.ecs_capacity_provider_setting.default_provider_configuration.weight
-#     }
-#   }
-#   service_network_config = {
-#     container_networking_mode = "awsvpc"
-#     target_subnets            = var.vpc_config.private_target_subnets
-#     target_sgs                = [module.uno-risk-service_security_group.id]
-#     fargate_assign_public_ip  = false
-#   }
-#   service_deployment_setting = {
-#     service_deployment_controller_type = "ECS"
-#     enable_service_deployment_rollback = true
-#   }
-#   service_connect_settings = {
-#     enable_service_connect = true
-#     namespace              = module.ecs_cluster.namespace_name
-#   }
-#   service_task_setting = {
-#     desired_task_count        = var.uno-risk-service.desired_task_count
-#     task_execution_role_arn   = module.task_execution_role.role_arn
-#     task_role_arn             = module.uno-risk-service_task_role.role_arn
-#     cpu_units                 = var.uno-risk-service.task_setting["required_cpu_units"]
-#     memory_MiB_units          = var.uno-risk-service.task_setting["required_memory_MiB_units"]
-#     os_family                 = var.uno-risk-service.task_setting["os_family"]
-#     cpu_architecture          = var.uno-risk-service.task_setting["cpu_architecture"]
-#     enable_execute_command    = false
-#     rebalance_task_across_azs = true
-#     task_placement_constraint = []
-#     task_placement_strategy = [
-#       {
-#         type  = "spread"
-#         field = "attribute:ecs.availability-zone"
-#       }
-#     ]
-#   }
-#   service_task_volume_setting = [
-#     for volume in var.uno-risk-service.task_setting.task_volume_config : {
-#       volume_name               = volume.volume_name
-#       host_path                 = volume.host_path
-#       volume_configuration_type = "nfs"
-#     }
-#   ]
-#   containers_list = [
-#     for container in var.uno-risk-service.containers_list : {
-#       container_name           = container["container_name"]
-#       container_port           = container["container_port"]
-#       container_protocol       = null //container["application_protocol"]
-#       network_protocol         = "tcp"
-#       target_subnets           = var.vpc_config.private_target_subnets
-#       target_sgs               = [module.uno-risk-service_security_group.id]
-#       fargate_assign_public_ip = false
-#       ecr_image                = "${container["ecr_image_uri"]}:${container["ecr_image_tag"]}"
-#       cpu_units                = container["required_cpu_units"]
-#       memory_MiB_units         = container["required_memory_MiB_units"]
-#       essential_container      = container["essential_container"]
-#       container_logs_setting = {
-#         log_destination   = var.container_log_destination
-#         cw_log_group_name = module.cw_log_group[0].name
-#         create_log_group  = "false"
-#         log_group_region  = data.aws_region.current.name
-#         mode              = "non-blocking"
-#         max_buffer_size   = "25m"
-#       }
-#       load_balancer_target_group_arn = container.lb_config != null ? container.lb_config.target_group_arn : null
-#       environment_files_s3_arn       = null
-#       environment_variables = container.environment_variables != null ? {
-#         ssm_based_variables = container.environment_variables.ssm_based_variables_file != null ? jsonencode({ for pair in split("\n", trimspace(file("${path.module}${container.environment_variables.ssm_based_variables_file}"))) : trimspace(split("=", pair)[0]) => tostring(trimspace(split("=", pair)[1])) }) : jsonencode({})
-#         local_variables     = jsonencode({})
-#         create_secret       = container.environment_variables.create_secret
-#         } : {
-#         ssm_based_variables = jsonencode({})
-#         local_variables     = jsonencode({})
-#         create_secret       = false
-#       }
-#       docker_labels = container.docker_labels
-#       volume_mount_point = container.mount_nfs_drive ? [
-#         for volume in var.uno-risk-service.task_setting.task_volume_config : {
-#           container_path     = volume.host_path
-#           mount_as_read_only = false
-#           source_volume_name = volume.volume_name
-#         }
-#       ] : []
-#       docker_configuration = container.docker_configuration
-#     }
-#   ]
-#   service_secret_path_prefix = join("/", ["/${var.organization_name}", var.application_name, var.environment_name, var.uno-risk-service.service_name, "environment_variable"])
-# }
 # #------------------------------------------------------------------------------
 # # Microservice specific Application AutoScaling Group
 # #------------------------------------------------------------------------------
