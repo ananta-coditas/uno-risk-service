@@ -2,9 +2,8 @@
 # Provider configuration
 #------------------------------------------------------------------------------
 provider "aws" {
-  region  = var.aws_region  
-  profile = "ambry-uno-test"
-  
+  region  = var.aws_region
+  #profile = "ambry-uno-test"
 }
 
 # profile = "ambry-uno-sandbox" # this can be set to your local AWS profile to test locally
@@ -78,7 +77,7 @@ module "uno-risk-service_security_group" {
 #   }
 
 #   # Add other required variables here
-# }  
+# }
 
 
 
