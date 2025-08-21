@@ -47,7 +47,7 @@ server:
 
 uno:
   clientApp:
-    name: 'uno-web-biolerplate'
+    name: 'uno-risk-service'
 
   # By default CORS is disabled. Uncomment to enable.
   # cors:
@@ -59,20 +59,20 @@ uno:
   #   max-age: 1800
 
   mail:
-    from: uno-web-biolerplate@localhost
+    from: uno-risk-service@localhost
 
   api-docs:
     default-include-pattern: /api/**
     management-include-pattern: /management/**
-    title: uno-web-biolerplate API
-    description: uno-web-biolerplate API documentation
+    title: uno-risk-service API
+    description: uno-risk-service API documentation
     version: 0.0.1
-    terms-of-service-url: 
-    contact-name: 
-    contact-url: 
-    contact-email: 
+    terms-of-service-url:
+    contact-name:
+    contact-url:
+    contact-email:
     license: unlicensed
-    license-url: 
+    license-url:
 
   security:
     # Add your security settings here
