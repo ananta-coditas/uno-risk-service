@@ -1,0 +1,9 @@
+# terraform backend and state lock configuration
+terraform {
+  backend "s3" {
+    region         = "{{ region }}"
+    bucket         = "{{ bucket_name }}"
+    key            = "{{ bucket_key }}"
+    encrypt        = "true"
+  }
+}
