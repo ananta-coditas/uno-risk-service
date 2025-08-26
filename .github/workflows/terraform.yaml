@@ -63,7 +63,7 @@ jobs:
       working_directory: "infrastructure"
       tfvars: "environment/test.tfvars"
       env_file_name: "infrastructure/.env.test"
-      environment: tst
+      environment: test
     secrets: inherit
 
   terraform-stage:
