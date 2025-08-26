@@ -68,6 +68,11 @@ variable "organization_name" {
 #   type        = number
 # }
 
+variable "environment" {
+  description = "The environment the app is being deployed in"
+  type        = string
+}
+
 variable "container_log_destination" {
   description = "The destination for container logs."
   type        = string

@@ -15,4 +15,7 @@ terraform {
 
 provider "aws" {
   region = "us-west-2"
+  default_tags {
+    tags = module.tagging_module.tag_map
+  }
 }

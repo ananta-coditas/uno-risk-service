@@ -3,6 +3,7 @@
 // ----------------------------------------- //
 organization_name = "ambry"
 application_name  = "uno-risk-service"
+environment = "tst"
 environment_name  = "test"
 // ----------------------------------------- //
 aws_region     = "us-west-2"
