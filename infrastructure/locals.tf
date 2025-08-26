@@ -1,7 +1,7 @@
 // ====================================== //
 locals {
   identifier = {
-    prefix = lower("${var.organization_name}-${var.application_name}-${var.environment_name}")
+    prefix = lower("${var.organization_name}-${var.application_name}")
     suffix = ""
   }
   // -------------------------------//
