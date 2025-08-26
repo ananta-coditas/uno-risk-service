@@ -42,7 +42,7 @@ module "uno-risk-service_security_group" {
         to_port          = container.container_port
         network_protocol = "tcp"
         source_type      = "cidr_blocks"
-        source_values    = ["0.0.0.0/0"] #container.sg_rule_config.allowed_ingress_cidr
+        source_values    = container.sg_rule_config.allowed_ingress_cidr
       }
   ]])
 }
