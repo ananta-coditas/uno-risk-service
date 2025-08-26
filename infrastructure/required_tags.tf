@@ -12,7 +12,7 @@ locals {
   compliance        = "none"                                  # Pipe-delimited string of the compliance/audit frameworks that govern the data (eg. hipaa|gdpr). Options are: none, gdpr, pci, hipaa (NOT hippa).
   product           = "uno-risk-service"                             # Name of the application or service this resource belongs to. (eg. secondary-analysis, ap, cancernext, cardio, exome, skm, tracker, monitoring, adaudit, overhead)
   disaster_recovery = "none"                                  # one of: tier1, tier2, tier3, none. tier1 is most critical.
-  repo              = "https://github.com/ambrygen/uno-risk-services" # The URL of the IAC repo that contains this application's code. (eg. https://github.com/<MY_GITHUB_ORG>/i_copied_the_default_value)
+  repo              = "https://github.com/ambrygen/uno-risk-service" # The URL of the IAC repo that contains this application's code. (eg. https://github.com/<MY_GITHUB_ORG>/i_copied_the_default_value)
   p_l_categories    = "r-d"                                   # Profit and loss categories, one of: cogs, r-d, g-a, s-m . These are, respectively: Cost of Goods and Services, Research and Development, General and Administrative, and Sales and Marketing.
 
   # OPTIONAL TAGS - These tags are not required globally but can be added as needed
