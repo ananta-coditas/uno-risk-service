@@ -55,35 +55,6 @@ module "uno-risk-service_security_group" {
         description      = "Allow ingress traffic for self security-group for inter-container communication"
       }
     ]])
-
-  #####
-  ingress_config = flatten([
-    for container in(var.uno-risk-service.containers_list) : [
-      {
-        from_port        = container.container_port
-        to_port          = container.container_port
-        network_protocol = "tcp"
-        source_type      = "security_groups"
-        source_values    = ["0.0.0.0/0"]
-        description      = "Allow all ingress traffic"
-      },
-      {
-        from_port        = container.container_port
-        to_port          = container.container_port
-        network_protocol = "tcp"
-        source_type      = "cidr_blocks"
-        source_values    = container.sg_rule_config.allowed_ingress_cidr
-      },
-      {
-        from_port        = container.container_port
-        to_port          = container.container_port
-        network_protocol = "tcp"
-        source_type      = "security_groups"
-        source_values    = []
-        refer_self_sg_id = true
-        description      = "Allow ingress traffic for self security-group for inter-container communication"
-      }
-  ]])
 }
 
 
