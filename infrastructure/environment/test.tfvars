@@ -9,7 +9,7 @@ aws_region     = "us-west-2"
 // ----------------------------------------- //
 
 vpc_config = {
-  vpc_id                 = "vpc-0c5f0396c6ed1c9ef" 
+  vpc_id                 = "vpc-0c5f0396c6ed1c9ef"
   public_target_subnets  = []
   private_target_subnets = ["subnet-058cf47ade7906880", "subnet-014031f76ac71ac1e", "subnet-0505de6f45548d039", "subnet-0e9b78d432d15a044"]
 }
@@ -28,7 +28,7 @@ all_tags = {
     privacy           = "sensitive"
     phi               = "no"
     pii               = "no"
-    product           = "uno"
+    product           = "uno-risk-service"
 }
 
 // ----------------------------------------- //
