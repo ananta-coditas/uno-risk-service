@@ -1,4 +1,4 @@
-name: "Build Infrastructure: UNO-Risk-Service"
+name: "Deploy Container Image to ECS Fargate"
 permissions:
   id-token: write
   contents: write
@@ -63,7 +63,7 @@ jobs:
       working_directory: "infrastructure"
       tfvars: "environment/test.tfvars"
       env_file_name: "infrastructure/.env.test"
-      environment: test
+      environment: tst
     secrets: inherit
 
   terraform-stage:
