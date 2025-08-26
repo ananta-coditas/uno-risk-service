@@ -1,10 +1,10 @@
 #------------------------------------------------------------------------------
 # Provider configuration
 #------------------------------------------------------------------------------
-provider "aws" {
-  region  = var.aws_region
-  #profile = "ambry-uno-test"
-}
+# provider "aws" {
+#   region  = var.aws_region
+#   profile = "ambry-uno-test"
+# }
 
 # profile = "ambry-uno-sandbox" # this can be set to your local AWS profile to test locally
 # this can be set to your local AWS profile to test locally

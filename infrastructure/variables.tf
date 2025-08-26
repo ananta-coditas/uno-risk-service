@@ -1,7 +1,7 @@
 variable "aws_region" {
   description = "The AWS region to deploy resources in."
   type        = string
-  
+
 }
 variable "ecs_cluster_name" {
   description = "The name of the ECS cluster to deploy the service into."
@@ -11,7 +11,7 @@ variable "ecs_cluster_name" {
 variable "ecs_cluster_arn" {
   description = "The ARN of the ECS cluster."
   type        = string
-} 
+}
 
 variable "ecs_task_role_arn" {
   description = "The ARN of the ECS task execution role."
@@ -26,19 +26,19 @@ variable "ecs_task_execution_role_arn" {
 variable "application_name" {
   description = "The name of the application."
   type        = string
-  
+
 }
 
 variable "environment_name" {
   description = "The name of the environment."
   type        = string
-  
+
 }
 
 variable "organization_name" {
   description = "The name of the organization."
   type        = string
-  
+
 }
 
 # variable "aws_ecs_task_definition" {
@@ -71,7 +71,7 @@ variable "organization_name" {
 variable "container_log_destination" {
   description = "The destination for container logs."
   type        = string
-  
+
 }
 
 variable "vpc_config" {
@@ -94,41 +94,51 @@ variable "uno-risk-service" {
     service_name       = string
     desired_task_count = number
     ecs_launch_type    = string
-    task_setting = object({
+    task_setting = optional(object({
       os_family                 = string
       cpu_architecture          = string
       required_cpu_units        = number
       required_memory_MiB_units = number
-      task_volume_config        = list(object({
-        name      = string
-        efs_volume_config = object({
-          file_system_id = string
-          root_directory = string
-        })
-      }))
-    })
+      task_volume_config = optional(list(object({
+        volume_name = string
+        host_path   = optional(string)
+      })))
+    }))
     containers_list = list(object({
       container_name            = string
       container_port            = number
       host_port                 = number
       application_protocol      = string
-      # container_logs_setting = object({
-      #   log_destination   = string
-      #   cw_log_group_name = string
-      #   create_log_group  = bool
-      #   log_group_region  = string
-      #   mode              = string
-      #   max_buffer_size   = string
-      # })
+      required_cpu_units        = number
+      required_memory_MiB_units = number
+      ecr_image_uri             = string
+      ecr_image_tag             = string
+      essential_container       = bool
       sg_rule_config = object({
         allowed_ingress_cidr = list(string)
       })
-      environment_variables     = optional(object({
+      lb_config = optional(object({
+        target_group_arn = string
+      }))
+      environment_variables = optional(object({
         ssm_based_variables_file = optional(string)
+        create_secret            = bool
+      }))
+      docker_labels   = optional(map(any))
+      mount_nfs_drive = bool
+      docker_configuration = optional(object({
+        commands    = optional(list(string))
+        entry_point = optional(list(string))
+        working_dir = optional(string)
       }))
     }))
+    microservice_scaling_config = object({
+      min_task_count      = number
+      max_task_count      = number
+      metric_name         = string
+      metric_target_value = optional(number)
+    })
   })
-  
 }
 // -------------------------------------------- //
 variable "ecs_capacity_provider_setting" {
@@ -143,5 +153,5 @@ variable "ecs_capacity_provider_setting" {
       base          = number
     })
   })
-  
+
 }
