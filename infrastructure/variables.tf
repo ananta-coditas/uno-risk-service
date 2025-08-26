@@ -145,6 +145,20 @@ variable "uno-risk-service" {
     })
   })
 }
+// ----------------------------------------- //
+variable "frontend_lb_config" {
+  description = "Define the configuration for the frontend load balancer for your application"
+  type = object({
+    lb_name              = string
+    lb_type              = string
+    lb_security_group_id = string
+    logging_bucket_name  = string
+  })
+  validation {
+    condition     = contains(["application", "network"], var.frontend_lb_config.lb_type)
+    error_message = "Invalid input for load_balancer_type, possible values: \"application\" or \"network\"."
+  }
+}
 // -------------------------------------------- //
 variable "ecs_capacity_provider_setting" {
   description = "Configuration for ECS capacity providers."
@@ -158,5 +172,4 @@ variable "ecs_capacity_provider_setting" {
       base          = number
     })
   })
-
 }

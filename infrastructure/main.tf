@@ -27,6 +27,36 @@ module "uno-risk-service_security_group" {
     description   = "aws security group for uno risk service ecs targets"
     vpc_id        = var.vpc_config.vpc_id
   }
+
+  ingress_config = flatten([
+    for container in(var.uno-risk-service.containers_list) : [
+      {
+        from_port        = container.container_port
+        to_port          = container.container_port
+        network_protocol = "tcp"
+        source_type      = "security_groups"
+        source_values    = [var.frontend_lb_config.lb_security_group_id]
+        description      = "Allow ingress traffic for ${container.container_name} from Load balancer SG"
+      },
+      {
+        from_port        = container.container_port
+        to_port          = container.container_port
+        network_protocol = "tcp"
+        source_type      = "cidr_blocks"
+        source_values    = container.sg_rule_config.allowed_ingress_cidr
+      },
+      {
+        from_port        = container.container_port
+        to_port          = container.container_port
+        network_protocol = "tcp"
+        source_type      = "security_groups"
+        source_values    = []
+        refer_self_sg_id = true
+        description      = "Allow ingress traffic for self security-group for inter-container communication"
+      }
+    ]])
+
+  #####
   ingress_config = flatten([
     for container in(var.uno-risk-service.containers_list) : [
       {
@@ -43,6 +73,15 @@ module "uno-risk-service_security_group" {
         network_protocol = "tcp"
         source_type      = "cidr_blocks"
         source_values    = container.sg_rule_config.allowed_ingress_cidr
+      },
+      {
+        from_port        = container.container_port
+        to_port          = container.container_port
+        network_protocol = "tcp"
+        source_type      = "security_groups"
+        source_values    = []
+        refer_self_sg_id = true
+        description      = "Allow ingress traffic for self security-group for inter-container communication"
       }
   ]])
 }

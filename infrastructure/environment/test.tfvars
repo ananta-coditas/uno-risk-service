@@ -33,12 +33,12 @@ all_tags = {
 }
 
 // ----------------------------------------- //
-# frontend_lb_config = {
-#   lb_name              = "evoapps-ecs-lb-int-elb"
-#   lb_type              = "application"
-#   lb_security_group_id = "sg-009a0b5d06692f1b4"
-#   logging_bucket_name  = "lblogs-011547835955"
-# }
+frontend_lb_config = {
+  lb_name              = "evoapps-ecs-lb-int-elb"
+  lb_type              = "application"
+  lb_security_group_id = "sg-03926f3ce964c99e9"
+  # logging_bucket_name  = "lblogs-011547835955"
+}
 // ----------------------------------------- //
   capacity_provider_details = {
     enable_fargate_provider = true
