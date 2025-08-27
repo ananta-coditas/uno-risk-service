@@ -15,8 +15,8 @@ vpc_config = {
   private_target_subnets = ["subnet-058cf47ade7906880", "subnet-014031f76ac71ac1e", "subnet-0505de6f45548d039", "subnet-0e9b78d432d15a044"]
 }
 // ----------------------------------------- //
-ecs_cluster_arn="arn:aws:ecs:us-west-2:411233202044:cluster/uno-test-cluster"
-ecs_cluster_name = "uno-test-cluster"
+ecs_cluster_arn="arn:aws:ecs:us-west-2:411233202044:cluster/uno-cluster"
+ecs_cluster_name = "uno-cluster"
 // ----------------------------------------- //
 all_tags = {
     name_prefix       = "uno"
@@ -34,9 +34,9 @@ all_tags = {
 
 // ----------------------------------------- //
 frontend_lb_config = {
-  lb_name              = "evoapps-ecs-lb-int-elb"
+  lb_name              = "uno-test-elb"           # Load Balancer created by uno_shared_services repo
   lb_type              = "application"
-  lb_security_group_id = "sg-03926f3ce964c99e9"
+  lb_security_group_id = "sg-03926f3ce964c99e9"   # Security Group created by uno_shared_services repo for ALB
   logging_bucket_name  = ""
 }
 // ----------------------------------------- //
