@@ -128,12 +128,7 @@ module "uno-risk-service_ecs_service" {
     enable_execute_command    = false
     rebalance_task_across_azs = true
     task_placement_constraint = []
-    task_placement_strategy = [
-      {
-        type  = "spread"
-        field = "attribute:ecs.availability-zone"
-      }
-    ]
+    task_placement_strategy = []
   }
   service_task_volume_setting = [
     for volume in var.uno-risk-service.task_setting.task_volume_config : {
