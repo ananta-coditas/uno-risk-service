@@ -97,7 +97,8 @@ module "uno-risk-service_ecs_service" {
   service_node_setting = {
     ecs_launch_type = var.uno-risk-service.ecs_launch_type
     capacity_provider_strategy = {
-      capacity_provider = "${var.application_name}-${var.ecs_capacity_provider_setting.default_provider_configuration.provider_name}"
+      # capacity_provider = "${var.application_name}-${var.ecs_capacity_provider_setting.default_provider_configuration.provider_name}"
+      capacity_provider = "FARGATE"
       base              = var.ecs_capacity_provider_setting.default_provider_configuration.base
       weight            = var.ecs_capacity_provider_setting.default_provider_configuration.weight
     }
