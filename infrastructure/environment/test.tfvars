@@ -152,4 +152,4 @@ ecs_capacity_provider_setting = {
 }
 }
 
-namespace = "default"
+namespace = "uno-test"
