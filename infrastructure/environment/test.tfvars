@@ -36,7 +36,7 @@ all_tags = {
 frontend_lb_config = {
   lb_name              = "uno-test-elb"           # Load Balancer created by uno_shared_services repo
   lb_type              = "application"
-  lb_security_group_id = "sg-03926f3ce964c99e9"   # Security Group created by uno_shared_services repo for ALB
+  lb_security_group_id = "sg-076e7c87e6699268b"   # Security Group created by uno_shared_services repo for ALB
   logging_bucket_name  = ""
 }
 // ----------------------------------------- //
