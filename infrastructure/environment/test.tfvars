@@ -77,9 +77,8 @@ frontend_lb_config = {
 // ----------------------------------------- //
 container_log_destination = "cloudwatch_logs"
 // ----------------------------------------- //
-
-ecs_task_role_arn = "arn:aws:iam::411233202044:role/uno-risk-service-repo-role"
-ecs_task_execution_role_arn = "arn:aws:iam::411233202044:role/uno-risk-service-repo-role"
+ecs_task_role_arn = "arn:aws:iam::411233202044:role/uno-risk-service-ecs-task-role"
+ecs_task_execution_role_arn = "arn:aws:iam::411233202044:role/uno-risk-service-ecs-task-execution-role"
 
 # uno-risk-service = {
 #   containers_list : ["risk-service-container"]
