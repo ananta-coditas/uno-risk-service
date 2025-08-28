@@ -183,52 +183,52 @@ module "uno-risk-service_ecs_service" {
   service_secret_path_prefix = join("/", ["/${var.organization_name}", var.application_name, var.environment_name, var.uno-risk-service.service_name, "environment_variable"])
 }
 
-# #------------------------------------------------------------------------------
-# # Microservice specific Application AutoScaling Group
-# #------------------------------------------------------------------------------
-# module "uno-risk-service_autoscaling" {
-#   # checkov:skip=CKV_TF_1: Referring to git tag instead of commit hash
-#   source = "github.com/ambrygen/terraform-aws-module-app-autoscaling.git?ref=v1.0.0"
+#------------------------------------------------------------------------------
+# Microservice specific Application AutoScaling Group
+#------------------------------------------------------------------------------
+module "uno-risk-service_autoscaling" {
+  # checkov:skip=CKV_TF_1: Referring to git tag instead of commit hash
+  source = "github.com/ambrygen/terraform-aws-module-app-autoscaling.git?ref=v1.0.0"
 
-#   identifier       = local.identifier
-#   ecs_cluster_name = "${local.identifier.prefix}-cluster"
-#   ecs_service_name = var.uno-risk-service.service_name
-#   autoscaling_setting = {
-#     max_capacity            = var.uno-risk-service.microservice_scaling_config["max_task_count"]
-#     min_capacity            = var.uno-risk-service.microservice_scaling_config["min_task_count"]
-#     cooldown_period         = 60
-#     policy_type             = "TargetTrackingScaling"
-#     metric_aggregation_type = "Maximum"
-#   }
-#   target_tracking_scaling_config = {
-#     metric_type               = "predefined_metric"
-#     target_value              = var.uno-risk-service.microservice_scaling_config["metric_target_value"]
-#     disable_scale_in          = false
-#     scale_in_cooldown_period  = 60
-#     scale_out_cooldown_period = 60
-#   }
-#   predefined_metric_config = {
-#     metric_type = var.uno-risk-service.microservice_scaling_config["metric_name"]
-#     elb_arn     = null
-#     tg_arn      = null
-#   }
-# }
-# #------------------------------------------------------------------------------
-# // ECS Task Role ----->>>
-# // Note: The ECS Task Role is an IAM role that defines the permissions for the applications running inside the ECS task, allowing them to access AWS services and resources.
-# //       As a best practice create different task-roles for each ecs-service/task that you define
-# #------------------------------------------------------------------------------
-# module "uno-risk-service_task_role" {
-#   # checkov:skip=CKV_TF_1: Referring to git tag instead of commit hash
-#   source = "github.com/ambrygen/terraform-aws-module-iam-role.git?ref=v2.0.0"
+  identifier       = local.identifier
+  ecs_cluster_name = "${local.identifier.prefix}-cluster"
+  ecs_service_name = var.uno-risk-service.service_name
+  autoscaling_setting = {
+    max_capacity            = var.uno-risk-service.microservice_scaling_config["max_task_count"]
+    min_capacity            = var.uno-risk-service.microservice_scaling_config["min_task_count"]
+    cooldown_period         = 60
+    policy_type             = "TargetTrackingScaling"
+    metric_aggregation_type = "Maximum"
+  }
+  target_tracking_scaling_config = {
+    metric_type               = "predefined_metric"
+    target_value              = var.uno-risk-service.microservice_scaling_config["metric_target_value"]
+    disable_scale_in          = false
+    scale_in_cooldown_period  = 60
+    scale_out_cooldown_period = 60
+  }
+  predefined_metric_config = {
+    metric_type = var.uno-risk-service.microservice_scaling_config["metric_name"]
+    elb_arn     = null
+    tg_arn      = null
+  }
+}
+#------------------------------------------------------------------------------
+// ECS Task Role ----->>>
+// Note: The ECS Task Role is an IAM role that defines the permissions for the applications running inside the ECS task, allowing them to access AWS services and resources.
+//       As a best practice create different task-roles for each ecs-service/task that you define
+#------------------------------------------------------------------------------
+module "uno-risk-service_task_role" {
+  # checkov:skip=CKV_TF_1: Referring to git tag instead of commit hash
+  source = "github.com/ambrygen/terraform-aws-module-iam-role.git?ref=v2.0.0"
 
-#   iam_role_name                    = "${local.identifier.prefix}-${var.uno-risk-service.service_name}-ecs-task-role"
-#   iam_policy_name                  = "${local.identifier.prefix}-${var.uno-risk-service.service_name}-ecs-task-policy"
-#   iam_policy_description           = "IAM policy for ${var.uno-risk-service.service_name}"
-#   create_inline_policy             = true
-#   assume_role_policy_json_document = data.aws_iam_policy_document.ecs_task_assume_role_policy_document.json
-#   iam_policy_json_documents = [
-#     data.aws_iam_policy_document.microservice_task_role_policy_document.json
-#   ]
-# }
+  iam_role_name                    = "${var.uno-risk-service.service_name}-ecs-task-role"
+  iam_policy_name                  = "${var.uno-risk-service.service_name}-ecs-task-policy"
+  iam_policy_description           = "IAM policy for ${var.uno-risk-service.service_name}"
+  create_inline_policy             = true
+  assume_role_policy_json_document = data.aws_iam_policy_document.ecs_task_assume_role_policy_document.json
+  iam_policy_json_documents = [
+    data.aws_iam_policy_document.microservice_task_role_policy_document.json
+  ]
+}
 # // ============================== <EOF> ============================== //
