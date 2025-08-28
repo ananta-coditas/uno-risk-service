@@ -6,8 +6,8 @@ module "task_execution_role" {
   # checkov:skip=CKV_TF_1: Referring to git tag instead of commit hash
   source = "github.com/ambrygen/terraform-aws-module-iam-role.git?ref=v2.0.0"
 
-  iam_role_name                    = "uno-ecs-task-execution-role"
-  iam_policy_name                  = "uno-ecs-task-execution-policy"
+  iam_role_name                    = "uno-risk-service-ecs-task-execution-role"
+  iam_policy_name                  = "uno-risk-service-ecs-task-execution-policy"
   iam_policy_description           = "IAM policy for ${var.application_name} ecs-task-execution role"
   create_inline_policy             = true
   assume_role_policy_json_document = data.aws_iam_policy_document.ecs_task_execution_assume_role_policy_document.json
