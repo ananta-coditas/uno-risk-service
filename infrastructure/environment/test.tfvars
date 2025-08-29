@@ -121,7 +121,7 @@ uno-risk-service = {
       #}
       required_cpu_units        = 512  //0.5 GB
       required_memory_MiB_units = 1024 //1 GB
-      ecr_image_uri             = "540051198529.dkr.ecr.us-west-2.amazonaws.com/uno-risk-service:uno-risk-service-202508132148-e2ec9b7-UNO-433-infrastructure"
+      ecr_image_uri             = "540051198529.dkr.ecr.us-west-2.amazonaws.com/uno-risk-service"
       ecr_image_tag             = "uno-risk-service-202508132148-e2ec9b7-UNO-433-infrastructure"
       sg_rule_config = {
         allowed_ingress_cidr = ["10.9.32.0/20"]
