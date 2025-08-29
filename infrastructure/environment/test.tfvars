@@ -7,7 +7,7 @@ environment = "tst"
 environment_name  = "test"
 // ----------------------------------------- //
 aws_region     = "us-west-2"
-// ----------------------------------------- //
+// -------- --------------------------------- //
 
 vpc_config = {
   vpc_id                 = "vpc-0c5f0396c6ed1c9ef"
@@ -125,6 +125,9 @@ uno-risk-service = {
       ecr_image_tag             = "uno-risk-service-202508132148-e2ec9b7-UNO-433-infrastructure"
       sg_rule_config = {
         allowed_ingress_cidr = ["10.9.32.0/20"]
+      }
+      lb_config = {
+        target_group_arn = "arn:aws:elasticloadbalancing:us-west-2:411233202044:targetgroup/uno-8080-tg/69db9da71b109948"
       }
       environment_variables = null
       mount_nfs_drive = false
