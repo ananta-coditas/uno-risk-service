@@ -41,6 +41,11 @@ variable "organization_name" {
 
 }
 
+variable "log_group_name" {
+  description = "The name of the log group."
+  type = string
+}
+
 # variable "aws_ecs_task_definition" {
 #   description = "The ECS task definition configuration."
 #   type = object({

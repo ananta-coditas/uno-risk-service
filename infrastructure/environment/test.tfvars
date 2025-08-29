@@ -151,4 +151,5 @@ ecs_capacity_provider_setting = {
 }
 }
 
+log_group_name = "uno/test/ecs/uno-log-group"
 namespace = "uno-test"

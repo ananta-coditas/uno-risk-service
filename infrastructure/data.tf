@@ -98,7 +98,7 @@ data "aws_iam_policy_document" "ecs_task_execution_role_policy_document_1" {
       "logs:PutLogEvents",
     ]
     resources = [
-      "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/${var.organization_name}/${var.application_name}*"
+      "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/${var.log_group_name}:*"
     ]
   }
   statement {
@@ -208,7 +208,7 @@ data "aws_iam_policy_document" "microservice_task_role_policy_document" {
       "logs:PutLogEvents",
       "logs:PutRetentionPolicy",
     ]
-    resources = ["arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/${var.organization_name}/${var.application_name}*"]
+    resources = ["arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/${var.log_group_name}:*"]
   }
   statement {
     sid    = "ServiceConnectReadAccess"
@@ -301,7 +301,7 @@ data "aws_iam_policy_document" "ec2_instance_profile_role" {
       "logs:DescribeLogStreams",
       "logs:PutLogEvents",
     ]
-    resources = ["arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/${var.organization_name}/${var.application_name}*"]
+    resources = ["arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/${var.log_group_name}:*"]
   }
   statement {
     effect = "Allow"
