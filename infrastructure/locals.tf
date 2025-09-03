@@ -1,0 +1,13 @@
+// ====================================== //
+locals {
+  identifier = {
+    prefix = lower("${var.organization_name}-${var.application_name}-${var.environment_name}")
+    suffix = ""
+  }
+  // -------------------------------//
+  # cloudwatch_log_group_name = "/${var.organization_name}/${var.application_name}/${var.environment_name}/ecs/log-group"
+  cloudwatch_log_group_name = "/uno/${var.environment_name}/ecs/uno-log-group"
+  // -------------------------------//
+  shared_services_account_id = 540051198529
+}
+// ====================================== //

@@ -5,18 +5,22 @@ description: "Builds, scans, and pushes the container image to ECR for the speci
 on:
   pull_request:
     branches:
-      - UNO-433/infrastructure
-      - dev
+      - develop
       - release/**/*
     paths:
-      - "**"
+      - "api/**/*"
+      - "!infrastructure/**/*"
+      - "!README.md"
+      - "!.github/workflows/**/*"
   push:
     branches:
-      - UNO-433/infrastructure
-      - dev
+      - develop
       - release/**/*
     paths:
-      - "**"
+      - "api/**/*"
+      - "!infrastructure/**/*"
+      - "!README.md"
+      - "!.github/workflows/**/*"
   workflow_dispatch:
   # ---------------------------------------------------- #
 permissions:
@@ -26,17 +30,16 @@ permissions:
 # ---------------------------------------------------- #
 jobs:
   build-docker-image-develop:
-    name: Build-ECR-Image-Develop ${{ matrix.service.name }}
-    if: github.ref == 'refs/heads/UNO-433/infrastructure' || github.base_ref == 'UNO-433/infrastructure'
-    uses: ambrygen/github-reusable-workflows/.github/workflows/docker-build-scan-source.yaml@v2
-    with:
-      working_directory: .
-      service_name: uno-risk-service
-      ecr_repository: uno-risk-service
-      env_file_name: "infrastructure/.env.shared_services"
-      environment: shared_services
-      fail_on_severities: CRITICAL
-    secrets: inherit
+      name: Build-ECR-Image-Develop ${{ matrix.service.name }}
+      uses: ambrygen/github-reusable-workflows/.github/workflows/docker-build-scan-source.yaml@v2
+      with:
+        working_directory: .
+        service_name: uno-risk-service
+        ecr_repository: uno-risk-service
+        env_file_name: "infrastructure/.env.shared_services"
+        environment: shared_services
+        fail_on_severities: CRITICAL
+      secrets: inherit
 
 #  build-docker-image-prod:
 #    name: Build-ECR-Image-Prod ${{ matrix.service.name }}
