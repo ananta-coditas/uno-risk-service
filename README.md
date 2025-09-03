@@ -82,8 +82,8 @@ This project uses GitHub Actions for automated infrastructure deployment through
 
 The workflow supports three deployment environments with sequential execution:
 
-1. **Sandbox Environment**
-   - Uses `environment/test.tfvars` and `.env.test`
+1. **Integration Environment**
+   - Uses `environment/int.tfvars` and `.env.int`
    - Runs on all triggers
 
 2. **Test Environment**
