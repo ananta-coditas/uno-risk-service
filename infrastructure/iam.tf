@@ -4,7 +4,7 @@
 // ---------------------------------- //
 module "task_execution_role" {
   # checkov:skip=CKV_TF_1: Referring to git tag instead of commit hash
-  source = "github.com/ambrygen/terraform-aws-module-iam-role.git?ref=v2.0.0"
+  source = "github.com/ambrygen/terraform-aws-module-iam-role.git?ref=v2.2.0"
 
   iam_role_name                    = "uno-risk-service-ecs-task-execution-role"
   iam_policy_name                  = "uno-risk-service-ecs-task-execution-policy"
