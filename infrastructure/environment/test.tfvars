@@ -3,19 +3,20 @@
 // ----------------------------------------- //
 organization_name = "ambry"
 application_name  = "uno-risk-service"
+environment = "tst"
 environment_name  = "test"
 // ----------------------------------------- //
 aws_region     = "us-west-2"
-// ----------------------------------------- //
+// -------- --------------------------------- //
 
 vpc_config = {
-  vpc_id                 = "vpc-0c5f0396c6ed1c9ef" 
+  vpc_id                 = "vpc-0c5f0396c6ed1c9ef"
   public_target_subnets  = []
   private_target_subnets = ["subnet-058cf47ade7906880", "subnet-014031f76ac71ac1e", "subnet-0505de6f45548d039", "subnet-0e9b78d432d15a044"]
 }
 // ----------------------------------------- //
-ecs_cluster_arn="arn:aws:ecs:us-west-2:411233202044:cluster/uno-test-cluster"
-ecs_cluster_name = "uno-test-cluster"
+ecs_cluster_arn="arn:aws:ecs:us-west-2:411233202044:cluster/uno-cluster"
+ecs_cluster_name = "uno-cluster"
 // ----------------------------------------- //
 all_tags = {
     name_prefix       = "uno"
@@ -28,16 +29,16 @@ all_tags = {
     privacy           = "sensitive"
     phi               = "no"
     pii               = "no"
-    product           = "uno"
+    product           = "uno-risk-service"
 }
 
 // ----------------------------------------- //
-# frontend_lb_config = {
-#   lb_name              = "evoapps-ecs-lb-int-elb"
-#   lb_type              = "application"
-#   lb_security_group_id = "sg-009a0b5d06692f1b4"
-#   logging_bucket_name  = "lblogs-011547835955"
-# }
+frontend_lb_config = {
+  lb_name              = "uno-test-elb"           # Load Balancer created by uno_shared_services repo
+  lb_type              = "application"
+  lb_security_group_id = "sg-076e7c87e6699268b"   # Security Group created by uno_shared_services repo for ALB
+  logging_bucket_name  = ""
+}
 // ----------------------------------------- //
   capacity_provider_details = {
     enable_fargate_provider = true
@@ -76,9 +77,8 @@ all_tags = {
 // ----------------------------------------- //
 container_log_destination = "cloudwatch_logs"
 // ----------------------------------------- //
-
-ecs_task_role_arn = "arn:aws:iam::411233202044:role/uno-risk-service-task-execution-role"
-ecs_task_execution_role_arn = "arn:aws:iam::411233202044:role/uno-risk-service-task-execution-role"
+ecs_task_role_arn = "arn:aws:iam::411233202044:role/uno-risk-service-ecs-task-role"
+ecs_task_execution_role_arn = "arn:aws:iam::411233202044:role/uno-risk-service-ecs-task-execution-role"
 
 # uno-risk-service = {
 #   containers_list : ["risk-service-container"]
@@ -121,10 +121,13 @@ uno-risk-service = {
       #}
       required_cpu_units        = 512  //0.5 GB
       required_memory_MiB_units = 1024 //1 GB
-      ecr_image_uri             = "540051198529.dkr.ecr.us-west-2.amazonaws.com/uno-risk-service:uno-risk-service-202508132148-e2ec9b7-UNO-433-infrastructure"
+      ecr_image_uri             = "540051198529.dkr.ecr.us-west-2.amazonaws.com/uno-risk-service"
       ecr_image_tag             = "uno-risk-service-202508132148-e2ec9b7-UNO-433-infrastructure"
       sg_rule_config = {
         allowed_ingress_cidr = ["10.9.32.0/20"]
+      }
+      lb_config = {
+        target_group_arn = "arn:aws:elasticloadbalancing:us-west-2:411233202044:targetgroup/uno-8080-tg/69db9da71b109948"
       }
       environment_variables = null
       mount_nfs_drive = false
@@ -151,4 +154,5 @@ ecs_capacity_provider_setting = {
 }
 }
 
-namespace = "default"
+log_group_name = "uno/test/ecs/uno-log-group"
+namespace = "uno-test"

@@ -1,4 +1,4 @@
-name: "Build Infrastructure: UNO-Risk-Service"
+name: "Deploy Container Image to ECS Fargate"
 permissions:
   id-token: write
   contents: write
@@ -10,7 +10,6 @@ on:
     branches:
       - develop
       - release/**/*
-      - UNO-433/infrastructure
     paths:
       - infrastructure/**/*
       - "!**.md"
@@ -18,7 +17,6 @@ on:
     branches:
       - develop
       - release/**/*
-      - UNO-433/infrastructure
     paths:
       - infrastructure/**/*
       - "!**.md"
@@ -49,7 +47,7 @@ jobs:
     with:
       terraform_action: ${{ ( github.event_name == 'push' || github.event.inputs.terraform_action == 'apply' ) && 'apply' || github.event.inputs.terraform_action == 'destroy' && 'destroy' || 'plan' }}
       working_directory: "infrastructure"
-      tfvars: "environment/tf_vars/int.tfvars"
+      tfvars: "environment/int.tfvars"
       env_file_name: "infrastructure/.env.int"
       environment: int
     secrets: inherit
@@ -61,7 +59,7 @@ jobs:
     with:
       terraform_action: ${{ (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/release/')) || github.event.inputs.terraform_action == 'apply' && 'apply' || github.event.inputs.terraform_action == 'destroy' && 'destroy' || 'plan' }}
       working_directory: "infrastructure"
-      tfvars: "environment/tf_vars/test.tfvars"
+      tfvars: "environment/test.tfvars"
       env_file_name: "infrastructure/.env.test"
       environment: test
     secrets: inherit
@@ -74,7 +72,7 @@ jobs:
     with:
       terraform_action: ${{ (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/release/')) || github.event.inputs.terraform_action == 'apply' && 'apply' || github.event.inputs.terraform_action == 'destroy' && 'destroy' || 'plan' }}
       working_directory: "infrastructure"
-      tfvars: "environment/tf_vars/stage.tfvars"
+      tfvars: "environment/stage.tfvars"
       env_file_name: "infrastructure/.env.stage"
       environment: stage
     secrets: inherit
@@ -87,7 +85,7 @@ jobs:
     with:
       terraform_action: ${{ (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/release/')) || github.event.inputs.terraform_action == 'apply' && 'apply' || github.event.inputs.terraform_action == 'destroy' && 'destroy' || 'plan' }}
       working_directory: "infrastructure"
-      tfvars: "environment/tf_vars/prod.tfvars"
+      tfvars: "environment/prod.tfvars"
       env_file_name: "infrastructure/.env.prod"
       environment: prod
     secrets: inherit

@@ -1,11 +1,10 @@
 #------------------------------------------------------------------------------
 # Provider configuration
 #------------------------------------------------------------------------------
-provider "aws" {
-  region  = var.aws_region  
-  profile = "ambry-uno-test"
-  
-}
+# provider "aws" {
+#   region  = var.aws_region
+#   profile = "ambry-uno-test"
+# }
 
 # profile = "ambry-uno-sandbox" # this can be set to your local AWS profile to test locally
 # this can be set to your local AWS profile to test locally
@@ -28,6 +27,7 @@ module "uno-risk-service_security_group" {
     description   = "aws security group for uno risk service ecs targets"
     vpc_id        = var.vpc_config.vpc_id
   }
+
   ingress_config = flatten([
     for container in(var.uno-risk-service.containers_list) : [
       {
@@ -35,8 +35,8 @@ module "uno-risk-service_security_group" {
         to_port          = container.container_port
         network_protocol = "tcp"
         source_type      = "security_groups"
-        source_values    = ["0.0.0.0/0"]
-        description      = "Allow all ingress traffic"
+        source_values    = [var.frontend_lb_config.lb_security_group_id]
+        description      = "Allow ingress traffic for ${container.container_name} from Load balancer SG"
       },
       {
         from_port        = container.container_port
@@ -54,7 +54,7 @@ module "uno-risk-service_security_group" {
         refer_self_sg_id = true
         description      = "Allow ingress traffic for self security-group for inter-container communication"
       }
-  ]])
+    ]])
 }
 
 
@@ -78,7 +78,7 @@ module "uno-risk-service_security_group" {
 #   }
 
 #   # Add other required variables here
-# }  
+# }
 
 
 
@@ -97,7 +97,8 @@ module "uno-risk-service_ecs_service" {
   service_node_setting = {
     ecs_launch_type = var.uno-risk-service.ecs_launch_type
     capacity_provider_strategy = {
-      capacity_provider = "${var.application_name}-${var.ecs_capacity_provider_setting.default_provider_configuration.provider_name}"
+      # capacity_provider = "${var.application_name}-${var.ecs_capacity_provider_setting.default_provider_configuration.provider_name}"
+      capacity_provider = "FARGATE"
       base              = var.ecs_capacity_provider_setting.default_provider_configuration.base
       weight            = var.ecs_capacity_provider_setting.default_provider_configuration.weight
     }
@@ -127,12 +128,7 @@ module "uno-risk-service_ecs_service" {
     enable_execute_command    = false
     rebalance_task_across_azs = true
     task_placement_constraint = []
-    task_placement_strategy = [
-      {
-        type  = "spread"
-        field = "attribute:ecs.availability-zone"
-      }
-    ]
+    task_placement_strategy = []
   }
   service_task_volume_setting = [
     for volume in var.uno-risk-service.task_setting.task_volume_config : {
@@ -187,52 +183,52 @@ module "uno-risk-service_ecs_service" {
   service_secret_path_prefix = join("/", ["/${var.organization_name}", var.application_name, var.environment_name, var.uno-risk-service.service_name, "environment_variable"])
 }
 
-# #------------------------------------------------------------------------------
-# # Microservice specific Application AutoScaling Group
-# #------------------------------------------------------------------------------
-# module "uno-risk-service_autoscaling" {
-#   # checkov:skip=CKV_TF_1: Referring to git tag instead of commit hash
-#   source = "github.com/ambrygen/terraform-aws-module-app-autoscaling.git?ref=v1.0.0"
+#------------------------------------------------------------------------------
+# Microservice specific Application AutoScaling Group
+#------------------------------------------------------------------------------
+module "uno-risk-service_autoscaling" {
+  # checkov:skip=CKV_TF_1: Referring to git tag instead of commit hash
+  source = "github.com/ambrygen/terraform-aws-module-app-autoscaling.git?ref=v1.0.0"
 
-#   identifier       = local.identifier
-#   ecs_cluster_name = "${local.identifier.prefix}-cluster"
-#   ecs_service_name = var.uno-risk-service.service_name
-#   autoscaling_setting = {
-#     max_capacity            = var.uno-risk-service.microservice_scaling_config["max_task_count"]
-#     min_capacity            = var.uno-risk-service.microservice_scaling_config["min_task_count"]
-#     cooldown_period         = 60
-#     policy_type             = "TargetTrackingScaling"
-#     metric_aggregation_type = "Maximum"
-#   }
-#   target_tracking_scaling_config = {
-#     metric_type               = "predefined_metric"
-#     target_value              = var.uno-risk-service.microservice_scaling_config["metric_target_value"]
-#     disable_scale_in          = false
-#     scale_in_cooldown_period  = 60
-#     scale_out_cooldown_period = 60
-#   }
-#   predefined_metric_config = {
-#     metric_type = var.uno-risk-service.microservice_scaling_config["metric_name"]
-#     elb_arn     = null
-#     tg_arn      = null
-#   }
-# }
-# #------------------------------------------------------------------------------
-# // ECS Task Role ----->>>
-# // Note: The ECS Task Role is an IAM role that defines the permissions for the applications running inside the ECS task, allowing them to access AWS services and resources.
-# //       As a best practice create different task-roles for each ecs-service/task that you define
-# #------------------------------------------------------------------------------
-# module "uno-risk-service_task_role" {
-#   # checkov:skip=CKV_TF_1: Referring to git tag instead of commit hash
-#   source = "github.com/ambrygen/terraform-aws-module-iam-role.git?ref=v2.0.0"
+  identifier       = local.identifier
+  ecs_cluster_name = "uno-cluster"
+  ecs_service_name = var.uno-risk-service.service_name
+  autoscaling_setting = {
+    max_capacity            = var.uno-risk-service.microservice_scaling_config["max_task_count"]
+    min_capacity            = var.uno-risk-service.microservice_scaling_config["min_task_count"]
+    cooldown_period         = 60
+    policy_type             = "TargetTrackingScaling"
+    metric_aggregation_type = "Maximum"
+  }
+  target_tracking_scaling_config = {
+    metric_type               = "predefined_metric"
+    target_value              = var.uno-risk-service.microservice_scaling_config["metric_target_value"]
+    disable_scale_in          = false
+    scale_in_cooldown_period  = 60
+    scale_out_cooldown_period = 60
+  }
+  predefined_metric_config = {
+    metric_type = var.uno-risk-service.microservice_scaling_config["metric_name"]
+    elb_arn     = null
+    tg_arn      = null
+  }
+}
+#------------------------------------------------------------------------------
+// ECS Task Role ----->>>
+// Note: The ECS Task Role is an IAM role that defines the permissions for the applications running inside the ECS task, allowing them to access AWS services and resources.
+//       As a best practice create different task-roles for each ecs-service/task that you define
+#------------------------------------------------------------------------------
+module "uno-risk-service_task_role" {
+  # checkov:skip=CKV_TF_1: Referring to git tag instead of commit hash
+  source = "github.com/ambrygen/terraform-aws-module-iam-role.git?ref=v2.0.0"
 
-#   iam_role_name                    = "${local.identifier.prefix}-${var.uno-risk-service.service_name}-ecs-task-role"
-#   iam_policy_name                  = "${local.identifier.prefix}-${var.uno-risk-service.service_name}-ecs-task-policy"
-#   iam_policy_description           = "IAM policy for ${var.uno-risk-service.service_name}"
-#   create_inline_policy             = true
-#   assume_role_policy_json_document = data.aws_iam_policy_document.ecs_task_assume_role_policy_document.json
-#   iam_policy_json_documents = [
-#     data.aws_iam_policy_document.microservice_task_role_policy_document.json
-#   ]
-# }
+  iam_role_name                    = "${var.uno-risk-service.service_name}-ecs-task-role"
+  iam_policy_name                  = "${var.uno-risk-service.service_name}-ecs-task-policy"
+  iam_policy_description           = "IAM policy for ${var.uno-risk-service.service_name}"
+  create_inline_policy             = true
+  assume_role_policy_json_document = data.aws_iam_policy_document.ecs_task_assume_role_policy_document.json
+  iam_policy_json_documents = [
+    data.aws_iam_policy_document.microservice_task_role_policy_document.json
+  ]
+}
 # // ============================== <EOF> ============================== //
