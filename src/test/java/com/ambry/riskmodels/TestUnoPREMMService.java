@@ -35,7 +35,7 @@ public class TestUnoPREMMService extends TestCase {
     //private String url = "http://premm.riskcalculation.test.progenygenetics.com:8080/ProgenyRiskService/services/";
     //private String url = "http://premm.riskcalculation.progenygenetics.com:8080/ProgenyRiskService/services/";
     // private String url = "http://64.58.145.76:8080/ProgenyRiskService/services/";
-    private String url = "http://localhost:8086/";
+    private String url = "http://localhost:8080/";
     //private String url = "http://64.58.145.76:8080/ProgenyRiskService/services/";  //ambry test
       //private String url = "http://64.58.145.108:8080/ProgenyRiskService/services/";  //ambry prod
      // private String url = "http://54.163.244.67/ProgenyRiskService/services/"; //test windows server
@@ -43,9 +43,9 @@ public class TestUnoPREMMService extends TestCase {
       //private String url = "http://52.91.159.138/ProgenyRiskService/services/"; //windows test
       //private String url = "http://10.3.26.12:8080/ProgenyRiskService/services/"; //ambry test
       // private String url = "http://10.3.26.11:8080/ProgenyRiskService/services/"; //ambry prod
-    
+
      static long completedAttempts;
-    
+
     public void testBaseFamily()
     {
         String prob = "0.68977281";
@@ -53,9 +53,9 @@ public class TestUnoPREMMService extends TestCase {
         String msh2 = "0.23920116";
         String msh6 = "0.00591389";
         //Risk fam = copyBase();
-        
+
         com.objex.risk.beans.uno.Risk fam = new com.objex.risk.beans.uno.Risk();
-        
+
         Model model = new Model();
         model.setAgeBy(5);
         model.setAgeTo(79);
@@ -69,7 +69,7 @@ public class TestUnoPREMMService extends TestCase {
         proband.setAge(40);
         fam.add(proband);
         fam.setSaveIncoming(true);
-        
+
        com.objex.risk.beans.uno.Person father = new com.objex.risk.beans.uno.Person();
        Cancer colon = new Cancer();
        father.setGender(1);
@@ -80,14 +80,14 @@ public class TestUnoPREMMService extends TestCase {
       // father.setAffectedColonType(AffectedType.ONE);
        //father.setDiagnoseColonAge(25);
        father.getCancers().add(colon);
-       
+
        proband.getCancers().add(colon);
-       
+
        fam.add(father);
         //baseAsserts(fam);
-        
+
               /*
-        
+
                 Risk risk = new Risk();
                // risk.setSaveIncoming(true);
                 Person person = new Person();
@@ -121,8 +121,8 @@ public class TestUnoPREMMService extends TestCase {
 
                // result = (PREMMResult) callService(risk, REST_URI,"calculate/premm",PREMMResult.class);
                  */
-        
-        
+
+
          CombinedResult combresult = UnoJerseyRiskCaller.callService(fam, url,"api/risk/models/calculate",MediaType.APPLICATION_JSON);
         PREMMResult result = (PREMMResult) combresult.getResults().get(ModelName.PREMM);
        //PREMMResult result = (PREMMResult) combresult.getPremmResult();
@@ -130,11 +130,11 @@ public class TestUnoPREMMService extends TestCase {
         assertEquals(mlh,fmt(result.getProbabilityMutationMLH1(), 10));
         assertEquals(msh2,fmt(result.getProbabilityMutationMSH2(), 10));
         assertEquals(msh6,fmt(result.getProbabilityMutationMSH6(), 10));
-        
+
 
        // assertEquals(predCo,fmt(result.getPredictions().get(0).getResult(MMRResult.COLORECTAL_RISK), 9));
-        //assertEquals(predEnd,fmt(result.getPredictions().get(0).getResult(ENDOMETRIAL_RISK), 10)); 
-    }    
+        //assertEquals(predEnd,fmt(result.getPredictions().get(0).getResult(ENDOMETRIAL_RISK), 10));
+    }
        public void testLoad() throws JAXBException, InterruptedException
     {
                 String predBr = "0.00271960";
@@ -142,7 +142,7 @@ public class TestUnoPREMMService extends TestCase {
                String br1 = "0.00050183";
         String br2 = "0.0011646";
         String prob = "0.0016665";
-    
+
        final int attempts =  100;
         Thread.sleep(1000); //give me time to switch contexts
         final long starttime = System.currentTimeMillis();
@@ -166,21 +166,21 @@ public class TestUnoPREMMService extends TestCase {
                     long mytottime = (System.currentTimeMillis() - starttime);
                      System.out.println("total time including sleeps: " + (10 * attempts) + " is " + mytottime + " attempts:" + attempts);
                 }
-                
-                
+
+
             }
             };
            Thread.sleep(10);
            instance.start();
         }
-        
+
     }
      public String fmt(Double numb)
     {
         if (numb == null) {
             return "NULL RESULT";
         }
-        BigDecimal a_dec = new BigDecimal(numb).setScale(3, RoundingMode.HALF_UP); 
+        BigDecimal a_dec = new BigDecimal(numb).setScale(3, RoundingMode.HALF_UP);
         return a_dec.toPlainString();
     }
       public String fmtE(Double numb)
@@ -188,12 +188,12 @@ public class TestUnoPREMMService extends TestCase {
         if (numb == null) {
             return "NULL RESULT";
         }
-        BigDecimal a_dec = new BigDecimal(numb).setScale(4, RoundingMode.HALF_UP); 
+        BigDecimal a_dec = new BigDecimal(numb).setScale(4, RoundingMode.HALF_UP);
         return fmt(a_dec.doubleValue(),5);
         //return a_dec.toPlainString();
     }
-    
-    
+
+
     protected void baseAsserts(Risk risk) {
         assertNotNull(risk);
         assertEquals(risk.getAgeBy(), 5);
@@ -214,7 +214,7 @@ public class TestUnoPREMMService extends TestCase {
             Logger.getLogger(TestUnoPREMMService.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-  
+
     public Risk copyBase()
     {
         Risk fam = null;
@@ -227,5 +227,5 @@ public class TestUnoPREMMService extends TestCase {
         }
         return fam;
     }
-    
+
 }

@@ -6,20 +6,6 @@ permissions:
   actions: read
   security-events: write
 on:
-  pull_request:
-    branches:
-      - develop
-      - release/**/*
-    paths:
-      - infrastructure/**/*
-      - "!**.md"
-  push:
-    branches:
-      - develop
-      - release/**/*
-    paths:
-      - infrastructure/**/*
-      - "!**.md"
   workflow_dispatch:
     inputs:
       terraform_action:

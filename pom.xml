@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>uno-risk-service</artifactId>
@@ -66,7 +66,17 @@
     <spotless-maven-plugin.version>2.43.0</spotless-maven-plugin.version>
     <spring-cloud-dependencies.version>2023.0.3</spring-cloud-dependencies.version>
   </properties>
-
+<!--    <repositories>-->
+<!--      <repository>-->
+<!--        <id>Central Maven repository</id>-->
+<!--        <name>Central Maven repository https</name>-->
+<!--        <url>https://repo.maven.apache.org/maven2</url>-->
+<!--      </repository>-->
+<!--      <repository>-->
+<!--        <id>github</id>-->
+<!--        <url>https://github.com/ambrygen/uno-shared-lib/tree/repository</url>-->
+<!--      </repository>-->
+<!--    </repositories>-->
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -142,11 +152,11 @@
       <artifactId>spring-boot-starter-security</artifactId>
     </dependency>
     <dependency>
-    <groupId>javax.ws.rs</groupId>
-    <artifactId>javax.ws.rs-api</artifactId>
-    <version>2.1.1</version> <!-- Or the appropriate version for your project -->
-</dependency>
-        <dependency>
+      <groupId>javax.ws.rs</groupId>
+      <artifactId>javax.ws.rs-api</artifactId>
+      <version>2.1.1</version> <!-- Or the appropriate version for your project -->
+    </dependency>
+    <dependency>
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
       <version>20140107</version> <!-- Use the latest stable version -->
@@ -156,9 +166,9 @@
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
       <exclusions>
-         <exclusion>
-            <groupId>com.vaadin.external.google</groupId>
-            <artifactId>android-json</artifactId>
+        <exclusion>
+          <groupId>com.vaadin.external.google</groupId>
+          <artifactId>android-json</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -242,11 +252,11 @@
       <version>${archunit-junit5.version}</version>
       <scope>test</scope>
     </dependency>
-	 <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.2</version>
-            <scope>test</scope>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.13.2</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>jakarta.annotation</groupId>
