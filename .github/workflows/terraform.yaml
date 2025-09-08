@@ -28,7 +28,7 @@ on:
 jobs:
   terraform-int:
     name: "TF-Int"
-    if: github.base_ref == 'develop' || github.ref == 'refs/heads/develop' || github.event.inputs.target_environment == 'int'
+    if: startsWith(github.ref, 'refs/heads/release/') || github.event.inputs.target_environment == 'int'
     uses: ambrygen/github-reusable-workflows/.github/workflows/terraform-workflow-source.yaml@v2
     with:
       terraform_action: ${{ ( github.event_name == 'push' || github.event.inputs.terraform_action == 'apply' ) && 'apply' || github.event.inputs.terraform_action == 'destroy' && 'destroy' || 'plan' }}
