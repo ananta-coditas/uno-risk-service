@@ -20,22 +20,22 @@ public class GuideLinesDetailsRepositoryImpl implements CustomGuideLinesDetailsR
 
     private final Logger log = LoggerFactory.getLogger(GuideLinesDetailsRepositoryImpl.class);
 
-    private String guidelinesDataFilePath = "classpath:risk_model_data/nccn_guide_lines_details.json"; 
+    private String guidelinesDataFilePath = "/home/appuser/risk_model_data/nccn_guide_lines_details.json";
 
     private final List<GuideLinesDetails> lstGuideLinesDetails;
-    
+
     public GuideLinesDetailsRepositoryImpl() {
         lstGuideLinesDetails = findAll();
     }
-    
+
     public List<GuideLinesDetails> findAll() {
-    	List<GuideLinesDetails> details = new ArrayList<>();
+        List<GuideLinesDetails> details = new ArrayList<>();
         log.info("Fetching all guidelines data from JSON file");
         try {
-        	details = loadDataFromJson(guidelinesDataFilePath);
+            details = loadDataFromJson(guidelinesDataFilePath);
         } catch (Throwable f) {
             log.warn("Fetching all guidelines data from JSON file has failed " + f);
-		}
+        }
         return details;
     }
 
@@ -72,7 +72,7 @@ public class GuideLinesDetailsRepositoryImpl implements CustomGuideLinesDetailsR
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             File file = ResourceUtils.getFile(filePath);
             return objectMapper.readValue(file,
-                    objectMapper.getTypeFactory().constructCollectionType(List.class, GuideLinesDetails.class));
+                objectMapper.getTypeFactory().constructCollectionType(List.class, GuideLinesDetails.class));
         } catch (IOException e) {
             log.error("Error reading JSON file from path: {}", filePath, e);
             throw new RuntimeException("Error reading JSON file", e);

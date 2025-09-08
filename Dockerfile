@@ -1,6 +1,6 @@
 # Use a minimal OpenJDK 17 base image
 # FROM eclipse-temurin:17-jdk-alpine as base
-FROM maven:3.9.6-eclipse-temurin-17 AS base
+FROM maven:3.9.6-eclipse-temurin-17 AS build
 
 # Set working directory
 WORKDIR /app
@@ -40,7 +40,70 @@ RUN mvn clean package -DskipTests
 
 # Copy the JAR file
 
-RUN cp target/*.jar uno-risk-service.jar
+#RUN cp target/*.jar uno-risk-service.jar
+
+
+### Stage 2 ###
+
+FROM rockylinux/rockylinux:9.5
+
+# COPY --from=build /bin/mvn /bin/mvn
+
+#for R
+RUN dnf install -y epel-release && dnf config-manager --set-enabled crb && dnf update -y
+RUN dnf update -y && dnf install -y glibc libgcc java-17-openjdk R-core R-core-devel gcc gcc-c++ gcc-fortran make  && dnf clean all
+
+# Use a minimal OpenJDK 17 base image
+# FROM eclipse-temurin:17-jdk-alpine as base
+
+# Set working directory
+WORKDIR /app
+
+# Add a non-root user for security (optional but recommended)
+#for alpine RUN adduser -D -u 1000 appuser
+#RUN useradd -u 1000 -M --no-create-home --shell /sbin/nologin appuser
+RUN useradd -u 1000 --shell /sbin/nologin appuser
+
+# Copy the JAR file
+COPY --from=build /app/target/uno-risk-service.jar uno-risk-service.jar
+
+# Copy Tyrer-Cuzick
+COPY src/main/resources/risk_model_dependency/tcuzick /opt/tyrer-server/tcuzick
+RUN chmod 755 /opt/tyrer-server/tcuzick
+RUN chmod +x /opt/tyrer-server/tcuzick
+RUN chown -R appuser:appuser /opt/tyrer-server
+
+# Create a user-specific R library directory
+RUN mkdir -p /app/R_libs && \
+    chmod -R 775 /app
+
+# Set R library path to a writable directory
+ENV R_LIBS_USER=/app/R_libs
+
+
+#Copy Bayes Dependencies
+COPY src/main/resources/risk_model_dependency/BCRA_2.1.2.tar.gz /tmp
+COPY src/main/resources/risk_model_dependency/BayesMendel_2.1-8.tar.gz /tmp
+
+#installs bayes mendel dependencies
+RUN R -e "install.packages('/tmp/BCRA_2.1.2.tar.gz',type='source',REPOS= NULL, dependencies=TRUE)"
+RUN R -e "install.packages('kinship2', dependencies=TRUE, repos = 'https://cloud.r-project.org')"
+RUN R -e "install.packages('Rserve', dependencies=TRUE, repos = 'https://cloud.r-project.org')"
+RUN R -e "install.packages('/tmp/BayesMendel_2.1-8.tar.gz',type='source',REPOS= NULL, dependencies=TRUE)"
+
+
+# Set ownership to the app user
+RUN chown -R appuser:appuser /app
+
+# Switch to non-root user
+USER appuser
+
+COPY src/main/resources/risk_model_data/nccn_guide_lines_details.json /home/appuser/risk_model_data/nccn_guide_lines_details.json
+
+# Run the Spring Boot app
+# ENTRYPOINT ["java", "-jar", "app.jar"]
+CMD bash -c "R -e \"Rserve::Rserve(args='--RS-enable-remote --no-save')\" & java -jar /app/app.jar"
+
 #Expose the port
 EXPOSE 8080
 
@@ -52,4 +115,6 @@ EXPOSE 8080
 
 
 # Run the Spring Boot app
-ENTRYPOINT ["java", "-jar", "uno-risk-service.jar"]
+# ENTRYPOINT ["java", "-jar", "uno-risk-service.jar"]
+
+CMD bash -c "R -e \"Rserve::Rserve(args='--RS-enable-remote --no-save')\" & java -jar /app/uno-risk-service.jar"
