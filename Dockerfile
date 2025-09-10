@@ -1,6 +1,6 @@
-# Use a minimal OpenJDK 17 base image
-# FROM eclipse-temurin:17-jdk-alpine as base
-FROM maven:3.9.6-eclipse-temurin-17 AS build
+# Use a minimal OpenJDK 21 base image
+# FROM eclipse-temurin:21-jdk-alpine as base
+FROM maven:3.9.6-eclipse-temurin-21 AS build
 
 # Set working directory
 WORKDIR /app
@@ -47,11 +47,9 @@ RUN mvn clean package -DskipTests
 
 FROM rockylinux/rockylinux:9.5
 
-# COPY --from=build /bin/mvn /bin/mvn
-
 #for R
 RUN dnf install -y epel-release && dnf config-manager --set-enabled crb && dnf update -y
-RUN dnf update -y && dnf install -y glibc libgcc java-17-openjdk R-core R-core-devel gcc gcc-c++ gcc-fortran make  && dnf clean all
+RUN dnf update -y && dnf install -y glibc libgcc java-21-openjdk R-core R-core-devel  && dnf clean all    #gcc gcc-c++ gcc-fortran make
 
 # Use a minimal OpenJDK 17 base image
 # FROM eclipse-temurin:17-jdk-alpine as base
@@ -99,10 +97,6 @@ RUN chown -R appuser:appuser /app
 USER appuser
 
 COPY src/main/resources/risk_model_data/nccn_guide_lines_details.json /home/appuser/risk_model_data/nccn_guide_lines_details.json
-
-# Run the Spring Boot app
-# ENTRYPOINT ["java", "-jar", "app.jar"]
-CMD bash -c "R -e \"Rserve::Rserve(args='--RS-enable-remote --no-save')\" & java -jar /app/app.jar"
 
 #Expose the port
 EXPOSE 8080
