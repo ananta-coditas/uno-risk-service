@@ -45,11 +45,11 @@ public class WebConfigurer implements ServletContextInitializer {
         CorsConfiguration config = unoFrameworkConfigProperties.getCors();
         if (!CollectionUtils.isEmpty(config.getAllowedOrigins()) || !CollectionUtils.isEmpty(config.getAllowedOriginPatterns())) {
             LOG.debug("Registering CORS filter");
+            source.registerCorsConfiguration("/", config);
             source.registerCorsConfiguration("/api/**", config);
             source.registerCorsConfiguration("/management/**", config);
-            source.registerCorsConfiguration("/v3/api-docs", config);
-            source.registerCorsConfiguration("/swagger-ui/**", config);
-            source.registerCorsConfiguration("/swagger-ui.html/**", config);
+            source.registerCorsConfiguration("/api/risk/models/api-docs/**", config);
+            source.registerCorsConfiguration("/api/risk/models/swagger-ui/**", config);
         }
         return new CorsFilter(source);
     }
