@@ -160,6 +160,8 @@ server:
         http-only: true
 
 springdoc:
+  api-docs:
+    path: /api/risk/models/api-docs
   show-actuator: false
   # swagger-ui.path: /swagger-ui
 
