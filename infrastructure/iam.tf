@@ -23,4 +23,3 @@ resource "aws_iam_policy" "instance_profile" {
   description = "EC2 instance profile policy"
   policy      = data.aws_iam_policy_document.ec2_instance_profile_role.json
 }
-// =============== <EOF> =============== //
