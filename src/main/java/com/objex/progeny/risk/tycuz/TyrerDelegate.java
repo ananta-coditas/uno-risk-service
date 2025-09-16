@@ -9,10 +9,13 @@ import com.objex.progeny.risk.Utils;
 import com.objex.risk.beans.AffectedType;
 import static com.objex.risk.beans.Germline.*;
 import com.objex.risk.beans.Prediction;
+import com.objex.risk.beans.RiskError;
 import com.objex.risk.beans.TestResult;
 import com.objex.risk.beans.tcuzick.Person;
+import com.objex.risk.beans.tcuzick.Person.DensityMeasure;
 import com.objex.risk.beans.tcuzick.Person.Ethnic;
 import com.objex.risk.beans.tcuzick.Person.HRTUse;
+import com.objex.risk.beans.tcuzick.Person.HyperplasiaType;
 import com.objex.risk.beans.tcuzick.Risk;
 import com.objex.risk.beans.tcuzick.TyrerResult;
 import java.io.BufferedReader;
@@ -28,6 +31,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +54,10 @@ public class TyrerDelegate {
     private File workPath = null;
     public static final String DELIM = "\t";
     protected static int count = 0;
+    protected static HashMap<DensityMeasure, String> denstityRangeVal = new HashMap<DensityMeasure, String>() {{
+        put(DensityMeasure.VOLPRA,"Volpara Percentage must be between 0 and 100");
+        put(DensityMeasure.VAS,"VAS Percentage must be between 0 and 100");
+   }};
     
     public TyrerDelegate(String execCommand) {
         this.command = execCommand;
@@ -214,7 +222,11 @@ private Double parseResult(String value) {
 }   
 public TyrerResult calculate(Risk risk) throws IOException, InterruptedException {
        
-    TyrerResult result = null;
+    TyrerResult result = new TyrerResult();
+    validateData(risk.getFamily().get(0), result, risk); 
+    if (result.hasErrors()) {
+        return result;
+    }
     String stamp = stamp() + ".txt";
     String inputFile = workPath.getAbsolutePath() + "/tyInput" + stamp;
     String outputFile = workPath.getAbsolutePath() + "/tyOutput" + stamp;
@@ -574,4 +586,66 @@ public TyrerResult calculate(Risk risk) throws IOException, InterruptedException
         }};
     eater.start();
 }
+    /**
+     * validate the incoming risk family data
+     * @param proband
+     * @param result
+     * @param risk 
+     */ 
+    protected void validateData(Person proband, TyrerResult result, Risk risk) {  
+            if (proband.getAffectedBreastType().isAffected() || proband.getAffectedBilateralBreastType().isAffected()) {
+                 result.addError(new RiskError(proband.getId(),"Unsupported Cancer for member","unsupportedCancerFormember"));
+            }  
+            if (proband.getAge() < 1 || proband.getAge() > 84) {
+                 result.addError(new RiskError(proband.getId(),"Age must be between 1 and 84","ageMustBeBetweenOneAndEightyFour"));
+            }
+            if ((proband.getDensityMeasure() == DensityMeasure.VAS  || proband.getDensityMeasure() == DensityMeasure.VOLPRA) && 
+                    (proband.getDensityValue() < 0 || proband.getDensityValue() >= 100)) {
+                              result.addError(new RiskError(proband.getId(),denstityRangeVal.get(proband.getDensityMeasure()),"unsupporteDensity"));
+            }
+            if (proband.getGender() == 1) {
+                result.addError(new RiskError(proband.getId(),"member Cannot be male","memberCannotBeMale"));
+            } 
+           for (Person member : risk.getFamily()) {
+               validateMemberData(member, result);
+           }                
+    }
+    
+    /**
+     * 
+     * @param member
+     * @param result
+     * @param risk 
+     */
+    private void validateMemberData(Person member, TyrerResult result) {
+        if (member.getGender() == 1 && member.getHasLiveBirth()) {
+            result.addError(new RiskError(member.getId(),"member Cannot be male","liveBirthInvalidForMale"));
+        }
+        if (member.getGender() == 1 && member.getHyperplasia() != HyperplasiaType.NONE) {
+            result.addError(new RiskError(member.getId(),"Hyperplasia invalid for male","hyperplasiaInvalidForMale"));
+        }
+        if (member.getGender() == 1 && member.getHasAtypicalHyperplasia()) {
+            result.addError(new RiskError(member.getId(),"Atypical Hyperplasia invalid for male","atypicalHyperplasiaInvalidForMale"));
+        }
+        if (member.getGender() == 1 && member.getMenarcheAge() > 0) {
+            result.addError(new RiskError(member.getId(),"Menarch Age invalid for male","menarcheAgeInvalidForMale"));
+        }
+        if (member.getGender() == 1 && member.getMenopauseAge() > 0) {
+            result.addError(new RiskError(member.getId(),"Menapause invalid for male","menapauseAgeInvalidForMale"));
+        }
+        if ((member.getUsedHRT() == null || member.getUsedHRT() == Person.HRTUse.NEVER) && (member.getYearsPastHRT() > 0 || member.getHrtType() != null)) {
+            result.addError(new RiskError(member.getId(),"HRT Type or Duration exists without use","HRTTypeOrDurationExistsWithoutUse"));
+        }
+        if (member.getDiagnoseBilateralBreastAge() > 0 && (member.getDiagnoseBreastAge() > member.getDiagnoseBilateralBreastAge()) ) {
+             result.addError(new RiskError(member.getId(),"Bilateral Diagnosed before Breast","bilateralDiagnosedBeforeBreast"));
+        }
+        if (member.getLiveBirthAge() != null && member.getLiveBirthAge() > 0) {
+              if (!member.getHasLiveBirth()) {
+                  result.addError(new RiskError(member.getId(),"Missing Live Birth","missingLiveBirth"));
+              }
+        }
+        if (member.getAge() < 0) {
+            result.addError(new RiskError(member.getId(),"Invalid age","invalidAge"));
+        }    
+    }
 }
