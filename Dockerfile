@@ -49,7 +49,17 @@ FROM rockylinux/rockylinux:9.5
 
 #for R
 RUN dnf install -y epel-release && dnf config-manager --set-enabled crb && dnf update -y
-RUN dnf update -y && dnf install -y glibc libgcc java-21-openjdk R-core R-core-devel  && dnf clean all    #gcc gcc-c++ gcc-fortran make
+RUN dnf install -y \
+      glibc \
+      libgcc \
+      R-core \
+      R-core-devel \
+      java-21-openjdk-headless \
+  && dnf remove -y R-core-devel \
+  && dnf clean all \
+  && rm -rf /var/cache/dnf /tmp/* /var/tmp/* /usr/share/doc /usr/share/man /usr/share/locale
+
+#gcc gcc-c++ gcc-fortran make
 
 # Use a minimal OpenJDK 17 base image
 # FROM eclipse-temurin:17-jdk-alpine as base
