@@ -191,7 +191,7 @@ module "uno-risk-service_autoscaling" {
   source = "github.com/ambrygen/terraform-aws-module-app-autoscaling.git?ref=v1.0.0"
 
   identifier       = local.identifier
-  ecs_cluster_name = "uno-cluster"
+  ecs_cluster_name = "${ecs_cluster_name}"
   ecs_service_name = var.uno-risk-service.service_name
   autoscaling_setting = {
     max_capacity            = var.uno-risk-service.microservice_scaling_config["max_task_count"]

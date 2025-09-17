@@ -15,7 +15,7 @@ vpc_config = {
   private_target_subnets = ["subnet-0f3f2dee6d91d338c", "subnet-0ecef8ec24965d979", "subnet-0fba69dde222d8916", "subnet-083c8e3c16ba1e9e9"]
 }
 // ----------------------------------------- //
-ecs_cluster_arn="arn:aws:ecs:us-west-2:034362031415:cluster/uno-cluster"
+ecs_cluster_arn="arn:aws:ecs:us-west-2:034362031415:cluster/uno-dev-cluster"
 ecs_cluster_name = "uno-dev-cluster"
 // ----------------------------------------- //
 all_tags = {
