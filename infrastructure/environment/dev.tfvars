@@ -10,13 +10,13 @@ aws_region     = "us-west-2"
 // -------- --------------------------------- //
 
 vpc_config = {
-  vpc_id                 = "vpc-065a5cbbce57c80b6"
+  vpc_id                 = "vpc-068d889f2d003f60d"
   public_target_subnets  = []
-  private_target_subnets = ["subnet-0b8a3219ec998cac7", "subnet-00831ed25ee437e14"]
+  private_target_subnets = ["subnet-0f3f2dee6d91d338c", "subnet-0ecef8ec24965d979", "subnet-0fba69dde222d8916", "subnet-083c8e3c16ba1e9e9"]
 }
 // ----------------------------------------- //
 ecs_cluster_arn="arn:aws:ecs:us-west-2:034362031415:cluster/uno-cluster"
-ecs_cluster_name = "uno-cluster"
+ecs_cluster_name = "uno-dev-cluster"
 // ----------------------------------------- //
 all_tags = {
   name_prefix       = "uno"
@@ -36,8 +36,8 @@ all_tags = {
 frontend_lb_config = {
   lb_name              = "uno-dev-elb"           # Load Balancer created by uno_shared_services repo
   lb_type              = "application"
-  lb_security_group_id = "sg-036abc2afdc681041"   # Security Group created by uno_shared_services repo for ALB
-  logging_bucket_name  = ""
+  lb_security_group_id = "sg-05d96445103219667"   # Security Group created by uno_shared_services repo for ALB
+  logging_bucket_name  = "ambry-uno-services-dev-034362031415-bucket"
 }
 // ----------------------------------------- //
 capacity_provider_details = {
