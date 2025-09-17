@@ -35,6 +35,7 @@ on:
         required: true
         type: choice
         options:
+          - sandbox
           - int
           - test
           - stage
