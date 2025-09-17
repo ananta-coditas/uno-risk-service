@@ -40,6 +40,7 @@ on:
           - test
           - stage
           - prod
+
 jobs:
   terraform-dev:
     name: "TF-dev"
