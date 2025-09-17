@@ -51,6 +51,8 @@ jobs:
       working_directory: "infrastructure"
       tfvars: "environment/dev.tfvars"
       env_file_name: "infrastructure/.env.dev"
+      environment: sandbox
+      # post_init_commands: "aws ec2 describe-security-groups; aws ec2 describe-security-group-rules"
     secrets: inherit
 
   terraform-int:
