@@ -19,7 +19,7 @@ module "uno-risk-service_security_group" {
   # checkov:skip=CKV_TF_1: Referring to git tag instead of commit hash
   # checkov:skip=CKV_TF_2: Pointing to major version that Ambry controls
   # checkov:skip=CKV_AWS_382: SG need egress rule to allow connectivity to internet to install external packages
-  source = "github.com/ambrygen/terraform-aws-module-security-group.git?ref=v4"
+  source = "github.com/ambrygen/terraform-aws-module-security-group.git?ref=v3.0"
 
   identifier = local.identifier.prefix
   created_for = {
