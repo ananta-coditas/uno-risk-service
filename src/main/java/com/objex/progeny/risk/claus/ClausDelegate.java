@@ -353,7 +353,13 @@ public class ClausDelegate {
     
     public ClausResult calculate(Risk risk) {
         ClausResult result = null;
+        ClausResult errorResult = new ClausResult();
         Person proband = risk.getFamily().get(0);
+        validateData(risk.getFamily().get(0), errorResult, risk); 
+        if (errorResult.hasErrors()) {
+            errorResult.setVersion(CLAUS_VERSION); 
+             return errorResult;
+         }
         List<Person> parents = Utils.getParents(proband, risk);
         Person mother = null;
         Person father = null;
@@ -597,4 +603,52 @@ public class ClausDelegate {
         }
         return current;
     }
+    /**
+   * validate the incoming risk family data
+   * @param proband
+   * @param result
+   * @param risk 
+   */ 
+  protected void validateData(Person proband, ClausResult result, Risk risk) {  
+
+      if (proband.getAge() >= risk.getAgeTo()) {
+          result.addError(new RiskError(proband.getId(),"Age Too High for Model Settings","ageTooHighForModelSettings"));
+      }
+      if (proband.getGender() == 1) {
+          result.addError(new RiskError(proband.getId(),"Proband Cannot Be Male","probandCannotBeMale"));
+      }
+      if (proband.getAge() < 29) {
+              result.addError(new RiskError(proband.getId(),"Proband Must be at least 29","probandMustBeAtLeastTwentyNine"));
+      }
+      if (proband.getAge() > 79) {
+           result.addError(new RiskError(proband.getId(),"Proband age over 79","probandAgeOverSeventyNine"));
+      }
+      if (proband.getAffectedBreastType().isAffected() || proband.getAffectedOvarianType().isAffected()) {
+            result.addError(new RiskError(proband.getId(),"Unsupported Cancer for Proband","unsupportedCancerForProband"));
+      }
+      
+      for (Person member : risk.getFamily()) {
+             validateMemberData(member, result);
+      }
+   
+  }
+  
+    /**
+   * 
+   * @param member
+   * @param result
+   * @param risk 
+   */
+  private void validateMemberData(Person member, ClausResult result) {
+          if (member.getAffectedOvarianType().isAffected() && member.getDiagnoseOvarianAge() == 0) {
+              result.addError(new RiskError(member.getId(),"Missing Age Ovarian","missingAgeOvarian"));
+          }
+              
+          if (member.getAffectedBreastType().isAffected() && member.getDiagnoseBreastAge() < 20  && member.getDiagnoseBreastAge() != 0) {
+              result.addError(new RiskError(member.getId(),"Affected Breast Age Under 20","affectedBreastAgeUnderTwenty"));
+          }
+          if (member.getAffectedBreastType().isAffected() && member.getDiagnoseBreastAge() == 0) {
+              result.addError(new RiskError(member.getId(),"Missing Age Breast","missingAgeBreast"));
+          }
+  }
 }

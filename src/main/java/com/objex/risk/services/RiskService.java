@@ -14,6 +14,8 @@ import com.objex.risk.beans.brca.Marker;
 import com.objex.risk.beans.brca.Person;
 import com.objex.risk.beans.Prediction;
 import com.objex.risk.beans.RiskCommand;
+import com.objex.risk.beans.RiskError;
+import com.objex.risk.beans.TestResult;
 import com.objex.risk.beans.brca.Risk;
 import com.objex.risk.beans.brca.BRCAResult;
 import com.objex.risk.beans.charts.ChartResult;
@@ -21,6 +23,7 @@ import com.objex.risk.beans.charts.ChartVO;
 import com.objex.risk.beans.mela.MelaResult;
 import com.objex.risk.beans.mmr.MMRResult;
 import com.objex.risk.beans.panc.PancResult;
+import javax.ws.rs.core.Response;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -109,12 +112,17 @@ public class RiskService {
      public PancResult calcPanc(@RequestBody com.objex.risk.beans.panc.Risk risk) {
         RConnection con = null;
         long time = System.currentTimeMillis();
-        PancResult result = null;
+        PancResult result = new PancResult();
         REXP x = null;
         try
         {
             StringBuilder inlineParms = new StringBuilder();
             checkForSaveOff(risk);
+            validatePancData((com.objex.risk.beans.panc.Person) risk.getProband(), result, risk);
+            if (result.hasErrors()) {
+                result.setVersion(BAYES_VERSION);
+                return result;
+            }
             LOG.info("Requesting Connection to RServe.");
             con =  createConnection(spawnServer); 
             if(verify(con)) {
@@ -130,7 +138,7 @@ public class RiskService {
                 
                 con.assign("fam", RiskService.this.createFamilyFrame(risk));
                 con.voidEval("result <- pancpro(family=fam,params=pancParams)");              
-                result = buildResult(con, new PancResult());  
+                result = buildResult(con, result);  
                 result.setChartCode(risk.getChartCode());
                 buildChartForResult(result);
                 
@@ -173,12 +181,17 @@ public class RiskService {
     public MelaResult calcMela(@RequestBody com.objex.risk.beans.mela.Risk risk) {
         RConnection con = null;
         long time = System.currentTimeMillis();
-        MelaResult result = null;
+        MelaResult result = new MelaResult();
         REXP x = null;
         try
         {
             StringBuilder inlineParms = new StringBuilder();
             checkForSaveOff(risk);
+            validateMelaData((com.objex.risk.beans.mela.Person) risk.getProband(), result, risk);
+            if (result.hasErrors()) {
+                result.setVersion(BAYES_VERSION);
+                return result;
+            }
             LOG.info("Requesting Connection to RServe.");
             con =  createConnection(spawnServer); 
             if(verify(con)) {
@@ -212,7 +225,7 @@ public class RiskService {
                 LOG.info("inline params: " + inlineString);
                 con.voidEval("result <- melapro(family=fam,params=melaParams" + inlineString + ")");
                 
-                result = buildResult(con, new MelaResult()); 
+                result = buildResult(con, result); 
                 result.setChartCode(risk.getChartCode());
                 buildChartForResult(result);
                 
@@ -255,12 +268,17 @@ public class RiskService {
     public MMRResult calcMMR(@RequestBody com.objex.risk.beans.mmr.Risk risk) {
         RConnection con = null;
         long time = System.currentTimeMillis();
-        MMRResult result = null;
+        MMRResult result = new MMRResult();
         REXP x = null;
         try
         {
             StringBuilder inlineParms = new StringBuilder();
             checkForSaveOff(risk);
+            validateMMRData((com.objex.risk.beans.mmr.Person) risk.getProband(), result, risk);
+            if (result.hasErrors()) {
+                result.setVersion(BAYES_VERSION);
+                return result;
+            }
             LOG.info("Requesting Connection to RServe.");
             con =  createConnection(spawnServer); 
             if(verify(con)) {
@@ -292,7 +310,7 @@ public class RiskService {
                 //con.eval("MMRpro(family=fam,params=mmrParams" + inlineString + ")");
                 con.voidEval("result <- MMRpro(family=fam,params=mmrParams" + inlineString + ")");
                 
-                result = buildResult(con, new MMRResult());
+                result = buildResult(con, result);
                 result.setChartCode(risk.getChartCode());
                 buildChartForResult(result);
       
@@ -366,12 +384,17 @@ public class RiskService {
       
         RConnection con = null;
         long time = System.currentTimeMillis();
-        BRCAResult result = null;
+        BRCAResult result = new BRCAResult();
         REXP x = null;
         try
         {
             StringBuilder inlineParms = new StringBuilder();
             checkForSaveOff(risk);
+            validateBRCAData((Person) risk.getProband(), result, risk); 
+            if (result.hasErrors()) {
+                result.setVersion(BAYES_VERSION);
+                return result;
+            }
             LOG.info("Requesting Connection to RServe.");
             
             con =  createConnection(spawnServer);
@@ -414,7 +437,7 @@ public class RiskService {
                 con.voidEval("result <- brcapro(family=fam,params=brcaParams" + inlineString + ")");
                 LOG.debug("BRCA Risk Model compute time is " + (System.currentTimeMillis() - computeBegin)  + " milliseconds");
                 
-                result = buildResult(con, new BRCAResult());
+                result = buildResult(con, result);
                 result.setChartCode(risk.getChartCode());
                 buildChartForResult(result);
         
@@ -472,11 +495,15 @@ public class RiskService {
     
     
     protected static void close(RConnection con) {
-        if (connectionPooling) {
-            connections.add(con);
-        } else {
-            closeNonPool(con);
-        }
+    	try {
+	        if (connectionPooling) {
+	            connections.add(con);
+	        } else {
+	            closeNonPool(con);
+	        }
+    	} catch (Exception e) { //dont blow up in finally
+    		
+    	}
     }
 
     protected static synchronized void closeNonPool(RConnection con) {
@@ -1167,5 +1194,154 @@ public class RiskService {
         return result;
         //return Response.ok(result).build();
     }
+    /**
+   * validate the incoming risk family data for BRCA
+   * @param proband
+   * @param result
+   * @param risk 
+   */ 
+  protected void validateBRCAData(Person proband, BRCAResult result, Risk risk) {  
+      
+      if (proband.getAge() >= risk.getAgeTo()) {
+          result.addError(new RiskError(proband.getId(),"Proband age is too high","ageTooHighForModelSettings"));
+      }         
+      for (Person member : risk.getFamily()) {
+          validateBRCAMemberData(member, result);
+      }
+   
+  }
+  
+   /* validate the incoming risk family data for MMR
+   * @param proband
+   * @param result
+   * @param risk 
+   */ 
+  protected void validateMMRData(com.objex.risk.beans.mmr.Person proband, MMRResult result, com.objex.risk.beans.mmr.Risk risk) {  
+      if (proband.getAge() >= risk.getAgeTo()) {
+          result.addError(new RiskError(proband.getId(),"Proband age is too high","ageTooHighForModelSettings"));
+      }         
+      for (com.objex.risk.beans.mmr.Person member : risk.getFamily()) {
+          validateMMRMemberData(member, result);
+      }
+  }
+  /**
+   * Member validations for MMR
+   * @param member
+   * @param result 
+   */
+  private void validateMMRMemberData(com.objex.risk.beans.mmr.Person member, MMRResult result) {
+      if (member.getAffectedColonType() != 0 && member.getDiagnoseColonAge() == 0) {
+          result.addError(new RiskError(member.getId(),"Missing Age Colon","missingAgeColon"));
+      }
+      if (member.getAffectedEndometriumType() != 0 && member.getDiagnoseEndometriumAge() == 0) {
+          result.addError(new RiskError(member.getId(),"Missing Age Endometrium","missingAgeEndometrium"));
+      }
+      if (member.getGender() == 1 && member.getAffectedEndometriumType() == 1) {
+          result.addError(new RiskError(member.getId(),"Invalid Gender for Endometrium","invalidGenderForEndometrium"));           
+      }
+      if (member.getAge() < 0) {
+          result.addError(new RiskError(member.getId(),"Invalid Age","invalidAge"));
+      } 
+  }
+  
+    /**
+   * Member validations for BRCA
+   * @param member
+   * @param result
+   * @param risk 
+   */
+  private void validateBRCAMemberData(Person member, BRCAResult result) {
+      if (member.getAffectedBreastType() == 1 && member.getDiagnoseBreastAge() == 0) {
+          result.addError(new RiskError(member.getId(),"Missing Age Breast","missingAgeBreast"));
+      }
+      else if (member.getAffectedBreastType() == 2 && (member.getDiagnoseBreastAge() == 0 || member.getDiagnoseBreastContralateralAge() == 0)) {
+         result.addError(new RiskError(member.getId(),"Missing Age Breast/Breast Contralateral","missingAgeBreastOrBreastContralateral"));
+      }
+      if (member.getAffectedOvarianType() != 0 && member.getDiagnoseOvarianAge() == 0) {
+         result.addError(new RiskError(member.getId(),"Missing Age Ovarian","missingAgeOvarian"));
+      }
+      if (member.getAffectedBreastType() == 0 && member.getMarker() != null) {
+          if (member.getMarker().getCK14() != TestResult.NONE || member.getMarker().getCK56()!= TestResult.NONE || member.getMarker().getER() != TestResult.NONE
+                  || member.getMarker().getHER2() != TestResult.NONE || member.getMarker().getPR() != TestResult.NONE) {
+              result.addError(new RiskError(member.getId(),"Tumor Markers Require Breast Cancer Diagnosis","tumorMarkersRequireBreastCancerDiagnosis"));
+          }
+      }
+      
+      if (member.isPerformedOophorectomy()) {
+          if (member.getGender() == 1) {
+              result.addError(new RiskError(member.getId(),"Invalid Gender for Oophorectomy","invalidGenderForOophorectomy"));
+          } else if  (member.getAgeOophorectomy() == 0) {
+              result.addError(new RiskError(member.getId(),"Mising Age for Oophorectomy","missingAgeOophorectomy"));
+          } else if  (member.getAge() < member.getAgeOophorectomy()) {
+              result.addError(new RiskError(member.getId(),"Current Age Less Than Oophorectomy Age","currentAgeIsLessThanOophorectomyAge"));
+          }
+      }
+      
+      if (member.isPerformedMasectomy() && member.getAgeMasectomy() == 0) {
+        result.addError(new RiskError(member.getId(),"Missing Age Masectomy","missingAgeMasectomy"));
+      }       
+      if (member.getGender() == 1 && member.getAffectedOvarianType() == 1) {
+         result.addError(new RiskError(member.getId(),"Invalid Gender For Ovarian","invalidGenderForOvarian"));
+      }
+      
+      if (member.getAge() < 0) {
+         result.addError(new RiskError(member.getId(),"Invalid Age","invalideAge"));
+      }
+  }
+  /**
+   * Server side validations for melanoma
+   * @param proband
+   * @param result
+   * @param risk 
+   */
+  protected void validateMelaData(com.objex.risk.beans.mela.Person proband, MelaResult result, com.objex.risk.beans.mela.Risk risk) {  
+      if (proband.getAge() >= risk.getAgeTo()) {
+          result.addError(new RiskError(proband.getId(),"Proband age is too high","ageTooHighForModelSettings"));
+      }         
+      for (com.objex.risk.beans.mela.Person member : risk.getFamily()) {
+          validateMelaMemberData(member, result);
+      }
+      
+  }
+  
+    /**
+   * Member validations for BRCA
+   * @param member
+   * @param result
+   * @param risk 
+   */
+  private void validateMelaMemberData(com.objex.risk.beans.mela.Person member, MelaResult result) {
+      if (member.getAffectedSkinType() != 0 && member.getDiagnoseSkinAge() == 0) {
+          result.addError(new RiskError(member.getId(),"Missing Age Skin","missingAgeSkin"));
+      } 
+      if (member.getAge() < 0) {
+          result.addError(new RiskError(member.getId(),"Invalid Age","invalidAge"));
+      }
+
+  }
+  protected void validatePancData(com.objex.risk.beans.panc.Person proband, PancResult result, com.objex.risk.beans.panc.Risk risk) {  
+      if (proband.getAge() >= risk.getAgeTo()) {
+          result.addError(new RiskError(proband.getId(),"Proband age is too high","ageTooHighForModelSettings"));
+      }         
+      for (com.objex.risk.beans.panc.Person member : risk.getFamily()) {
+          validatePancMemberData(member, result);
+      }
+      
+  }
+  
+    /**
+   * Member validations for BRCA
+   * @param member
+   * @param result
+   * @param risk 
+   */
+  private void validatePancMemberData(com.objex.risk.beans.panc.Person member, PancResult result) {
+      if (member.getAffectedPancreasType() != 0 && member.getDiagnosePancreasAge() == 0) {
+          result.addError(new RiskError(member.getId(),"Missing Age Pancreas","missingAgePancreas"));
+      }
+      if (member.getAge() < 0) {
+          result.addError(new RiskError(member.getId(),"Invalid Age","invalidAge"));
+      }
+  }
 
 }

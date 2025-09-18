@@ -7,6 +7,7 @@ package com.objex.progeny.risk.premm;
 
 import com.objex.progeny.risk.Utils;
 import com.objex.risk.beans.AffectedType;
+import com.objex.risk.beans.RiskError;
 import com.objex.risk.beans.premm.PREMMResult;
 import com.objex.risk.beans.premm.Person;
 import static com.objex.risk.beans.premm.Person.MLH1;
@@ -53,8 +54,13 @@ public class PremmDelegate {
     }
    
     public PREMMResult calculate(Risk risk) {
-        PREMMResult result = null;
+        PREMMResult result = new PREMMResult();
         Person proband = (Person) risk.getProband();
+        validateData(proband, result, risk);
+        if (result.hasErrors()) {
+        	result.setVersion(PREMM_VERSION);
+            return result;
+        }
         List<Person> firstDegreeRelatives = Utils.getFirstDegreeRelatives(risk, Person.class);
         List<Person> matFDRs = new ArrayList(firstDegreeRelatives);
         List<Person> patFDRs = new ArrayList(firstDegreeRelatives);
@@ -361,5 +367,40 @@ public class PremmDelegate {
             Double val = 1 * presence(singleFDREndoCa) + 2 * presence(multiFDREndoCa) + .5 * presence(singleSDREndoCa) + 1 * presence(multiSDREndoCa);
             return val;
     } 
+    /* validate the incoming risk family data for Premm
+     * @param proband
+     * @param result
+     * @param risk 
+     */ 
+    protected void validateData(Person proband, PREMMResult result, Risk risk) {  
+
+	    if (proband.getAge() >= risk.getAgeTo()) {
+	        result.addError(new RiskError(proband.getId(),"Proband age is too high","ageTooHighForModelSettings"));
+	    }  
+	    
+	    for (Person member : risk.getFamily()) {
+	    	validateMemberData(member, result);
+	    }
+}
+/**
+ * Member validations for MMR
+ * @param member
+ * @param result 
+ */
+private void validateMemberData(Person member, PREMMResult result) {
+    if (member.getAffectedColonType() != AffectedType.NONE && member.getDiagnoseColonAge() == 0) {
+        result.addError(new RiskError(member.getId(),"Missing Age Colon","missingAgeColon"));
+    }
+    
+    if (member.getAffectedEndometriumType() !=  AffectedType.NONE  && member.getDiagnoseEndometriumAge() == 0) {
+        result.addError(new RiskError(member.getId(),"Missing Age Endometrium","missingAgeEndometrium"));
+    }
+    if (member.getGender() == 1 && member.getAffectedEndometriumType()  !=  AffectedType.NONE) {
+        result.addError(new RiskError(member.getId(),"Invalid Gender for Endometrium","invalidGenderForEndometrium"));           
+    }
+    if (member.getAge() < 0) {
+        result.addError(new RiskError(member.getId(),"Invalid Age","invalidAge"));
+    } 
+}
     
 }

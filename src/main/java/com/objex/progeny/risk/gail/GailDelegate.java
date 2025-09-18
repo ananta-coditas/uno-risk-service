@@ -10,10 +10,13 @@ import com.ambrygen.dceg.bcra.consolesample.Risks;
 import com.objex.progeny.risk.Utils;
 import com.objex.risk.beans.Prediction;
 import com.objex.risk.beans.RiskError;
+import com.objex.risk.beans.TestResult;
 import com.objex.risk.beans.gail.GailResult;
 import com.objex.risk.beans.gail.Risk;
 import com.objex.risk.beans.gail.Person;
 import com.objex.risk.beans.AffectedType;
+import static com.objex.risk.beans.Germline.BRCA1;
+import static com.objex.risk.beans.Germline.BRCA2;
 import com.objex.risk.beans.gail.Person.Race;
 import java.util.List;
 import org.slf4j.Logger;
@@ -63,15 +66,8 @@ public class GailDelegate {
         int hyperPlasia = proband.getHasHyperplasia() ? 1 : 0; //getBcptConvert.GetHyperPlasia("1");     
         int predictionAge = currentAge + risk.getAgeBy();
         
-        validateData(proband, firstLiveBirthAge, result, menarcheAge, predictionAge, risk); 
+        validateData(proband, result, predictionAge, risk); 
         if (result.hasErrors()) {
-           result.getErrors().clear(); //don't want to supprt alg side validations. 
-            Prediction pred = result.addPrediction();
-            pred.addRisk("breastRisk", null);
-            pred.setAge(predictionAge + risk.getAgeBy());
-            pred = result.addPrediction();
-            pred.addRisk("breastRisk", null);
-            pred.setAge( risk.getAgeTo());
             return result;
         }
 
@@ -104,16 +100,63 @@ public class GailDelegate {
         return risksPctg.getAbsoluteRisk()/100;
     }
 
-    protected void validateData(Person proband, int firstLiveBirthAge, GailResult result, int menarcheAge, int predictionAge, Risk risk) {
-        if (proband.getHasLiveBirth()  && !Utils.inRange(firstLiveBirthAge, 10,55, EMPTY_DEFAULT)) {
-            result.addError(new RiskError("First live birth outside range of 10 - 55 for proband"));
+    protected void validateData(Person proband, GailResult result,int firstPredictionAge, Risk risk) {            
+        if (proband.getAge() != 0 && risk.getAgeTo() < firstPredictionAge) {
+            result.addError(new RiskError(proband.getId(),"Proband age is too high","ageTooHighForModelSettings"));
         }
-        if (!Utils.inRange(menarcheAge, 7 , 39 ,EMPTY_DEFAULT)) {
-            result.addError(new RiskError(MENARCHE_ERROR));
+        if (proband.getGender() == 1) {
+            result.addError(new RiskError(proband.getId(),"Proband can not be male","probandCannotBeMale"
+            ));
         }
-        if (predictionAge > risk.getAgeTo()) {
-            result.addError(new RiskError(proband.getId(),"Proband age is too hight or not set","ProbandAgeHigh"));
+        if (proband.getAge() < 35) {
+            result.addError(new RiskError(proband.getId(),"Proband Must be at least 35","probandMustBeAtLeastThirtyFive"));
         }
+        if (proband.getAffectedBreastType().isAffected()) {
+             result.addError(new RiskError(proband.getId(),"Unsupported Cancer for Proband","unsupportedCancerForProband"));
+        }
+        if (proband.getHasLCIS()) {
+            result.addError(new RiskError(proband.getId(),"Unsupported LCIS for Proband","unsupportedLCISForProband"));
+        }
+        if (proband.getHasDCIS()) {
+            result.addError(new RiskError(proband.getId(),"Unsupported DCIS for Proband","unsupportedDCISForProband"));
+        }
+        if (proband.getHasMantleRadiation()) {
+             result.addError(new RiskError(proband.getId(),"Unsupported Radiation for Proband","unsupportedRadiationForProband"));
+        }
+        if (proband.hasGermline() && (proband.getGermline(BRCA1) == TestResult.POSITIVE || proband.getGermline(BRCA2) == TestResult.POSITIVE)) { 
+              result.addError(new RiskError(proband.getId(),"Unsupported Positive test","unsupportedPositiveTest"));
+        }
+        if (proband.getMenarcheAge() > 0 && proband.getMenarcheAge() < 7) {
+            result.addError(new RiskError(proband.getId(),"Menarche Below Seven","menarcheBelowSeven"));
+        }
+        if (proband.getMenarcheAge() > 39) {
+            result.addError(new RiskError(proband.getId(),"Menarche Above Thirty Nine","menarcheAboveThirtyNine"));
+        }
+        if (proband.getRace() == null) {
+             result.addError(new RiskError(proband.getId(),"Missing Race for Proband","missingRace"));
+        }
+        else if (proband.getRace() == Race.Unsupported) {
+             result.addError(new RiskError(proband.getId(),"Missing sub Race for Proband","missingSubRace"));
+        } 
+        if (proband.getHasLiveBirth() && proband.getLiveBirthAge() != null) {
+           if (proband.getLiveBirthAge() < 10) {
+               result.addError(new RiskError(proband.getId(),"Live Birth Age below 10","liveBirthAgeBelowTen"));
+            } else if (proband.getLiveBirthAge() > 55) {
+               result.addError(new RiskError(proband.getId(),"Live Birth Age above 55","liveBirthAgeAboveFiftyFive"));
+            }   
+        }
+        if (proband.getLiveBirthAge() != null && proband.getLiveBirthAge() > 0) {
+            if (!proband.getHasLiveBirth()) {
+                result.addError(new RiskError(proband.getId(),"Missing Live Birth Age","missingLiveBirth"));
+            }
+        }
+        if (proband.isPerformedBiopsy() && (proband.getBiopsyCount() == 0)) {
+            result.addError(new RiskError(proband.getId(),"No Biopsy Count for Biopsy","noBiopsyCountForBiopsy"));
+       }
+        if (proband.getBiopsyCount() > 0 && !proband.isPerformedBiopsy()) {
+            result.addError(new RiskError(proband.getId(),"Biopsy Count with no Biopsy","biopsyCountWithNoBiopsy"));
+        }
+         
     }
 
     protected int getFDRCode(List<Person> fdrs, Race race) {
