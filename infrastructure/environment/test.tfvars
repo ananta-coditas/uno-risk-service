@@ -9,6 +9,7 @@ environment_name  = "test"
 aws_region     = "us-west-2"
 // -------- --------------------------------- //
 lb_security_group_egress_rule_id = "sgr-0535509f00c3b756f"
+ecs_service_security_group_id = "sgr-0e4efe397280c83f0"
 // -------- --------------------------------- //
 vpc_config = {
   vpc_id                 = "vpc-0c5f0396c6ed1c9ef"
