@@ -26,6 +26,10 @@ public class CommonRiskController {
     
     @PostMapping("/risk/models/calculate")
     public ResponseEntity<CombinedResult> calculateRiskModels(@RequestBody Risk risk) {
+        return calculateRiskModelsV1(risk);
+    }
+    @PostMapping("/v1/risk/models/calculate")
+    public ResponseEntity<CombinedResult> calculateRiskModelsV1(@RequestBody Risk risk) {
         CombinedResult combinedResult = commonRiskService.calculateRiskModels(risk);
         return ResponseEntity.ok(combinedResult);
     }
