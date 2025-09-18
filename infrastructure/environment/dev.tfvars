@@ -8,7 +8,8 @@ environment_name  = "dev"
 // ----------------------------------------- //
 aws_region     = "us-west-2"
 // -------- --------------------------------- //
-
+lb_security_group_egress_rule_id = "sgr-047803515e9b08959"
+// -------- --------------------------------- //
 vpc_config = {
   vpc_id                 = "vpc-068d889f2d003f60d"
   public_target_subnets  = []
