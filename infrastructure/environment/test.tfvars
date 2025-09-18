@@ -8,15 +8,16 @@ environment_name  = "test"
 // ----------------------------------------- //
 aws_region     = "us-west-2"
 // -------- --------------------------------- //
-
+lb_security_group_egress_rule_id = "sgr-0535509f00c3b756f"
+// -------- --------------------------------- //
 vpc_config = {
   vpc_id                 = "vpc-0c5f0396c6ed1c9ef"
   public_target_subnets  = []
   private_target_subnets = ["subnet-058cf47ade7906880", "subnet-014031f76ac71ac1e", "subnet-0505de6f45548d039", "subnet-0e9b78d432d15a044"]
 }
 // ----------------------------------------- //
-ecs_cluster_arn="arn:aws:ecs:us-west-2:411233202044:cluster/uno-test-cluster"    # Previously uno-cluster, needs to include environment in the next shared services deployment
-ecs_cluster_name = "uno-test-cluster"      # Previously uno-cluster, needs to include environment in the next shared services deployment
+ecs_cluster_arn="arn:aws:ecs:us-west-2:411233202044:cluster/uno-cluster"    # Previously uno-cluster, needs to include environment in the next shared services deployment
+ecs_cluster_name = "uno-cluster"      # Previously uno-cluster, needs to include environment in the next shared services deployment
 // ----------------------------------------- //
 all_tags = {
     name_prefix       = "uno"
