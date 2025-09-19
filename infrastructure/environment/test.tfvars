@@ -9,7 +9,6 @@ environment_name  = "test"
 aws_region     = "us-west-2"
 // -------- --------------------------------- //
 lb_security_group_egress_rule_id = "sgr-0535509f00c3b756f"
-ecs_service_security_group_id = "sgr-0e4efe397280c83f0"
 // -------- --------------------------------- //
 vpc_config = {
   vpc_id                 = "vpc-0c5f0396c6ed1c9ef"
@@ -19,20 +18,6 @@ vpc_config = {
 // ----------------------------------------- //
 ecs_cluster_arn="arn:aws:ecs:us-west-2:411233202044:cluster/uno-cluster"    # Previously uno-cluster, needs to include environment in the next shared services deployment
 ecs_cluster_name = "uno-cluster"      # Previously uno-cluster, needs to include environment in the next shared services deployment
-// ----------------------------------------- //
-all_tags = {
-    name_prefix       = "uno"
-    resource_name     = "ecs"
-    environment       = "test"
-    business_owner    = "uno-team"
-    company           = "ag"
-    operational_unit  = "it-ops"
-    compliance        = "none"
-    privacy           = "sensitive"
-    phi               = "no"
-    pii               = "no"
-    product           = "uno-risk-service"
-}
 
 // ----------------------------------------- //
 frontend_lb_config = {

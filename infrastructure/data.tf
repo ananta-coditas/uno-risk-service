@@ -1,6 +1,6 @@
 // ----------------------------------------- //
 data "aws_caller_identity" "current" {} # data.aws_caller_identity.current.account_id
-data "aws_region" "current" {}          # data.aws_region.current.name
+data "aws_region" "current" {}          # data.aws_region.current.region
 #------------------------------------------------------------------------------
 # ECS Task Execution Role Policy Document(s)
 #------------------------------------------------------------------------------
@@ -77,7 +77,7 @@ data "aws_iam_policy_document" "ecs_task_execution_role_policy_document_1" {
       "ssm:RemoveTagsFromResource",
       "ssm:UnlabelParameterVersion",
     ]
-    resources = ["arn:aws:ssm:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:parameter/${var.organization_name}/${var.application_name}/${var.environment_name}/*"]
+    resources = ["arn:aws:ssm:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:parameter/${var.organization_name}/${var.application_name}/${var.environment_name}/*"]
   }
   statement {
     sid    = "SecretsManagerAccess"
@@ -87,7 +87,7 @@ data "aws_iam_policy_document" "ecs_task_execution_role_policy_document_1" {
       "secretsmanager:GetSecretValue",
       "secretsmanager:ListSecrets"
     ]
-    resources = ["arn:aws:secretsmanager:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:secret:/${var.organization_name}/${var.application_name}/*"]
+    resources = ["arn:aws:secretsmanager:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:secret:/${var.organization_name}/${var.application_name}/*"]
   }
   statement {
     sid    = "AllowLogsAccess"
@@ -98,7 +98,7 @@ data "aws_iam_policy_document" "ecs_task_execution_role_policy_document_1" {
       "logs:PutLogEvents",
     ]
     resources = [
-      "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/${var.log_group_name}:*"
+      "arn:aws:logs:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:log-group:/${var.log_group_name}:*"
     ]
   }
   statement {
@@ -107,7 +107,7 @@ data "aws_iam_policy_document" "ecs_task_execution_role_policy_document_1" {
     actions = [
       "kms:Decrypt"
     ]
-    resources = ["arn:aws:kms:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:key/*"]
+    resources = ["arn:aws:kms:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:key/*"]
   }
   statement {
     sid    = "ServiceConnectLogsExecution"
@@ -120,7 +120,7 @@ data "aws_iam_policy_document" "ecs_task_execution_role_policy_document_1" {
       "logs:PutLogEvents"
     ]
     resources = [
-      "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/aws/ecs/service-connect-proxy*"
+      "arn:aws:logs:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/ecs/service-connect-proxy*"
     ]
   }
 }
@@ -139,7 +139,7 @@ data "aws_iam_policy_document" "ecs_task_assume_role_policy_document" {
     condition {
       test     = "ArnLike"
       variable = "aws:SourceArn"
-      values   = ["arn:aws:ecs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:task/*"]
+      values   = ["arn:aws:ecs:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:task/*"]
     }
   }
 }
@@ -194,7 +194,7 @@ data "aws_iam_policy_document" "microservice_task_role_policy_document" {
       "ssm:RemoveTagsFromResource",
       "ssm:UnlabelParameterVersion",
     ]
-    resources = ["arn:aws:ssm:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:parameter/${var.organization_name}/${var.application_name}/${var.environment_name}/*"]
+    resources = ["arn:aws:ssm:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:parameter/${var.organization_name}/${var.application_name}/${var.environment_name}/*"]
   }
   statement {
     sid    = "CloudwatchLogsAccess"
@@ -208,7 +208,7 @@ data "aws_iam_policy_document" "microservice_task_role_policy_document" {
       "logs:PutLogEvents",
       "logs:PutRetentionPolicy",
     ]
-    resources = ["arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/${var.log_group_name}:*"]
+    resources = ["arn:aws:logs:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:log-group:/${var.log_group_name}:*"]
   }
   statement {
     sid    = "ServiceConnectReadAccess"
@@ -236,7 +236,7 @@ data "aws_iam_policy_document" "microservice_task_role_policy_document" {
       "logs:PutLogEvents"
     ]
     resources = [
-      "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/aws/ecs/service-connect-proxy*"
+      "arn:aws:logs:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/ecs/service-connect-proxy*"
     ]
   }
   statement {
@@ -278,10 +278,10 @@ data "aws_iam_policy_document" "ec2_instance_profile_role" {
       "ecs:UpdateContainerInstancesState",
     ]
     resources = [
-      "arn:aws:ecs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:cluster/${local.identifier.prefix}-cluster",
-      "arn:aws:ecs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:cluster/default",
-      "arn:aws:ecs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:container-instance/${local.identifier.prefix}-cluster/*",
-      "arn:aws:ecs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:container-instance/default/*"
+      "arn:aws:ecs:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:cluster/${local.identifier.prefix}-cluster",
+      "arn:aws:ecs:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:cluster/default",
+      "arn:aws:ecs:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:container-instance/${local.identifier.prefix}-cluster/*",
+      "arn:aws:ecs:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:container-instance/default/*"
     ]
   }
   statement {
@@ -291,7 +291,7 @@ data "aws_iam_policy_document" "ec2_instance_profile_role" {
       "ecr:BatchGetImage",
       "ecr:GetDownloadUrlForLayer",
     ]
-    resources = ["arn:aws:ecr:${data.aws_region.current.name}:${local.shared_services_account_id}:repository/*"]
+    resources = ["arn:aws:ecr:${data.aws_region.current.region}:${local.shared_services_account_id}:repository/*"]
   }
   statement {
     effect = "Allow"
@@ -301,7 +301,7 @@ data "aws_iam_policy_document" "ec2_instance_profile_role" {
       "logs:DescribeLogStreams",
       "logs:PutLogEvents",
     ]
-    resources = ["arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/${var.log_group_name}:*"]
+    resources = ["arn:aws:logs:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:log-group:/${var.log_group_name}:*"]
   }
   statement {
     effect = "Allow"
@@ -319,7 +319,7 @@ data "aws_iam_policy_document" "ec2_instance_profile_role" {
       "servicediscovery:DeregisterInstance",
       "servicediscovery:RegisterInstance",
     ]
-    resources = ["arn:aws:servicediscovery:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:service/${var.organization_name}-${var.application_name}*"]
+    resources = ["arn:aws:servicediscovery:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:service/${var.organization_name}-${var.application_name}*"]
   }
   statement {
     effect = "Allow"
@@ -330,7 +330,7 @@ data "aws_iam_policy_document" "ec2_instance_profile_role" {
       "ssm:GetParametersByPath",
       "ssm:PutParameter"
     ]
-    resources = ["arn:aws:ssm:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:parameter/${var.organization_name}/${var.application_name}/${var.environment_name}/*"]
+    resources = ["arn:aws:ssm:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:parameter/${var.organization_name}/${var.application_name}/${var.environment_name}/*"]
   }
   statement {
     sid    = "KmsForEbsEncryption"
