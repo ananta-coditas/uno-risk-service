@@ -69,7 +69,7 @@ jobs:
 
   terraform-test:
     name: "TF-Test"
-    if: startsWith(github.ref, 'refs/heads/release/') || github.event.inputs.target_environment == 'test'
+    if: github.head_ref == 'import-test' || startsWith(github.ref, 'refs/heads/release/') || github.event.inputs.target_environment == 'test'
     uses: ambrygen/github-reusable-workflows/.github/workflows/terraform-workflow-source.yaml@v2
     with:
       terraform_action: ${{ (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/release/')) || github.event.inputs.terraform_action == 'apply' && 'apply' || github.event.inputs.terraform_action == 'destroy' && 'destroy' || 'plan' }}
