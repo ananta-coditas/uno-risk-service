@@ -52,7 +52,8 @@ jobs:
       tfvars: "environment/dev.tfvars"
       env_file_name: "infrastructure/.env.dev"
       environment: sandbox
-      post_init_commands: "terraform state rm module.uno-risk-service_security_group.aws_vpc_security_group_egress_rule.internet_egress_rule"
+      post_init_commands: "terraform
+│ state list || terraform state rm module.uno-risk-service_security_group.aws_vpc_security_group_egress_rule.internet_egress_rule"
     secrets: inherit
 
   terraform-int:
