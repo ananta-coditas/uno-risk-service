@@ -17,8 +17,8 @@ vpc_config = {
   private_target_subnets = ["subnet-058cf47ade7906880", "subnet-014031f76ac71ac1e", "subnet-0505de6f45548d039", "subnet-0e9b78d432d15a044"]
 }
 // ----------------------------------------- //
-ecs_cluster_arn="arn:aws:ecs:us-west-2:411233202044:cluster/uno-cluster"    # Previously uno-cluster, needs to include environment in the next shared services deployment
-ecs_cluster_name = "uno-cluster"      # Previously uno-cluster, needs to include environment in the next shared services deployment
+ecs_cluster_arn="arn:aws:ecs:us-west-2:411233202044:cluster/uno-test-cluster"
+ecs_cluster_name = "uno-test-cluster"
 // ----------------------------------------- //
 all_tags = {
     name_prefix       = "uno"
