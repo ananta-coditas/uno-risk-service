@@ -77,7 +77,6 @@ jobs:
       tfvars: "environment/test.tfvars"
       env_file_name: "infrastructure/.env.test"
       environment: test
-      post_init_commands: "terraform import module.uno-risk-service_security_group.aws_vpc_security_group_egress_rule.internet_egress_rule sgr-0e4efe397280c83f0"
     secrets: inherit
 
   terraform-stage:
