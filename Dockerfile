@@ -55,10 +55,9 @@ RUN dnf install -y \
       R-core \
       R-core-devel \
       java-21-openjdk-headless \
-  && dnf remove -y R-core-devel \
   && dnf clean all \
   && rm -rf /var/cache/dnf /tmp/* /var/tmp/* /usr/share/doc /usr/share/man /usr/share/locale
-
+# && dnf remove -y R-core-devel \
 #gcc gcc-c++ gcc-fortran make
 
 # Use a minimal OpenJDK 17 base image
