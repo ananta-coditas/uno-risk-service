@@ -52,11 +52,6 @@ variable "lb_security_group_egress_rule_id" {
   type        = string
 }
 
-variable "ecs_service_security_group_id" {
-  description = "ecs service security group id"
-  type        = string
-}
-
 # variable "aws_ecs_task_definition" {
 #   description = "The ECS task definition configuration."
 #   type = object({
