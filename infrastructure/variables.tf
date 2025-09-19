@@ -1,3 +1,4 @@
+# Dummy commit for trigger
 variable "aws_region" {
   description = "The AWS region to deploy resources in."
   type        = string
@@ -48,11 +49,6 @@ variable "log_group_name" {
 
 variable "lb_security_group_egress_rule_id" {
   description = "lb security group egress (outbound) rule id"
-  type        = string
-}
-
-variable "ecs_service_security_group_id" {
-  description = "ecs service security group id"
   type        = string
 }
 
