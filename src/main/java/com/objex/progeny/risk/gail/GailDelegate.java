@@ -10,14 +10,14 @@ import com.ambrygen.dceg.bcra.consolesample.Risks;
 import com.objex.progeny.risk.Utils;
 import com.objex.risk.beans.Prediction;
 import com.objex.risk.beans.RiskError;
-import com.objex.risk.beans.TestResult;
 import com.objex.risk.beans.gail.GailResult;
 import com.objex.risk.beans.gail.Risk;
 import com.objex.risk.beans.gail.Person;
 import com.objex.risk.beans.AffectedType;
+import com.objex.risk.beans.gail.Person.Race;
 import static com.objex.risk.beans.Germline.BRCA1;
 import static com.objex.risk.beans.Germline.BRCA2;
-import com.objex.risk.beans.gail.Person.Race;
+import com.objex.risk.beans.TestResult;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,8 +41,17 @@ public class GailDelegate {
         Person proband = risk.getFamily().get(0);
         result.setVersion(GAIL_VERSION);
         
+   
+        
         //TODO check commented out validations
         int currentAge = defaultEmptyTo(proband.getAge(), EMPTY_DEFAULT);    //this was for values outside our system  BcptConvert.GetCurrentAge(35);
+        int predictionAge = currentAge + risk.getAgeBy();
+        
+        validateData(proband, result, predictionAge, risk); 
+        if (result.hasErrors()) {
+            return result;
+        }
+        
         int menarcheAge = defaultEmptyTo(proband.getMenarcheAge(), EMPTY_DEFAULT);  ; //BcptConvert.GetMenarcheAge("14");
         int firstLiveBirthAge = 0; //  BcptConvert.GetFirstLiveBirthAge("27");
         if (proband.getHasLiveBirth()){
@@ -64,12 +73,8 @@ public class GailDelegate {
             numBiopsy = proband.getBiopsyCount();
         }
         int hyperPlasia = proband.getHasHyperplasia() ? 1 : 0; //getBcptConvert.GetHyperPlasia("1");     
-        int predictionAge = currentAge + risk.getAgeBy();
+     
         
-        validateData(proband, result, predictionAge, risk); 
-        if (result.hasErrors()) {
-            return result;
-        }
 
         //Start with 5 year risk, and loop to honor ageBy
         while (predictionAge < risk.getAgeTo()) {
@@ -156,8 +161,8 @@ public class GailDelegate {
         if (proband.getBiopsyCount() > 0 && !proband.isPerformedBiopsy()) {
             result.addError(new RiskError(proband.getId(),"Biopsy Count with no Biopsy","biopsyCountWithNoBiopsy"));
         }
-         
     }
+
 
     protected int getFDRCode(List<Person> fdrs, Race race) {
         int affectedCode = 0;

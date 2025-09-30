@@ -352,11 +352,4 @@ public class ProgenyRiskService {
         LOG.info("plot result time for Tyrer Cuzick is " + (total / 1000) + " seconds");
         return result;
     }
-    
-    @PostMapping(value = "/test", consumes = { "application/xml", "application/json" }, produces = { "application/xml",
-    "application/json" })
-    public String gailResult1(@RequestBody String requestBody) {
-        GailResult gailResult = new GailResult();
-        return requestBody;
-    }
 }

@@ -412,10 +412,14 @@ public class Utils {
         
         ChartVO chart = ChartBuilder.instance().createChart(result.getChartCode(), result.getModel());
         for (Prediction pred : result.getPredictions()) {
+        	try {
             for (Series series : chart.getSeries())   {
                 Double risk = pred.getResult(series.getName()) * 100; //charts use percent
                 series.add(new DataPoint(pred.getAge(), risk));
-            }         
+            }    
+        	} catch (Exception e) {
+        		log.warn("Could not build datapoint for prediction age" + pred.getAge());
+        	}
         }
         return chart;
     }
