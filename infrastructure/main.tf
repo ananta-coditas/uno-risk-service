@@ -89,7 +89,7 @@ module "uno-risk-service_ecs_service" {
   # checkov:skip=CKV_TF_1: Referring to git tag instead of commit hash
   # checkov:skip=CKV_AWS_333: assign_public_ip is set to "false" by default within core module for EC2 ecs_launch_type
   # checkov:skip=CKV_AWS_333: assign_public_ip is set to "false" by default within core module for EC2 ecs_launch_type
-  source = "github.com/ambrygen/terraform-aws-module-ecs-service.git?ref=v7.0"
+  source = "github.com/ambrygen/terraform-aws-module-ecs-service.git?ref=v9.1"
   #source = "../../terraform-aws-module-repos/terraform-aws-module-ecs-service-7.0/"
   ecs_cluster_arn  = var.ecs_cluster_arn
   application_name = var.application_name
@@ -181,6 +181,7 @@ module "uno-risk-service_ecs_service" {
     }
   ]
   service_secret_path_prefix = join("/", ["/${var.organization_name}", var.application_name, var.environment_name, var.uno-risk-service.service_name, "environment_variable"])
+  custom_healthcheck         = ["CMD-SHELL", "echo 'healthy' || exit 1", "cURL https://uno-test.ambrygen.com/api/risk/models/api-docs"]
 }
 
 #------------------------------------------------------------------------------
