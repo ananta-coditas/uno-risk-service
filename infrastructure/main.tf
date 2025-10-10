@@ -198,7 +198,7 @@ module "uno-risk-service_autoscaling" {
     min_capacity            = var.uno-risk-service.microservice_scaling_config["min_task_count"]
     cooldown_period         = 60
     policy_type             = "TargetTrackingScaling"
-    metric_aggregation_type = "Average"
+    metric_aggregation_type = "Maximum"
   }
   target_tracking_scaling_config = {
     metric_type               = "predefined_metric"
