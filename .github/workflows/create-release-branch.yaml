@@ -1,0 +1,41 @@
+name: "Create Branch: Release"
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_version:
+        description: 'Release version (e.g., v1.2.3)'
+        required: true
+        type: string
+
+jobs:
+  create-release-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate GitHub App Token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: 1920288
+          private-key: ${{ secrets.AMBRY_RELEASE_APP_PRIVATE_KEY }}
+
+      - name: Checkout develop branch
+        uses: actions/checkout@v4
+        with:
+          ref: develop
+          token: ${{ steps.app-token.outputs.token }}
+          fetch-depth: 0
+
+      - name: Create release branch
+        run: |
+          BRANCH_NAME="release/${{ inputs.release_version }}"
+          
+          # Check if branch exists
+          if git ls-remote --heads origin "$BRANCH_NAME" | grep -q "$BRANCH_NAME"; then
+            echo "Release branch $BRANCH_NAME already exists"
+          else
+            # Create and push the release branch
+            git checkout -b "$BRANCH_NAME"
+            git push origin "$BRANCH_NAME"
+            echo "Created release branch: $BRANCH_NAME"
+          fi
