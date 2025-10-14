@@ -3,8 +3,8 @@
 // ----------------------------------------- //
 organization_name = "ambry"
 application_name  = "uno-risk-service"
-environment = "staging"
-environment_name  = "stage"
+environment = "stg"
+environment_name  = "staging"
 // ----------------------------------------- //
 aws_region     = "us-west-2"
 // -------- --------------------------------- //
