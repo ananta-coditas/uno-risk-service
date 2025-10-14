@@ -46,6 +46,11 @@ variable "log_group_name" {
   type = string
 }
 
+variable "lb_security_group_egress_rule_id" {
+  description = "lb security group egress (outbound) rule id"
+  type        = string
+}
+
 # variable "aws_ecs_task_definition" {
 #   description = "The ECS task definition configuration."
 #   type = object({

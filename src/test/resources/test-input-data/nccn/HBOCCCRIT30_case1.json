@@ -1,4 +1,23 @@
 {
+    "input": null,
+    "consent": false,
+    "ageBy": 5,
+    "ageTo": 90,
+    "penetrance": null,
+    "saveIncoming": false,
+    "familyId": "",
+    "transId": null,
+    "model": "NONE",
+    "chartCode": null,
+    "requestedModels": [
+    {
+            "name": "NCCN",
+            "ageBy": 0,
+            "ageTo": 0,
+            "saveIncoming": null,
+            "chartCode": null
+        }
+    ],
     "family": [
         {
             "id": 1,
@@ -82,6 +101,7 @@
                         "prostateGleasonScore": null,
                         "prostateRiskGroup": null
                     }
+                   
                 }
             ]
         },
@@ -158,7 +178,7 @@
                     "cancerDetails": {
                         "contralateral": null,
                         "contralateralAge": null,
-                        "bilateral": "NO",
+                        "bilateral": "NONE",
                         "bilateralAge": null,
                         "metastatic": "NO",
                         "multiplePrimaries": "YES",
@@ -170,14 +190,5 @@
                 }
             ]
         }
-    ],
-    "requestedModels": [
-        {
-            "name": "NCCN",
-            "ageBy": 0,
-            "ageTo": 0,
-            "saveIncoming": null,
-            "chartCode": null
-        }
-    ]
+     ]
 }

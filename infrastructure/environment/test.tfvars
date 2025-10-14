@@ -8,29 +8,17 @@ environment_name  = "test"
 // ----------------------------------------- //
 aws_region     = "us-west-2"
 // -------- --------------------------------- //
-
+lb_security_group_egress_rule_id = "sgr-0535509f00c3b756f"
+// -------- --------------------------------- //
 vpc_config = {
   vpc_id                 = "vpc-0c5f0396c6ed1c9ef"
   public_target_subnets  = []
   private_target_subnets = ["subnet-058cf47ade7906880", "subnet-014031f76ac71ac1e", "subnet-0505de6f45548d039", "subnet-0e9b78d432d15a044"]
 }
 // ----------------------------------------- //
-ecs_cluster_arn="arn:aws:ecs:us-west-2:411233202044:cluster/uno-cluster"
-ecs_cluster_name = "uno-cluster"
+ecs_cluster_arn="arn:aws:ecs:us-west-2:411233202044:cluster/uno-test-cluster"
+ecs_cluster_name = "uno-test-cluster"
 // ----------------------------------------- //
-all_tags = {
-    name_prefix       = "uno"
-    resource_name     = "ecs"
-    environment       = "test"
-    business_owner    = "uno-team"
-    company           = "ag"
-    operational_unit  = "it-ops"
-    compliance        = "none"
-    privacy           = "sensitive"
-    phi               = "no"
-    pii               = "no"
-    product           = "uno-risk-service"
-}
 
 // ----------------------------------------- //
 frontend_lb_config = {
@@ -101,8 +89,8 @@ uno-risk-service = {
   task_setting = {
     os_family                 = "LINUX"
     cpu_architecture          = "X86_64"
-    required_cpu_units        = 1024 //1 GB
-    required_memory_MiB_units = 2048 //2 GB
+    required_cpu_units        = 8192 //8 GB
+    required_memory_MiB_units = 16384 //16 GB
     task_volume_config = []
   }
   containers_list = [
@@ -119,10 +107,10 @@ uno-risk-service = {
       #   mode             = "non-blocking"
       #   max_buffer_size   = "25m"
       #}
-      required_cpu_units        = 512  //0.5 GB
-      required_memory_MiB_units = 1024 //1 GB
+      required_cpu_units        = 4096  //4 GB
+      required_memory_MiB_units = 8192 //8 GB
       ecr_image_uri             = "540051198529.dkr.ecr.us-west-2.amazonaws.com/uno-risk-service"
-      ecr_image_tag             = "uno-risk-service-202508132148-e2ec9b7-UNO-433-infrastructure"
+      ecr_image_tag             = "uno-risk-service-202509301529-a7f8ab1-develop" // Update this field for each ecr image build
       sg_rule_config = {
         allowed_ingress_cidr = ["10.9.32.0/20"]
       }

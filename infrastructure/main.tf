@@ -17,9 +17,9 @@
 #------------------------------------------------------------------------------
 module "uno-risk-service_security_group" {
   # checkov:skip=CKV_TF_1: Referring to git tag instead of commit hash
+  # checkov:skip=CKV_TF_2: Pointing to major version that Ambry controls
   # checkov:skip=CKV_AWS_382: SG need egress rule to allow connectivity to internet to install external packages
-  source = "github.com/ambrygen/terraform-aws-module-security-group.git?ref=v3.0"
-  #source = "../../terraform-aws-module-repos/terraform-aws-module-security-group"
+  source = "github.com/ambrygen/terraform-aws-module-security-group.git?ref=v4.0"
 
   identifier = local.identifier.prefix
   created_for = {
@@ -89,7 +89,7 @@ module "uno-risk-service_ecs_service" {
   # checkov:skip=CKV_TF_1: Referring to git tag instead of commit hash
   # checkov:skip=CKV_AWS_333: assign_public_ip is set to "false" by default within core module for EC2 ecs_launch_type
   # checkov:skip=CKV_AWS_333: assign_public_ip is set to "false" by default within core module for EC2 ecs_launch_type
-  source = "github.com/ambrygen/terraform-aws-module-ecs-service.git?ref=v7.0"
+  source = "github.com/ambrygen/terraform-aws-module-ecs-service.git?ref=v9.1"
   #source = "../../terraform-aws-module-repos/terraform-aws-module-ecs-service-7.0/"
   ecs_cluster_arn  = var.ecs_cluster_arn
   application_name = var.application_name
@@ -181,6 +181,7 @@ module "uno-risk-service_ecs_service" {
     }
   ]
   service_secret_path_prefix = join("/", ["/${var.organization_name}", var.application_name, var.environment_name, var.uno-risk-service.service_name, "environment_variable"])
+  custom_healthcheck         = ["CMD-SHELL", "echo 'healthy' || exit 1", "cURL https://uno-test.ambrygen.com/api/risk/models/api-docs"]
 }
 
 #------------------------------------------------------------------------------
@@ -191,7 +192,7 @@ module "uno-risk-service_autoscaling" {
   source = "github.com/ambrygen/terraform-aws-module-app-autoscaling.git?ref=v1.0.0"
 
   identifier       = local.identifier
-  ecs_cluster_name = "uno-cluster"
+  ecs_cluster_name = var.ecs_cluster_name
   ecs_service_name = var.uno-risk-service.service_name
   autoscaling_setting = {
     max_capacity            = var.uno-risk-service.microservice_scaling_config["max_task_count"]

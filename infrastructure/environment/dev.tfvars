@@ -8,15 +8,16 @@ environment_name  = "dev"
 // ----------------------------------------- //
 aws_region     = "us-west-2"
 // -------- --------------------------------- //
-
+lb_security_group_egress_rule_id = "sgr-047803515e9b08959"
+// -------- --------------------------------- //
 vpc_config = {
-  vpc_id                 = "vpc-065a5cbbce57c80b6"
+  vpc_id                 = "vpc-068d889f2d003f60d"
   public_target_subnets  = []
-  private_target_subnets = ["subnet-0b8a3219ec998cac7", "subnet-00831ed25ee437e14"]
+  private_target_subnets = ["subnet-0f3f2dee6d91d338c", "subnet-0ecef8ec24965d979", "subnet-0fba69dde222d8916", "subnet-083c8e3c16ba1e9e9"]
 }
 // ----------------------------------------- //
-ecs_cluster_arn="arn:aws:ecs:us-west-2:034362031415:cluster/uno-cluster"
-ecs_cluster_name = "uno-cluster"
+ecs_cluster_arn="arn:aws:ecs:us-west-2:034362031415:cluster/uno-dev-cluster"
+ecs_cluster_name = "uno-dev-cluster"
 // ----------------------------------------- //
 all_tags = {
   name_prefix       = "uno"
@@ -36,8 +37,8 @@ all_tags = {
 frontend_lb_config = {
   lb_name              = "uno-dev-elb"           # Load Balancer created by uno_shared_services repo
   lb_type              = "application"
-  lb_security_group_id = "sg-036abc2afdc681041"   # Security Group created by uno_shared_services repo for ALB
-  logging_bucket_name  = ""
+  lb_security_group_id = "sg-05d96445103219667"   # Security Group created by uno_shared_services repo for ALB
+  logging_bucket_name  = "ambry-uno-services-dev-034362031415-bucket"
 }
 // ----------------------------------------- //
 capacity_provider_details = {
@@ -101,8 +102,8 @@ uno-risk-service = {
   task_setting = {
     os_family                 = "LINUX"
     cpu_architecture          = "X86_64"
-    required_cpu_units        = 1024 //1 GB
-    required_memory_MiB_units = 2048 //2 GB
+    required_cpu_units        = 8192 //8 GB
+    required_memory_MiB_units = 16384 //16 GB
     task_volume_config = []
   }
   containers_list = [
@@ -119,15 +120,15 @@ uno-risk-service = {
       #   mode             = "non-blocking"
       #   max_buffer_size   = "25m"
       #}
-      required_cpu_units        = 512  //0.5 GB
-      required_memory_MiB_units = 1024 //1 GB
+      required_cpu_units        = 4096  //4 GB
+      required_memory_MiB_units = 8192 //8 GB
       ecr_image_uri             = "540051198529.dkr.ecr.us-west-2.amazonaws.com/uno-risk-service"
-      ecr_image_tag             = "uno-risk-service-202508132148-e2ec9b7-UNO-433-infrastructure"
+      ecr_image_tag             = "uno-risk-service-202509301529-a7f8ab1-develop" // Update this field for each ecr image build
       sg_rule_config = {
         allowed_ingress_cidr = ["10.9.32.0/20"]
       }
       lb_config = {
-        target_group_arn = "arn:aws:elasticloadbalancing:us-west-2:034362031415:targetgroup/uno-8080-tg/39f46b4a3493f525"
+        target_group_arn = "arn:aws:elasticloadbalancing:us-west-2:034362031415:targetgroup/uno-8080-tg/06892d17cfb9f131"
       }
       environment_variables = null
       mount_nfs_drive = false
