@@ -8,7 +8,7 @@ environment_name  = "staging"
 // ----------------------------------------- //
 aws_region     = "us-west-2"
 // -------- --------------------------------- //
-lb_security_group_egress_rule_id = "sgr-0535509f00c3b756f"
+lb_security_group_egress_rule_id = "sgr-024cf8b3d96cff3f7"
 // -------- --------------------------------- //
 vpc_config = {
   vpc_id                 = "vpc-0e20392ac4d80ae14"
@@ -22,9 +22,9 @@ ecs_cluster_name = "uno-stage-cluster"
 
 // ----------------------------------------- //
 frontend_lb_config = {
-  lb_name              = "uno-stage-elb"           # Load Balancer created by uno_shared_services repo
+  lb_name              = "uno-staging-elb"           # Load Balancer created by uno_shared_services repo
   lb_type              = "application"
-  lb_security_group_id = "sg-076e7c87e6699268b"   # Security Group created by uno_shared_services repo for ALB
+  lb_security_group_id = "sg-08b57c166776be5b4"   # Security Group created by uno_shared_services repo for ALB
   logging_bucket_name  = ""
 }
 // ----------------------------------------- //
