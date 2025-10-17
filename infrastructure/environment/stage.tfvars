@@ -108,4 +108,4 @@ ecs_capacity_provider_setting = {
 }
 
 log_group_name = "uno/stage/ecs/uno-log-group"
-namespace = "uno-stage"
+namespace = "uno-staging"
