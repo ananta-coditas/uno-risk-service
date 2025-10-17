@@ -55,17 +55,17 @@ jobs:
       # post_init_commands: "terraform state list"
     secrets: inherit
 
-  terraform-int:
-    name: "TF-Int"
-    if: startsWith(github.ref, 'refs/heads/release/') || github.event.inputs.target_environment == 'int'
-    uses: ambrygen/github-reusable-workflows/.github/workflows/terraform-workflow-source.yaml@v2
-    with:
-      terraform_action: ${{ ( github.event_name == 'push' || github.event.inputs.terraform_action == 'apply' ) && 'apply' || github.event.inputs.terraform_action == 'destroy' && 'destroy' || 'plan' }}
-      working_directory: "infrastructure"
-      tfvars: "environment/int.tfvars"
-      env_file_name: "infrastructure/.env.int"
-      environment: int
-    secrets: inherit
+  # terraform-int:
+  #   name: "TF-Int"
+  #   if: startsWith(github.ref, 'refs/heads/release/') || github.event.inputs.target_environment == 'int'
+  #   uses: ambrygen/github-reusable-workflows/.github/workflows/terraform-workflow-source.yaml@v2
+  #   with:
+  #     terraform_action: ${{ ( github.event_name == 'push' || github.event.inputs.terraform_action == 'apply' ) && 'apply' || github.event.inputs.terraform_action == 'destroy' && 'destroy' || 'plan' }}
+  #     working_directory: "infrastructure"
+  #     tfvars: "environment/int.tfvars"
+  #     env_file_name: "infrastructure/.env.int"
+  #     environment: int
+  #   secrets: inherit
 
   terraform-test:
     name: "TF-Test"
