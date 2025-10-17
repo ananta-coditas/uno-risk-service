@@ -92,15 +92,15 @@ jobs:
       environment: stage
     secrets: inherit
 
-  terraform-prod:
-    needs: [terraform-stage]
-    name: "TF-Prod"
-    if: startsWith(github.ref, 'refs/heads/release/') || github.event.inputs.target_environment == 'prod'
-    uses: ambrygen/github-reusable-workflows/.github/workflows/terraform-workflow-source.yaml@v2
-    with:
-      terraform_action: ${{ (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/release/')) || github.event.inputs.terraform_action == 'apply' && 'apply' || github.event.inputs.terraform_action == 'destroy' && 'destroy' || 'plan' }}
-      working_directory: "infrastructure"
-      tfvars: "environment/prod.tfvars"
-      env_file_name: "infrastructure/.env.prod"
-      environment: prod
-    secrets: inherit
+  # terraform-prod:
+  #   needs: [terraform-stage]
+  #   name: "TF-Prod"
+  #   if: startsWith(github.ref, 'refs/heads/release/') || github.event.inputs.target_environment == 'prod'
+  #   uses: ambrygen/github-reusable-workflows/.github/workflows/terraform-workflow-source.yaml@v2
+  #   with:
+  #     terraform_action: ${{ (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/release/')) || github.event.inputs.terraform_action == 'apply' && 'apply' || github.event.inputs.terraform_action == 'destroy' && 'destroy' || 'plan' }}
+  #     working_directory: "infrastructure"
+  #     tfvars: "environment/prod.tfvars"
+  #     env_file_name: "infrastructure/.env.prod"
+  #     environment: prod
+  #   secrets: inherit
