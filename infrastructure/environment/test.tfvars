@@ -112,7 +112,7 @@ uno-risk-service = {
       ecr_image_uri             = "540051198529.dkr.ecr.us-west-2.amazonaws.com/uno-risk-service"
       ecr_image_tag             = "uno-risk-service-202509301529-a7f8ab1-develop" // Update this field for each ecr image build
       sg_rule_config = {
-        allowed_ingress_cidr = ["10.9.32.0/20"]
+        allowed_ingress_cidr = ["10.9.32.0/20", "10.0.0.0/8"]
       }
       lb_config = {
         target_group_arn = "arn:aws:elasticloadbalancing:us-west-2:411233202044:targetgroup/uno-8080-tg/69db9da71b109948"
