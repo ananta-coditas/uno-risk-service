@@ -322,33 +322,34 @@ public class PremmDelegate {
     private Double calc_lp_MLH1(Integer gender, Double prevFamColon,	Double prevFamEndometrium, Double prevRelatedCancer,
                     Integer affectedFamAgeColonMult, Integer affectedFamAgeEndoMult,int v1, int v2, int v3, int v4, int ageV10) {
 
-            Double lp_MLH1 = -5.325 + (0.904 * gender) + (2.586 * v1) + (3.183 * v2) + (1.621 * v3) + (1.276 * v4) + (1.560 * prevFamColon) +
-                            (0.804 * prevFamEndometrium) + (0.397 * prevRelatedCancer) + (-0.0557 * affectedFamAgeColonMult) + (0.0115 * affectedFamAgeEndoMult) + (-.0476 * ageV10);
+             Double lp_MLH1 = -5.324907104 + (0.904431436 * gender) + (2.586296612 * v1) + (3.182990883 * v2) + (1.621445382 * v3) + (1.276459168 * v4) + (1.559798783 * prevFamColon) +
+                            (0.804447827 * prevFamEndometrium) + (0.396806026 * prevRelatedCancer) + (-0.0556550094 * affectedFamAgeColonMult) + (0.0114821779 * affectedFamAgeEndoMult) + (-0.0475905002 * ageV10);
             return lp_MLH1;
     }
     private Double calc_lp_MSH2_EPCAM(Integer gender, Double prevFamColon,	Double prevFamEndometrium, Double prevRelatedCancer,
                     Integer affectedFamAgeColonMult, Integer affectedFamAgeEndoMult,int v1, int v2, int v3, int v4, int ageV10) {
 
-            Double lp_MSH2_EPCAM = -4.427 + (0.937 * gender) + (1.799 * v1) + (2.593 * v2) + (1.924 * v3) + (1.585 * v4) + (1.337 * prevFamColon) +
-                            (.670 * prevFamEndometrium) + (0.607 * prevRelatedCancer) + (-0.0441 * affectedFamAgeColonMult) + (.0002 * affectedFamAgeEndoMult) + (-.0482 * ageV10);
+          Double lp_MSH2_EPCAM = -4.426909972 + (0.937417162 * gender) + (1.798962478 * v1) + (2.593496141 * v2) + (1.923604342 * v3) + (1.584703266 * v4) + (1.33728284 * prevFamColon) +
+                            (0.669863277 * prevFamEndometrium) + (0.607397831 * prevRelatedCancer) + (-0.0441301182 * affectedFamAgeColonMult) + (0.0002073389 * affectedFamAgeEndoMult) + (-0.0482478568 * ageV10);
             return lp_MSH2_EPCAM;
     }
 
     private Double calc_lp_MSH6(Integer gender, Double prevFamColon,	Double prevFamEndometrium, Double prevRelatedCancer,
                     Integer affectedFamAgeColonMult, Integer affectedFamAgeEndoMult,int v1, int v2, int v3, int v4, int ageV10) {
 
-            Double lp_MSH6 = -4.675 + (0.816 * gender) + (1.263 * v1) + (-53.205 * v2) + (1.759 * v3) + (.538 * v4) + (.545 * prevFamColon) +
-                            (.923 * prevFamEndometrium) + (0.313 * prevRelatedCancer) + (-0.0095 * affectedFamAgeColonMult) + (0.0344 * affectedFamAgeEndoMult)  + (-.0363 * ageV10);
-            return lp_MSH6;
+           		Double lp_MSH6 = -4.6749607 + (0.8156045 * gender) + (1.26494 * v1) + (-53.205025 * v2) + (1.7592287 * v3) + (0.5375488 * v4)
+                     + (0.5453779 * prevFamColon) + (0.9232568 * prevFamEndometrium) + (0.3130166 * prevRelatedCancer)
+                     + (-0.00946418 * affectedFamAgeColonMult) + (0.03435143 * affectedFamAgeEndoMult) + (-0.03629359 * ageV10);
+		return lp_MSH6;
     }
     
     private Double calc_lp_PMS2(Integer gender, Double prevFamColonV5,	Double prevFamEndometriumV6, Double prevRelatedCancerV7,
                     Integer affectedFamAgeColonMultV8, Integer affectedFamAgeEndoMultV9,int v1, int v2, int v3, int v4, int currentAgeV10) {
 
-            Double lp_PMS2 = -4.913 + (0.294 * gender) + (.989 * v1) + (-.354 * v2) + (.739 * v3) + (.395 * v4) + (-.002 * prevFamColonV5) +
-                            (-.426 * prevFamEndometriumV6) + (-0.105 * prevRelatedCancerV7) + (-0.0086 * affectedFamAgeColonMultV8) + (0.0008 * affectedFamAgeEndoMultV9) +
-                    (-.0074 * currentAgeV10);
-            return lp_PMS2;
+     		Double lp_PMS2 = -4.913053672 + (0.293782393 * gender) + (0.989418119 * v1) + (-0.35391041 * v2) + (0.739108785 * v3) + (0.395308696 * v4)
+                     + (-0.001777441 * prevFamColonV5) + (-0.426102907 * prevFamEndometriumV6) + (-0.105259809 * prevRelatedCancerV7)
+                     + (-0.0085921222 * affectedFamAgeColonMultV8) + (0.0007508214 * affectedFamAgeEndoMultV9) + (-0.0073868337 * currentAgeV10);
+		return lp_PMS2;
     }
     /**
      * 1* presence of EC in 1 FDR (A) + 2* presence of EC in 2 or more FDR (B) + 0.5*

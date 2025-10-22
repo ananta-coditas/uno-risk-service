@@ -134,6 +134,26 @@ public class Utils {
      public static boolean inRange( Integer age,int floor, int ceiling, int defaultValue) {
       return (age == defaultValue) || (age <= ceiling && age >= floor);
     }
+	
+	public static void saveResultFile(String filePath, BaseResult result)
+    {
+         try {
+ 
+		java.io.File file = new java.io.File(filePath); //new java.io.File("C:\\temp\\converted.xml");
+		javax.xml.bind.JAXBContext jaxbContext = javax.xml.bind.JAXBContext.newInstance(result.getClass());
+		javax.xml.bind.Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+ 
+		// output pretty printed
+		jaxbMarshaller.setProperty(javax.xml.bind.Marshaller.JAXB_FORMATTED_OUTPUT, true);
+               //jaxbMarshaller.setProperty("eclipselink.media-type", "application/json");
+ 
+		jaxbMarshaller.marshal(result, file);
+		jaxbMarshaller.marshal(result, System.out);
+ 
+            } catch (javax.xml.bind.JAXBException e) {
+              e.printStackTrace();
+            }
+    }
    
     public static void saveToMMRFile(String filePath, ArrayList fam) {
        saveToFile(filePath,createMMRRiskWithFamily(fam));
@@ -413,10 +433,10 @@ public class Utils {
         ChartVO chart = ChartBuilder.instance().createChart(result.getChartCode(), result.getModel());
         for (Prediction pred : result.getPredictions()) {
         	try {
-            for (Series series : chart.getSeries())   {
-                Double risk = pred.getResult(series.getName()) * 100; //charts use percent
-                series.add(new DataPoint(pred.getAge(), risk));
-            }    
+				for (Series series : chart.getSeries())   {
+					Double risk = pred.getResult(series.getName()) * 100; //charts use percent
+					series.add(new DataPoint(pred.getAge(), risk));
+				}    
         	} catch (Exception e) {
         		log.warn("Could not build datapoint for prediction age" + pred.getAge());
         	}
