@@ -1233,8 +1233,14 @@ public class RiskService {
       if (member.getAffectedColonType() != 0 && member.getDiagnoseColonAge() == 0) {
           result.addError(new RiskError(member.getId(),"Missing Age Colon","missingAgeColon"));
       }
+      else if (member.getAffectedColonType() == 0 && member.getDiagnoseColonAge() != 0  && member.getDiagnoseColonAge() < member.getAge()) {
+          result.addError(new RiskError(member.getId(),"Missing Affected For Diagnose Age Colon","missingAffectedForDiagnoseAgeColon"));
+      }
       if (member.getAffectedEndometriumType() != 0 && member.getDiagnoseEndometriumAge() == 0) {
           result.addError(new RiskError(member.getId(),"Missing Age Endometrium","missingAgeEndometrium"));
+      }
+      else if (member.getAffectedEndometriumType() == 0 && member.getDiagnoseEndometriumAge() != 0  && member.getDiagnoseEndometriumAge() < member.getAge()) {
+          result.addError(new RiskError(member.getId(),"Missing Affected For Diagnose Age Endometrium","missingAffectedForDiagnoseAgeEndometrium"));
       }
       if (member.getGender() == 1 && member.getAffectedEndometriumType() == 1) {
           result.addError(new RiskError(member.getId(),"Invalid Gender for Endometrium","invalidGenderForEndometrium"));           
@@ -1256,9 +1262,21 @@ public class RiskService {
       }
       else if (member.getAffectedBreastType() == 2 && (member.getDiagnoseBreastAge() == 0 || member.getDiagnoseBreastContralateralAge() == 0)) {
          result.addError(new RiskError(member.getId(),"Missing Age Breast/Breast Contralateral","missingAgeBreastOrBreastContralateral"));
+      } 
+      else if (member.getAffectedBreastType() == 0) {
+    	  if ((member.getDiagnoseBreastAge() < member.getAge() && member.getDiagnoseBreastAge() != 0) || (member.getDiagnoseBreastContralateralAge() < member.getAge() && member.getDiagnoseBreastContralateralAge() != 0))
+    	  {
+    		  result.addError(new RiskError(member.getId(),"Missing Affected For Diagnose Age Breast","missingAffectedForDiagnoseAgeBreast"));
+    	  }
+      }
+      else if (member.getAffectedBreastType() == 0 && (member.getDiagnoseBreastAge() != 0 && member.getDiagnoseBreastContralateralAge() != 0)) {
+          result.addError(new RiskError(member.getId(),"Missing Affected For Diagnose Age Breast","missingAffectedForDiagnoseAgeBreast"));
       }
       if (member.getAffectedOvarianType() != 0 && member.getDiagnoseOvarianAge() == 0) {
          result.addError(new RiskError(member.getId(),"Missing Age Ovarian","missingAgeOvarian"));
+      }
+      else if (member.getAffectedOvarianType() == 0 && (member.getDiagnoseOvarianAge() < member.getAge() && member.getDiagnoseOvarianAge() > 0)) {
+          result.addError(new RiskError(member.getId(),"Missing Affected For Diagnose Age Ovarian","missingAffectedForDiagnoseAgeOvarian"));
       }
       if (member.getAffectedBreastType() == 0 && member.getMarker() != null) {
           if (member.getMarker().getCK14() != TestResult.NONE || member.getMarker().getCK56()!= TestResult.NONE || member.getMarker().getER() != TestResult.NONE
@@ -1314,6 +1332,9 @@ public class RiskService {
       if (member.getAffectedSkinType() != 0 && member.getDiagnoseSkinAge() == 0) {
           result.addError(new RiskError(member.getId(),"Missing Age Skin","missingAgeSkin"));
       } 
+      else if (member.getAffectedSkinType() == 0 && member.getDiagnoseSkinAge() != 0 && member.getDiagnoseSkinAge() < member.getAge()) {
+          result.addError(new RiskError(member.getId(),"Missing Affected for Skin Diagnose Age","missingAffectedForDiagnoseSkin"));
+      }
       if (member.getAge() < 0) {
           result.addError(new RiskError(member.getId(),"Invalid Age","invalidAge"));
       }
@@ -1336,8 +1357,11 @@ public class RiskService {
    * @param risk 
    */
   private void validatePancMemberData(com.objex.risk.beans.panc.Person member, PancResult result) {
-      if (member.getAffectedPancreasType() != 0 && member.getDiagnosePancreasAge() == 0) {
+      if (member.getAffectedPancreasType() != 0 && member.getDiagnosePancreasAge() == 0 ) {
           result.addError(new RiskError(member.getId(),"Missing Age Pancreas","missingAgePancreas"));
+      }
+      else if (member.getAffectedPancreasType() == 0 && member.getDiagnosePancreasAge() != 0 && member.getDiagnosePancreasAge() < member.getAge()) {
+          result.addError(new RiskError(member.getId(),"Missing Affected for Diagnose Age Pancreas","missingAffectedForDiagnoseAgePancreas"));
       }
       if (member.getAge() < 0) {
           result.addError(new RiskError(member.getId(),"Invalid Age","invalidAge"));
