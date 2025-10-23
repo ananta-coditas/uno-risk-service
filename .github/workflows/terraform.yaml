@@ -57,7 +57,7 @@ jobs:
 
   # terraform-int:
   #   name: "TF-Int"
-  #   if: startsWith(github.ref, 'refs/heads/release/') || github.event.inputs.target_environment == 'int'
+  #   if: startsWith(github.ref, 'refs/heads/release/') && github.event.inputs.target_environment == 'int'
   #   uses: ambrygen/github-reusable-workflows/.github/workflows/terraform-workflow-source.yaml@v2
   #   with:
   #     terraform_action: ${{ ( github.event_name == 'push' || github.event.inputs.terraform_action == 'apply' ) && 'apply' || github.event.inputs.terraform_action == 'destroy' && 'destroy' || 'plan' }}
@@ -69,7 +69,7 @@ jobs:
 
   terraform-test:
     name: "TF-Test"
-    if: startsWith(github.ref, 'refs/heads/release/') || github.event.inputs.target_environment == 'test'
+    if: startsWith(github.ref, 'refs/heads/release/') && github.event.inputs.target_environment == 'test'
     uses: ambrygen/github-reusable-workflows/.github/workflows/terraform-workflow-source.yaml@v2
     with:
       terraform_action: ${{ (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/release/')) || github.event.inputs.terraform_action == 'apply' && 'apply' || github.event.inputs.terraform_action == 'destroy' && 'destroy' || 'plan' }}
@@ -82,7 +82,7 @@ jobs:
   terraform-stage:
     needs: [terraform-test]
     name: "TF-Stage"
-    if: startsWith(github.ref, 'refs/heads/release/') || github.event.inputs.target_environment == 'stage'
+    if: startsWith(github.ref, 'refs/heads/release/') && github.event.inputs.target_environment == 'stage'
     uses: ambrygen/github-reusable-workflows/.github/workflows/terraform-workflow-source.yaml@v2
     with:
       terraform_action: ${{ (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/release/')) || github.event.inputs.terraform_action == 'apply' && 'apply' || github.event.inputs.terraform_action == 'destroy' && 'destroy' || 'plan' }}
@@ -95,7 +95,7 @@ jobs:
   # terraform-prod:
   #   needs: [terraform-stage]
   #   name: "TF-Prod"
-  #   if: startsWith(github.ref, 'refs/heads/release/') || github.event.inputs.target_environment == 'prod'
+  #   if: startsWith(github.ref, 'refs/heads/release/') && github.event.inputs.target_environment == 'prod'
   #   uses: ambrygen/github-reusable-workflows/.github/workflows/terraform-workflow-source.yaml@v2
   #   with:
   #     terraform_action: ${{ (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/release/')) || github.event.inputs.terraform_action == 'apply' && 'apply' || github.event.inputs.terraform_action == 'destroy' && 'destroy' || 'plan' }}
