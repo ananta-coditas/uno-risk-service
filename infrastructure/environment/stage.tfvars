@@ -110,7 +110,7 @@ uno-risk-service = {
 
       environment_variables = {
         local_variables = {
-          "DD_API_KEY"                           = "ECS_SECRET"  # Will be replaced by secret from SSM
+          "DD_API_KEY"                           = ""  # Will be replaced by secret from SSM
           "DD_ENV"                               = "staging"     # Update with appropriate environment like prod, staging
           "DD_SERVICE"                           = "uno-risk-service"
           "DD_VERSION"                           = "v1.2.3"
@@ -130,8 +130,8 @@ uno-risk-service = {
           "DD_CONTAINER_EXCLUDE"                 = "name:dd_agent"
           "DD_REMOTE_UPDATES"                    = "true"
         }
-        ssm_based_variables = "/environment/dd_api_key"  # Should contain DD_API_KEY
-        create_secret       = false
+        ssm_based_variables = "/environment/env_vars/dd_api_key/stage.env"  # Should contain DD_API_KEY
+        create_secret       = true
       }
       
       docker_labels = {}
