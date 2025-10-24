@@ -137,10 +137,7 @@ variable "uno-risk-service" {
       }))
 
       environment_variables = optional(object({
-        additional_secrets = optional(list(object({
-          name      = string
-          valueFrom = string
-        })))
+        additional_secrets = optional(map(string))
         ssm_based_variables_file = optional(string)
         create_secret            = bool
         local_variables          = optional(map(string))

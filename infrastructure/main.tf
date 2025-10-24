@@ -168,7 +168,7 @@ module "uno-risk-service_ecs_service" {
         create_secret       = container.environment_variables.create_secret
         } : {
         ssm_based_variables = jsonencode({})
-        additional_secrets  = [jsonencode({})]
+        additional_secrets  = null
         local_variables     = jsonencode({})
         create_secret       = false
       }

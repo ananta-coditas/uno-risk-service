@@ -130,10 +130,11 @@ uno-risk-service = {
           "DD_CONTAINER_EXCLUDE"                 = "name:dd_agent"
           "DD_REMOTE_UPDATES"                    = "true"
         }
-        additional_secrets = [{
+        additional_secrets = {
           name      = "DD_API_KEY"
           valueFrom = "aws_secretsmanager_secret.datadog_api_key.arn:aws:secretsmanager:us-west-2:480802442620:secret:uno-risk-service-datadog-api-key-staging-vfJbZC"
-        }]
+        }
+        
         ssm_based_variables = "/environment/env_vars/dd_api_key/stage.env"  # Should contain DD_API_KEY
         create_secret       = true
       }
