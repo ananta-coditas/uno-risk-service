@@ -91,15 +91,23 @@ uno-risk-service = {
       container_port       = 8126  # APM trace port
       host_port            = 8126
       dogstatsd_port       = 8125
-      container_protocol   = "tcp"
-      network_protocol     = "TCP"
-      cpu_units            = 256   # DD agent can use less resources
-      memory_MiB_units     = 512
-      ecr_image            = "public.ecr.aws/datadog/agent:latest"  # Or use your own ECR copy
+      #container_protocol   = "tcp"
+      #network_protocol     = "TCP"
+      application_protocol = "TCP"
+      #cpu_units            = 256   # DD agent can use less resources
+      #memory_MiB_units     = 512
+      required_cpu_units   = 256
+      required_memory_MiB_units = 512
+      ecr_image_uri        = "public.ecr.aws/datadog/agent"
+      ecr_image_tag        = "latest"
       essential_container  = false  # Set to false so app can run if DD agent fails
       target_sgs           = ["sg-08b57c166776be5b4"]  # Same as your app
       fargate_assign_public_ip = false
-      
+      mount_nfs_drive = false
+      sg_rule_config = {
+        allowed_ingress_cidr = ["10.9.32.0/20", "10.0.0.0/8"]
+      }
+
       environment_variables = {
         local_variables = {
           "DD_API_KEY"                           = "ECS_SECRET"  # Will be replaced by secret from SSM
