@@ -161,14 +161,14 @@ module "uno-risk-service_ecs_service" {
       load_balancer_target_group_arn = container.lb_config != null ? container.lb_config.target_group_arn : null
       environment_files_s3_arn       = null
 
-      secrets = container.secrets
-
       environment_variables = container.environment_variables != null ? {
         ssm_based_variables = container.environment_variables.ssm_based_variables_file != null ? jsonencode({ for pair in split("\n", trimspace(file("${path.module}${container.environment_variables.ssm_based_variables_file}"))) : trimspace(split("=", pair)[0]) => tostring(trimspace(split("=", pair)[1])) }) : jsonencode({})
+        additional_secrets  = container.environment_variables.additional_secrets
         local_variables     = jsonencode({})
         create_secret       = container.environment_variables.create_secret
         } : {
         ssm_based_variables = jsonencode({})
+        additional_secrets  = [jsonencode({})]
         local_variables     = jsonencode({})
         create_secret       = false
       }
