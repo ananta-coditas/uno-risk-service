@@ -111,7 +111,7 @@ uno-risk-service = {
       secrets = [
         {
           name      = "DD_API_KEY"
-          valueFrom = aws_secretsmanager_secret.datadog_api_key.arn:aws:secretsmanager:us-west-2:480802442620:secret:uno-risk-service-datadog-api-key-staging-vfJbZC
+          valueFrom = "aws_secretsmanager_secret.datadog_api_key.arn:aws:secretsmanager:us-west-2:480802442620:secret:uno-risk-service-datadog-api-key-staging-vfJbZC"
         }
       ]
 

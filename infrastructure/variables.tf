@@ -136,7 +136,10 @@ variable "uno-risk-service" {
         target_group_arn = string
       }))
       
-      secrets = optional(list(object(string)))
+      secrets = optional(list(object({
+        name      = string
+        valueFrom = string
+      })))
 
       environment_variables = optional(object({
         ssm_based_variables_file = optional(string)
