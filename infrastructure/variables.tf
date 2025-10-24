@@ -138,6 +138,7 @@ variable "uno-risk-service" {
       environment_variables = optional(object({
         ssm_based_variables_file = optional(string)
         create_secret            = bool
+        local_variables          = optional(map(string))
       }))
       docker_labels   = optional(map(any))
       mount_nfs_drive = bool
