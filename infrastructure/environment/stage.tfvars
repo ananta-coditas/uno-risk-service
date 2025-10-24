@@ -85,6 +85,48 @@ uno-risk-service = {
       environment_variables = null
       mount_nfs_drive = false
       essential_container = true
+    },
+    {
+      container_name       = "dd_agent"
+      container_port       = 8126  # APM trace port
+      host_port            = 8126
+      dogstatsd_port       = 8125
+      container_protocol   = "tcp"
+      network_protocol     = "TCP"
+      cpu_units            = 256   # DD agent can use less resources
+      memory_MiB_units     = 512
+      ecr_image            = "public.ecr.aws/datadog/agent:latest"  # Or use your own ECR copy
+      essential_container  = false  # Set to false so app can run if DD agent fails
+      target_sgs           = ["sg-08b57c166776be5b4"]  # Same as your app
+      fargate_assign_public_ip = false
+      
+      environment_variables = {
+        local_variables = jsonencode({
+          "DD_API_KEY"                           = "ECS_SECRET"  # Will be replaced by secret from SSM
+          "DD_ENV"                               = "staging"     # Update with appropriate environment like prod, staging
+          "DD_SERVICE"                           = "uno-risk-service"
+          "DD_VERSION"                           = "v1.2.3"
+          "DD_SITE"                              = "datadoghq.com"
+          "ECS_FARGATE"                          = "true"
+          "DD_APM_ENABLED"                       = "true"
+          "DD_PROFILING_ENABLED"                 = "true"
+          "DD_APM_NON_LOCAL_TRAFFIC"             = "true"
+          "DD_APM_NON_LOCAL_TRAFFIC"             = "true"
+          "DD_LOGS_ENABLED"                      = "true"
+          "DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL" = "true"
+          "DD_LOGS_INJECTION"                    = "true"
+          "DD_APM_NON_LOCAL_TRAFFIC"             = "true"
+          "DD_DOGSTATSD_NON_LOCAL_TRAFFIC"       = "true"
+          "DD_DOGSTATSD_PORT"                    = "8125"
+          "DD_PROCESS_AGENT_ENABLED"             = "true"
+          "DD_CONTAINER_EXCLUDE"                 = "name:dd_agent"
+          "DD_REMOTE_UPDATES"                    = "true"
+        })
+        ssm_based_variables = "/environment/dd_api_key"  # Should contain DD_API_KEY
+        create_secret       = false
+      }
+      
+      docker_labels = {}
     }
   ]
   microservice_scaling_config = {
