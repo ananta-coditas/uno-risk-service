@@ -135,6 +135,9 @@ variable "uno-risk-service" {
       lb_config = optional(object({
         target_group_arn = string
       }))
+      
+      secrets = optional(list(object(string)))
+
       environment_variables = optional(object({
         ssm_based_variables_file = optional(string)
         create_secret            = bool
