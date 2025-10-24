@@ -101,7 +101,7 @@ uno-risk-service = {
       fargate_assign_public_ip = false
       
       environment_variables = {
-        local_variables = jsonencode({
+        local_variables = {
           "DD_API_KEY"                           = "ECS_SECRET"  # Will be replaced by secret from SSM
           "DD_ENV"                               = "staging"     # Update with appropriate environment like prod, staging
           "DD_SERVICE"                           = "uno-risk-service"
@@ -121,7 +121,7 @@ uno-risk-service = {
           "DD_PROCESS_AGENT_ENABLED"             = "true"
           "DD_CONTAINER_EXCLUDE"                 = "name:dd_agent"
           "DD_REMOTE_UPDATES"                    = "true"
-        })
+        }
         ssm_based_variables = "/environment/dd_api_key"  # Should contain DD_API_KEY
         create_secret       = false
       }
