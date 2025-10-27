@@ -109,32 +109,11 @@ uno-risk-service = {
       }
 
       environment_variables = {
-        local_variables = {
-          # "DD_API_KEY"                           = ""  # Will be replaced by secret from SSM
-          "DD_ENV"                               = "staging"     # Update with appropriate environment like prod, staging
-          "DD_SERVICE"                           = "uno-risk-service"
-          "DD_VERSION"                           = "v1.2.3"
-          "DD_SITE"                              = "datadoghq.com"
-          "ECS_FARGATE"                          = "true"
-          "DD_APM_ENABLED"                       = "true"
-          "DD_PROFILING_ENABLED"                 = "true"
-          "DD_APM_NON_LOCAL_TRAFFIC"             = "true"
-          "DD_APM_NON_LOCAL_TRAFFIC"             = "true"
-          "DD_LOGS_ENABLED"                      = "true"
-          "DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL" = "true"
-          "DD_LOGS_INJECTION"                    = "true"
-          "DD_APM_NON_LOCAL_TRAFFIC"             = "true"
-          "DD_DOGSTATSD_NON_LOCAL_TRAFFIC"       = "true"
-          "DD_DOGSTATSD_PORT"                    = "8125"
-          "DD_PROCESS_AGENT_ENABLED"             = "true"
-          "DD_CONTAINER_EXCLUDE"                 = "name:dd_agent"
-          "DD_REMOTE_UPDATES"                    = "true"
-        }
         additional_secrets = {
           DD_API_KEY = "/ambry/uno-risk-service/stage/datadog"
         }
 
-        ssm_based_variables = "/environment/env_vars/dd_api_key/stage.env"  # Should contain DD_API_KEY
+        ssm_based_variables = "/environment/env_vars/uno-risk-service/client/stage.env"  # Should contain DD_API_KEY
         create_secret       = true
       }
       
