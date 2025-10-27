@@ -131,7 +131,7 @@ uno-risk-service = {
           "DD_REMOTE_UPDATES"                    = "true"
         }
         additional_secrets = {
-          task_def_key      = "DD_API_KEY"
+          DD_API_KEY = "/ambry/uno-risk-service/stage/datadog"
         }
 
         ssm_based_variables = "/environment/env_vars/dd_api_key/stage.env"  # Should contain DD_API_KEY
