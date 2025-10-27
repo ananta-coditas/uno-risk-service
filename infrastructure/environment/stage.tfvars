@@ -85,6 +85,39 @@ uno-risk-service = {
       environment_variables = null
       mount_nfs_drive = false
       essential_container = true
+    },
+    {
+      container_name       = "dd_agent"
+      container_port       = 8126  # APM trace port
+      host_port            = 8126
+      dogstatsd_port       = 8125
+      #container_protocol   = "tcp"
+      #network_protocol     = "TCP"
+      application_protocol = "TCP"
+      #cpu_units            = 256   # DD agent can use less resources
+      #memory_MiB_units     = 512
+      required_cpu_units   = 256
+      required_memory_MiB_units = 512
+      ecr_image_uri        = "public.ecr.aws/datadog/agent"
+      ecr_image_tag        = "latest"
+      essential_container  = false  # Set to false so app can run if DD agent fails
+      target_sgs           = ["sg-08b57c166776be5b4"]  # Same as your app
+      fargate_assign_public_ip = false
+      mount_nfs_drive = false
+      sg_rule_config = {
+        allowed_ingress_cidr = ["10.9.32.0/20", "10.0.0.0/8"]
+      }
+
+      environment_variables = {
+        additional_secrets = {
+          DD_API_KEY = "/ambry/uno-risk-service/stage/datadog"
+        }
+
+        ssm_based_variables = "/environment/env_vars/uno-risk-service/client/stage.env"  # Should contain DD_API_KEY
+        create_secret       = true
+      }
+      
+      docker_labels = {}
     }
   ]
   microservice_scaling_config = {

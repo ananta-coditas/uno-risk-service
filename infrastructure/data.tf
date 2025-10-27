@@ -86,7 +86,7 @@ data "aws_iam_policy_document" "ecs_task_execution_role_policy_document_1" {
       "secretsmanager:GetSecretValue",
       "secretsmanager:ListSecrets"
     ]
-    resources = ["arn:aws:secretsmanager:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:secret:/${var.organization_name}/${var.application_name}/*"]
+    resources = ["arn:aws:secretsmanager:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:secret:/${var.organization_name}/${var.application_name}/*","arn:aws:secretsmanager:us-west-2:480802442620:secret:uno-risk-service-datadog-api-key-staging-vfJbZC"]
   }
   statement {
     sid    = "AllowLogsAccess"
@@ -97,7 +97,7 @@ data "aws_iam_policy_document" "ecs_task_execution_role_policy_document_1" {
       "logs:PutLogEvents",
     ]
     resources = [
-      "arn:aws:logs:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:log-group:/${var.log_group_name}:*"
+      "arn:aws:logs:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:log-group:/${var.log_group_name}:*",""
     ]
   }
   statement {
