@@ -110,7 +110,7 @@ uno-risk-service = {
 
       environment_variables = {
         additional_secrets = {
-          DD_API_KEY = "/ambry/uno-risk-service/stage/datadog"
+          DD_API_KEY = "/ambry/uno-risk-service/staging/uno-risk-service/environment_variable/dd_agent"
         }
 
         ssm_based_variables = "/environment/env_vars/uno-risk-service/client/stage.env"  # Should contain DD_API_KEY
