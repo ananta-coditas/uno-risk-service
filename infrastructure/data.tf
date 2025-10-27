@@ -84,7 +84,8 @@ data "aws_iam_policy_document" "ecs_task_execution_role_policy_document_1" {
     actions = [
       "secretsmanager:DescribeSecret",
       "secretsmanager:GetSecretValue",
-      "secretsmanager:ListSecrets"
+      "secretsmanager:ListSecrets",
+      "secretsmanager:CreateSecret"
     ]
     resources = ["arn:aws:secretsmanager:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:secret:/${var.organization_name}/${var.application_name}/*","arn:aws:secretsmanager:us-west-2:480802442620:secret:uno-risk-service-datadog-api-key-staging-vfJbZC"]
   }
