@@ -97,7 +97,7 @@ data "aws_iam_policy_document" "ecs_task_execution_role_policy_document_1" {
       "logs:PutLogEvents",
     ]
     resources = [
-      "arn:aws:logs:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:log-group:/${var.log_group_name}:*",""
+      "arn:aws:logs:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:log-group:/${var.log_group_name}:*"
     ]
   }
   statement {
