@@ -114,7 +114,7 @@ uno-risk-service = {
         }
 
         ssm_based_variables = "/environment/env_vars/uno-risk-service/client/stage.env"  # Should contain DD_API_KEY
-        create_secret       = false
+        create_secret       = true
       }
       
       docker_labels = {}
