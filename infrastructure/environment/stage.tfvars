@@ -60,7 +60,7 @@ uno-risk-service = {
   }
   containers_list = [
     {
-      container_name            = "uno-risk-service"
+      container_name            = "uno-risk-service-container"
       container_port            = 8080
       host_port                 = 8080
       application_protocol      = "HTTP"
@@ -87,7 +87,7 @@ uno-risk-service = {
       essential_container = true
     },
     {
-      container_name       = "dd_agent"
+      container_name       = "dd_agent-container"
       container_port       = 8126  # APM trace port
       host_port            = 8126
       dogstatsd_port       = 8125
