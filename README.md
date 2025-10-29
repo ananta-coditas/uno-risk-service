@@ -2,17 +2,17 @@
 This repository contains the infrastructure for Risk Service with CI/CD pipelines to build, scan, and deploy Docker image to AWS ECS.
 
 ## Dependencies
-Specific to Risk Server: uno-risk-objects
-Shared with other UNO microservices: uno-shared-lib
+Resources shared with other UNO microservices located in uno-shared-services repository.
 
 ## AWS Resources
 This Repository utilizes the following AWS resources:
-- AWS UNO Shared Load Balancer(s) -- Configurable by UNO-Shared-Services
+- UNO Shared Load Balancer(s) -- Configurable by UNO-Shared-Services
     - Target-Group(s)
     - Multiple Listeners
-- AWS S3 bucket(s) -- which stores ELB's application-logs
-- AWS Security Group(s)
-- AWS IAM Roles and Policies
+- ECS Cluster created by UNO Shared Services
+- S3 bucket(s) -- which stores ELB's application-logs
+- Security Group(s)
+- IAM Roles and Policies
 
 Note: The core-module further uses several submodules to create the required infrastructure
 
@@ -74,16 +74,16 @@ Note: The core-module further uses several submodules to create the required inf
 
 This project uses GitHub Actions for automated infrastructure deployment through a reusable workflow pattern. The deployment workflow is triggered on:
 
-- Push events to `release/**/*` branches (TBD)
-- Pull request events to `release/**/*` branches (TBD)
+- Push events to `release/**/*` branches
+- Pull request events to `release/**/*` branches
 - Manual workflow dispatch with configurable options
 
 ### Workflow Configuration
 
-The workflow supports three deployment environments with sequential execution:
+The workflow supports four deployment environments with sequential execution:
 
-1. **Integration Environment**
-   - Uses `environment/int.tfvars` and `.env.int`
+1. **Sandbox Environment**
+   - Uses `environment/dev.tfvars` and `.env.dev`
    - Runs on all triggers
 
 2. **Test Environment**
@@ -102,23 +102,24 @@ The workflow supports three deployment environments with sequential execution:
 
 The workflow can be triggered manually with the following parameters:
 - **terraform_action**: Choice between `apply`, `plan`, or `destroy`
-- **target_environment**: Choice of `test`, `stage`, or `prod`
+- **target_environment**: Choice of  `sandbox`, `test`, `stage`, or `prod`
 
 ### Prerequisites
 
 - Appropriate IAM roles and permissions via Role Vending Machine
-- Load Balancer created by UNO Shared Services
+- Load Balancer and ECS Cluster created by UNO Shared Services
 
 Note: Ensure all sensitive information is stored as GitHub secrets and never committed directly to the repository.
 
 ## Workflow Runs
 Navigate to Actions tab, and select one of the following workflows:
-**Build, Scan, and Push Container Image**: Builds, scans, and pushes Docker Image to ECR in AWS Shared Infra Account
-**Deploy Container Image to ECS Fargate**: Deploys Docker Image to ECS
+- **Build, Scan, and Push Container Image**: Builds, scans, and pushes Docker Image to ECR in AWS Shared Infra Account
+- **Create Branch: Release**: Creates a new release branch from an existing remote branch
+- **Deploy Container Image to ECS Fargate**: Deploys Docker Image to ECS
 
 ## Running the Risk Server
 Once the risk service has been deployed to ECS, it is accessible within Ambry VPN via cURL command:
-- Registered Target URL: http://10.9.37.206:8080
+- URL: https://uno-<env>.ambrygen.com
 - Endpoint: /api/risk/models/calculate
 - Content-Type: application/json 
 
@@ -134,6 +135,7 @@ Once the risk service has been deployed to ECS, it is accessible within Ambry VP
 
 - v1.0.0 (Aug 29, 2025) -- by Samuel H., Soundar M., Jason W., and Pradip K. : Set up required infrastructure and deployed Image to ECS Fargate
 - v1.0.1 (Sep 02, 2025) -- by Samuel H. : Modified README.md
+- v1.0.2 (Oct 29, 2025) -- by Samuel H. : Updated README.md
 
 ## License
 © 2025 Amazon Web Services, Inc. or its affiliates. All Rights Reserved.
