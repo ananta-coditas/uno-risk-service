@@ -60,7 +60,7 @@ uno-risk-service = {
   }
   containers_list = [
     {
-      container_name            = "uno-risk-service"
+      container_name            = "uno-risk-service-container"
       container_port            = 8080
       host_port                 = 8080
       application_protocol      = "HTTP"
@@ -72,8 +72,8 @@ uno-risk-service = {
       #   mode             = "non-blocking"
       #   max_buffer_size   = "25m"
       #}
-      required_cpu_units        = 4096  //4 GB
-      required_memory_MiB_units = 8192 //8 GB
+      required_cpu_units        = 2048  //2 GB
+      required_memory_MiB_units = 4096 //4 GB
       ecr_image_uri             = "540051198529.dkr.ecr.us-west-2.amazonaws.com/uno-risk-service"
       ecr_image_tag             = "uno-risk-service-202510232103-04d1687-develop-17" // Update this field for each ecr image build
       sg_rule_config = {
@@ -85,6 +85,35 @@ uno-risk-service = {
       environment_variables = null
       mount_nfs_drive = false
       essential_container = true
+    },
+    {
+      container_name       = "dd_agent-container"
+      container_port       = 8126  # APM trace port
+      host_port            = 8126
+      dogstatsd_port       = 8125
+      #container_protocol   = "tcp"
+      #network_protocol     = "TCP"
+      application_protocol = "TCP"
+      #cpu_units            = 256   # DD agent can use less resources
+      #memory_MiB_units     = 512
+      required_cpu_units   = 256
+      required_memory_MiB_units = 512
+      ecr_image_uri        = "public.ecr.aws/datadog/agent"
+      ecr_image_tag        = "latest"
+      essential_container  = false  # Set to false so app can run if DD agent fails
+      target_sgs           = ["sg-08b57c166776be5b4"]  # Same as your app
+      fargate_assign_public_ip = false
+      mount_nfs_drive = false
+      sg_rule_config = {
+        allowed_ingress_cidr = ["10.9.32.0/20", "10.0.0.0/8"]
+      }
+
+      environment_variables = {
+        ssm_based_variables_file = "/environment/env_vars/uno-risk-service/client/stage.env"  # Should contain DD_API_KEY
+        create_secret       = true
+      }
+      
+      docker_labels = {}
     }
   ]
   microservice_scaling_config = {

@@ -89,7 +89,7 @@ module "uno-risk-service_ecs_service" {
   # checkov:skip=CKV_TF_1: Referring to git tag instead of commit hash
   # checkov:skip=CKV_AWS_333: assign_public_ip is set to "false" by default within core module for EC2 ecs_launch_type
   # checkov:skip=CKV_AWS_333: assign_public_ip is set to "false" by default within core module for EC2 ecs_launch_type
-  source = "github.com/ambrygen/terraform-aws-module-ecs-service.git?ref=v9.1"
+  source = "github.com/ambrygen/terraform-aws-module-ecs-service.git?ref=v9.4.0"
   #source = "../../terraform-aws-module-repos/terraform-aws-module-ecs-service-7.0/"
   ecs_cluster_arn  = var.ecs_cluster_arn
   application_name = var.application_name
@@ -160,12 +160,15 @@ module "uno-risk-service_ecs_service" {
       }
       load_balancer_target_group_arn = container.lb_config != null ? container.lb_config.target_group_arn : null
       environment_files_s3_arn       = null
+
       environment_variables = container.environment_variables != null ? {
         ssm_based_variables = container.environment_variables.ssm_based_variables_file != null ? jsonencode({ for pair in split("\n", trimspace(file("${path.module}${container.environment_variables.ssm_based_variables_file}"))) : trimspace(split("=", pair)[0]) => tostring(trimspace(split("=", pair)[1])) }) : jsonencode({})
+        additional_secrets  = container.environment_variables.additional_secrets
         local_variables     = jsonencode({})
         create_secret       = container.environment_variables.create_secret
         } : {
         ssm_based_variables = jsonencode({})
+        additional_secrets  = null
         local_variables     = jsonencode({})
         create_secret       = false
       }
