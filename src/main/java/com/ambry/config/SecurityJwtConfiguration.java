@@ -25,9 +25,14 @@ public class SecurityJwtConfiguration {
     @Value("${uno.security.authentication.jwt.base64-secret}")
     private String jwtKey;
 
+    @Value("${spring.security.oauth2.resourceserver.jwt.jwk-set-uri}")
+    private String jwkSetKeyUri;
+
+
     @Bean
     public JwtDecoder jwtDecoder(SecurityMetersService metersService) {
-        NimbusJwtDecoder jwtDecoder = NimbusJwtDecoder.withSecretKey(getSecretKey()).macAlgorithm(JWT_ALGORITHM).build();
+        //NimbusJwtDecoder jwtDecoder = NimbusJwtDecoder.withSecretKey(getSecretKey()).macAlgorithm(JWT_ALGORITHM).build()
+        NimbusJwtDecoder jwtDecoder = NimbusJwtDecoder.withJwkSetUri(jwkSetKeyUri).build();
         return token -> {
             try {
                 return jwtDecoder.decode(token);
