@@ -37,7 +37,7 @@ module "elb_listener_rules" {
   }
   additional_listener_rule_config = {
     #priority_number  = index(keys(var.applications_config), each.key) + 1
-    priority_number  = 10
+    priority_number  = 20
     action_type      = "forward"
     target_group_arn = module.elb_target_groups[each.key].arn
     #   conditions_list = [
