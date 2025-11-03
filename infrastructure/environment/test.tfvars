@@ -31,7 +31,7 @@ ecs_task_role_arn = "arn:aws:iam::411233202044:role/uno-risk-service-ecs-task-ro
 ecs_task_execution_role_arn = "arn:aws:iam::411233202044:role/uno-risk-service-ecs-task-execution-role"
 // ----------------------------------------- //
 uno-risk-service = {
-  service_name       = "uno-risk-service-container"
+  service_name       = "uno-risk-service"
   desired_task_count = 1
   ecs_launch_type    = "FARGATE"
   task_setting = {
