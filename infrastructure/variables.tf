@@ -135,9 +135,12 @@ variable "uno-risk-service" {
       lb_config = optional(object({
         target_group_arn = string
       }))
+
       environment_variables = optional(object({
+        additional_secrets = optional(map(string))
         ssm_based_variables_file = optional(string)
         create_secret            = bool
+        local_variables          = optional(map(string))
       }))
       docker_labels   = optional(map(any))
       mount_nfs_drive = bool

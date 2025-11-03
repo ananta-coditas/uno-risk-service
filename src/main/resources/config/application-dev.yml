@@ -39,7 +39,13 @@ spring:
     cache-duration: PT1S # 1 second, see the ISO 8601 standard
   thymeleaf:
     cache: false
-
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: https://ambrygen.oktapreview.com/oauth2/aus2j10b9vgHBR3vp0h8/v1/keys
+          issuer-uri: https://ambrygen.oktapreview.com/oauth2/aus2j10b9vgHBR3vp0h8
+          audiences: api://risk-assessment_service
 server:
   port: 8080
   # make sure requests the proxy uri instead of the server one
@@ -75,7 +81,6 @@ uno:
     license-url:
 
   security:
-    # Add your security settings here
     authentication:
       jwt:
         base64-secret: ZjMzYTE0NGZiNjk4ZGNhZThkY2E2YWI2OTIwMWY1MTU4ZDljNzViMzAxOTgyYjkzMmRiYWZjY2EwMjgwMTYwODA2MTM1ZWUxMzFhYzk0OTA1ZjI0NzU5Nzc4ODRmNmNiMDIzOTc2ZGUwYTYzOTA0NDA5YWMxOWE3ZTJmZWZhMmY=
