@@ -138,3 +138,41 @@ ecs_capacity_provider_setting = {
 
 log_group_name = "uno/staging/ecs/uno-log-group"
 namespace = "uno-staging"
+// ----------------------------------------- //
+applications_config = {
+  "uno-alb" = {
+    application_name = "uno-risk-service"
+    frontend_config = {
+      port                = 443
+      protocol            = "HTTPS"
+      acm_certificate_arn = "arn:aws:acm:us-west-2:480802442620:certificate/974677d6-de6f-41af-bb3e-4dcbd56fa71f"
+      ssl_policy          = "ELBSecurityPolicy-TLS-1-1-2017-01"
+    }
+    backend_config = {
+      port                = 8080
+      protocol            = "HTTP"
+      target_type         = "ip"
+      acm_certificate_arn = null
+      ssl_policy          = null
+    }
+    health_check_setting = {
+      healthy_threshold_count   = 3
+      unhealthy_threshold_count = 5
+      timeout_secs              = 10
+      interval_secs             = 60
+      hc_port                   = 8080
+      hc_path                   = "/api/api-docs"
+      hc_http_success_status    = "200-399"
+    }
+    stickiness_setting = {
+      enable_stickiness   = true
+      alb_stickiness_type = "app_cookie"
+      app_cookie_name     = "PHPSESSID"
+      alb_cookie_duration = 86400
+    }
+    listener_condition_config = {
+      host_header_value  = ["uno-stage.ambrygen.com"]
+      path_pattern_value = ["/api/risk/*"] 
+    }
+  },
+}

@@ -54,7 +54,7 @@ uno-risk-service = {
   }
   containers_list = [
     {
-      container_name            = "uno-risk-service"
+      container_name            = "uno-risk-service-container"
       container_port            = 8080
       host_port                 = 8080
       application_protocol      = "HTTP"
@@ -66,8 +66,8 @@ uno-risk-service = {
       #   mode             = "non-blocking"
       #   max_buffer_size   = "25m"
       #}
-      required_cpu_units        = 4096  //4 GB
-      required_memory_MiB_units = 8192 //8 GB
+      required_cpu_units        = 2048  //2 GB
+      required_memory_MiB_units = 4096  //4 GB
       ecr_image_uri             = "540051198529.dkr.ecr.us-west-2.amazonaws.com/uno-risk-service"
       ecr_image_tag             = "uno-risk-service-202510302307-630f6dc-develop-18" // Update this field for each ecr image build
       sg_rule_config = {
@@ -102,3 +102,42 @@ ecs_capacity_provider_setting = {
 // ----------------------------------------- //
 log_group_name = "uno/test/ecs/uno-log-group"
 namespace = "uno-test"
+// ----------------------------------------- //
+applications_config = {
+  "uno-alb" = {
+    application_name = "uno-risk-service"
+    frontend_config = {
+      port                = 443
+      protocol            = "HTTPS"
+      acm_certificate_arn = "arn:aws:acm:us-west-2:411233202044:certificate/788c50c6-a67c-4c80-b1aa-e62b67eab959"
+      ssl_policy          = "ELBSecurityPolicy-TLS-1-1-2017-01"
+    }
+    backend_config = {
+      port                = 8080
+      protocol            = "HTTP"
+      target_type         = "ip"
+      acm_certificate_arn = null
+      ssl_policy          = null
+    }
+    health_check_setting = {
+      healthy_threshold_count   = 3
+      unhealthy_threshold_count = 5
+      timeout_secs              = 10
+      interval_secs             = 30
+      hc_port                   = 8080
+      hc_path                   = "/api/api-docs"
+      hc_http_success_status    = "200-399"
+    }
+    stickiness_setting = {
+      enable_stickiness   = true
+      alb_stickiness_type = "app_cookie"
+      app_cookie_name     = "PHPSESSID"
+      alb_cookie_duration = 86400
+    }
+    listener_condition_config = {
+      host_header_value  = ["uno-test.ambrygen.com"]
+      path_pattern_value = ["/api/risk/*"] 
+      #TODO - Add saparatelty "/api/api-docs", "/api/swagger-ui*" as can only add 5 conditions
+    }
+  },
+}

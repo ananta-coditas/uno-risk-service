@@ -186,3 +186,43 @@ variable "ecs_capacity_provider_setting" {
     })
   })
 }
+// -------------------------------------------- //
+variable "applications_config" {
+  description = "Load Balancer setting"
+  type = map(object({
+    application_name = string
+    # application_domain = string
+    frontend_config = object({
+      port                = number
+      protocol            = string
+      acm_certificate_arn = optional(string)
+      ssl_policy          = optional(string)
+    })
+    backend_config = object({
+      port                = number
+      protocol            = string
+      target_type         = string
+      acm_certificate_arn = optional(string)
+      ssl_policy          = optional(string)
+    })
+    health_check_setting = object({
+      healthy_threshold_count   = number
+      unhealthy_threshold_count = number
+      timeout_secs              = number
+      interval_secs             = number
+      hc_port                   = number
+      hc_path                   = optional(string)
+      hc_http_success_status    = optional(string)
+    })
+    stickiness_setting = object({
+      enable_stickiness   = bool
+      alb_stickiness_type = optional(string)
+      app_cookie_name     = optional(string)
+      alb_cookie_duration = optional(number)
+    })
+    listener_condition_config = object({
+      host_header_value  = optional(list(string))
+      path_pattern_value = optional(list(string))
+    })
+  }))
+}

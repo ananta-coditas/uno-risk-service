@@ -103,3 +103,44 @@ ecs_capacity_provider_setting = {
 // ----------------------------------------- //
 log_group_name = "uno/dev/ecs/uno-log-group"
 namespace = "uno-dev"
+// ----------------------------------------- //
+load_balancer_arn = "arn:aws:elasticloadbalancing:us-west-2:034362031415:loadbalancer/app/uno-dev-elb/8bfe93ec63e21f2b"
+load_balancer_type = "application"
+
+applications_config = {
+  "uno-alb" = {
+    application_name = "uno-risk-service"
+    frontend_config = {
+      port                = 443
+      protocol            = "HTTPS"
+      acm_certificate_arn = "arn:aws:acm:us-west-2:034362031415:certificate/f0f8f2d2-46c5-499d-9870-7a6f69cd78ae"
+      ssl_policy          = "ELBSecurityPolicy-TLS-1-1-2017-01"
+    }
+    backend_config = {
+      port                = 8080
+      protocol            = "HTTP"
+      target_type         = "ip"
+      acm_certificate_arn = null
+      ssl_policy          = null
+    }
+    health_check_setting = {
+      healthy_threshold_count   = 3
+      unhealthy_threshold_count = 5
+      timeout_secs              = 10
+      interval_secs             = 60
+      hc_port                   = 8080
+      hc_path                   = "/api/api-docs"
+      hc_http_success_status    = "200-399"
+    }
+    stickiness_setting = {
+      enable_stickiness   = true
+      alb_stickiness_type = "app_cookie"
+      app_cookie_name     = "PHPSESSID"
+      alb_cookie_duration = 86400
+    }
+    listener_condition_config = {
+      host_header_value  = ["uno-dev.ambrygen.com"]
+      path_pattern_value = ["/api/risk/*"]
+    }
+  },
+}
