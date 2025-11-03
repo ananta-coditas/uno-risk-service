@@ -25,17 +25,6 @@ frontend_lb_config = {
   logging_bucket_name  = ""
 }
 // ----------------------------------------- //
-  capacity_provider_details = {
-    enable_fargate_provider = true
-    enable_fargate_spot_provider = false
-    ec2_asg_providers = []
-    default_provider_configuration = {
-      provider_name = "FARGATE"
-      weight = 1
-      base = 0
-    }
-  }
-// ----------------------------------------- //
 container_log_destination = "cloudwatch_logs"
 // ----------------------------------------- //
 ecs_task_role_arn = "arn:aws:iam::411233202044:role/uno-risk-service-ecs-task-role"
@@ -102,6 +91,9 @@ ecs_capacity_provider_setting = {
 // ----------------------------------------- //
 log_group_name = "uno/test/ecs/uno-log-group"
 namespace = "uno-test"
+// ----------------------------------------- //
+load_balancer_arn = "arn:aws:elasticloadbalancing:us-west-2:411233202044:loadbalancer/app/uno-test-elb/f2e6d54c0fb23072"
+load_balancer_type = "application"
 // ----------------------------------------- //
 applications_config = {
   "uno-alb" = {
