@@ -1,5 +1,4 @@
-# Test environment variables
-
+# Sandbox environment variables
 // ----------------------------------------- //
 organization_name = "ambry"
 application_name  = "uno-risk-service"
@@ -19,21 +18,6 @@ vpc_config = {
 ecs_cluster_arn="arn:aws:ecs:us-west-2:034362031415:cluster/uno-dev-cluster"
 ecs_cluster_name = "uno-dev-cluster"
 // ----------------------------------------- //
-all_tags = {
-  name_prefix       = "uno"
-  resource_name     = "ecs"
-  environment       = "dev"
-  business_owner    = "uno-team"
-  company           = "ag"
-  operational_unit  = "it-ops"
-  compliance        = "none"
-  privacy           = "sensitive"
-  phi               = "no"
-  pii               = "no"
-  product           = "uno-risk-service"
-}
-
-// ----------------------------------------- //
 frontend_lb_config = {
   lb_name              = "uno-dev-elb"           # Load Balancer created by uno_shared_services repo
   lb_type              = "application"
@@ -52,51 +36,13 @@ capacity_provider_details = {
   }
 }
 // ----------------------------------------- //
-# Need to update the service name and task definition - this is pending - remmove this comment once done
-
-# aws_ecs_task_definition = {
-#   "family": "uno-risk-service-task-def",
-#   "networkMode": "awsvpc",
-#   "requiresCompatibilities": ["FARGATE"],
-#   "cpu": "256",
-#   "memory": "512",
-#   "executionRoleArn": "arn:aws:iam::411233202044:role/uno-risk-service-task-execution-role",
-#   "containerDefinitions": [
-#     {
-#       "name": "risk-service-container",
-#       "image": "540051198529.dkr.ecr.us-west-2.amazonaws.com/uno-risk-service:uno-risk-service-202508132148-e2ec9b7-UNO-433-infrastructure",
-#       "essential": true,
-#       "portMappings": [
-#         {
-#           "containerPort": 3000,
-#           "protocol": "tcp"
-#         }
-#       ]
-#     }
-#   ]
-# }
-// ----------------------------------------- //
 container_log_destination = "cloudwatch_logs"
 // ----------------------------------------- //
 ecs_task_role_arn = "arn:aws:iam::034362031415:role/uno-risk-service-ecs-task-role"
 ecs_task_execution_role_arn = "arn:aws:iam::034362031415:role/uno-risk-service-ecs-task-execution-role"
-
-# uno-risk-service = {
-#   containers_list : ["risk-service-container"]
-#   service_name     : "uno-risk-service"
-#   container_port     : 8080
-#   service_type     : "FARGATE"
-#   service_desired_count : 1
-#   desired_task_count : 1
-#   service_health_check_grace_period_seconds : 60
-#   }
-
-# container_port = 8080
-
 // ----------------------------------------- //
-
 uno-risk-service = {
-  service_name       = "uno-risk-service"
+  service_name       = "uno-risk-service-container"
   desired_task_count = 1
   ecs_launch_type    = "FARGATE"
   task_setting = {
@@ -154,6 +100,47 @@ ecs_capacity_provider_setting = {
     base          = 0
   }
 }
-
+// ----------------------------------------- //
 log_group_name = "uno/dev/ecs/uno-log-group"
 namespace = "uno-dev"
+// ----------------------------------------- //
+load_balancer_arn = "arn:aws:elasticloadbalancing:us-west-2:034362031415:loadbalancer/app/uno-dev-elb/8bfe93ec63e21f2b"
+load_balancer_type = "application"
+
+applications_config = {
+  "uno-alb" = {
+    application_name = "uno-risk-service"
+    frontend_config = {
+      port                = 443
+      protocol            = "HTTPS"
+      acm_certificate_arn = "arn:aws:acm:us-west-2:034362031415:certificate/f0f8f2d2-46c5-499d-9870-7a6f69cd78ae"
+      ssl_policy          = "ELBSecurityPolicy-TLS-1-1-2017-01"
+    }
+    backend_config = {
+      port                = 8080
+      protocol            = "HTTP"
+      target_type         = "ip"
+      acm_certificate_arn = null
+      ssl_policy          = null
+    }
+    health_check_setting = {
+      healthy_threshold_count   = 3
+      unhealthy_threshold_count = 5
+      timeout_secs              = 10
+      interval_secs             = 60
+      hc_port                   = 8080
+      hc_path                   = "/api/api-docs"
+      hc_http_success_status    = "200-399"
+    }
+    stickiness_setting = {
+      enable_stickiness   = true
+      alb_stickiness_type = "app_cookie"
+      app_cookie_name     = "PHPSESSID"
+      alb_cookie_duration = 86400
+    }
+    listener_condition_config = {
+      host_header_value  = ["uno-dev.ambrygen.com"]
+      path_pattern_value = ["/api/risk/*"]
+    }
+  },
+}

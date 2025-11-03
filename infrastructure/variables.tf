@@ -1,94 +1,65 @@
 variable "aws_region" {
   description = "The AWS region to deploy resources in."
   type        = string
-
 }
+// -------------------------------------------- //
 variable "ecs_cluster_name" {
   description = "The name of the ECS cluster to deploy the service into."
   type        = string
 }
-
+// -------------------------------------------- //
 variable "ecs_cluster_arn" {
   description = "The ARN of the ECS cluster."
   type        = string
 }
-
+// -------------------------------------------- //
 variable "ecs_task_role_arn" {
   description = "The ARN of the ECS task execution role."
   type        = string
 }
-
+// -------------------------------------------- //
 variable "ecs_task_execution_role_arn" {
   description = "The ARN of the ECS task execution role."
   type        = string
 }
-
+// -------------------------------------------- //
 variable "application_name" {
   description = "The name of the application."
   type        = string
-
 }
-
+// -------------------------------------------- //
 variable "environment_name" {
   description = "The name of the environment."
   type        = string
-
 }
-
+// -------------------------------------------- //
 variable "organization_name" {
   description = "The name of the organization."
   type        = string
 
 }
-
+// -------------------------------------------- //
 variable "log_group_name" {
   description = "The name of the log group."
   type = string
 }
-
+// -------------------------------------------- //
 variable "lb_security_group_egress_rule_id" {
   description = "lb security group egress (outbound) rule id"
   type        = string
 }
-
-# variable "aws_ecs_task_definition" {
-#   description = "The ECS task definition configuration."
-#   type = object({
-#     family                   = string
-#     networkMode              = string
-#     requiresCompatibilities  = list(string)
-#     cpu                      = string
-#     memory                   = string
-#     executionRoleArn         = string
-#     taskRoleArn              = string
-#     containerDefinitions     = list(object({
-#       name           = string
-#       image          = string
-#       essential      = bool
-#       portMappings   = list(object({
-#         containerPort = number
-#         protocol      = string
-#       }))
-#     }))
-#   })
-# }
-
-# variable "container_port" {
-#   description = "The port on which the container listens."
-#   type        = number
-# }
-
+// -------------------------------------------- //
 variable "environment" {
   description = "The environment the app is being deployed in"
   type        = string
 }
-
+// -------------------------------------------- //
 variable "container_log_destination" {
   description = "The destination for container logs."
   type        = string
 
 }
-
+// -------------------------------------------- //
 variable "vpc_config" {
   description = "VPC configuration for the ECS service."
   type = object({
@@ -97,12 +68,12 @@ variable "vpc_config" {
     private_target_subnets = list(string)
   })
 }
-
+// -------------------------------------------- //
 variable "namespace" {
   description = "The namespace for the ECS service."
   type        = string
 }
-
+// -------------------------------------------- //
 variable "uno-risk-service" {
   description = "Configuration for the uno-risk-service ECS service."
   type = object({
@@ -185,4 +156,54 @@ variable "ecs_capacity_provider_setting" {
       base          = number
     })
   })
+}
+// -------------------------------------------- //
+variable "applications_config" {
+  description = "Load Balancer setting"
+  type = map(object({
+    application_name = string
+    # application_domain = string
+    frontend_config = object({
+      port                = number
+      protocol            = string
+      acm_certificate_arn = optional(string)
+      ssl_policy          = optional(string)
+    })
+    backend_config = object({
+      port                = number
+      protocol            = string
+      target_type         = string
+      acm_certificate_arn = optional(string)
+      ssl_policy          = optional(string)
+    })
+    health_check_setting = object({
+      healthy_threshold_count   = number
+      unhealthy_threshold_count = number
+      timeout_secs              = number
+      interval_secs             = number
+      hc_port                   = number
+      hc_path                   = optional(string)
+      hc_http_success_status    = optional(string)
+    })
+    stickiness_setting = object({
+      enable_stickiness   = bool
+      alb_stickiness_type = optional(string)
+      app_cookie_name     = optional(string)
+      alb_cookie_duration = optional(number)
+    })
+    listener_condition_config = object({
+      host_header_value  = optional(list(string))
+      path_pattern_value = optional(list(string))
+    })
+  }))
+}
+// -------------------------------------------- //
+variable "load_balancer_arn" {
+  description = "The ARN of the EC2 Load Balancer."
+  type        = string
+}
+// -------------------------------------------- //
+variable "load_balancer_type" {
+  description = "The Type of the EC2 Load Balancer."
+  type        = string
 }

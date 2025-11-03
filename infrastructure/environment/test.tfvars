@@ -1,5 +1,4 @@
 # Test environment variables
-
 // ----------------------------------------- //
 organization_name = "ambry"
 application_name  = "uno-risk-service"
@@ -19,8 +18,6 @@ vpc_config = {
 ecs_cluster_arn="arn:aws:ecs:us-west-2:411233202044:cluster/uno-test-cluster"
 ecs_cluster_name = "uno-test-cluster"
 // ----------------------------------------- //
-
-// ----------------------------------------- //
 frontend_lb_config = {
   lb_name              = "uno-test-elb"           # Load Balancer created by uno_shared_services repo
   lb_type              = "application"
@@ -39,51 +36,13 @@ frontend_lb_config = {
     }
   }
 // ----------------------------------------- //
-# Need to update the service name and task definition - this is pending - remmove this comment once done
-
-# aws_ecs_task_definition = {
-#   "family": "uno-risk-service-task-def",
-#   "networkMode": "awsvpc",
-#   "requiresCompatibilities": ["FARGATE"],
-#   "cpu": "256",
-#   "memory": "512",
-#   "executionRoleArn": "arn:aws:iam::411233202044:role/uno-risk-service-task-execution-role",
-#   "containerDefinitions": [
-#     {
-#       "name": "risk-service-container",
-#       "image": "540051198529.dkr.ecr.us-west-2.amazonaws.com/uno-risk-service:uno-risk-service-202508132148-e2ec9b7-UNO-433-infrastructure",
-#       "essential": true,
-#       "portMappings": [
-#         {
-#           "containerPort": 3000,
-#           "protocol": "tcp"
-#         }
-#       ]
-#     }
-#   ]
-# }
-// ----------------------------------------- //
 container_log_destination = "cloudwatch_logs"
 // ----------------------------------------- //
 ecs_task_role_arn = "arn:aws:iam::411233202044:role/uno-risk-service-ecs-task-role"
 ecs_task_execution_role_arn = "arn:aws:iam::411233202044:role/uno-risk-service-ecs-task-execution-role"
-
-# uno-risk-service = {
-#   containers_list : ["risk-service-container"]
-#   service_name     : "uno-risk-service"
-#   container_port     : 8080
-#   service_type     : "FARGATE"
-#   service_desired_count : 1
-#   desired_task_count : 1
-#   service_health_check_grace_period_seconds : 60
-#   }
-
-# container_port = 8080
-
 // ----------------------------------------- //
-
 uno-risk-service = {
-  service_name       = "uno-risk-service"
+  service_name       = "uno-risk-service-container"
   desired_task_count = 1
   ecs_launch_type    = "FARGATE"
   task_setting = {
@@ -95,7 +54,7 @@ uno-risk-service = {
   }
   containers_list = [
     {
-      container_name            = "uno-risk-service"
+      container_name            = "uno-risk-service-container"
       container_port            = 8080
       host_port                 = 8080
       application_protocol      = "HTTP"
@@ -107,8 +66,8 @@ uno-risk-service = {
       #   mode             = "non-blocking"
       #   max_buffer_size   = "25m"
       #}
-      required_cpu_units        = 4096  //4 GB
-      required_memory_MiB_units = 8192 //8 GB
+      required_cpu_units        = 2048  //2 GB
+      required_memory_MiB_units = 4096  //4 GB
       ecr_image_uri             = "540051198529.dkr.ecr.us-west-2.amazonaws.com/uno-risk-service"
       ecr_image_tag             = "uno-risk-service-202510302307-630f6dc-develop-18" // Update this field for each ecr image build
       sg_rule_config = {
@@ -129,7 +88,6 @@ uno-risk-service = {
     metric_target_value = 80
   }
 }
-
 // ----------------------------------------- //
 ecs_capacity_provider_setting = {
   enable_fargate_provider      = true
@@ -141,6 +99,45 @@ ecs_capacity_provider_setting = {
     base          = 0
 }
 }
-
+// ----------------------------------------- //
 log_group_name = "uno/test/ecs/uno-log-group"
 namespace = "uno-test"
+// ----------------------------------------- //
+applications_config = {
+  "uno-alb" = {
+    application_name = "uno-risk-service"
+    frontend_config = {
+      port                = 443
+      protocol            = "HTTPS"
+      acm_certificate_arn = "arn:aws:acm:us-west-2:411233202044:certificate/788c50c6-a67c-4c80-b1aa-e62b67eab959"
+      ssl_policy          = "ELBSecurityPolicy-TLS-1-1-2017-01"
+    }
+    backend_config = {
+      port                = 8080
+      protocol            = "HTTP"
+      target_type         = "ip"
+      acm_certificate_arn = null
+      ssl_policy          = null
+    }
+    health_check_setting = {
+      healthy_threshold_count   = 3
+      unhealthy_threshold_count = 5
+      timeout_secs              = 10
+      interval_secs             = 30
+      hc_port                   = 8080
+      hc_path                   = "/api/api-docs"
+      hc_http_success_status    = "200-399"
+    }
+    stickiness_setting = {
+      enable_stickiness   = true
+      alb_stickiness_type = "app_cookie"
+      app_cookie_name     = "PHPSESSID"
+      alb_cookie_duration = 86400
+    }
+    listener_condition_config = {
+      host_header_value  = ["uno-test.ambrygen.com"]
+      path_pattern_value = ["/api/risk/*"] 
+      #TODO - Add saparatelty "/api/api-docs", "/api/swagger-ui*" as can only add 5 conditions
+    }
+  },
+}
