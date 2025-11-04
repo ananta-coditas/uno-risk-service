@@ -127,6 +127,9 @@ ecs_capacity_provider_setting = {
 log_group_name = "uno/staging/ecs/uno-log-group"
 namespace = "uno-staging"
 // ----------------------------------------- //
+load_balancer_arn = "arn:aws:elasticloadbalancing:us-west-2:480802442620:loadbalancer/app/uno-staging-elb/f7088d37e40cc4c5"
+load_balancer_type = "application"
+// ----------------------------------------- //
 applications_config = {
   "uno-alb" = {
     application_name = "uno-risk-service"
