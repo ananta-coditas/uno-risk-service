@@ -68,7 +68,7 @@ uno-risk-service = {
         allowed_ingress_cidr = ["10.9.32.0/20", "10.0.0.0/8"]
       }
       lb_config = {
-        target_group_arn = "arn:aws:elasticloadbalancing:us-west-2:480802442620:targetgroup/uno-8080-tg/0ae84c56e766647b"
+        target_group_arn = "arn:aws:elasticloadbalancing:us-west-2:480802442620:targetgroup/uno-risk-service-8080-tg/50015a9cc5e64663"
       }
       environment_variables = null
       mount_nfs_drive = false
