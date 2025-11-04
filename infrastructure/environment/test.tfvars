@@ -117,7 +117,7 @@ applications_config = {
       timeout_secs              = 10
       interval_secs             = 30
       hc_port                   = 8080
-      hc_path                   = "/api/api-docs"
+      hc_path                   = "/api/risk/models/api-docs"
       hc_http_success_status    = "200-399"
     }
     stickiness_setting = {
@@ -128,8 +128,7 @@ applications_config = {
     }
     listener_condition_config = {
       host_header_value  = ["uno-test.ambrygen.com"]
-      path_pattern_value = ["/api/risk/*"] 
-      #TODO - Add saparatelty "/api/api-docs", "/api/swagger-ui*" as can only add 5 conditions
+      path_pattern_value = ["/api/risk/*"]
     }
   },
 }
