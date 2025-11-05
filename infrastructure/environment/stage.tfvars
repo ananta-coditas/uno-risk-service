@@ -70,9 +70,13 @@ uno-risk-service = {
       lb_config = {
         target_group_arn = "arn:aws:elasticloadbalancing:us-west-2:480802442620:targetgroup/uno-risk-service-8080-tg/50015a9cc5e64663"
       }
-      environment_variables = null
       mount_nfs_drive = false
       essential_container = true
+      
+      environment_variables = {
+        ssm_based_variables_file = "/environment/env_vars/uno-risk-service/client/stage.env"  # Should contain DD_API_KEY
+        create_secret       = true
+      }
     },
     {
       container_name       = "dd_agent-container"
