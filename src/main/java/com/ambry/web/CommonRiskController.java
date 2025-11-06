@@ -18,22 +18,31 @@ import com.objex.risk.beans.uno.Risk;
 import com.objex.risk.beans.uno.Model.ModelName;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping({"/api","/risk"})
 public class CommonRiskController {
 
     @Autowired
     private CommonRiskService commonRiskService;
-    
+
     @PostMapping("/risk/models/calculate")
+    public ResponseEntity<CombinedResult> calculateRiskModelsDeprecated(@RequestBody Risk risk) {
+        return calculateRiskModelsV1(risk);
+    }
+    @PostMapping("/api/models/calculate")
     public ResponseEntity<CombinedResult> calculateRiskModels(@RequestBody Risk risk) {
         return calculateRiskModelsV1(risk);
     }
     @PostMapping("/v1/risk/models/calculate")
+    public ResponseEntity<CombinedResult> calculateRiskModelsV1Deprecated(@RequestBody Risk risk) {
+        CombinedResult combinedResult = commonRiskService.calculateRiskModels(risk);
+        return ResponseEntity.ok(combinedResult);
+    }
+    @PostMapping("/api/v1/models/calculate")
     public ResponseEntity<CombinedResult> calculateRiskModelsV1(@RequestBody Risk risk) {
         CombinedResult combinedResult = commonRiskService.calculateRiskModels(risk);
         return ResponseEntity.ok(combinedResult);
     }
-    
+
     @PostMapping("/risk/models/calculate1")
     public ResponseEntity<TestResult> calculateRiskModels1(@RequestBody Risk risk) {
         TestResult result = new TestResult();
@@ -53,5 +62,5 @@ class TestResult extends BaseResult{
         Map<String, String> map = new HashMap<>();
         return map;
     }
-    
+
 }
