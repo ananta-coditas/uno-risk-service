@@ -119,9 +119,16 @@ Navigate to Actions tab, and select one of the following workflows:
 
 ## Running the Risk Server
 Once the risk service has been deployed to ECS, it is accessible within Ambry VPN via cURL command:
-- URL: https://uno-<env>.ambrygen.com
+- URL: 
+   - Test: https://uno-test.ambrygen.com
+   - Stage: https://uno-stage.ambrygen.com
+
 - Endpoint: /risk/api/models/calculate
-- Content-Type: application/json 
+- Content-Type: application/json
+
+- Swagger-UI: 
+   - Test: https://uno-test.ambrygen.com/risk/api/models/swagger-ui
+   - Stage: https://uno-stage.ambrygen.com/risk/api/models/swagger-ui
 
 ## Requirements
 
@@ -136,6 +143,7 @@ Once the risk service has been deployed to ECS, it is accessible within Ambry VP
 - v1.0.0 (Aug 29, 2025) -- by Samuel H., Soundar M., Jason W., and Pradip K. : Set up required infrastructure and deployed Image to ECS Fargate
 - v1.0.1 (Sep 02, 2025) -- by Samuel H. : Modified README.md
 - v1.0.2 (Oct 29, 2025) -- by Samuel H. : Updated README.md
+- v1.0.3 (Nov 07, 2025) -- by Samuel H. : Minor changes to README.md
 
 ## License
 © 2025 Amazon Web Services, Inc. or its affiliates. All Rights Reserved.
