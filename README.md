@@ -127,8 +127,8 @@ Once the risk service has been deployed to ECS, it is accessible within Ambry VP
 - Content-Type: application/json
 
 - Swagger-UI: 
-   - https://uno-test.ambrygen.com/risk/api/models/swagger-ui
-   - https://uno-stage.ambrygen.com/risk/api/models/swagger-ui
+   - Test: https://uno-test.ambrygen.com/risk/api/models/swagger-ui
+   - Stage: https://uno-stage.ambrygen.com/risk/api/models/swagger-ui
 
 ## Requirements
 
