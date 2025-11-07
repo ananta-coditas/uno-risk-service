@@ -100,7 +100,7 @@ module "uno-risk-service_ecs_service" {
     }
   ]
   service_secret_path_prefix = join("/", ["/${var.organization_name}", var.application_name, var.environment_name, var.uno-risk-service.service_name, "environment_variable"])
-  custom_healthcheck         = ["CMD-SHELL", "echo 'healthy' || exit 1", "cURL https://uno-test.ambrygen.com/api/risk/models/api-docs"]
+  custom_healthcheck         = ["CMD-SHELL", "echo 'healthy' || exit 1"]
 }
 #------------------------------------------------------------------------------
 // ECS Task Role ----->>>

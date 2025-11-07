@@ -118,7 +118,7 @@ applications_config = {
       timeout_secs              = 10
       interval_secs             = 60
       hc_port                   = 8080
-      hc_path                   = "/api/risk/models/api-docs"
+      hc_path                   = "/risk/api/models/api-docs"
       hc_http_success_status    = "200-399"
     }
     stickiness_setting = {
@@ -129,7 +129,7 @@ applications_config = {
     }
     listener_condition_config = {
       host_header_value  = ["uno-dev.ambrygen.com"]
-      path_pattern_value = ["/api/risk/*"]
+      path_pattern_value = ["/api/risk/*", "/risk/api/*"]
     }
   },
 }
