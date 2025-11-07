@@ -120,7 +120,7 @@ Navigate to Actions tab, and select one of the following workflows:
 ## Running the Risk Server
 Once the risk service has been deployed to ECS, it is accessible within Ambry VPN via cURL command:
 - URL: https://uno-<env>.ambrygen.com
-- Endpoint: /api/risk/models/calculate
+- Endpoint: /risk/api/models/calculate
 - Content-Type: application/json 
 
 ## Requirements

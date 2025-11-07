@@ -161,10 +161,10 @@ server:
 
 springdoc:
   api-docs:
-    path: /api/risk/models/api-docs
+    path: /risk/api/models/api-docs
   show-actuator: false
   swagger-ui:
-    path: /api/risk/models/swagger-ui
+    path: /risk/api/models/swagger-ui
 
 # Properties to be exposed on the /info management endpoint
 info:
