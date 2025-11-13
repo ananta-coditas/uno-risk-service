@@ -118,4 +118,31 @@ class WebConfigurerTest {
             .andExpect(status().isOk())
             .andExpect(header().doesNotExist(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN));
     }
+
+    @Test
+    void shouldOnStartupLogProfilesWhenProfilesExist() {
+        env.setActiveProfiles("dev", "test");
+        webConfigurer.onStartup(servletContext);
+        // Verify no exception is thrown
+    }
+
+    @Test
+    void shouldOnStartupNotLogProfilesWhenNoProfiles() {
+        env.setActiveProfiles();
+        webConfigurer.onStartup(servletContext);
+        // Verify no exception is thrown
+    }
+
+    @Test
+    void shouldCorsFilterWithAllowedOriginPatterns() throws Exception {
+        props.getCors().setAllowedOriginPatterns(Collections.singletonList("*.domain.com"));
+        props.getCors().setAllowedMethods(Arrays.asList("GET", "POST"));
+
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(new WebConfigurerTestController()).addFilters(webConfigurer.corsFilter()).build();
+
+        mockMvc
+            .perform(get("/api/test-cors").header(HttpHeaders.ORIGIN, "test.domain.com"))
+            .andExpect(status().isOk())
+            .andExpect(header().exists(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN));
+    }
 }

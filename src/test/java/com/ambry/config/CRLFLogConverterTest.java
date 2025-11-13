@@ -100,6 +100,65 @@ class CRLFLogConverterTest {
     }
 
     @Test
+    void transformShouldReplaceTabsWithUnderscore() {
+        ILoggingEvent event = mock(ILoggingEvent.class);
+        List<Marker> markers = Collections.emptyList();
+        when(event.getMarkerList()).thenReturn(markers);
+        when(event.getLoggerName()).thenReturn("com.mycompany.myapp.example.Logger");
+        String input = "Test\tinput\tstring";
+        CRLFLogConverter converter = new CRLFLogConverter();
+
+        String result = converter.transform(event, input);
+
+        assertEquals("Test_input_string", result);
+    }
+
+    @Test
+    void transformShouldHandleMixedNewlinesCarriageReturnsAndTabs() {
+        ILoggingEvent event = mock(ILoggingEvent.class);
+        List<Marker> markers = Collections.emptyList();
+        when(event.getMarkerList()).thenReturn(markers);
+        when(event.getLoggerName()).thenReturn("com.mycompany.myapp.example.Logger");
+        String input = "Test\ninput\rstring\ttab";
+        CRLFLogConverter converter = new CRLFLogConverter();
+
+        String result = converter.transform(event, input);
+
+        assertEquals("Test_input_string_tab", result);
+    }
+
+    @Test
+    void transformShouldReturnInputWhenLoggerIsSpringBootAutoconfigure() {
+        ILoggingEvent event = mock(ILoggingEvent.class);
+        when(event.getMarkerList()).thenReturn(null);
+        when(event.getLoggerName()).thenReturn("org.springframework.boot.autoconfigure.example.Logger");
+        String input = "Test\ninput";
+        CRLFLogConverter converter = new CRLFLogConverter();
+
+        String result = converter.transform(event, input);
+
+        assertEquals(input, result);
+    }
+
+    @Test
+    void transformShouldReturnInputWhenLoggerIsSpringBootDiagnostics() {
+        ILoggingEvent event = mock(ILoggingEvent.class);
+        when(event.getMarkerList()).thenReturn(null);
+        when(event.getLoggerName()).thenReturn("org.springframework.boot.diagnostics.example.Logger");
+        String input = "Test\ninput";
+        CRLFLogConverter converter = new CRLFLogConverter();
+
+        String result = converter.transform(event, input);
+
+        assertEquals(input, result);
+    }
+
+    @Test
+    void testCRLFSafeMarkerConstant() {
+        assertThat(CRLFLogConverter.CRLF_SAFE_MARKER).isNotNull();
+    }
+
+    @Test
     void isLoggerSafeShouldReturnTrueWhenLoggerNameStartsWithSafeLogger() {
         ILoggingEvent event = mock(ILoggingEvent.class);
         when(event.getLoggerName()).thenReturn("org.springframework.boot.autoconfigure.example.Logger");
