@@ -33,6 +33,7 @@ spring:
         jwt:
           authority-prefix: ''
           authorities-claim-name: auth
+          jwk-set-uri: https://ambrygen.oktapreview.com/oauth2/aus2j10b9vgHBR3vp0h8/v1/keys
   task:
     execution:
       thread-name-prefix: uno-risk-service-task-

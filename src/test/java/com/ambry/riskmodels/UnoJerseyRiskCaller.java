@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ambry.riskmodels;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -10,170 +5,226 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.objex.risk.beans.BaseResult;
 import com.objex.risk.beans.BaseRisk;
 import com.objex.risk.beans.charts.ChartVO;
-import com.objex.risk.beans.premm.Person;
-import com.objex.risk.beans.premm.Risk;
-import com.objex.risk.beans.premm.PREMMResult;
 import com.objex.risk.beans.uno.CombinedResult;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestClientException;
+
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-//import javax.xml.bind.JAXBException;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestClient;
 
 /**
- *
- * @author jason
+ * Utility class for calling risk service endpoints.
+ * 
+ * @deprecated This class is deprecated. Tests should use MockMvc instead for better integration testing.
+ * This class is kept for backward compatibility and legacy test support.
  */
+@Deprecated
 public class UnoJerseyRiskCaller {
-   //   static final String REST_URI = "http://localhost:8085/ProgenyRiskService/services/";
-   //  static String REST_URI = "http://192.168.1.119:8080/RiskServiceWeb/services/";
-     //static final String REST_URI = "http://64.58.145.76:8080/RiskServiceWeb/services/";
-    static final String REST_URI = "http://64.58.145.76:8080/ProgenyRiskService/services/";
-      //static final String REST_URI = "http://54.146.150.253/ProgenyRiskService/services/
-      //static final String REST_URI = "http://54.146.150.253/ProgenyRiskService/services/";
-     
-   
-    public static void main(String[] args ) throws InterruptedException
-    {
-         int attempts =  200;
-        Thread.sleep(1000); //give me time to switch contexts
-        for (int i = 0; i < attempts; i++) {
-            final int attemptNum = i;
-            Thread instance = new Thread() {
-            final int myAttempt = attemptNum;
-            public void run() {
-                PREMMResult result = null;
-                long time = System.currentTimeMillis();
-                System.out.println("starting calcBRCA");
-                //WebClient client = WebClient.create(REST_URI + "?token=mydemoToken");
-                //Client client = ClientBuilder.newClient();
-                                //.register(JacksonFeature.class)
 
-                Risk risk = new Risk();
-                risk.setSaveIncoming(false);
-                Person person = new Person();
-                person.setId(1);
-                person.setFatherId(2);
-                person.setMotherId(3);
-                person.setGender(1);
-                person.setAffectedColonType(1);
-                 person.setDiagnoseColonAge(25);
-                risk.add(person);
+    private static final Logger log = LoggerFactory.getLogger(UnoJerseyRiskCaller.class);
 
-                person = new Person();
-                person.setId(2);
-                person.setGender(1);
-                  person.setAffectedColonType(1);
-                person.setDiagnoseColonAge(25);
-               risk.add(person);
-
-                 person = new Person();
-                 person.setId(3);
-                 person.setAffectedColonType(0);
-                person.setDiagnoseColonAge(0);
-                person.setGender(0);
-                risk.add(person);
-
-                person = new Person();
-                person.setId(4);
-                person.setFatherId(2);
-                person.setMotherId(3);
-                risk.add(person);
-
-                result = (PREMMResult) callService(risk, REST_URI,"calculate/premm",PREMMResult.class);
-                long mytime = (System.currentTimeMillis() - time) /1000;
-                if (mytime > 6)
-                    System.out.println("****************************************long time " + mytime);
-
-                System.out.println("time is " + mytime + " seconds for attempt:" + myAttempt);
-                System.out.println(result.getProbabilityCarrier());
-                System.out.println(result.getProbabilityMutationMLH1());
-                System.out.println(result.getProbabilityMutationMSH2());
-                System.out.println(result.getProbabilityMutationMSH6()); 
-                
-            }
-            };
-           Thread.sleep(10);
-           instance.start();
-        }
-    }
-    
-        public static BaseResult callService(BaseRisk risk, String uri, String path,Class resultClass) {
-        Client client = ClientBuilder.newClient();
-        Response resp =  client.target(uri).path(path).request().post(Entity.entity(risk, MediaType.APPLICATION_JSON));
-        
-        //Response resp =  client.target(uri).path(path).request().accept(MediaType.APPLICATION_XML).post(Entity.entity(risk, MediaType.APPLICATION_XML));
-        BaseResult result = (BaseResult)resp.readEntity(resultClass);
-        return result;  
-    }
-    public static BaseResult callService(BaseRisk risk, String uri, String path,Class resultClass,String mediaType) {
-        Client client = ClientBuilder.newClient();
-        //Response resp =  client.target(uri).path(path).request().post(Entity.entity(risk, MediaType.APPLICATION_JSON));
-        
-        Response resp =  client.target(uri).path(path).request().accept(mediaType).post(Entity.entity(risk, mediaType));
-        BaseResult result = (BaseResult)resp.readEntity(resultClass);
-        return result;  
-    }
-    public static CombinedResult callService(BaseRisk risk, String uri, String path,String mediaType) {
-        //Client client = ClientBuilder.newClient();
-        //Response resp =  client.target(uri).path(path).request().post(Entity.entity(risk, MediaType.APPLICATION_JSON));
-       RestClient defaultClient = RestClient.create();
-       
-           String json = new String();
+    /**
+     * Call service with BaseRisk and return BaseResult
+     * 
+     * @param risk The risk object to send
+     * @param uri The base URI of the service
+     * @param path The path endpoint
+     * @param resultClass The expected result class
+     * @return The result object
+     * @throws RuntimeException if the service call fails
+     */
+    @SuppressWarnings("unchecked")
+    public static BaseResult callService(BaseRisk risk, String uri, String path, Class<?> resultClass) {
         try {
-            json = new ObjectMapper().writeValueAsString(risk);
-        } catch (JsonProcessingException ex) {
-            Logger.getLogger(UnoJerseyRiskCaller.class.getName()).log(Level.SEVERE, null, ex);
+            Client client = ClientBuilder.newClient();
+            Response resp = client.target(uri).path(path).request().post(Entity.entity(risk, MediaType.APPLICATION_JSON));
+            
+            if (resp.getStatus() != Response.Status.OK.getStatusCode()) {
+                throw new RuntimeException("Service call failed with status: " + resp.getStatus());
+            }
+            
+            BaseResult result = (BaseResult) resp.readEntity(resultClass);
+            return result;
+        } catch (Exception e) {
+            log.error("Error calling service at {}: {}", uri + path, e.getMessage(), e);
+            throw new RuntimeException("Failed to call service: " + uri + path, e);
         }
+    }
 
- //  and simple print it
+    /**
+     * Call service with BaseRisk and return BaseResult with custom media type
+     * 
+     * @param risk The risk object to send
+     * @param uri The base URI of the service
+     * @param path The path endpoint
+     * @param resultClass The expected result class
+     * @param mediaType The media type to use
+     * @return The result object
+     * @throws RuntimeException if the service call fails
+     */
+    @SuppressWarnings("unchecked")
+    public static BaseResult callService(BaseRisk risk, String uri, String path, Class<?> resultClass, String mediaType) {
+        try {
+            Client client = ClientBuilder.newClient();
+            Response resp = client.target(uri).path(path).request().accept(mediaType).post(Entity.entity(risk, mediaType));
+            
+            if (resp.getStatus() != Response.Status.OK.getStatusCode()) {
+                throw new RuntimeException("Service call failed with status: " + resp.getStatus());
+            }
+            
+            BaseResult result = (BaseResult) resp.readEntity(resultClass);
+            return result;
+        } catch (Exception e) {
+            log.error("Error calling service at {}: {}", uri + path, e.getMessage(), e);
+            throw new RuntimeException("Failed to call service: " + uri + path, e);
+        }
+    }
 
-    System.out.println(json);
-       
-       ResponseEntity<CombinedResult> response = defaultClient.post() 
-  .uri(uri + path) 
-  .contentType(org.springframework.http.MediaType.APPLICATION_JSON) 
-  .body(risk).retrieve().toEntity(CombinedResult.class);
- 
-       CombinedResult result = response.getBody();
-        //Response resp =  client.target(uri).path(path).request().accept(mediaType).post(Entity.entity(risk, mediaType));
-        //CombinedResult result = resp.readEntity(CombinedResult.class);
-        return result;  
+    /**
+     * Call service with BaseRisk and return CombinedResult using RestClient
+     * 
+     * @param risk The risk object to send
+     * @param uri The base URI of the service
+     * @param path The path endpoint
+     * @param mediaType The media type to use
+     * @return The CombinedResult object
+     * @throws RuntimeException if the service call fails
+     */
+    public static CombinedResult callService(BaseRisk risk, String uri, String path, String mediaType) {
+        try {
+            RestClient defaultClient = RestClient.create();
+            
+            ObjectMapper objectMapper = new ObjectMapper();
+            String json = objectMapper.writeValueAsString(risk);
+            log.debug("Calling service at {} with JSON: {}", uri + path, json);
+
+            ResponseEntity<CombinedResult> response = defaultClient.post()
+                    .uri(uri + path)
+                    .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
+                    .body(risk)
+                    .retrieve()
+                    .toEntity(CombinedResult.class);
+
+            CombinedResult result = response.getBody();
+            if (result == null) {
+                throw new RuntimeException("Service returned null response");
+            }
+            return result;
+        } catch (JsonProcessingException e) {
+            log.error("Error serializing risk object: {}", e.getMessage(), e);
+            throw new RuntimeException("Failed to serialize risk object", e);
+        } catch (RestClientException e) {
+            log.error("Error calling service at {}: {}", uri + path, e.getMessage(), e);
+            throw new RuntimeException("Failed to call service: " + uri + path, e);
+        }
     }
-    public static BaseResult callService(BaseResult inresult, String uri, String path,Class resultClass) {
-        Client client = ClientBuilder.newClient();
-        Response resp =  client.target(uri).path(path).request().post(Entity.entity(inresult, MediaType.APPLICATION_JSON));
-        BaseResult result = (BaseResult)resp.readEntity(resultClass);
-        return result;  
+
+    /**
+     * Call service with BaseResult and return BaseResult
+     * 
+     * @param inresult The result object to send
+     * @param uri The base URI of the service
+     * @param path The path endpoint
+     * @param resultClass The expected result class
+     * @return The result object
+     * @throws RuntimeException if the service call fails
+     */
+    @SuppressWarnings("unchecked")
+    public static BaseResult callService(BaseResult inresult, String uri, String path, Class<?> resultClass) {
+        try {
+            Client client = ClientBuilder.newClient();
+            Response resp = client.target(uri).path(path).request().post(Entity.entity(inresult, MediaType.APPLICATION_JSON));
+            
+            if (resp.getStatus() != Response.Status.OK.getStatusCode()) {
+                throw new RuntimeException("Service call failed with status: " + resp.getStatus());
+            }
+            
+            BaseResult result = (BaseResult) resp.readEntity(resultClass);
+            return result;
+        } catch (Exception e) {
+            log.error("Error calling service at {}: {}", uri + path, e.getMessage(), e);
+            throw new RuntimeException("Failed to call service: " + uri + path, e);
+        }
     }
-     public static BaseResult callService(ChartVO chart, String uri, String path,Class resultClass) {
-        Client client = ClientBuilder.newClient();
-        Response resp =  client.target(uri).path(path).request().post(Entity.entity(chart, MediaType.APPLICATION_JSON));
-        BaseResult result = (BaseResult)resp.readEntity(resultClass);
-        return result;  
+
+    /**
+     * Call service with ChartVO and return BaseResult
+     * 
+     * @param chart The chart object to send
+     * @param uri The base URI of the service
+     * @param path The path endpoint
+     * @param resultClass The expected result class
+     * @return The result object
+     * @throws RuntimeException if the service call fails
+     */
+    @SuppressWarnings("unchecked")
+    public static BaseResult callService(ChartVO chart, String uri, String path, Class<?> resultClass) {
+        try {
+            Client client = ClientBuilder.newClient();
+            Response resp = client.target(uri).path(path).request().post(Entity.entity(chart, MediaType.APPLICATION_JSON));
+            
+            if (resp.getStatus() != Response.Status.OK.getStatusCode()) {
+                throw new RuntimeException("Service call failed with status: " + resp.getStatus());
+            }
+            
+            BaseResult result = (BaseResult) resp.readEntity(resultClass);
+            return result;
+        } catch (Exception e) {
+            log.error("Error calling service at {}: {}", uri + path, e.getMessage(), e);
+            throw new RuntimeException("Failed to call service: " + uri + path, e);
+        }
     }
-    public static BaseResult callService(ChartVO chart, String uri, String path,Class resultClass,  MediaType mediaType) {
-        Client client = ClientBuilder.newClient();
-        Response resp =  client.target(uri).path(path).request().post(Entity.entity(chart, mediaType));
-        BaseResult result = (BaseResult)resp.readEntity(resultClass);
-        return result;  
+
+    /**
+     * Call service with ChartVO and return BaseResult with custom media type
+     * 
+     * @param chart The chart object to send
+     * @param uri The base URI of the service
+     * @param path The path endpoint
+     * @param resultClass The expected result class
+     * @param mediaType The media type to use
+     * @return The result object
+     * @throws RuntimeException if the service call fails
+     */
+    @SuppressWarnings("unchecked")
+    public static BaseResult callService(ChartVO chart, String uri, String path, Class<?> resultClass, MediaType mediaType) {
+        try {
+            Client client = ClientBuilder.newClient();
+            Response resp = client.target(uri).path(path).request().post(Entity.entity(chart, mediaType));
+            
+            if (resp.getStatus() != Response.Status.OK.getStatusCode()) {
+                throw new RuntimeException("Service call failed with status: " + resp.getStatus());
+            }
+            
+            BaseResult result = (BaseResult) resp.readEntity(resultClass);
+            return result;
+        } catch (Exception e) {
+            log.error("Error calling service at {}: {}", uri + path, e.getMessage(), e);
+            throw new RuntimeException("Failed to call service: " + uri + path, e);
+        }
     }
-    public static BaseResult callService(BaseRisk risk, String path, Class resultClass) {
-        return callService(risk, REST_URI, path, resultClass);
-    }
-    
+
+    /**
+     * Create a Risk object from a file
+     * 
+     * @param fileName The file path
+     * @param clazz The class of the risk object
+     * @param <T> The type extending BaseRisk
+     * @return The risk object, or null if an error occurs
+     */
     public static <T extends BaseRisk> T createRisk(String fileName, Class<T> clazz) {
-          try {
-              return  Utils.createRiskFromFile(fileName, clazz);
-          } catch (Exception ex) {
-              Logger.getLogger(UnoJerseyRiskCaller.class.getName()).log(Level.SEVERE, null, ex);
-          }
-          return null;
+        try {
+            return Utils.createRiskFromFile(fileName, clazz);
+        } catch (Exception ex) {
+            log.error("Error creating risk from file {}: {}", fileName, ex.getMessage(), ex);
+            return null;
+        }
     }
-    
 }
