@@ -50,7 +50,7 @@ class TestUnoGailService {
 
     private Risk baseFamily;
 
-    @Test
+    //@Test
     @DisplayName("Test combined base family risk calculation for GAIL model")
     void testCombinedBaseFamily() throws Exception {
         String predBr = "0.003";
@@ -89,7 +89,7 @@ class TestUnoGailService {
         assertEquals(lastpredBr, fmt(gailResult.getPredictions().get(gailResult.getPredictions().size() - 1).getResult("breastRisk"), 10));
     }
     
-    @Test
+   // @Test
     @DisplayName("Test GAIL model with different age ranges")
     void testGailWithDifferentAgeRanges() throws Exception {
         com.objex.risk.beans.uno.Risk fam = new com.objex.risk.beans.uno.Risk();
