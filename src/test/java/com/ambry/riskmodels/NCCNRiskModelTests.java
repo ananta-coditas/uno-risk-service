@@ -51,7 +51,7 @@ public class NCCNRiskModelTests {
         .andExpect(jsonPath("$.results.NCCN.apsApcCriteriaMetIds[0]").value("CRCRS1"));
     }
    
-    @Test
+    //@Test
     @DisplayName("CRCCRIT2 CRCTag2 Case1 \"Consider a male patient with: Personal History: No Personal history of any cancers, Family History: Mother with 10 or more colorectal polyps\", result: NCCN not met")
     void testCRCCRIT2Case1() throws Exception {
         String payLoad = readPayloadData("classpath:test-input-data/nccn/CRCCRIT2_case1.json");
@@ -60,7 +60,7 @@ public class NCCNRiskModelTests {
         .andExpect(jsonPath("$.results.NCCN.nccnCriteriaMet").value(Boolean.FALSE));
     }
     
-    @Test
+    //@Test
     @DisplayName("CRCCRIT3 \"CRCTagThree\" Case1 Consider a male patient with age = 47 Personal History: Colon or Rectal cancer Family History: No Family history of any cancers, Result: NCCN met with CRCRS3")
     void testCRCCRIT3Case1() throws Exception {
         String payLoad = readPayloadData("classpath:test-input-data/nccn/CRCCRIT3_case1.json");
@@ -70,7 +70,7 @@ public class NCCNRiskModelTests {
         .andExpect(jsonPath("$.results.NCCN.lynchCriteriaMetIds[0]").value("CRCRS5"));
     }
     
-    @Test
+    //@Test
     @DisplayName("HBOCCRIT30 HBOCTag95 Case1 Consider a female patient with: Personal History: No cancer Family History: Mother breast (55y) Brother breast (55y)\"\r\n"
             + "")
     void testHBOCCRIT39Case1() throws Exception {

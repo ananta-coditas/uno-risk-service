@@ -10,9 +10,9 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.PostMapping;
+
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ServerErrorException;
@@ -43,7 +43,7 @@ import jakarta.annotation.PostConstruct;
  * @author jason
  */
 @RestController
-@RequestMapping("/calculate")
+//@RequestMapping("/calculate")
 public class ProgenyRiskService {
 
     final static Logger LOG = LoggerFactory.getLogger(ProgenyRiskService.class);
@@ -65,8 +65,8 @@ public class ProgenyRiskService {
      * @param content representation for the resource
      * @return an HTTP response with content of the updated or created resource.
      */
-    @PostMapping(value = "/premm", consumes = { "application/xml", "application/json" }, produces = { "application/xml",
-            "application/json" })
+    // @PostMapping(value = "/premm", consumes = { "application/xml", "application/json" }, produces = { "application/xml",
+    //         "application/json" })
     public PREMMResult computePREMM(@RequestBody com.objex.risk.beans.premm.Risk risk) {
         PremmDelegate delegate = new PremmDelegate();
 
@@ -92,8 +92,8 @@ public class ProgenyRiskService {
      * @param content representation for the resource
      * @return an HTTP response with content of the updated or created resource.
      */
-    @PostMapping(value = "/gail", consumes = { "application/xml", "application/json" }, produces = { "application/xml",
-    "application/json" })
+    // @PostMapping(value = "/gail", consumes = { "application/xml", "application/json" }, produces = { "application/xml",
+    // "application/json" })
     public @ResponseBody GailResult computeGail(@RequestBody com.objex.risk.beans.gail.Risk risk) {
 
         long time = System.currentTimeMillis();
@@ -138,8 +138,8 @@ public class ProgenyRiskService {
      * @param content representation for the resource
      * @return an HTTP response with content of the updated or created resource.
      */
-    @PostMapping(value = "/claus", consumes = { "application/xml", "application/json" }, produces = { "application/xml",
-    "application/json" })
+    // @PostMapping(value = "/claus", consumes = { "application/xml", "application/json" }, produces = { "application/xml",
+    // "application/json" })
     public ClausResult computeClaus(@RequestBody com.objex.risk.beans.claus.Risk risk) {
 
         long time = System.currentTimeMillis();
@@ -168,8 +168,8 @@ public class ProgenyRiskService {
      * @param content representation for the resource
      * @return an HTTP response with content of the updated or created resource.
      */
-    @PostMapping(value = "/tyrer", consumes = { "application/xml", "application/json" }, produces = { "application/xml",
-    "application/json" })
+    // @PostMapping(value = "/tyrer", consumes = { "application/xml", "application/json" }, produces = { "application/xml",
+    // "application/json" })
     public TyrerResult computeTyrer(@RequestBody com.objex.risk.beans.tcuzick.Risk risk) {
         // String cmd = "C:\\temp\\tyrer\\tcuzick-wincmd.exe";
         long time = System.currentTimeMillis();
@@ -201,8 +201,8 @@ public class ProgenyRiskService {
      * @param content representation for the resource
      * @return an HTTP response with content of the updated or created resource.
      */
-    @PostMapping(value = "/runCommand", consumes = { "application/xml", "application/json" }, produces = { "application/xml",
-    "application/json" })
+    // @PostMapping(value = "/runCommand", consumes = { "application/xml", "application/json" }, produces = { "application/xml",
+    // "application/json" })
     public RiskCommand runCommand(@RequestBody RiskCommand command) {
         long time = System.currentTimeMillis();
         try {
@@ -311,8 +311,8 @@ public class ProgenyRiskService {
         result.setChart(chartBytes);
     }
 
-    @PostMapping(value = "/plotChart", consumes = { "application/xml", "application/json" }, produces = { "application/xml",
-    "application/json" })
+    // @PostMapping(value = "/plotChart", consumes = { "application/xml", "application/json" }, produces = { "application/xml",
+    // "application/json" })
     public ChartResult plotChartToResultImage(@RequestBody ChartVO chart) {
 
         long time = System.currentTimeMillis();
@@ -335,8 +335,8 @@ public class ProgenyRiskService {
         return result;
     }
 
-    @PostMapping(value = "/chartResult", consumes = { "application/xml", "application/json" }, produces = { "application/xml",
-    "application/json" })
+    // @PostMapping(value = "/chartResult", consumes = { "application/xml", "application/json" }, produces = { "application/xml",
+    // "application/json" })
     public BaseResult plotResult(@RequestBody BaseResult result) {
 
         long time = System.currentTimeMillis();

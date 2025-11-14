@@ -70,7 +70,7 @@ import org.rosuda.REngine.Rserve.RserveException;
  */
 //@Path("/calculate")
 @RestController
-@RequestMapping("/bayescalculate")
+//@RequestMapping("/bayescalculate")
 public class RiskService {
     
     final static Logger LOG = LoggerFactory.getLogger(RiskService.class);
@@ -107,8 +107,8 @@ public class RiskService {
     //@Path("panc")
     //@Consumes({"application/xml",MediaType.APPLICATION_JSON})
     //@Produces({"application/xml",MediaType.APPLICATION_JSON}) 
-    @PostMapping(value = "/panc", consumes = { "application/xml", "application/json" }, produces = { "application/xml",
-    "application/json" })
+    // @PostMapping(value = "/panc", consumes = { "application/xml", "application/json" }, produces = { "application/xml",
+    // "application/json" })
    // public Response calcPanc(com.objex.risk.beans.panc.Risk risk) {
      public PancResult calcPanc(@RequestBody com.objex.risk.beans.panc.Risk risk) {
         RConnection con = null;
@@ -176,8 +176,8 @@ public class RiskService {
     //@Path("mela")
    // @Consumes({"application/xml",MediaType.APPLICATION_JSON})
     //@Produces({"application/xml",MediaType.APPLICATION_JSON}) 
-    @PostMapping(value = "/mela", consumes = { "application/xml", "application/json" }, produces = { "application/xml",
-    "application/json" })
+    // @PostMapping(value = "/mela", consumes = { "application/xml", "application/json" }, produces = { "application/xml",
+    // "application/json" })
    // public Response calcMela(com.objex.risk.beans.mela.Risk risk) {
     public MelaResult calcMela(@RequestBody com.objex.risk.beans.mela.Risk risk) {
         RConnection con = null;
@@ -263,8 +263,8 @@ public class RiskService {
    // @Path("mmr")
    // @Consumes({"application/xml",MediaType.APPLICATION_JSON})
    // @Produces({"application/xml",MediaType.APPLICATION_JSON})
-    @PostMapping(value = "/mmr", consumes = { "application/xml", "application/json" }, produces = { "application/xml",
-    "application/json" })
+    // @PostMapping(value = "/mmr", consumes = { "application/xml", "application/json" }, produces = { "application/xml",
+    // "application/json" })
     //public Response calcMMR(com.objex.risk.beans.mmr.Risk risk) {
     public MMRResult calcMMR(@RequestBody com.objex.risk.beans.mmr.Risk risk) {
         RConnection con = null;
@@ -378,8 +378,8 @@ public class RiskService {
     //@Path("brca")
     //@Consumes({"application/xml",MediaType.APPLICATION_JSON})
     //@Produces({"application/xml",MediaType.APPLICATION_JSON}) 
-    @PostMapping(value = "/brca", consumes = { "application/xml", "application/json" }, produces = { "application/xml",
-    "application/json" })
+    // @PostMapping(value = "/brca", consumes = { "application/xml", "application/json" }, produces = { "application/xml",
+    // "application/json" })
     //public Response calcBRCA(com.objex.risk.beans.brca.Risk risk) {
     public BRCAResult calcBRCA(@RequestBody com.objex.risk.beans.brca.Risk risk) {
       
@@ -1082,8 +1082,8 @@ public class RiskService {
     //@Path("runCommand")
     //@Consumes({"application/xml",MediaType.APPLICATION_JSON})
     //@Produces({"application/xml",MediaType.APPLICATION_JSON}) 
-    @PostMapping(value = "/runCommand", consumes = { "application/xml", "application/json" }, produces = { "application/xml",
-    "application/json" })
+    // @PostMapping(value = "/runCommand", consumes = { "application/xml", "application/json" }, produces = { "application/xml",
+    // "application/json" })
     public RiskCommand runCommand(@RequestBody RiskCommand command) {
         long time = System.currentTimeMillis();
         try
@@ -1143,8 +1143,8 @@ public class RiskService {
     //@Path("plotChart")
     //@Consumes({"application/xml",MediaType.APPLICATION_JSON})
     //@Produces({"application/xml",MediaType.APPLICATION_JSON}) 
-    @PostMapping(value = "/plotChart", consumes = { "application/xml", "application/json" }, produces = { "application/xml",
-    "application/json" })
+    // @PostMapping(value = "/plotChart", consumes = { "application/xml", "application/json" }, produces = { "application/xml",
+    // "application/json" })
     //public Response plotChartToResultImage(ChartVO chart) {
     public ChartResult plotChartToResultImage(@RequestBody ChartVO chart) {
         
@@ -1175,8 +1175,8 @@ public class RiskService {
     //@Path("chartResult")
     //@Consumes({"application/xml",MediaType.APPLICATION_JSON})
     //@Produces({"application/xml",MediaType.APPLICATION_JSON}) 
-    @PostMapping(value = "/chartResult", consumes = { "application/xml", "application/json" }, produces = { "application/xml",
-    "application/json" })
+    // @PostMapping(value = "/chartResult", consumes = { "application/xml", "application/json" }, produces = { "application/xml",
+    // "application/json" })
     //public Response plotResult(BaseResult result) {
     public BaseResult plotResult(@RequestBody BaseResult result) {
         
