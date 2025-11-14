@@ -77,6 +77,7 @@ public class RiskService {
     public static final String BAYES_VERSION = "BayesMendel v2.1.8 © 2020 DFCI. All Rights Reserved.";
     private static int maxConnections = 0;
     private static int connectionCount = 0;
+    private final static Object conLock = new Object();
     private static List<RConnection> connections = Collections.synchronizedList(new ArrayList<RConnection>());
     private static String OS = System.getProperty("os.name").toLowerCase();
     private static boolean connectionPooling = true;
@@ -501,6 +502,7 @@ public class RiskService {
 	        } else {
 	            closeNonPool(con);
 	        }
+                conLock.notifyAll();
     	} catch (Exception e) { //dont blow up in finally
     		
     	}
@@ -684,7 +686,7 @@ public class RiskService {
         {    
             while (connectionCount >= maxConnections && connections.isEmpty()) {
                 LOG.info("Sleeping to wait for connections to return");
-                Thread.sleep(25);
+                conLock.wait(2000);
             }
             //established above that connectionCount is not greater than maxconnection so feel free to create
             if (connectionPooling == false || connections.isEmpty()) {
@@ -703,7 +705,7 @@ public class RiskService {
                 if (OS != null && !OS.startsWith("win")) {
                     p.waitFor();
                 }
-                Thread.sleep(3000);
+                p.wait(3000);
                 conn = new RConnection(); //createConnection(false, cmd); //avoid loop
                 connectionCount = 1;
             }
