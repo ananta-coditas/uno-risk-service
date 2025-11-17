@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
  * REST controller for managing guideline requests.
  */
 @RestController
-@RequestMapping("/api")
+//@RequestMapping("/api")
 public class GuidelineResource {
 
     @Autowired
@@ -29,7 +29,7 @@ public class GuidelineResource {
     /**
      * To get recommended guidelines
      */
-    @PostMapping("/get-recommended-guidelines")
+    //@PostMapping("/get-recommended-guidelines")
     public ResponseEntity<GenomeBrainResponseDTO> getRecommendedTests(HttpServletRequest request, @RequestBody String tags) {
         log.debug("REST request to get recommendedTests for corresponding user details");
         HttpSession session = request.getSession();

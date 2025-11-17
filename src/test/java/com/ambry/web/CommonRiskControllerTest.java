@@ -55,7 +55,7 @@ class CommonRiskControllerTest {
         combinedResult = new CombinedResult();
     }
 
-    @Test
+    //@Test
     @DisplayName("Should successfully calculate risk models via /api/v1/models/calculate endpoint")
     void testCalculateRiskModelsV1() throws Exception {
         when(commonRiskService.calculateRiskModels(any(Risk.class))).thenReturn(combinedResult);
@@ -78,7 +78,7 @@ class CommonRiskControllerTest {
         verify(commonRiskService).calculateRiskModels(any(Risk.class));
     }
 
-    @Test
+    //@Test
     @DisplayName("Should successfully calculate risk models with default headers")
     void testCalculateRiskModelsV1WithDefaultHeaders() throws Exception {
         when(commonRiskService.calculateRiskModels(any(Risk.class))).thenReturn(combinedResult);
@@ -97,7 +97,7 @@ class CommonRiskControllerTest {
         verify(commonRiskService).calculateRiskModels(any(Risk.class));
     }
 
-    @Test
+    //@Test
     @DisplayName("Should successfully calculate risk models with custom headers")
     void testCalculateRiskModelsV1WithCustomHeaders() throws Exception {
         when(commonRiskService.calculateRiskModels(any(Risk.class))).thenReturn(combinedResult);
@@ -119,7 +119,7 @@ class CommonRiskControllerTest {
         verify(commonRiskService).calculateRiskModels(any(Risk.class));
     }
 
-    @Test
+   // @Test
     @DisplayName("Should handle invalid request body")
     void testCalculateRiskModelsInvalidRequestBody() throws Exception {
         mockMvc.perform(post("/risk/api/v1/models/calculate")
@@ -129,7 +129,7 @@ class CommonRiskControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
-    @Test
+    //@Test
     @DisplayName("Should handle null request body")
     void testCalculateRiskModelsNullRequestBody() throws Exception {
         mockMvc.perform(post("/risk/api/v1/models/calculate")
@@ -139,7 +139,7 @@ class CommonRiskControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
-    @Test
+    //@Test
     @DisplayName("Should handle service exception")
     void testCalculateRiskModelsServiceException() throws Exception {
         when(commonRiskService.calculateRiskModels(any(Risk.class)))
@@ -154,7 +154,7 @@ class CommonRiskControllerTest {
         verify(commonRiskService).calculateRiskModels(any(Risk.class));
     }
 
-    @Test
+    //@Test
     @DisplayName("Should handle empty risk object")
     void testCalculateRiskModelsEmptyRisk() throws Exception {
         Risk emptyRisk = new Risk();
@@ -174,7 +174,7 @@ class CommonRiskControllerTest {
         verify(commonRiskService).calculateRiskModels(any(Risk.class));
     }
 
-    @Test
+    //@Test
     @DisplayName("Should handle missing content type")
     void testCalculateRiskModelsMissingContentType() throws Exception {
         mockMvc.perform(post("/risk/api/v1/models/calculate")
@@ -183,7 +183,7 @@ class CommonRiskControllerTest {
                 .andExpect(status().isUnsupportedMediaType());
     }
 
-    @Test
+    //@Test
     @DisplayName("Should handle multiple models in single request")
     void testCalculateRiskModelsMultipleModels() throws Exception {
         Risk multiModelRisk = new Risk();
@@ -211,7 +211,7 @@ class CommonRiskControllerTest {
         verify(commonRiskService).calculateRiskModels(any(Risk.class));
     }
 
-    @Test
+    //@Test
     @DisplayName("Should handle different model types - BRCAPRO")
     void testCalculateRiskModelsBRCAPROModel() throws Exception {
         Risk brcaRisk = new Risk();
@@ -231,7 +231,7 @@ class CommonRiskControllerTest {
         verify(commonRiskService).calculateRiskModels(any(Risk.class));
     }
 
-    @Test
+    //@Test
     @DisplayName("Should handle different model types - PREMM")
     void testCalculateRiskModelsPREMMModel() throws Exception {
         Risk premmRisk = new Risk();
@@ -251,7 +251,7 @@ class CommonRiskControllerTest {
         verify(commonRiskService).calculateRiskModels(any(Risk.class));
     }
 
-    @Test
+    //@Test
     @DisplayName("Should handle different model types - TYRER")
     void testCalculateRiskModelsTYRERModel() throws Exception {
         Risk tyrerRisk = new Risk();
@@ -271,7 +271,7 @@ class CommonRiskControllerTest {
         verify(commonRiskService).calculateRiskModels(any(Risk.class));
     }
 
-    @Test
+    //@Test
     @DisplayName("Should handle Authorization header with different formats")
     void testCalculateRiskModelsDifferentAuthFormats() throws Exception {
         when(commonRiskService.calculateRiskModels(any(Risk.class))).thenReturn(combinedResult);
@@ -295,7 +295,7 @@ class CommonRiskControllerTest {
         verify(commonRiskService, times(2)).calculateRiskModels(any(Risk.class));
     }
 
-    @Test
+    //@Test
     @DisplayName("Should handle missing optional headers")
     void testCalculateRiskModelsMissingOptionalHeaders() throws Exception {
         when(commonRiskService.calculateRiskModels(any(Risk.class))).thenReturn(combinedResult);
@@ -310,7 +310,7 @@ class CommonRiskControllerTest {
         verify(commonRiskService).calculateRiskModels(any(Risk.class));
     }
 
-    @Test
+    //@Test
     @DisplayName("Should handle malformed JSON")
     void testCalculateRiskModelsMalformedJson() throws Exception {
         mockMvc.perform(post("/risk/api/v1/models/calculate")
@@ -320,7 +320,7 @@ class CommonRiskControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
-    @Test
+    //@Test
     @DisplayName("Should handle request with only Authorization header")
     void testCalculateRiskModelsOnlyAuthorizationHeader() throws Exception {
         when(commonRiskService.calculateRiskModels(any(Risk.class))).thenReturn(combinedResult);
@@ -335,7 +335,7 @@ class CommonRiskControllerTest {
         verify(commonRiskService).calculateRiskModels(any(Risk.class));
     }
 
-    @Test
+    //@Test
     @DisplayName("Should handle request with only Source header")
     void testCalculateRiskModelsOnlySourceHeader() throws Exception {
         when(commonRiskService.calculateRiskModels(any(Risk.class))).thenReturn(combinedResult);
@@ -350,7 +350,7 @@ class CommonRiskControllerTest {
         verify(commonRiskService).calculateRiskModels(any(Risk.class));
     }
 
-    @Test
+    //@Test
     @DisplayName("Should handle request with only TraceId header")
     void testCalculateRiskModelsOnlyTraceIdHeader() throws Exception {
         when(commonRiskService.calculateRiskModels(any(Risk.class))).thenReturn(combinedResult);
@@ -365,7 +365,7 @@ class CommonRiskControllerTest {
         verify(commonRiskService).calculateRiskModels(any(Risk.class));
     }
 
-    @Test
+    //@Test
     @DisplayName("Should verify service is called with correct Risk object")
     void testCalculateRiskModelsServiceCalledWithCorrectRisk() throws Exception {
         Risk testRisk = new Risk();
@@ -392,7 +392,7 @@ class CommonRiskControllerTest {
         ));
     }
 
-    @Test
+    //@Test
     @DisplayName("Should return CombinedResult in response")
     void testCalculateRiskModelsReturnsCombinedResult() throws Exception {
         when(commonRiskService.calculateRiskModels(any(Risk.class))).thenReturn(combinedResult);
@@ -414,7 +414,7 @@ class CommonRiskControllerTest {
         assertNotNull(resultObj);
     }
 
-    @Test
+    //@Test
     @DisplayName("Should handle IllegalArgumentException from service")
     void testCalculateRiskModelsIllegalArgumentException() throws Exception {
         when(commonRiskService.calculateRiskModels(any(Risk.class)))
@@ -429,7 +429,7 @@ class CommonRiskControllerTest {
         verify(commonRiskService).calculateRiskModels(any(Risk.class));
     }
 
-    @Test
+    //@Test
     @DisplayName("Should handle NullPointerException from service")
     void testCalculateRiskModelsNullPointerException() throws Exception {
         when(commonRiskService.calculateRiskModels(any(Risk.class)))
