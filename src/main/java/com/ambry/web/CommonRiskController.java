@@ -3,6 +3,8 @@ package com.ambry.web;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,10 +25,11 @@ import jakarta.validation.Valid;
 @RequestMapping({"/api","/risk"})
 public class CommonRiskController {
 
+    private static final Logger log = LoggerFactory.getLogger(CommonRiskController.class);
     @Autowired
     private CommonRiskService commonRiskService;
 
-    //@PostMapping("/risk/models/calculate")
+    @PostMapping("/risk/models/calculate")
     public ResponseEntity<CombinedResult> calculateRiskModelsDeprecated(@RequestBody Risk risk) {
         return calculateRiskModelsV1("","","",risk);
     }
@@ -48,6 +51,7 @@ public class CommonRiskController {
         @RequestHeader(value = "TraceId" , required = false , defaultValue = "sessionId") 
         String traceId, 
         @Valid @RequestBody Risk risk)  {
+        log.debug("Risk Assessment request received from "+sourceSystem+" with "+traceId);
         CombinedResult combinedResult = commonRiskService.calculateRiskModels(risk);
         return ResponseEntity.ok(combinedResult);
     }
