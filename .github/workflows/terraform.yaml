@@ -50,7 +50,6 @@ jobs:
       working_directory: "infrastructure"
       tfvars: "environment/dev.tfvars"
       env_file_name: "infrastructure/.env.dev"
-      environment: sandbox
       # post_init_commands: "terraform state list"
     secrets: inherit
 
@@ -75,7 +74,6 @@ jobs:
       working_directory: "infrastructure"
       tfvars: "environment/test.tfvars"
       env_file_name: "infrastructure/.env.test"
-      environment: test
     secrets: inherit
 
   terraform-stage-plan:
@@ -100,7 +98,6 @@ jobs:
       working_directory: "infrastructure"
       tfvars: "environment/stage.tfvars"
       env_file_name: "infrastructure/.env.stage"
-      environment: stage
     secrets: inherit
 
   terraform-prod-plan:
@@ -125,6 +122,5 @@ jobs:
        working_directory: "infrastructure"
        tfvars: "environment/prod.tfvars"
        env_file_name: "infrastructure/.env.prod"
-       environment: prod
      secrets: inherit
 
