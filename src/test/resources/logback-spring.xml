@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+  <!-- Spring Boot automatically injects safe defaults (console + optional file appender)
+       No need to include base.xml, defaults.xml, or anything else -->
+
+  <logger name="com.ambry" level="INFO"/>
+
+  <logger name="jakarta.activation" level="WARN"/>
+  <logger name="jakarta.mail" level="WARN"/>
+  <logger name="jakarta.xml.bind" level="WARN"/>
+  <logger name="ch.qos.logback" level="WARN"/>
+  <logger name="com.jayway.jsonpath" level="WARN"/>
+  <logger name="com.ryantenney" level="WARN"/>
+  <logger name="com.sun" level="WARN"/>
+  <logger name="com.zaxxer" level="WARN"/>
+  <logger name="io.undertow" level="WARN"/>
+  <logger name="io.undertow.websockets.jsr" level="ERROR"/>
+  <logger name="org.apache" level="WARN"/>
+  <logger name="org.apache.catalina.startup.DigesterFactory" level="OFF"/>
+  <logger name="org.bson" level="WARN"/>
+  <logger name="org.hibernate.validator" level="WARN"/>
+  <logger name="org.hibernate" level="WARN"/>
+  <logger name="org.hibernate.ejb.HibernatePersistence" level="OFF"/>
+  <logger name="org.springframework" level="WARN"/>
+  <logger name="org.springframework.web" level="WARN"/>
+  <logger name="org.springframework.security" level="WARN"/>
+  <logger name="org.springframework.cache" level="WARN"/>
+  <logger name="org.thymeleaf" level="WARN"/>
+  <logger name="org.xnio" level="WARN"/>
+  <logger name="io.swagger.v3" level="INFO"/>
+  <logger name="sun.rmi" level="WARN"/>
+  <logger name="sun.rmi.transport" level="WARN"/>
+  <logger name="com.tngtech.archunit.core.importer" level="ERROR"/>
+  <logger name="org.hibernate.orm.incubating" level="ERROR"/>
+  <logger name="liquibase" level="WARN"/>
+  <logger name="LiquibaseSchemaResolver" level="INFO"/>
+
+  <!-- Optional: explicitly set root level (Spring Boot default is already INFO) -->
+  <root level="INFO">
+    <appender-ref ref="CONSOLE"/>
+    <appender-ref ref="FILE"/>
+  </root>
+
+</configuration>

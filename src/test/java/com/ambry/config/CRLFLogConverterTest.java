@@ -19,7 +19,7 @@ class CRLFLogConverterTest {
     @Test
     void transformShouldReturnInputStringWhenMarkerListIsEmpty() {
         ILoggingEvent event = mock(ILoggingEvent.class);
-        when(event.getMarkerList()).thenReturn(null);
+        when(event.getMarker()).thenReturn(null);
         when(event.getLoggerName()).thenReturn("org.hibernate.example.Logger");
         String input = "Test input string";
         CRLFLogConverter converter = new CRLFLogConverter();
@@ -33,8 +33,8 @@ class CRLFLogConverterTest {
     void transformShouldReturnInputStringWhenMarkersContainCRLFSafeMarker() {
         ILoggingEvent event = mock(ILoggingEvent.class);
         Marker marker = MarkerFactory.getMarker("CRLF_SAFE");
-        List<Marker> markers = Collections.singletonList(marker);
-        when(event.getMarkerList()).thenReturn(markers);
+        //List<Marker> markers = Collections.singletonList(marker);
+        when(event.getMarker()).thenReturn(marker);
         String input = "Test input string";
         CRLFLogConverter converter = new CRLFLogConverter();
 
@@ -47,8 +47,8 @@ class CRLFLogConverterTest {
     void transformShouldReturnInputStringWhenMarkersNotContainCRLFSafeMarker() {
         ILoggingEvent event = mock(ILoggingEvent.class);
         Marker marker = MarkerFactory.getMarker("CRLF_NOT_SAFE");
-        List<Marker> markers = Collections.singletonList(marker);
-        when(event.getMarkerList()).thenReturn(markers);
+        //List<Marker> markers = Collections.singletonList(marker);
+        when(event.getMarker()).thenReturn(marker);
         when(event.getLoggerName()).thenReturn("org.hibernate.example.Logger");
         String input = "Test input string";
         CRLFLogConverter converter = new CRLFLogConverter();
@@ -74,7 +74,8 @@ class CRLFLogConverterTest {
     void transformShouldReplaceNewlinesAndCarriageReturnsWithUnderscoreWhenMarkersDoNotContainCRLFSafeMarkerAndLoggerIsNotSafe() {
         ILoggingEvent event = mock(ILoggingEvent.class);
         List<Marker> markers = Collections.emptyList();
-        when(event.getMarkerList()).thenReturn(markers);
+        Marker marker = MarkerFactory.getMarker("CRLF_NOT_SAFE");
+        when(event.getMarker()).thenReturn(marker);
         when(event.getLoggerName()).thenReturn("com.mycompany.myapp.example.Logger");
         String input = "Test\ninput\rstring";
         CRLFLogConverter converter = new CRLFLogConverter();
@@ -88,7 +89,8 @@ class CRLFLogConverterTest {
     void transformShouldReplaceNewlinesAndCarriageReturnsWithAnsiStringWhenMarkersDoNotContainCRLFSafeMarkerAndLoggerIsNotSafeAndAnsiElementIsNotNull() {
         ILoggingEvent event = mock(ILoggingEvent.class);
         List<Marker> markers = Collections.emptyList();
-        when(event.getMarkerList()).thenReturn(markers);
+        Marker marker = MarkerFactory.getMarker("CRLF_NOT_SAFE");
+        when(event.getMarker()).thenReturn(marker);
         when(event.getLoggerName()).thenReturn("com.mycompany.myapp.example.Logger");
         String input = "Test\ninput\rstring";
         CRLFLogConverter converter = new CRLFLogConverter();
@@ -102,8 +104,9 @@ class CRLFLogConverterTest {
     @Test
     void transformShouldReplaceTabsWithUnderscore() {
         ILoggingEvent event = mock(ILoggingEvent.class);
+        Marker marker = MarkerFactory.getMarker("CRLF_NOT_SAFE");
         List<Marker> markers = Collections.emptyList();
-        when(event.getMarkerList()).thenReturn(markers);
+        when(event.getMarker()).thenReturn(marker);
         when(event.getLoggerName()).thenReturn("com.mycompany.myapp.example.Logger");
         String input = "Test\tinput\tstring";
         CRLFLogConverter converter = new CRLFLogConverter();
@@ -116,8 +119,9 @@ class CRLFLogConverterTest {
     @Test
     void transformShouldHandleMixedNewlinesCarriageReturnsAndTabs() {
         ILoggingEvent event = mock(ILoggingEvent.class);
+        Marker marker = MarkerFactory.getMarker("CRLF_NOT_SAFE");
         List<Marker> markers = Collections.emptyList();
-        when(event.getMarkerList()).thenReturn(markers);
+        when(event.getMarker()).thenReturn(marker);
         when(event.getLoggerName()).thenReturn("com.mycompany.myapp.example.Logger");
         String input = "Test\ninput\rstring\ttab";
         CRLFLogConverter converter = new CRLFLogConverter();
@@ -130,7 +134,8 @@ class CRLFLogConverterTest {
     @Test
     void transformShouldReturnInputWhenLoggerIsSpringBootAutoconfigure() {
         ILoggingEvent event = mock(ILoggingEvent.class);
-        when(event.getMarkerList()).thenReturn(null);
+        Marker marker = MarkerFactory.getMarker("CRLF_NOT_SAFE");
+        when(event.getMarker()).thenReturn(null);
         when(event.getLoggerName()).thenReturn("org.springframework.boot.autoconfigure.example.Logger");
         String input = "Test\ninput";
         CRLFLogConverter converter = new CRLFLogConverter();
@@ -143,7 +148,7 @@ class CRLFLogConverterTest {
     @Test
     void transformShouldReturnInputWhenLoggerIsSpringBootDiagnostics() {
         ILoggingEvent event = mock(ILoggingEvent.class);
-        when(event.getMarkerList()).thenReturn(null);
+        when(event.getMarker()).thenReturn(null);
         when(event.getLoggerName()).thenReturn("org.springframework.boot.diagnostics.example.Logger");
         String input = "Test\ninput";
         CRLFLogConverter converter = new CRLFLogConverter();
