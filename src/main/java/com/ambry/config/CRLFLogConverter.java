@@ -45,8 +45,13 @@ public class CRLFLogConverter extends CompositeConverter<ILoggingEvent> {
     @Override
     protected String transform(ILoggingEvent event, String in) {
         AnsiElement element = ELEMENTS.get(getFirstOption());
-        List<Marker> markers = event.getMarkerList();
-        if ((markers != null && !markers.isEmpty() && markers.get(0).contains(CRLF_SAFE_MARKER)) || isLoggerSafe(event)) {
+        //List<Marker> markers = event.getMarkerList();
+        //if ((markers != null && !markers.isEmpty() && markers.get(0).contains(CRLF_SAFE_MARKER)) || isLoggerSafe(event)) {
+         //   return in;
+        //}
+
+        Marker marker = event.getMarker();
+        if ((marker != null && marker.contains(CRLF_SAFE_MARKER)) || isLoggerSafe(event)) {
             return in;
         }
         String replacement = element == null ? "_" : toAnsiString("_", element);
