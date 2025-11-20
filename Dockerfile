@@ -19,7 +19,7 @@ RUN mvn install:install-file -Dfile=./dependencies/uno-java-foundation-bom-1.0.1
 RUN mvn install:install-file -Dfile=./dependencies/uno-spring-boot-foundation-bom-1.0.1-SNAPSHOT.pom -DgroupId=com.ambry -DartifactId=uno-spring-boot-foundation-bom -Dversion=1.0.1-SNAPSHOT -Dpackaging=pom
 
 # 3)Installation of Uno Spring Boot Framework
-RUN mvn install:install-file -Dfile=./dependencies/uno-spring-boot-framework-0.0.1-SNAPSHOT.jar -DgroupId=com.ambry -DartifactId=uno-spring-boot-framework -Dversion=0.0.1-SNAPSHOT -Dpackaging=jar
+RUN mvn install:install-file -Dfile=./dependencies/uno-spring-boot-framework-0.0.2-SNAPSHOT.jar -DgroupId=com.ambry -DartifactId=uno-spring-boot-framework -Dversion=0.0.2-SNAPSHOT -Dpackaging=jar
 
 #RUN mvn install:install-file -Dfile=RiskObjects.jar -DgroupId=com.objex -DartifactId=RiskObjects -Dversion=1.3 -Dpackaging=jar
 
