@@ -61,7 +61,7 @@ uno-risk-service = {
       ecr_image_tag             = "uno-risk-service-202511201907-8a7d8e5-develop-21" // Update this field for each ecr image build
       sg_rule_config = {
         allowed_ingress_cidr = ["10.9.32.0/20"]
-      }
+      }test
       lb_config = {
         target_group_arn = "arn:aws:elasticloadbalancing:us-west-2:034362031415:targetgroup/uno-risk-service-8080-tg/97df65b207eef93a"
       }
@@ -118,7 +118,7 @@ applications_config = {
       timeout_secs              = 10
       interval_secs             = 60
       hc_port                   = 8080
-      hc_path                   = "/risk/api/models/api-docs"
+      hc_path                   = "/"
       hc_http_success_status    = "200-399"
     }
     stickiness_setting = {
