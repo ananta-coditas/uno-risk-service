@@ -118,7 +118,7 @@ applications_config = {
       timeout_secs              = 10
       interval_secs             = 60
       hc_port                   = 8080
-      hc_path                   = "/risk/api/models/api-docs"
+      hc_path                   = "/"
       hc_http_success_status    = "200-399"
     }
     stickiness_setting = {
