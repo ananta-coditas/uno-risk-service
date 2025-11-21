@@ -61,7 +61,7 @@ uno-risk-service = {
       ecr_image_tag             = "uno-risk-service-202511201907-8a7d8e5-develop-21" // Update this field for each ecr image build
       sg_rule_config = {
         allowed_ingress_cidr = ["10.9.32.0/20"]
-      }test
+      }
       lb_config = {
         target_group_arn = "arn:aws:elasticloadbalancing:us-west-2:034362031415:targetgroup/uno-risk-service-8080-tg/97df65b207eef93a"
       }
