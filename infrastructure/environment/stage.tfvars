@@ -63,7 +63,7 @@ uno-risk-service = {
       required_cpu_units        = 2048  //2 GB
       required_memory_MiB_units = 4096 //4 GB
       ecr_image_uri             = "540051198529.dkr.ecr.us-west-2.amazonaws.com/uno-risk-service"
-      ecr_image_tag             = "uno-risk-service-202511201907-8a7d8e5-develop-21" // Update this field for each ecr image build
+      ecr_image_tag             = "uno-risk-service-202511251627-4c4e572-develop-22" // Update this field for each ecr image build
       sg_rule_config = {
         allowed_ingress_cidr = ["10.9.32.0/20", "10.0.0.0/8"]
       }
@@ -156,7 +156,7 @@ applications_config = {
       timeout_secs              = 10
       interval_secs             = 60
       hc_port                   = 8080
-      hc_path                   = "/"
+      hc_path                   = "/risk/api/models/api-docs"
       hc_http_success_status    = "200-399"
     }
     stickiness_setting = {
@@ -167,7 +167,7 @@ applications_config = {
     }
     listener_condition_config = {
       host_header_value  = ["uno-stage.ambrygen.com"]
-      path_pattern_value = ["/api/risk/*", "/risk/api/*"] 
+      path_pattern_value = ["/api/risk/*", "/risk/api/*", "/management/health"]
     }
   },
 }
