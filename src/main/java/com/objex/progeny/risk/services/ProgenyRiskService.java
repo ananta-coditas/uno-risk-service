@@ -5,37 +5,29 @@
  */
 package com.objex.progeny.risk.services;
 
-import java.util.ArrayList;
-import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.web.bind.annotation.RequestBody;
-
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ServerErrorException;
-
 import com.ambry.config.ApplicationProperties;
 import com.objex.progeny.risk.Utils;
 import com.objex.progeny.risk.claus.ClausDelegate;
 import com.objex.progeny.risk.gail.GailDelegate;
 import com.objex.progeny.risk.premm.PremmDelegate;
 import com.objex.progeny.risk.tycuz.TyrerDelegate;
-import com.objex.risk.beans.BasePerson;
-import com.objex.risk.beans.BaseResult;
-import com.objex.risk.beans.BaseRisk;
-import com.objex.risk.beans.Prediction;
-import com.objex.risk.beans.RiskCommand;
+import com.objex.risk.beans.*;
 import com.objex.risk.beans.charts.ChartResult;
 import com.objex.risk.beans.charts.ChartVO;
 import com.objex.risk.beans.claus.ClausResult;
 import com.objex.risk.beans.gail.GailResult;
 import com.objex.risk.beans.premm.PREMMResult;
 import com.objex.risk.beans.tcuzick.TyrerResult;
-
 import jakarta.annotation.PostConstruct;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ServerErrorException;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * REST Web Service
@@ -53,14 +45,14 @@ public class ProgenyRiskService {
     private static String OS = System.getProperty("os.name").toLowerCase();
     private String tyrerCommand;
     private final ApplicationProperties applicationProperties;
-    
+
     public ProgenyRiskService(ApplicationProperties applicationProperties) {
         this.applicationProperties = applicationProperties;
     }
-    
+
     /**
      * Method that runs the premm algorithm
-     * 
+     *
      * @param risk
      * @param content representation for the resource
      * @return an HTTP response with content of the updated or created resource.
@@ -87,7 +79,7 @@ public class ProgenyRiskService {
 
     /**
      * Method that runs the gail algorithm
-     * 
+     *
      * @param risk
      * @param content representation for the resource
      * @return an HTTP response with content of the updated or created resource.
@@ -117,7 +109,7 @@ public class ProgenyRiskService {
     /**
      * this method takes a populated result and will build a populated chart object
      * with the associated chart code.
-     * 
+     *
      * @param result
      */
 
@@ -133,7 +125,7 @@ public class ProgenyRiskService {
 
     /**
      * Method that runs the claus algorithm
-     * 
+     *
      * @param risk
      * @param content representation for the resource
      * @return an HTTP response with content of the updated or created resource.
@@ -163,7 +155,7 @@ public class ProgenyRiskService {
 
     /**
      * Method that runs the tyrer algorithm
-     * 
+     *
      * @param risk
      * @param content representation for the resource
      * @return an HTTP response with content of the updated or created resource.
@@ -196,7 +188,7 @@ public class ProgenyRiskService {
 
     /**
      * Method that runs a command
-     * 
+     *
      * @param command
      * @param content representation for the resource
      * @return an HTTP response with content of the updated or created resource.
@@ -236,11 +228,11 @@ public class ProgenyRiskService {
 
     /**
      * {
-     * 
+     *
      * if parameters are set, this is a way of saving off the incoming risk request
      * by setting the isSaveIncoming field on the risk or the save.all config
      * setting. this basically would be used for extreme debugging scenarios
-     * 
+     *
      * @param risk
      */
     protected void checkForSaveOff(BaseRisk risk) {
@@ -302,7 +294,7 @@ public class ProgenyRiskService {
     /**
      * This method takes a chart populated with data and will generate the image to
      * set on the result
-     * 
+     *
      * @param result
      * @param chart
      */
