@@ -8,10 +8,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.boot.info.BuildProperties;
 
 import com.ambry.service.CommonRiskService;
 import com.objex.risk.beans.BaseResult;
@@ -28,6 +30,8 @@ public class CommonRiskController {
     private static final Logger log = LoggerFactory.getLogger(CommonRiskController.class);
     @Autowired
     private CommonRiskService commonRiskService;
+    @Autowired
+    private  BuildProperties buildProperties;
 
     @PostMapping("/risk/models/calculate")
     public ResponseEntity<CombinedResult> calculateRiskModelsDeprecated(@RequestBody Risk risk) {
@@ -61,7 +65,18 @@ public class CommonRiskController {
         TestResult result = new TestResult();
         return ResponseEntity.ok(result);
     }
+    @GetMapping("/version")
+    public Map<String, Object> version() {
+        return Map.of(
+            "service",   buildProperties.getName(),
+            "version",   buildProperties.getVersion(),
+            "builtAt",   buildProperties.getTime().toString()
+            //"gitCommit", buildProperties.get("git.commit.id.abbrev") != null ? buildProperties.get("git.commit.id.abbrev") : "N/A",
+            //"gitBranch", buildProperties.get("git.branch") != null ? buildProperties.get("git.branch") : "N/A"
+        );
+    }
 }
+
 class TestResult extends BaseResult{
 
     @Override
