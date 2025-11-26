@@ -20,6 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.slf4j.Logger;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.Profiles;
 
@@ -62,7 +63,7 @@ class LoggingAspectTest {
         loggingAspect.logAfterThrowing(proceedingJoinPoint, exception);
 
         // Verify environment profile check was performed
-        verify(environment).acceptsProfiles(Profiles.of(UnoFrameworkConstants.SPRING_PROFILE_DEVELOPMENT));
+        verify(environment).acceptsProfiles(Profiles.of(UnoFrameworkConstants.SPRING_PROFILE_DEVELOPMENT,UnoFrameworkConstants.SPRING_PROFILE_PRODUCTION));
         // Verify signature methods were called to get logger name
         verify(proceedingJoinPoint, atLeast(1)).getSignature();
         verify(signature, atLeast(1)).getDeclaringTypeName();
@@ -71,6 +72,7 @@ class LoggingAspectTest {
 
     @Test
     @DisplayName("Should log limited exception details in non-dev profile")
+    @Profile({UnoFrameworkConstants.SPRING_PROFILE_DEVELOPMENT})
     void testLogAfterThrowingInNonDevProfile() {
         RuntimeException exception = new RuntimeException("Test exception");
         when(environment.acceptsProfiles(Profiles.of(UnoFrameworkConstants.SPRING_PROFILE_DEVELOPMENT)))
@@ -79,7 +81,7 @@ class LoggingAspectTest {
         loggingAspect.logAfterThrowing(proceedingJoinPoint, exception);
 
         // Verify environment profile check was performed
-        verify(environment).acceptsProfiles(Profiles.of(UnoFrameworkConstants.SPRING_PROFILE_DEVELOPMENT));
+        verify(environment).acceptsProfiles(Profiles.of(UnoFrameworkConstants.SPRING_PROFILE_DEVELOPMENT,UnoFrameworkConstants.SPRING_PROFILE_PRODUCTION));
         // Verify signature methods were called to get logger name
         verify(proceedingJoinPoint, atLeast(1)).getSignature();
         verify(signature, atLeast(1)).getDeclaringTypeName();
@@ -160,7 +162,7 @@ class LoggingAspectTest {
         loggingAspect.logAfterThrowing(proceedingJoinPoint, exception);
 
         // Verify environment profile check was performed
-        verify(environment).acceptsProfiles(Profiles.of(UnoFrameworkConstants.SPRING_PROFILE_DEVELOPMENT));
+        verify(environment).acceptsProfiles(Profiles.of(UnoFrameworkConstants.SPRING_PROFILE_DEVELOPMENT,UnoFrameworkConstants.SPRING_PROFILE_PRODUCTION));
         // Verify signature methods were called
         verify(proceedingJoinPoint, atLeast(1)).getSignature();
         verify(signature, atLeast(1)).getDeclaringTypeName();
@@ -180,7 +182,7 @@ class LoggingAspectTest {
         loggingAspect.logAfterThrowing(proceedingJoinPoint, exception);
 
         // Verify environment profile check was performed
-        verify(environment).acceptsProfiles(Profiles.of(UnoFrameworkConstants.SPRING_PROFILE_DEVELOPMENT));
+        verify(environment).acceptsProfiles(Profiles.of(UnoFrameworkConstants.SPRING_PROFILE_DEVELOPMENT,UnoFrameworkConstants.SPRING_PROFILE_PRODUCTION));
         // Verify signature methods were called
         verify(proceedingJoinPoint, atLeast(1)).getSignature();
         verify(signature, atLeast(1)).getDeclaringTypeName();
@@ -195,13 +197,13 @@ class LoggingAspectTest {
     void testLogAfterThrowingWithNonNullCauseInNonDevProfile() {
         RuntimeException cause = new RuntimeException("Root cause");
         RuntimeException exception = new RuntimeException("Test exception", cause);
-        when(environment.acceptsProfiles(Profiles.of(UnoFrameworkConstants.SPRING_PROFILE_DEVELOPMENT)))
+        when(environment.acceptsProfiles(Profiles.of(UnoFrameworkConstants.SPRING_PROFILE_DEVELOPMENT,UnoFrameworkConstants.SPRING_PROFILE_PRODUCTION)))
             .thenReturn(false);
 
         loggingAspect.logAfterThrowing(proceedingJoinPoint, exception);
 
         // Verify environment profile check was performed
-        verify(environment).acceptsProfiles(Profiles.of(UnoFrameworkConstants.SPRING_PROFILE_DEVELOPMENT));
+        verify(environment).acceptsProfiles(Profiles.of(UnoFrameworkConstants.SPRING_PROFILE_DEVELOPMENT,UnoFrameworkConstants.SPRING_PROFILE_PRODUCTION));
         // Verify signature methods were called
         verify(proceedingJoinPoint, atLeast(1)).getSignature();
         verify(signature, atLeast(1)).getDeclaringTypeName();
@@ -366,12 +368,12 @@ class LoggingAspectTest {
         // Test with NullPointerException
         NullPointerException npe = new NullPointerException("NPE message");
         loggingAspect.logAfterThrowing(proceedingJoinPoint, npe);
-        verify(environment).acceptsProfiles(Profiles.of(UnoFrameworkConstants.SPRING_PROFILE_DEVELOPMENT));
+        verify(environment).acceptsProfiles(Profiles.of(UnoFrameworkConstants.SPRING_PROFILE_DEVELOPMENT,UnoFrameworkConstants.SPRING_PROFILE_PRODUCTION));
 
         // Test with IllegalStateException
         IllegalStateException ise = new IllegalStateException("ISE message");
         loggingAspect.logAfterThrowing(proceedingJoinPoint, ise);
-        verify(environment, times(2)).acceptsProfiles(Profiles.of(UnoFrameworkConstants.SPRING_PROFILE_DEVELOPMENT));
+        verify(environment, times(2)).acceptsProfiles(Profiles.of(UnoFrameworkConstants.SPRING_PROFILE_DEVELOPMENT,UnoFrameworkConstants.SPRING_PROFILE_PRODUCTION));
     }
 
     @Test
@@ -403,7 +405,7 @@ class LoggingAspectTest {
         String methodName = "calculateRisk";
         String className = "com.ambry.service.RiskService";
         Object result = "result";
-        
+
         when(signature.getName()).thenReturn(methodName);
         when(signature.getDeclaringTypeName()).thenReturn(className);
         when(proceedingJoinPoint.getArgs()).thenReturn(new Object[0]);

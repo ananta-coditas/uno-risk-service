@@ -1,0 +1,116 @@
+# ===================================================================
+# Spring Boot configuration for the "prod" profile.
+#
+# This configuration overrides the application.yml file.
+#
+# ===================================================================
+
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+
+logging:
+  file:
+    path: ${catalina.base:${user.home}}/logs
+    name: ${catalina.base:${user.home}}/logs/uno-risk-server.log
+  level:
+    ROOT: DEBUG
+    org.hibernate.SQL: DEBUG
+    com.ambry: DEBUG
+
+spring:
+  devtools:
+    restart:
+      enabled: true
+      additional-exclude: static/**
+    livereload:
+      enabled: false # we use Webpack dev server + BrowserSync for livereload
+  jackson:
+    serialization:
+      indent-output: true
+  mail:
+    host: localhost
+    port: 25
+    username:
+    password:
+  messages:
+    cache-duration: PT1S # 1 second, see the ISO 8601 standard
+  thymeleaf:
+    cache: false
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: https://ambrygen.oktapreview.com/oauth2/aus2j10b9vgHBR3vp0h8/v1/keys
+          issuer-uri: https://ambrygen.oktapreview.com/oauth2/aus2j10b9vgHBR3vp0h8
+          audiences: api://risk-assessment_service
+server:
+  port: 8080
+  # make sure requests the proxy uri instead of the server one
+  forward-headers-strategy: native
+
+uno:
+  clientApp:
+    name: 'uno-risk-service'
+
+  # By default CORS is disabled. Uncomment to enable.
+  # cors:
+  #   allowed-origins: "http://localhost:8100,http://localhost:9000"
+  #   allowed-methods: "*"
+  #   allowed-headers: "*"
+  #   exposed-headers: "Authorization,Link,X-Total-Count,X-${uno.clientApp.name}-alert,X-${uno.clientApp.name}-error,X-${uno.clientApp.name}-params"
+  #   allow-credentials: true
+  #   max-age: 1800
+
+  mail:
+    from: uno-risk-service@localhost
+
+  api-docs:
+    default-include-pattern: /api/**
+    management-include-pattern: /management/**
+    title: uno-risk-service API
+    description: uno-risk-service API documentation
+    version: 0.0.1
+    terms-of-service-url:
+    contact-name:
+    contact-url:
+    contact-email:
+    license: unlicensed
+    license-url:
+
+  security:
+    authentication:
+      jwt:
+        base64-secret: ZjMzYTE0NGZiNjk4ZGNhZThkY2E2YWI2OTIwMWY1MTU4ZDljNzViMzAxOTgyYjkzMmRiYWZjY2EwMjgwMTYwODA2MTM1ZWUxMzFhYzk0OTA1ZjI0NzU5Nzc4ODRmNmNiMDIzOTc2ZGUwYTYzOTA0NDA5YWMxOWE3ZTJmZWZhMmY=
+        token-validity-in-seconds: 86400
+        token-validity-in-seconds-for-remember-me: 2592000
+
+# ===================================================================
+# Application specific properties
+# Add your own application properties here, see the ApplicationProperties class
+#
+# More documentation is available at:
+# ===================================================================
+
+application:
+  tyrer:
+    linux:
+      command: "/opt/tyrer-server/tcuzick"
+      save-path: "/tmp/risk"
+    windows:
+      command: "C:\\programs\\tyrer\\tyrercuzickV8b.exe"
+      save-path: "C:\\temp\\risk"
+  bayesMendel:
+    max-connections: "10"
+    save-all: "false"
+    print: "false"
+    windows:
+      spawn: "true"
+      command: "C:\\Programs\\R\\R-4.0.3\\bin\\x64\\Rserve_d.exe"
+      save-path: "/temp"
+    linux:
+      spawn: "false"
+      command: "/bin/sh /opt/bayes-server/startRserv.sh"
+      save-path: "/tmp"
