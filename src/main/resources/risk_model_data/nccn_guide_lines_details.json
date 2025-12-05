@@ -1,3 +1,4 @@
+[
 {
 	"_id": {
 		"$oid": "64a6b8217af96d6e187e180e"
@@ -16,8 +17,7 @@
 		"POLD1"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "618e5d2558f3ec4ca83ea4cf"
 	},
@@ -35,8 +35,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "618e5d2558f3ec4ca83ea4ce"
 	},
@@ -54,8 +53,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "618e5d2558f3ec4ca83ea4cd"
 	},
@@ -73,8 +71,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "618e5d2558f3ec4ca83ea4cc"
 	},
@@ -92,8 +89,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "618e5d2558f3ec4ca83ea4cb"
 	},
@@ -111,8 +107,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "618e5d2558f3ec4ca83ea4ca"
 	},
@@ -130,8 +125,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "618d42008fc9134ac868c784"
 	},
@@ -148,8 +142,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "618d42008fc9134ac868c783"
 	},
@@ -166,8 +159,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "618d42008fc9134ac868c782"
 	},
@@ -184,8 +176,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "618d42008fc9134ac868c781"
 	},
@@ -202,8 +193,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "614d5a7536922410e0aebfa4"
 	},
@@ -219,8 +209,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "614d5a7536922410e0aebfa3"
 	},
@@ -236,8 +225,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "614d5a7536922410e0aebfa2"
 	},
@@ -253,8 +241,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "614d5a7536922410e0aebfa1"
 	},
@@ -270,8 +257,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "614d567e36922410e0aebfa0"
 	},
@@ -289,8 +275,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "614d567e36922410e0aebf9f"
 	},
@@ -308,8 +293,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "614d567e36922410e0aebf9e"
 	},
@@ -327,8 +311,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "614d567e36922410e0aebf9d"
 	},
@@ -346,8 +329,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "614d567e36922410e0aebf9c"
 	},
@@ -365,8 +347,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "614d567e36922410e0aebf9b"
 	},
@@ -384,8 +365,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "60d1affbc6532f2874f51ff3"
 	},
@@ -403,8 +383,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "60d1affbc6532f2874f51ff2"
 	},
@@ -422,8 +401,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "60d1affbc6532f2874f51ff1"
 	},
@@ -441,8 +419,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "60d1affbc6532f2874f51ff0"
 	},
@@ -460,8 +437,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "60d1affbc6532f2874f51fef"
 	},
@@ -479,8 +455,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "60d1affbc6532f2874f51fee"
 	},
@@ -498,8 +473,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "608181a30adb4525c07d4503"
 	},
@@ -518,8 +492,7 @@
 		"POLD1"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "608181a30adb4525c07d4501"
 	},
@@ -538,8 +511,7 @@
 		"POLD1"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "608181a30adb4525c07d44ff"
 	},
@@ -558,8 +530,7 @@
 		"POLD1"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "608181a30adb4525c07d44fd"
 	},
@@ -578,8 +549,7 @@
 		"POLD1"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "608181a30adb4525c07d44fc"
 	},
@@ -598,8 +568,7 @@
 		"POLD1"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "608181a30adb4525c07d44fb"
 	},
@@ -618,8 +587,7 @@
 		"POLD1"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "608181a30adb4525c07d44fa"
 	},
@@ -638,8 +606,7 @@
 		"POLD1"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "608181a30adb4525c07d44f9"
 	},
@@ -658,8 +625,7 @@
 		"POLD1"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "608181a30adb4525c07d44f8"
 	},
@@ -678,8 +644,7 @@
 		"POLD1"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "608181a30adb4525c07d44f7"
 	},
@@ -698,8 +663,7 @@
 		"POLD1"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "608181a30adb4525c07d44f6"
 	},
@@ -718,8 +682,7 @@
 		"POLD1"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "608181a30adb4525c07d44f5"
 	},
@@ -738,8 +701,7 @@
 		"POLD1"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5fa0048c22aa4b2d08ab0a1f"
 	},
@@ -757,8 +719,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5fa0048c22aa4b2d08ab0a1e"
 	},
@@ -776,8 +737,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5fa0048c22aa4b2d08ab0a1d"
 	},
@@ -795,8 +755,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5fa0048c22aa4b2d08ab0a1c"
 	},
@@ -814,8 +773,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5fa0048c22aa4b2d08ab0a1b"
 	},
@@ -833,8 +791,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5fa0048c22aa4b2d08ab0a1a"
 	},
@@ -852,8 +809,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5f85c9a0de3c3534a8d73059"
 	},
@@ -869,8 +825,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5f85c9a0de3c3534a8d73057"
 	},
@@ -886,8 +841,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5f85a6ccde3c3534a8d73040"
 	},
@@ -905,8 +859,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5f85a6ccde3c3534a8d7303e"
 	},
@@ -924,8 +877,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5f85a6ccde3c3534a8d7303c"
 	},
@@ -942,8 +894,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5f85a6ccde3c3534a8d7303a"
 	},
@@ -960,8 +911,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5f856f89de3c3534a8d72fe6"
 	},
@@ -979,8 +929,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5f856f89de3c3534a8d72fe5"
 	},
@@ -998,8 +947,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5f856f89de3c3534a8d72fe4"
 	},
@@ -1017,8 +965,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5f856f89de3c3534a8d72fe3"
 	},
@@ -1036,8 +983,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5f856f89de3c3534a8d72fe2"
 	},
@@ -1055,8 +1001,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5f856f89de3c3534a8d72fe1"
 	},
@@ -1074,8 +1019,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5f856e6cde3c3534a8d72fe0"
 	},
@@ -1093,8 +1037,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5f856e6cde3c3534a8d72fdf"
 	},
@@ -1112,8 +1055,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5f856e6cde3c3534a8d72fde"
 	},
@@ -1131,8 +1073,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5f856e6cde3c3534a8d72fdd"
 	},
@@ -1150,8 +1091,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5f856e6cde3c3534a8d72fdc"
 	},
@@ -1169,8 +1109,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5f856e6cde3c3534a8d72fdb"
 	},
@@ -1188,8 +1127,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5f856dbdde3c3534a8d72fda"
 	},
@@ -1207,8 +1145,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5f856dbdde3c3534a8d72fd9"
 	},
@@ -1226,8 +1163,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5f856dbdde3c3534a8d72fd8"
 	},
@@ -1245,8 +1181,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5f856dbdde3c3534a8d72fd7"
 	},
@@ -1264,8 +1199,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5f856dbdde3c3534a8d72fd6"
 	},
@@ -1283,8 +1217,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5f856dbdde3c3534a8d72fd5"
 	},
@@ -1302,8 +1235,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5f856c7fde3c3534a8d72fd4"
 	},
@@ -1321,8 +1253,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5f856c7fde3c3534a8d72fd3"
 	},
@@ -1340,8 +1271,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5f856c7fde3c3534a8d72fd2"
 	},
@@ -1359,8 +1289,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5f856c7fde3c3534a8d72fd1"
 	},
@@ -1378,8 +1307,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5f856c7fde3c3534a8d72fd0"
 	},
@@ -1397,8 +1325,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5f856c7fde3c3534a8d72fcf"
 	},
@@ -1416,8 +1343,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5f85684fde3c3534a8d72fce"
 	},
@@ -1434,8 +1360,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5f2d1159584038375468f0d6"
 	},
@@ -1453,8 +1378,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5f2d1159584038375468f0d5"
 	},
@@ -1472,8 +1396,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5f2d1159584038375468f0d4"
 	},
@@ -1491,8 +1414,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5f2d1159584038375468f0d3"
 	},
@@ -1510,8 +1432,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5f2d1159584038375468f0d2"
 	},
@@ -1529,8 +1450,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5f2d1159584038375468f0d1"
 	},
@@ -1548,8 +1468,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e86e8957fe5de11cc74d2f7"
 	},
@@ -1567,8 +1486,7 @@
 		"POLD1"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e86e8957fe5de11cc74d2f6"
 	},
@@ -1586,8 +1504,7 @@
 		"POLD1"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e86e8957fe5de11cc74d2f5"
 	},
@@ -1605,8 +1522,7 @@
 		"POLD1"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e86e8957fe5de11cc74d2f4"
 	},
@@ -1624,8 +1540,7 @@
 		"POLD1"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa63df"
 	},
@@ -1642,8 +1557,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa63de"
 	},
@@ -1660,8 +1574,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa63dd"
 	},
@@ -1678,8 +1591,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa63dc"
 	},
@@ -1696,8 +1608,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa63a3"
 	},
@@ -1713,8 +1624,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa63a1"
 	},
@@ -1730,8 +1640,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa639f"
 	},
@@ -1747,8 +1656,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa639d"
 	},
@@ -1764,8 +1672,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa639b"
 	},
@@ -1781,8 +1688,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa639a"
 	},
@@ -1798,8 +1704,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa6399"
 	},
@@ -1815,8 +1720,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa6398"
 	},
@@ -1832,8 +1736,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa6397"
 	},
@@ -1849,8 +1752,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa6396"
 	},
@@ -1866,8 +1768,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa6395"
 	},
@@ -1883,8 +1784,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa6394"
 	},
@@ -1900,8 +1800,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa638b"
 	},
@@ -1917,8 +1816,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa638a"
 	},
@@ -1934,8 +1832,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa6389"
 	},
@@ -1951,8 +1848,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa6388"
 	},
@@ -1968,8 +1864,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa6387"
 	},
@@ -1985,8 +1880,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa6386"
 	},
@@ -2002,8 +1896,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa6385"
 	},
@@ -2019,8 +1912,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa6384"
 	},
@@ -2036,8 +1928,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa6383"
 	},
@@ -2053,8 +1944,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa6360"
 	},
@@ -2072,8 +1962,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa635f"
 	},
@@ -2090,8 +1979,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa635d"
 	},
@@ -2108,8 +1996,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa635c"
 	},
@@ -2126,8 +2013,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa635b"
 	},
@@ -2144,8 +2030,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa635a"
 	},
@@ -2163,8 +2048,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa6359"
 	},
@@ -2182,8 +2066,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa6358"
 	},
@@ -2201,8 +2084,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa6357"
 	},
@@ -2220,8 +2102,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa6356"
 	},
@@ -2239,8 +2120,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa6355"
 	},
@@ -2258,8 +2138,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa6354"
 	},
@@ -2277,8 +2156,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa6353"
 	},
@@ -2296,8 +2174,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa6352"
 	},
@@ -2315,8 +2192,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa6351"
 	},
@@ -2334,8 +2210,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa6350"
 	},
@@ -2353,8 +2228,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa634f"
 	},
@@ -2372,8 +2246,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa634e"
 	},
@@ -2391,8 +2264,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa634d"
 	},
@@ -2410,8 +2282,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa634c"
 	},
@@ -2429,8 +2300,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa634b"
 	},
@@ -2448,8 +2318,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+}, {
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa634a"
 	},
@@ -2467,8 +2336,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+}, {
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa6349"
 	},
@@ -2486,8 +2354,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa6348"
 	},
@@ -2505,8 +2372,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa6347"
 	},
@@ -2524,8 +2390,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa6346"
 	},
@@ -2543,8 +2408,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa6345"
 	},
@@ -2562,8 +2426,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa6344"
 	},
@@ -2581,8 +2444,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa6343"
 	},
@@ -2600,8 +2462,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa6342"
 	},
@@ -2619,8 +2480,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa6341"
 	},
@@ -2638,8 +2498,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa6340"
 	},
@@ -2657,8 +2516,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa633f"
 	},
@@ -2676,8 +2534,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa633e"
 	},
@@ -2695,8 +2552,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa633d"
 	},
@@ -2714,8 +2570,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa633c"
 	},
@@ -2733,8 +2588,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa633b"
 	},
@@ -2752,8 +2606,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa633a"
 	},
@@ -2771,8 +2624,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa6339"
 	},
@@ -2790,8 +2642,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa6338"
 	},
@@ -2809,8 +2660,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "5e85ede0dbdc894558aa6337"
 	},
@@ -2828,8 +2678,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "6502d8ddc878270f94346c8a"
 	},
@@ -2848,8 +2697,7 @@
 		"POLD1"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "6502d8ddc878270f94346c8b"
 	},
@@ -2868,8 +2716,7 @@
 		"POLD1"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "6718a85fbc10b0b41710fbeb"
 	},
@@ -2887,8 +2734,7 @@
 		"POLD1"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "68b581542cab48693b0c8791"
 	},
@@ -2904,8 +2750,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "68b581542cab48693b0c8792"
 	},
@@ -2921,8 +2766,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "68b581542cab48693b0c8793"
 	},
@@ -2938,8 +2782,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "68b581542cab48693b0c8794"
 	},
@@ -2955,8 +2798,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "68b581542cab48693b0c8795"
 	},
@@ -2974,8 +2816,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "68b581542cab48693b0c8796"
 	},
@@ -2992,8 +2833,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "68b581542cab48693b0c8797"
 	},
@@ -3011,8 +2851,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "68b581542cab48693b0c8798"
 	},
@@ -3029,8 +2868,7 @@
 		"BRCA2"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "68b581542cab48693b0c8799"
 	},
@@ -3049,8 +2887,7 @@
 		"POLD1"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "68b581542cab48693b0c879a"
 	},
@@ -3069,8 +2906,7 @@
 		"POLD1"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "68b581542cab48693b0c879b"
 	},
@@ -3089,8 +2925,7 @@
 		"POLD1"
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
-}
-{
+},{
 	"_id": {
 		"$oid": "68b581542cab48693b0c879c"
 	},
@@ -3110,3 +2945,4 @@
 	],
 	"_class": "com.genomebrain.backend.domain.GuideLinesDetails"
 }
+]
