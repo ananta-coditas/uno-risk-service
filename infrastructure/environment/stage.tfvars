@@ -75,6 +75,15 @@ uno-risk-service = {
       lb_config = {
         target_group_arn = "arn:aws:elasticloadbalancing:us-west-2:480802442620:targetgroup/uno-risk-service-8080-tg/50015a9cc5e64663"
       }
+      docker_labels = {
+        # Logs configuration
+        "com.datadoghq.ad.logs" = "[{\"source\": \"java\", \"service\": \"uno-risk-service\"}]"
+      
+        # Multiple checks
+        "com.datadoghq.ad.check_names" = "[\"http_check\", \"prometheus\"]"
+        "com.datadoghq.ad.init_configs" = "[{}, {}]"
+        "com.datadoghq.ad.instances" = "[{\"name\": \"uno_risk_service_health\", \"url\": \"http://localhost:8080/risk/management/health\", \"timeout\": 5, \"method\": \"GET\", \"tags\": [\"env:prod\", \"service:uno-risk-service\"]}, {\"prometheus_url\": \"http://localhost:8080/management/prometheus\", \"namespace\": \"uno_risk_service\", \"metrics\": [\"*\"], \"tags\": [\"env:prod\", \"service:uno-risk-service\"]}]"
+      }
       mount_nfs_drive = true
       volume_mount_point = [
         {
@@ -124,15 +133,7 @@ uno-risk-service = {
         create_secret       = true
       }
       
-      docker_labels = {
-        # Logs configuration
-        "com.datadoghq.ad.logs" = "[{\"source\": \"java\", \"service\": \"uno-risk-service\"}]"
-      
-        # Multiple checks
-        "com.datadoghq.ad.check_names" = "[\"http_check\", \"prometheus\"]"
-        "com.datadoghq.ad.init_configs" = "[{}, {}]"
-        "com.datadoghq.ad.instances" = "[{\"name\": \"uno_risk_service_health\", \"url\": \"http://localhost:8080/management/health\", \"timeout\": 5, \"method\": \"GET\", \"tags\": [\"env:prod\", \"service:uno-risk-service\"]}, {\"prometheus_url\": \"http://localhost:8080/management/prometheus\", \"namespace\": \"uno_risk_service\", \"metrics\": [\"*\"], \"tags\": [\"env:prod\", \"service:uno-risk-service\"]}]"
-      }
+      docker_labels = {}
     }
   ]
   microservice_scaling_config = {
