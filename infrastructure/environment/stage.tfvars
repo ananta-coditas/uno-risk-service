@@ -82,7 +82,7 @@ uno-risk-service = {
         # Multiple checks
         "com.datadoghq.ad.check_names" = "[\"http_check\", \"prometheus\"]"
         "com.datadoghq.ad.init_configs" = "[{}, {}]"
-        "com.datadoghq.ad.instances" = "[{\"name\": \"uno_risk_service_health\", \"url\": \"http://localhost:8080/risk/management/health\", \"timeout\": 5, \"method\": \"GET\", \"tags\": [\"env:prod\", \"service:uno-risk-service\"]}, {\"prometheus_url\": \"http://localhost:8080/management/prometheus\", \"namespace\": \"uno_risk_service\", \"metrics\": [\"*\"], \"tags\": [\"env:prod\", \"service:uno-risk-service\"]}]"
+        "com.datadoghq.ad.instances" = "[{\"name\": \"uno_risk_service_health\", \"url\": \"http://localhost:8080/risk/management/health\", \"timeout\": 5, \"method\": \"GET\", \"tags\": [\"env:prod\", \"service:uno-risk-service\"]}, {\"prometheus_url\": \"http://localhost:8080/management/prometheus\", \"namespace\": \"uno_risk_service\", \"metrics\": [\"*\"], \"tags\": [\"env:staging\", \"service:uno-risk-service\"]}]"
       }
       mount_nfs_drive = true
       volume_mount_point = [
