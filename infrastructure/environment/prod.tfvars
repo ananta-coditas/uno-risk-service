@@ -105,7 +105,15 @@ uno-risk-service = {
         create_secret       = true
       }
       
-      docker_labels = {}
+      docker_labels = {
+        # Logs configuration
+        "com.datadoghq.ad.logs" = "[{\"source\": \"java\", \"service\": \"uno-risk-service\"}]"
+      
+        # Multiple checks
+        "com.datadoghq.ad.check_names" = "[\"http_check\", \"prometheus\"]"
+        "com.datadoghq.ad.init_configs" = "[{}, {}]"
+        "com.datadoghq.ad.instances" = "[{\"name\": \"uno_risk_service_health\", \"url\": \"http://localhost:8080/management/health\", \"timeout\": 5, \"method\": \"GET\", \"tags\": [\"env:prod\", \"service:uno-risk-service\"]}, {\"prometheus_url\": \"http://localhost:8080/management/prometheus\", \"namespace\": \"uno_risk_service\", \"metrics\": [\"*\"], \"tags\": [\"env:prod\", \"service:uno-risk-service\"]}]"
+      }
     }
   ]
   microservice_scaling_config = {
