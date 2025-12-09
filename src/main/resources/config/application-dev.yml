@@ -69,7 +69,7 @@ uno:
 
   api-docs:
     default-include-pattern: /api/**
-    management-include-pattern: /management/**
+    management-include-pattern: /risk/management/**
     title: uno-risk-service API
     description: uno-risk-service API documentation
     version: 0.0.1

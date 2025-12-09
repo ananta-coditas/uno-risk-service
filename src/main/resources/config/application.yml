@@ -25,7 +25,7 @@ springdoc:
 management:
   endpoints:
     web:
-      base-path: /management
+      base-path: /risk/management
       exposure:
         include:
           - configprops
