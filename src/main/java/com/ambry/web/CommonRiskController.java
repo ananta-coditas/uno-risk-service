@@ -24,7 +24,7 @@ import jakarta.validation.Valid;
 
 
 @RestController
-@RequestMapping({"/api","/risk"})
+@RequestMapping({"/risk"})
 public class CommonRiskController {
 
     private static final Logger log = LoggerFactory.getLogger(CommonRiskController.class);
@@ -33,38 +33,22 @@ public class CommonRiskController {
     @Autowired
     private  BuildProperties buildProperties;
 
-    @PostMapping("/risk/models/calculate")
-    public ResponseEntity<CombinedResult> calculateRiskModelsDeprecated(@RequestBody Risk risk) {
-        return calculateRiskModelsV1("","","",risk);
-    }
-   // @PostMapping("/api/models/calculate")
-    public ResponseEntity<CombinedResult> calculateRiskModels(@RequestBody Risk risk) {
-        return calculateRiskModelsV1("","","",risk);
-    }
-    //@PostMapping("/v1/risk/models/calculate")
-    public ResponseEntity<CombinedResult> calculateRiskModelsV1Deprecated(@RequestBody Risk risk) {
-        CombinedResult combinedResult = commonRiskService.calculateRiskModels(risk);
-        return ResponseEntity.ok(combinedResult);
-    }
+
+
     @PostMapping("/api/v1/models/calculate")
-    public ResponseEntity<CombinedResult> calculateRiskModelsV1(       
-        @RequestHeader(value = "Authorization" , required = false , defaultValue = "Bearer <token>") 
-        String authorization, 
-        @RequestHeader(value = "Source" , required = false , defaultValue = "Progeny") 
+    public ResponseEntity<CombinedResult> calculateRiskModelsV1(
+        @RequestHeader(value = "Authorization" , required = false , defaultValue = "Bearer <token>")
+        String authorization,
+        @RequestHeader(value = "Source" , required = false , defaultValue = "Progeny")
         String sourceSystem,
-        @RequestHeader(value = "TraceId" , required = false , defaultValue = "sessionId") 
-        String traceId, 
+        @RequestHeader(value = "TraceId" , required = false , defaultValue = "sessionId")
+        String traceId,
         @Valid @RequestBody Risk risk)  {
         log.debug("Risk Assessment request received from "+sourceSystem+" with "+traceId);
         CombinedResult combinedResult = commonRiskService.calculateRiskModels(risk);
         return ResponseEntity.ok(combinedResult);
     }
 
-    //@PostMapping("/risk/models/calculate1")
-    public ResponseEntity<TestResult> calculateRiskModels1(@RequestBody Risk risk) {
-        TestResult result = new TestResult();
-        return ResponseEntity.ok(result);
-    }
     @GetMapping("/version")
     public Map<String, Object> version() {
         return Map.of(
