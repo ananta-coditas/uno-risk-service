@@ -98,6 +98,7 @@ RUN R -e "install.packages('kinship2', dependencies=TRUE, repos = 'https://cloud
 RUN R -e "install.packages('Rserve', dependencies=TRUE, repos = 'https://cloud.r-project.org')"
 RUN R -e "install.packages('/tmp/BayesMendel_2.1-8.tar.gz',type='source',REPOS= NULL, dependencies=TRUE)"
 
+RUN curl -L https://dtdg.co/latest-java-tracer -o /app/dd-java-agent.jar
 
 # Set ownership to the app user
 RUN chown -R appuser:appuser /app
@@ -120,4 +121,4 @@ EXPOSE 8080
 # Run the Spring Boot app
 # ENTRYPOINT ["java", "-jar", "uno-risk-service.jar"]
 
-CMD bash -c "R -e \"Rserve::Rserve(args='--RS-enable-remote --no-save')\" & java -jar /app/uno-risk-service.jar"
+CMD bash -c "R -e \"Rserve::Rserve(args='--RS-enable-remote --no-save')\" & java -javaagent:/app/dd-java-agent.jar -DDD_SERVICE=uno-risk-service -DDD_ENV=\${DD_ENV:-prod} -DDD_VERSION=\${DD_VERSION:-unknown} -DDD_AGENT_HOST=localhost -DDD_TRACE_AGENT_PORT=8126 -jar /app/uno-risk-service.jar"
