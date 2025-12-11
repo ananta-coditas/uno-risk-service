@@ -101,14 +101,9 @@ uno-risk-service = {
     },
     {
       container_name       = "dd_agent-container"
-      container_port       = 8126  # APM trace port
+      container_port       = 8126  # Reference only (APM uses Unix socket)
       host_port            = 8126
-      dogstatsd_port       = 8125
-      #container_protocol   = "tcp"
-      #network_protocol     = "TCP"
       application_protocol = "TCP"
-      #cpu_units            = 256   # DD agent can use less resources
-      #memory_MiB_units     = 512
       required_cpu_units   = 256
       required_memory_MiB_units = 512
       ecr_image_uri        = "public.ecr.aws/datadog/agent"
@@ -195,7 +190,7 @@ applications_config = {
     }
     listener_condition_config = {
       host_header_value  = ["uno-stage.ambrygen.com"]
-      path_pattern_value = ["/api/risk/*", "/risk/*", "/management/health"]
+      path_pattern_value = ["/api/risk/*", "/risk/*"]
     }
   },
 }
