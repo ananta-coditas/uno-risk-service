@@ -44,7 +44,12 @@ uno-risk-service = {
     cpu_architecture          = "X86_64"
     required_cpu_units        = 4096  //4 GB
     required_memory_MiB_units = 8192 //8 GB
-    task_volume_config = []
+    task_volume_config = [
+      {
+        volume_name = "datadog-socket"
+        host_path = null    # ECS will create ephemeral storage
+      }
+    ]
   }
   containers_list = [
     {
@@ -70,7 +75,20 @@ uno-risk-service = {
       lb_config = {
         target_group_arn = "arn:aws:elasticloadbalancing:us-west-2:480802442620:targetgroup/uno-risk-service-8080-tg/50015a9cc5e64663"
       }
-      mount_nfs_drive = false
+      docker_labels = {
+        "com.datadoghq.ad.check_names"  = "[\"uno_risk_service_http\"]"
+        "com.datadoghq.ad.init_configs" = "[{}]"
+        "com.datadoghq.ad.instances"    = "[{\"host\":\"%%host%%\",\"port\":8080}]"
+        "com.datadoghq.ad.logs"         = "[{\"source\": \"java\", \"service\": \"uno_risk_service\"}]"
+      }
+      mount_nfs_drive = true
+      volume_mount_point = [
+        {
+          container_path     = "/var/run/datadog"
+          mount_as_read_only = false
+          source_volume_name = "datadog-socket"
+        }
+      ]
       essential_container = true
       
       environment_variables = {
@@ -80,22 +98,24 @@ uno-risk-service = {
     },
     {
       container_name       = "dd_agent-container"
-      container_port       = 8126  # APM trace port
+      container_port       = 8126  # Reference only (APM uses Unix socket)
       host_port            = 8126
-      dogstatsd_port       = 8125
-      #container_protocol   = "tcp"
-      #network_protocol     = "TCP"
       application_protocol = "TCP"
-      #cpu_units            = 256   # DD agent can use less resources
-      #memory_MiB_units     = 512
       required_cpu_units   = 256
       required_memory_MiB_units = 512
       ecr_image_uri        = "public.ecr.aws/datadog/agent"
-      ecr_image_tag        = "latest"
+      ecr_image_tag        = "7-latest"
       essential_container  = false  # Set to false so app can run if DD agent fails
       target_sgs           = ["sg-08b57c166776be5b4"]  # Same as your app
       fargate_assign_public_ip = false
-      mount_nfs_drive = false
+      mount_nfs_drive = true
+      volume_mount_point = [
+        {
+          container_path     = "/var/run/datadog"
+          mount_as_read_only = false
+          source_volume_name = "datadog-socket"
+        }
+      ]
       sg_rule_config = {
         allowed_ingress_cidr = ["10.9.32.0/20", "10.0.0.0/8"]
       }
@@ -167,7 +187,7 @@ applications_config = {
     }
     listener_condition_config = {
       host_header_value  = ["uno-stage.ambrygen.com"]
-      path_pattern_value = ["/api/risk/*", "/risk/*", "/management/health"]
+      path_pattern_value = ["/api/risk/*", "/risk/*"]
     }
   },
 }

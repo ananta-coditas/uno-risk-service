@@ -115,6 +115,11 @@ variable "uno-risk-service" {
       }))
       docker_labels   = optional(map(any))
       mount_nfs_drive = bool
+      volume_mount_point = optional(list(object({
+        container_path = optional(string)
+        mount_as_read_only = bool
+        source_volume_name   = optional(string)
+      })))
       docker_configuration = optional(object({
         commands    = optional(list(string))
         entry_point = optional(list(string))

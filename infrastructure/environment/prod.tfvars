@@ -70,6 +70,15 @@ uno-risk-service = {
       lb_config = {
         target_group_arn = "arn:aws:elasticloadbalancing:us-west-2:658178292836:targetgroup/uno-risk-service-8080-tg/5bf65d322348fd35"
       }
+      docker_labels = {
+        # Logs configuration
+        "com.datadoghq.ad.logs" = "[{\"source\": \"java\", \"service\": \"uno-risk-service\"}]"
+      
+        # Multiple checks
+        "com.datadoghq.ad.check_names" = "[\"http_check\", \"prometheus\"]"
+        "com.datadoghq.ad.init_configs" = "[{}, {}]"
+        "com.datadoghq.ad.instances" = "[{\"name\": \"uno_risk_service_health\", \"url\": \"http://localhost:8080/risk/management/health\", \"timeout\": 5, \"method\": \"GET\", \"tags\": [\"env:prod\", \"service:uno-risk-service\"]}, {\"prometheus_url\": \"http://localhost:8080/management/prometheus\", \"namespace\": \"uno_risk_service\", \"metrics\": [\"*\"], \"tags\": [\"env:prod\", \"service:uno-risk-service\"]}]"
+      }
       mount_nfs_drive = false
       essential_container = true
       
@@ -80,14 +89,9 @@ uno-risk-service = {
     },
     {
       container_name       = "dd_agent-container"
-      container_port       = 8126  # APM trace port
+      container_port       = 8126   # Reference only (APM uses Unix socket)
       host_port            = 8126
-      dogstatsd_port       = 8125
-      #container_protocol   = "tcp"
-      #network_protocol     = "TCP"
       application_protocol = "TCP"
-      #cpu_units            = 256   # DD agent can use less resources
-      #memory_MiB_units     = 512
       required_cpu_units   = 256
       required_memory_MiB_units = 512
       ecr_image_uri        = "public.ecr.aws/datadog/agent"
@@ -167,7 +171,7 @@ applications_config = {
     }
     listener_condition_config = {
       host_header_value  = ["uno-prod.ambrygen.com"]
-      path_pattern_value = ["/api/risk/*", "/risk/*", "/management/health"]
+      path_pattern_value = ["/api/risk/*", "/risk/*"]
     }
   },
 }

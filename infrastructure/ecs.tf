@@ -90,10 +90,10 @@ module "uno-risk-service_ecs_service" {
       }
       docker_labels = container.docker_labels
       volume_mount_point = container.mount_nfs_drive ? [
-        for volume in var.uno-risk-service.task_setting.task_volume_config : {
-          container_path     = volume.host_path
+        for volume in container.volume_mount_point : {
+          container_path     = volume.container_path
           mount_as_read_only = false
-          source_volume_name = volume.volume_name
+          source_volume_name = volume.source_volume_name
         }
       ] : []
       docker_configuration = container.docker_configuration
