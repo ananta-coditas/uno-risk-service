@@ -78,6 +78,16 @@ management:
           enabled: true
     tags:
       application: ${spring.application.name}
+  tracing:
+    sampling:
+      probability: 1.0  # 100% for dev; reduce in prod
+    baggage:
+      enabled: true
+      correlation:
+        enabled: true
+        fields: # These will auto-populate MDC as %X{source}, %X{traceid}
+          - source
+          - traceid
 
 spring:
   application:

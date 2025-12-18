@@ -5,6 +5,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import io.micrometer.context.ContextExecutorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,7 @@ public class CommonRiskService {
     private static Logger log = LoggerFactory.getLogger(CommonRiskService.class);
 
     private final RiskModelExecuterFactory riskModelTransformerFactory;
-    private static final ExecutorService EXECUTOR = Executors.newFixedThreadPool(5);
+    private static final ExecutorService EXECUTOR = ContextExecutorService.wrap(Executors.newFixedThreadPool(5));
 
     public CommonRiskService(RiskModelExecuterFactory riskModelTransformerFactory) {
         this.riskModelTransformerFactory = riskModelTransformerFactory;
@@ -47,7 +48,7 @@ public class CommonRiskService {
         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
         return result;
     }
-    
+
     /**
      * Method to process the Risk Model invocation
      * @param risk
@@ -56,7 +57,7 @@ public class CommonRiskService {
      */
     private void processModel(Risk risk, Model model, CombinedResult result) {
         try {
-            RiskModelExecutor<?, ?, ? extends BaseResult> riskModelTransformer = 
+            RiskModelExecutor<?, ?, ? extends BaseResult> riskModelTransformer =
                 riskModelTransformerFactory.getRiskModelExecuter(model.getName());
             BaseResult modelResult = riskModelTransformer.execute(risk, model);
             result.addModelResult(model.getName(), modelResult);
