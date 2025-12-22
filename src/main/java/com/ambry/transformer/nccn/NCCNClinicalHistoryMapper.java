@@ -44,12 +44,14 @@ public class NCCNClinicalHistoryMapper {
                 details.setCancerFeature(cancer.getCancerType().toString());
                 details.setCancerFeatureType("cancer");
                 details.setExactDxAge(String.valueOf(cancer.getDiagnoseAge() + 0.5));
-                details.setMetastatic(cancer.getCancerDetails().getMetastatic().toLowerCase());
-                details.setMultiplePrimaries(cancer.getCancerDetails().getMultiplePrimaries());
-                if (cancer.getCancerDetails().getBreastCancerTypes() != null) {
-                    List<String> cancerTypes = cancer.getCancerDetails().getBreastCancerTypes().stream().map(Enum::name)
+                if (cancer.getCancerDetails() != null) {
+                    details.setMetastatic(cancer.getCancerDetails().getMetastatic().toLowerCase());
+                    details.setMultiplePrimaries(cancer.getCancerDetails().getMultiplePrimaries());
+                    if (cancer.getCancerDetails().getBreastCancerTypes() != null) {
+                        List<String> cancerTypes = cancer.getCancerDetails().getBreastCancerTypes().stream().map(Enum::name)
                             .collect(Collectors.toList());
-                    details.setBreastCancerTypes(cancerTypes);
+                        details.setBreastCancerTypes(cancerTypes);
+                    }
                 }
                 clinicalHistory.getCancerFeatureDetails().add(details);
             }
