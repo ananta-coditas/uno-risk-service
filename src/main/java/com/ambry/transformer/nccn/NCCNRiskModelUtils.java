@@ -25,7 +25,7 @@ public class NCCNRiskModelUtils {
     }
 
     public static Map<Integer, NCCNPersonRelationShipDetails> calculateRelationShipForAllFamilyMemeber(Risk risk) {
-        Person proband = null;
+        Person proband = risk.getFamily().getFirst(); //default
         Map<Integer, NCCNPersonRelationShipDetails> relativesIdsAndRelationShip = new HashMap<>();
         for (Person person : risk.getFamily()) {
             if (person.isProband()) {
