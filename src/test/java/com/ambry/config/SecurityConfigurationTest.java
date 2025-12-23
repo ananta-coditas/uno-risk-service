@@ -15,11 +15,13 @@ class SecurityConfigurationTest {
 
     private SecurityConfiguration securityConfiguration;
     private UnoFrameworkConfig unoFrameworkConfig;
+    private ApplicationProperties appProperties;
 
     @BeforeEach
     void setUp() {
         unoFrameworkConfig = new UnoFrameworkConfig();
-        securityConfiguration = new SecurityConfiguration(unoFrameworkConfig);
+        appProperties = new ApplicationProperties();
+        securityConfiguration = new SecurityConfiguration(appProperties,unoFrameworkConfig);
     }
 
     @Test

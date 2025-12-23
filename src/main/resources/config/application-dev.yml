@@ -95,6 +95,7 @@ uno:
 # ===================================================================
 
 application:
+  public-path: "/risk/**"
   tyrer:
     linux:
       command: "/opt/tyrer-server/tcuzick"
@@ -114,3 +115,9 @@ application:
       spawn: "false"
       command: "/bin/sh /opt/bayes-server/startRserv.sh"
       save-path: "/tmp"
+
+management:
+  datadog:
+    metrics:
+      export:
+        enabled: false
