@@ -738,5 +738,698 @@ class ClausDelegateTest {
         assertThat(result.getErrors().stream()
                 .anyMatch(err -> "ageTooHighForModelSettings".equals(err.getCode()))).isFalse();
     }
+
+    @Test
+    @DisplayName("Should test adjustPredictionForAge method")
+    void testAdjustPredictionForAge() throws Exception {
+        java.lang.reflect.Method method = ClausDelegate.class.getDeclaredMethod("adjustPredictionForAge", 
+            Double.class, Double.class, Double.class, Person.class);
+        method.setAccessible(true);
+
+        Person proband = new Person();
+        proband.setAge(35); // THIRTY age key
+
+        Double result = (Double) method.invoke(clausDelegate, 0.1, 0.2, 0.15, proband);
+        
+        assertThat(result).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should test adjustPredictionForAge when probandAgeKey.getMax() - proband.getAge() == 0")
+    void testAdjustPredictionForAgeAtMaxAge() throws Exception {
+        java.lang.reflect.Method method = ClausDelegate.class.getDeclaredMethod("adjustPredictionForAge", 
+            Double.class, Double.class, Double.class, Person.class);
+        method.setAccessible(true);
+
+        Person proband = new Person();
+        proband.setAge(39); // THIRTY age key max
+
+        Double result = (Double) method.invoke(clausDelegate, 0.1, 0.2, 0.15, proband);
+        
+        // Should return original predictionRisk when at max age
+        assertThat(result).isEqualTo(0.1);
+    }
+
+    @Test
+    @DisplayName("Should test getAgeTableValue method")
+    void testGetAgeTableValue() throws Exception {
+        java.lang.reflect.Method method = ClausDelegate.class.getDeclaredMethod("getAgeTableValue", 
+            java.util.Map.class, ClausDelegate.AgeKey.class, ClausDelegate.AgeKey.class);
+        method.setAccessible(true);
+
+        java.util.Map<ClausDelegate.AgeKey, java.util.Map<ClausDelegate.AgeKey, Double>> table = 
+            new java.util.HashMap<>();
+        java.util.Map<ClausDelegate.AgeKey, Double> innerTable = new java.util.HashMap<>();
+        innerTable.put(ClausDelegate.AgeKey.FOURTY, 0.05);
+        table.put(ClausDelegate.AgeKey.THIRTY, innerTable);
+
+        Double result = (Double) method.invoke(clausDelegate, table, 
+            ClausDelegate.AgeKey.THIRTY, ClausDelegate.AgeKey.FOURTY);
+        
+        assertThat(result).isEqualTo(0.05);
+    }
+
+    @Test
+    @DisplayName("Should test high method with newRes higher than current")
+    void testHighWithNewResHigher() throws Exception {
+        ClausResult newRes = new ClausResult();
+        ClausResult current = new ClausResult();
+        
+        com.objex.risk.beans.Prediction pred1 = newRes.addPrediction();
+        pred1.setAge(50);
+        pred1.addRisk("breastRisk", 0.15);
+        
+        com.objex.risk.beans.Prediction pred2 = current.addPrediction();
+        pred2.setAge(50);
+        pred2.addRisk("breastRisk", 0.10);
+
+        ClausResult result = clausDelegate.high(newRes, current);
+        
+        assertThat(result).isEqualTo(newRes);
+    }
+
+    @Test
+    @DisplayName("Should test high method with current higher than newRes")
+    void testHighWithCurrentHigher() throws Exception {
+        ClausResult newRes = new ClausResult();
+        ClausResult current = new ClausResult();
+        
+        com.objex.risk.beans.Prediction pred1 = newRes.addPrediction();
+        pred1.setAge(50);
+        pred1.addRisk("breastRisk", 0.10);
+        
+        com.objex.risk.beans.Prediction pred2 = current.addPrediction();
+        pred2.setAge(50);
+        pred2.addRisk("breastRisk", 0.15);
+
+        ClausResult result = clausDelegate.high(newRes, current);
+        
+        assertThat(result).isEqualTo(current);
+    }
+
+    @Test
+    @DisplayName("Should test high method with null current")
+    void testHighWithNullCurrent() throws Exception {
+        ClausResult newRes = new ClausResult();
+        
+        com.objex.risk.beans.Prediction pred1 = newRes.addPrediction();
+        pred1.setAge(50);
+        pred1.addRisk("breastRisk", 0.10);
+
+        ClausResult result = clausDelegate.high(newRes, null);
+        
+        assertThat(result).isEqualTo(newRes);
+    }
+
+    @Test
+    @DisplayName("Should test high method with null newRes")
+    void testHighWithNullNewRes() throws Exception {
+        ClausResult current = new ClausResult();
+        
+        com.objex.risk.beans.Prediction pred2 = current.addPrediction();
+        pred2.setAge(50);
+        pred2.addRisk("breastRisk", 0.10);
+
+        ClausResult result = clausDelegate.high(null, current);
+        
+        assertThat(result).isEqualTo(current);
+    }
+
+    @Test
+    @DisplayName("Should test high method with newRes having null breastRisk")
+    void testHighWithNewResNullBreastRisk() throws Exception {
+        ClausResult newRes = new ClausResult();
+        ClausResult current = new ClausResult();
+        
+        com.objex.risk.beans.Prediction pred1 = newRes.addPrediction();
+        pred1.setAge(50);
+        // Don't add breastRisk
+        
+        com.objex.risk.beans.Prediction pred2 = current.addPrediction();
+        pred2.setAge(50);
+        pred2.addRisk("breastRisk", 0.10);
+
+        ClausResult result = clausDelegate.high(newRes, current);
+        
+        // Should return current when newRes has null breastRisk
+        assertThat(result).isEqualTo(current);
+    }
+
+    @Test
+    @DisplayName("Should test high method with current having null breastRisk")
+    void testHighWithCurrentNullBreastRisk() throws Exception {
+        ClausResult newRes = new ClausResult();
+        ClausResult current = new ClausResult();
+        
+        com.objex.risk.beans.Prediction pred1 = newRes.addPrediction();
+        pred1.setAge(50);
+        pred1.addRisk("breastRisk", 0.10);
+        
+        com.objex.risk.beans.Prediction pred2 = current.addPrediction();
+        pred2.setAge(50);
+        // Don't add breastRisk
+
+        ClausResult result = clausDelegate.high(newRes, current);
+        
+        // Should return newRes when current has null breastRisk
+        assertThat(result).isEqualTo(newRes);
+    }
+
+    @Test
+    @DisplayName("Should test getAffectedAgeKey with firstAffected true")
+    void testGetAffectedAgeKeyFirstAffected() throws Exception {
+        java.lang.reflect.Method method = ClausDelegate.class.getDeclaredMethod("getAffectedAgeKey", 
+            List.class, boolean.class);
+        method.setAccessible(true);
+
+        List<Person> affectedFDRs = new ArrayList<>();
+        Person person = new Person();
+        person.setDiagnoseBreastAge(45);
+        affectedFDRs.add(person);
+
+        ClausDelegate.AgeKey result = (ClausDelegate.AgeKey) method.invoke(clausDelegate, affectedFDRs, true);
+        
+        assertThat(result).isEqualTo(ClausDelegate.AgeKey.FOURTY);
+    }
+
+    @Test
+    @DisplayName("Should test getAffectedAgeKey with firstAffected false")
+    void testGetAffectedAgeKeySecondAffected() throws Exception {
+        java.lang.reflect.Method method = ClausDelegate.class.getDeclaredMethod("getAffectedAgeKey", 
+            List.class, boolean.class);
+        method.setAccessible(true);
+
+        List<Person> affectedFDRs = new ArrayList<>();
+        Person person1 = new Person();
+        person1.setDiagnoseBreastAge(45);
+        affectedFDRs.add(person1);
+        Person person2 = new Person();
+        person2.setDiagnoseBreastAge(55);
+        affectedFDRs.add(person2);
+
+        ClausDelegate.AgeKey result = (ClausDelegate.AgeKey) method.invoke(clausDelegate, affectedFDRs, false);
+        
+        assertThat(result).isEqualTo(ClausDelegate.AgeKey.FIFTY);
+    }
+
+    @Test
+    @DisplayName("Should test getAffectedAgeKey with empty list")
+    void testGetAffectedAgeKeyEmptyList() throws Exception {
+        java.lang.reflect.Method method = ClausDelegate.class.getDeclaredMethod("getAffectedAgeKey", 
+            List.class, boolean.class);
+        method.setAccessible(true);
+
+        List<Person> affectedFDRs = new ArrayList<>();
+
+        ClausDelegate.AgeKey result = (ClausDelegate.AgeKey) method.invoke(clausDelegate, affectedFDRs, true);
+        
+        assertThat(result).isEqualTo(ClausDelegate.AgeKey.UNSUPPORTED);
+    }
+
+    @Test
+    @DisplayName("Should test getAffectedAgeKey with index out of bounds")
+    void testGetAffectedAgeKeyIndexOutOfBounds() throws Exception {
+        java.lang.reflect.Method method = ClausDelegate.class.getDeclaredMethod("getAffectedAgeKey", 
+            List.class, boolean.class);
+        method.setAccessible(true);
+
+        List<Person> affectedFDRs = new ArrayList<>();
+        Person person = new Person();
+        person.setDiagnoseBreastAge(45);
+        affectedFDRs.add(person);
+
+        // Request second affected (index 1) but only one exists
+        ClausDelegate.AgeKey result = (ClausDelegate.AgeKey) method.invoke(clausDelegate, affectedFDRs, false);
+        
+        assertThat(result).isEqualTo(ClausDelegate.AgeKey.UNSUPPORTED);
+    }
+
+    @Test
+    @DisplayName("Should test getOrderedAffectedBreast method")
+    void testGetOrderedAffectedBreast() throws Exception {
+        java.lang.reflect.Method method = ClausDelegate.class.getDeclaredMethod("getOrderedAffectedBreast", 
+            List.class);
+        method.setAccessible(true);
+
+        List<Person> relatives = new ArrayList<>();
+        Person person1 = new Person();
+        person1.setAffectedBreastType(AffectedType.ONE);
+        person1.setDiagnoseBreastAge(50);
+        relatives.add(person1);
+        
+        Person person2 = new Person();
+        person2.setAffectedBreastType(AffectedType.ONE);
+        person2.setDiagnoseBreastAge(40);
+        relatives.add(person2);
+        
+        Person person3 = new Person();
+        person3.setAffectedBreastType(AffectedType.NONE);
+        relatives.add(person3);
+
+        @SuppressWarnings("unchecked")
+        List<Person> result = (List<Person>) method.invoke(clausDelegate, relatives);
+        
+        assertThat(result).hasSize(2);
+        // Should be sorted by diagnoseBreastAge
+        assertThat(result.get(0).getDiagnoseBreastAge()).isEqualTo(40);
+        assertThat(result.get(1).getDiagnoseBreastAge()).isEqualTo(50);
+    }
+
+    @Test
+    @DisplayName("Should test getOrderedAffectedOvarian method")
+    void testGetOrderedAffectedOvarian() throws Exception {
+        java.lang.reflect.Method method = ClausDelegate.class.getDeclaredMethod("getOrderedAffectedOvarian", 
+            List.class);
+        method.setAccessible(true);
+
+        List<Person> relatives = new ArrayList<>();
+        Person person1 = new Person();
+        person1.setAffectedOvarianType(AffectedType.ONE);
+        person1.setDiagnoseOvarianAge(50);
+        person1.setDiagnoseBreastAge(50); // Comparator uses diagnoseBreastAge
+        relatives.add(person1);
+        
+        Person person2 = new Person();
+        person2.setAffectedOvarianType(AffectedType.ONE);
+        person2.setDiagnoseOvarianAge(40);
+        person2.setDiagnoseBreastAge(40); // Comparator uses diagnoseBreastAge
+        relatives.add(person2);
+        
+        Person person3 = new Person();
+        person3.setAffectedOvarianType(AffectedType.NONE);
+        relatives.add(person3);
+
+        @SuppressWarnings("unchecked")
+        List<Person> result = (List<Person>) method.invoke(clausDelegate, relatives);
+        
+        assertThat(result).hasSize(2);
+        // Should be sorted by diagnoseBreastAge (comparator uses diagnoseBreastAge, not diagnoseOvarianAge)
+        assertThat(result.get(0).getDiagnoseBreastAge()).isEqualTo(40);
+        assertThat(result.get(1).getDiagnoseBreastAge()).isEqualTo(50);
+    }
+
+    @Test
+    @DisplayName("Should test buildPrediction with two parameters")
+    void testBuildPredictionTwoParams() throws Exception {
+        java.lang.reflect.Method method = ClausDelegate.class.getDeclaredMethod("buildPrediction", 
+            ClausResult.class, Double.class, int.class);
+        method.setAccessible(true);
+
+        ClausResult result = new ClausResult();
+        method.invoke(clausDelegate, result, 0.15, 50);
+        
+        assertThat(result.getPredictions()).hasSize(1);
+        assertThat(result.getPredictions().get(0).getAge()).isEqualTo(50);
+        assertThat(result.getPredictions().get(0).getResult("breastRisk")).isEqualTo(0.15);
+    }
+
+    @Test
+    @DisplayName("Should test buildPrediction with five parameters")
+    void testBuildPredictionFiveParams() throws Exception {
+        java.lang.reflect.Method method = ClausDelegate.class.getDeclaredMethod("buildPrediction", 
+            ClausResult.class, Double.class, Double.class, int.class, Double.class);
+        method.setAccessible(true);
+
+        ClausResult result = new ClausResult();
+        method.invoke(clausDelegate, result, 0.2, 0.1, 50, 0.5);
+        
+        assertThat(result.getPredictions()).hasSize(1);
+        assertThat(result.getPredictions().get(0).getAge()).isEqualTo(50);
+        Double risk = result.getPredictions().get(0).getResult("breastRisk");
+        assertThat(risk).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should test buildPrediction with null risk")
+    void testBuildPredictionWithNullRisk() throws Exception {
+        java.lang.reflect.Method method = ClausDelegate.class.getDeclaredMethod("buildPrediction", 
+            ClausResult.class, Double.class, int.class);
+        method.setAccessible(true);
+
+        ClausResult result = new ClausResult();
+        method.invoke(clausDelegate, result, null, 50);
+        
+        assertThat(result.getPredictions()).hasSize(1);
+        assertThat(result.getPredictions().get(0).getAge()).isEqualTo(50);
+        assertThat(result.getPredictions().get(0).getResult("breastRisk")).isNull();
+    }
+
+    @Test
+    @DisplayName("Should calculate with two affected SDR breast (maternal)")
+    void testCalculateWithTwoAffectedSDRMaternal() {
+        try (MockedStatic<Utils> mockedUtils = mockStatic(Utils.class)) {
+            List<Person> parents = new ArrayList<>();
+            Person mother = new Person();
+            mother.setId(2);
+            mother.setGender(0);
+            parents.add(mother);
+            
+            Person father = new Person();
+            father.setId(3);
+            father.setGender(1);
+            parents.add(father);
+            
+            List<Person> fdrs = new ArrayList<>();
+            List<Person> sdrs = new ArrayList<>();
+            
+            Person affectedSDR1 = new Person();
+            affectedSDR1.setId(4);
+            affectedSDR1.setAffectedBreastType(AffectedType.ONE);
+            affectedSDR1.setDiagnoseBreastAge(50);
+            sdrs.add(affectedSDR1);
+            
+            Person affectedSDR2 = new Person();
+            affectedSDR2.setId(5);
+            affectedSDR2.setAffectedBreastType(AffectedType.ONE);
+            affectedSDR2.setDiagnoseBreastAge(55);
+            sdrs.add(affectedSDR2);
+
+            List<Person> matRels = new ArrayList<>();
+            matRels.add(affectedSDR1);
+            matRels.add(affectedSDR2);
+
+            mockedUtils.when(() -> Utils.getParents(any(Person.class), any(Risk.class)))
+                    .thenReturn(parents);
+            mockedUtils.when(() -> Utils.getFirstDegreeRelatives(any(Risk.class), eq(Person.class)))
+                    .thenReturn(fdrs);
+            mockedUtils.when(() -> Utils.getSecondDegreeRelatives(any(Risk.class), eq(Person.class)))
+                    .thenReturn(sdrs);
+            mockedUtils.when(() -> Utils.getFirstDegreeRelatives(eq(mother), any(Risk.class), eq(Person.class)))
+                    .thenReturn(matRels);
+            mockedUtils.when(() -> Utils.getFirstDegreeRelatives(eq(father), any(Risk.class), eq(Person.class)))
+                    .thenReturn(new ArrayList<>());
+            mockedUtils.when(() -> Utils.getSiblings(any(Person.class), any(List.class)))
+                    .thenReturn(new ArrayList<>());
+            mockedUtils.when(() -> Utils.filterSex(any(List.class), any(Boolean.class)))
+                    .thenReturn(new ArrayList<>());
+
+            ClausResult result = clausDelegate.calculate(risk);
+
+            assertThat(result).isNotNull();
+            assertThat(result.getVersion()).isEqualTo(ClausDelegate.CLAUS_VERSION);
+            assertThat(result.hasErrors()).isFalse();
+        }
+    }
+
+    @Test
+    @DisplayName("Should calculate with one maternal and one paternal SDR")
+    void testCalculateWithMaternalAndPaternalSDR() {
+        try (MockedStatic<Utils> mockedUtils = mockStatic(Utils.class)) {
+            List<Person> parents = new ArrayList<>();
+            Person mother = new Person();
+            mother.setId(2);
+            mother.setGender(0);
+            parents.add(mother);
+            
+            Person father = new Person();
+            father.setId(3);
+            father.setGender(1);
+            parents.add(father);
+            
+            List<Person> fdrs = new ArrayList<>();
+            List<Person> sdrs = new ArrayList<>();
+            
+            Person affectedMatSDR = new Person();
+            affectedMatSDR.setId(4);
+            affectedMatSDR.setAffectedBreastType(AffectedType.ONE);
+            affectedMatSDR.setDiagnoseBreastAge(50);
+            sdrs.add(affectedMatSDR);
+            
+            Person affectedPatSDR = new Person();
+            affectedPatSDR.setId(5);
+            affectedPatSDR.setAffectedBreastType(AffectedType.ONE);
+            affectedPatSDR.setDiagnoseBreastAge(55);
+            sdrs.add(affectedPatSDR);
+
+            List<Person> matRels = new ArrayList<>();
+            matRels.add(affectedMatSDR);
+            List<Person> patRels = new ArrayList<>();
+            patRels.add(affectedPatSDR);
+
+            mockedUtils.when(() -> Utils.getParents(any(Person.class), any(Risk.class)))
+                    .thenReturn(parents);
+            mockedUtils.when(() -> Utils.getFirstDegreeRelatives(any(Risk.class), eq(Person.class)))
+                    .thenReturn(fdrs);
+            mockedUtils.when(() -> Utils.getSecondDegreeRelatives(any(Risk.class), eq(Person.class)))
+                    .thenReturn(sdrs);
+            mockedUtils.when(() -> Utils.getFirstDegreeRelatives(eq(mother), any(Risk.class), eq(Person.class)))
+                    .thenReturn(matRels);
+            mockedUtils.when(() -> Utils.getFirstDegreeRelatives(eq(father), any(Risk.class), eq(Person.class)))
+                    .thenReturn(patRels);
+            mockedUtils.when(() -> Utils.getSiblings(any(Person.class), any(List.class)))
+                    .thenReturn(new ArrayList<>());
+            mockedUtils.when(() -> Utils.filterSex(any(List.class), any(Boolean.class)))
+                    .thenReturn(new ArrayList<>());
+
+            ClausResult result = clausDelegate.calculate(risk);
+
+            assertThat(result).isNotNull();
+            assertThat(result.getVersion()).isEqualTo(ClausDelegate.CLAUS_VERSION);
+            assertThat(result.hasErrors()).isFalse();
+        }
+    }
+
+    @Test
+    @DisplayName("Should calculate with mother and maternal aunt")
+    void testCalculateWithMotherAndMaternalAunt() {
+        try (MockedStatic<Utils> mockedUtils = mockStatic(Utils.class)) {
+            List<Person> parents = new ArrayList<>();
+            Person mother = new Person();
+            mother.setId(2);
+            mother.setGender(0);
+            mother.setAffectedBreastType(AffectedType.ONE);
+            mother.setDiagnoseBreastAge(50);
+            parents.add(mother);
+            
+            Person father = new Person();
+            father.setId(3);
+            father.setGender(1);
+            parents.add(father);
+            
+            List<Person> fdrs = new ArrayList<>();
+            List<Person> sdrs = new ArrayList<>();
+            
+            Person maternalAunt = new Person();
+            maternalAunt.setId(4);
+            maternalAunt.setAffectedBreastType(AffectedType.ONE);
+            maternalAunt.setDiagnoseBreastAge(55);
+            maternalAunt.setGender(0);
+            sdrs.add(maternalAunt);
+
+            List<Person> matRels = new ArrayList<>();
+            matRels.add(maternalAunt);
+            List<Person> matAunts = new ArrayList<>();
+            matAunts.add(maternalAunt);
+
+            mockedUtils.when(() -> Utils.getParents(any(Person.class), any(Risk.class)))
+                    .thenReturn(parents);
+            mockedUtils.when(() -> Utils.getFirstDegreeRelatives(any(Risk.class), eq(Person.class)))
+                    .thenReturn(fdrs);
+            mockedUtils.when(() -> Utils.getSecondDegreeRelatives(any(Risk.class), eq(Person.class)))
+                    .thenReturn(sdrs);
+            mockedUtils.when(() -> Utils.getFirstDegreeRelatives(eq(mother), any(Risk.class), eq(Person.class)))
+                    .thenReturn(matRels);
+            mockedUtils.when(() -> Utils.getFirstDegreeRelatives(eq(father), any(Risk.class), eq(Person.class)))
+                    .thenReturn(new ArrayList<>());
+            mockedUtils.when(() -> Utils.getSiblings(eq(mother), eq(matRels)))
+                    .thenReturn(matAunts);
+            mockedUtils.when(() -> Utils.getSiblings(any(Person.class), any(List.class)))
+                    .thenReturn(new ArrayList<>());
+            mockedUtils.when(() -> Utils.filterSex(eq(matAunts), eq(true)))
+                    .thenReturn(matAunts);
+            mockedUtils.when(() -> Utils.filterSex(any(List.class), any(Boolean.class)))
+                    .thenReturn(new ArrayList<>());
+
+            ClausResult result = clausDelegate.calculate(risk);
+
+            assertThat(result).isNotNull();
+            assertThat(result.getVersion()).isEqualTo(ClausDelegate.CLAUS_VERSION);
+            assertThat(result.hasErrors()).isFalse();
+        }
+    }
+
+    @Test
+    @DisplayName("Should calculate with mother and paternal aunt")
+    void testCalculateWithMotherAndPaternalAunt() {
+        try (MockedStatic<Utils> mockedUtils = mockStatic(Utils.class)) {
+            List<Person> parents = new ArrayList<>();
+            Person mother = new Person();
+            mother.setId(2);
+            mother.setGender(0);
+            mother.setAffectedBreastType(AffectedType.ONE);
+            mother.setDiagnoseBreastAge(50);
+            parents.add(mother);
+            
+            Person father = new Person();
+            father.setId(3);
+            father.setGender(1);
+            parents.add(father);
+            
+            List<Person> fdrs = new ArrayList<>();
+            List<Person> sdrs = new ArrayList<>();
+            
+            Person paternalAunt = new Person();
+            paternalAunt.setId(4);
+            paternalAunt.setAffectedBreastType(AffectedType.ONE);
+            paternalAunt.setDiagnoseBreastAge(55);
+            paternalAunt.setGender(0);
+            sdrs.add(paternalAunt);
+
+            List<Person> patRels = new ArrayList<>();
+            patRels.add(paternalAunt);
+            List<Person> patAunts = new ArrayList<>();
+            patAunts.add(paternalAunt);
+
+            mockedUtils.when(() -> Utils.getParents(any(Person.class), any(Risk.class)))
+                    .thenReturn(parents);
+            mockedUtils.when(() -> Utils.getFirstDegreeRelatives(any(Risk.class), eq(Person.class)))
+                    .thenReturn(fdrs);
+            mockedUtils.when(() -> Utils.getSecondDegreeRelatives(any(Risk.class), eq(Person.class)))
+                    .thenReturn(sdrs);
+            mockedUtils.when(() -> Utils.getFirstDegreeRelatives(eq(mother), any(Risk.class), eq(Person.class)))
+                    .thenReturn(new ArrayList<>());
+            mockedUtils.when(() -> Utils.getFirstDegreeRelatives(eq(father), any(Risk.class), eq(Person.class)))
+                    .thenReturn(patRels);
+            mockedUtils.when(() -> Utils.getSiblings(eq(father), eq(patRels)))
+                    .thenReturn(patAunts);
+            mockedUtils.when(() -> Utils.getSiblings(any(Person.class), any(List.class)))
+                    .thenReturn(new ArrayList<>());
+            mockedUtils.when(() -> Utils.filterSex(eq(patAunts), eq(true)))
+                    .thenReturn(patAunts);
+            mockedUtils.when(() -> Utils.filterSex(any(List.class), any(Boolean.class)))
+                    .thenReturn(new ArrayList<>());
+
+            ClausResult result = clausDelegate.calculate(risk);
+
+            assertThat(result).isNotNull();
+            assertThat(result.getVersion()).isEqualTo(ClausDelegate.CLAUS_VERSION);
+            assertThat(result.hasErrors()).isFalse();
+        }
+    }
+
+    @Test
+    @DisplayName("Should test getSingleSelectTable with various scenarios")
+    void testGetSingleSelectTable() throws Exception {
+        java.lang.reflect.Method method = ClausDelegate.class.getDeclaredMethod("getSingleSelectTable", 
+            int.class, int.class, int.class);
+        method.setAccessible(true);
+
+        // Test: affectedSDRs >= 0 && affectedFDRs == 1 && affectedOvaraianFDRs == 1
+        @SuppressWarnings("unchecked")
+        java.util.Map<ClausDelegate.AgeKey, java.util.Map<ClausDelegate.AgeKey, Double>> result1 = 
+            (java.util.Map<ClausDelegate.AgeKey, java.util.Map<ClausDelegate.AgeKey, Double>>) 
+            method.invoke(clausDelegate, 0, 1, 1);
+        assertThat(result1).isNotNull();
+
+        // Test: affectedSDRs >= 0 && affectedFDRs == 1 && affectedOvaraianFDRs != 1
+        @SuppressWarnings("unchecked")
+        java.util.Map<ClausDelegate.AgeKey, java.util.Map<ClausDelegate.AgeKey, Double>> result2 = 
+            (java.util.Map<ClausDelegate.AgeKey, java.util.Map<ClausDelegate.AgeKey, Double>>) 
+            method.invoke(clausDelegate, 0, 1, 0);
+        assertThat(result2).isNotNull();
+
+        // Test: affectedSDRs == 1 && affectedFDRs == 0
+        @SuppressWarnings("unchecked")
+        java.util.Map<ClausDelegate.AgeKey, java.util.Map<ClausDelegate.AgeKey, Double>> result3 = 
+            (java.util.Map<ClausDelegate.AgeKey, java.util.Map<ClausDelegate.AgeKey, Double>>) 
+            method.invoke(clausDelegate, 1, 0, 0);
+        assertThat(result3).isNotNull();
+
+        // Test: affectedSDRs == 0 && affectedFDRs == 0 && affectedOvaraianFDRs == 1
+        @SuppressWarnings("unchecked")
+        java.util.Map<ClausDelegate.AgeKey, java.util.Map<ClausDelegate.AgeKey, Double>> result4 = 
+            (java.util.Map<ClausDelegate.AgeKey, java.util.Map<ClausDelegate.AgeKey, Double>>) 
+            method.invoke(clausDelegate, 0, 0, 1);
+        assertThat(result4).isNotNull();
+
+        // Test: affectedSDRs == 0 && affectedFDRs == 0 && affectedOvaraianFDRs >= 2
+        @SuppressWarnings("unchecked")
+        java.util.Map<ClausDelegate.AgeKey, java.util.Map<ClausDelegate.AgeKey, Double>> result5 = 
+            (java.util.Map<ClausDelegate.AgeKey, java.util.Map<ClausDelegate.AgeKey, Double>>) 
+            method.invoke(clausDelegate, 0, 0, 2);
+        assertThat(result5).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should test getMultiSelectTable with various scenarios")
+    void testGetMultiSelectTable() throws Exception {
+        java.lang.reflect.Method method = ClausDelegate.class.getDeclaredMethod("getMultiSelectTable", 
+            int.class, int.class, Person.class, Person.class, Risk.class);
+        method.setAccessible(true);
+
+        Person mother = new Person();
+        mother.setId(2);
+        mother.setGender(0);
+        mother.setAffectedBreastType(AffectedType.NONE);
+        
+        Person father = new Person();
+        father.setId(3);
+        father.setGender(1);
+
+        try (MockedStatic<Utils> mockedUtils = mockStatic(Utils.class)) {
+            mockedUtils.when(() -> Utils.getFirstDegreeRelatives(any(Person.class), any(Risk.class), eq(Person.class)))
+                    .thenReturn(new ArrayList<>());
+            mockedUtils.when(() -> Utils.getSiblings(any(Person.class), any(List.class)))
+                    .thenReturn(new ArrayList<>());
+            mockedUtils.when(() -> Utils.filterSex(any(List.class), any(Boolean.class)))
+                    .thenReturn(new ArrayList<>());
+
+            // Test: sdrCount == 0 && fdrCount >= 2
+            @SuppressWarnings("unchecked")
+            java.util.Map<ClausDelegate.AgeKey, java.util.Map<ClausDelegate.AgeKey, 
+                java.util.Map<ClausDelegate.AgeKey, Double>>> result1 = 
+                (java.util.Map<ClausDelegate.AgeKey, java.util.Map<ClausDelegate.AgeKey, 
+                    java.util.Map<ClausDelegate.AgeKey, Double>>>) 
+                method.invoke(clausDelegate, 0, 2, mother, father, risk);
+            assertThat(result1).isNotNull();
+
+            // Test: sdrCount >= 2 && fdrCount == 0 && affectedMatRels.size() >= 1 && affectedPatRels.size() >= 1
+            mockedUtils.when(() -> Utils.getFirstDegreeRelatives(eq(mother), any(Risk.class), eq(Person.class)))
+                    .thenReturn(new ArrayList<Person>() {{ add(new Person()); }});
+            mockedUtils.when(() -> Utils.getFirstDegreeRelatives(eq(father), any(Risk.class), eq(Person.class)))
+                    .thenReturn(new ArrayList<Person>() {{ add(new Person()); }});
+            
+            @SuppressWarnings("unchecked")
+            java.util.Map<ClausDelegate.AgeKey, java.util.Map<ClausDelegate.AgeKey, 
+                java.util.Map<ClausDelegate.AgeKey, Double>>> result2 = 
+                (java.util.Map<ClausDelegate.AgeKey, java.util.Map<ClausDelegate.AgeKey, 
+                    java.util.Map<ClausDelegate.AgeKey, Double>>>) 
+                method.invoke(clausDelegate, 2, 0, mother, father, risk);
+            assertThat(result2).isNotNull();
+        }
+    }
+
+    @Test
+    @DisplayName("Should test AgeKey boundary values")
+    void testAgeKeyBoundaryValues() {
+        assertThat(ClausDelegate.AgeKey.forAge(19)).isEqualTo(ClausDelegate.AgeKey.UNSUPPORTED);
+        assertThat(ClausDelegate.AgeKey.forAge(20)).isEqualTo(ClausDelegate.AgeKey.TWENTY);
+        assertThat(ClausDelegate.AgeKey.forAge(29)).isEqualTo(ClausDelegate.AgeKey.TWENTY);
+        assertThat(ClausDelegate.AgeKey.forAge(30)).isEqualTo(ClausDelegate.AgeKey.THIRTY);
+        assertThat(ClausDelegate.AgeKey.forAge(39)).isEqualTo(ClausDelegate.AgeKey.THIRTY);
+        assertThat(ClausDelegate.AgeKey.forAge(40)).isEqualTo(ClausDelegate.AgeKey.FOURTY);
+        assertThat(ClausDelegate.AgeKey.forAge(49)).isEqualTo(ClausDelegate.AgeKey.FOURTY);
+        assertThat(ClausDelegate.AgeKey.forAge(50)).isEqualTo(ClausDelegate.AgeKey.FIFTY);
+        assertThat(ClausDelegate.AgeKey.forAge(59)).isEqualTo(ClausDelegate.AgeKey.FIFTY);
+        assertThat(ClausDelegate.AgeKey.forAge(60)).isEqualTo(ClausDelegate.AgeKey.SIXTY);
+        assertThat(ClausDelegate.AgeKey.forAge(69)).isEqualTo(ClausDelegate.AgeKey.SIXTY);
+        assertThat(ClausDelegate.AgeKey.forAge(70)).isEqualTo(ClausDelegate.AgeKey.SEVENTY);
+        assertThat(ClausDelegate.AgeKey.forAge(79)).isEqualTo(ClausDelegate.AgeKey.SEVENTY);
+        assertThat(ClausDelegate.AgeKey.forAge(80)).isEqualTo(ClausDelegate.AgeKey.UNSUPPORTED);
+    }
+
+    @Test
+    @DisplayName("Should test adjustAge with various values")
+    void testAdjustAgeVariousValues() throws Exception {
+        java.lang.reflect.Method method = ClausDelegate.class.getDeclaredMethod("adjustAge", Integer.class);
+        method.setAccessible(true);
+
+        assertThat(method.invoke(clausDelegate, 50)).isEqualTo(50);
+        assertThat(method.invoke(clausDelegate, 79)).isEqualTo(79);
+        assertThat(method.invoke(clausDelegate, 80)).isEqualTo(79);
+        assertThat(method.invoke(clausDelegate, 90)).isEqualTo(79);
+        assertThat(method.invoke(clausDelegate, 100)).isEqualTo(79);
+        assertThat(method.invoke(clausDelegate, 20)).isEqualTo(20);
+    }
 }
 

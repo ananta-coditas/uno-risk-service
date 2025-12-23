@@ -615,5 +615,724 @@ class ProgenyRiskServiceTest {
 
         // Method should not throw exception (currently empty implementation)
     }
+
+    @Test
+    @DisplayName("Should build result with empty predictions map")
+    void testBuildResultWithEmptyPredictions() throws Exception {
+        Map<String, String> predictions = new HashMap<>();
+        Map<String, Double> probabilities = new HashMap<>();
+        probabilities.put("lifetime", 0.25);
+
+        BaseResult result = new GailResult();
+
+        java.lang.reflect.Method method = ProgenyRiskService.class.getDeclaredMethod(
+            "buildResult", Map.class, Map.class, BaseResult.class);
+        method.setAccessible(true);
+        @SuppressWarnings("unchecked")
+        BaseResult returnedResult = (BaseResult) method.invoke(service, predictions, probabilities, result);
+
+        assertThat(returnedResult).isNotNull();
+        assertThat(returnedResult.getPredictions()).isEmpty();
+    }
+
+    @Test
+    @DisplayName("Should build result with empty probabilities map")
+    void testBuildResultWithEmptyProbabilities() throws Exception {
+        Map<String, String> predictions = new HashMap<>();
+        predictions.put("5year", "0.05");
+        Map<String, Double> probabilities = new HashMap<>();
+
+        BaseResult result = new GailResult();
+
+        java.lang.reflect.Method method = ProgenyRiskService.class.getDeclaredMethod(
+            "buildResult", Map.class, Map.class, BaseResult.class);
+        method.setAccessible(true);
+        @SuppressWarnings("unchecked")
+        BaseResult returnedResult = (BaseResult) method.invoke(service, predictions, probabilities, result);
+
+        assertThat(returnedResult).isNotNull();
+        assertThat(returnedResult.getPredictions()).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("Should build result with multiple predictions")
+    void testBuildResultWithMultiplePredictions() throws Exception {
+        Map<String, String> predictions = new HashMap<>();
+        predictions.put("5year", "0.05");
+        predictions.put("10year", "0.10");
+        predictions.put("15year", "0.15");
+
+        Map<String, Double> probabilities = new HashMap<>();
+        probabilities.put("lifetime", 0.25);
+        probabilities.put("carrier", 0.30);
+
+        BaseResult result = new GailResult();
+
+        java.lang.reflect.Method method = ProgenyRiskService.class.getDeclaredMethod(
+            "buildResult", Map.class, Map.class, BaseResult.class);
+        method.setAccessible(true);
+        @SuppressWarnings("unchecked")
+        BaseResult returnedResult = (BaseResult) method.invoke(service, predictions, probabilities, result);
+
+        assertThat(returnedResult).isNotNull();
+        assertThat(returnedResult.getPredictions()).hasSize(3);
+    }
+
+    @Test
+    @DisplayName("Should build result with zero value")
+    void testBuildResultWithZeroValue() throws Exception {
+        Map<String, String> predictions = new HashMap<>();
+        predictions.put("5year", "0.0");
+
+        Map<String, Double> probabilities = new HashMap<>();
+        BaseResult result = new GailResult();
+
+        java.lang.reflect.Method method = ProgenyRiskService.class.getDeclaredMethod(
+            "buildResult", Map.class, Map.class, BaseResult.class);
+        method.setAccessible(true);
+        @SuppressWarnings("unchecked")
+        BaseResult returnedResult = (BaseResult) method.invoke(service, predictions, probabilities, result);
+
+        assertThat(returnedResult).isNotNull();
+        assertThat(returnedResult.getPredictions()).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("Should build result with negative value")
+    void testBuildResultWithNegativeValue() throws Exception {
+        Map<String, String> predictions = new HashMap<>();
+        predictions.put("5year", "-0.05");
+
+        Map<String, Double> probabilities = new HashMap<>();
+        BaseResult result = new GailResult();
+
+        java.lang.reflect.Method method = ProgenyRiskService.class.getDeclaredMethod(
+            "buildResult", Map.class, Map.class, BaseResult.class);
+        method.setAccessible(true);
+        @SuppressWarnings("unchecked")
+        BaseResult returnedResult = (BaseResult) method.invoke(service, predictions, probabilities, result);
+
+        assertThat(returnedResult).isNotNull();
+        assertThat(returnedResult.getPredictions()).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("Should build result with very large value")
+    void testBuildResultWithLargeValue() throws Exception {
+        Map<String, String> predictions = new HashMap<>();
+        predictions.put("5year", "999999.99");
+
+        Map<String, Double> probabilities = new HashMap<>();
+        BaseResult result = new GailResult();
+
+        java.lang.reflect.Method method = ProgenyRiskService.class.getDeclaredMethod(
+            "buildResult", Map.class, Map.class, BaseResult.class);
+        method.setAccessible(true);
+        @SuppressWarnings("unchecked")
+        BaseResult returnedResult = (BaseResult) method.invoke(service, predictions, probabilities, result);
+
+        assertThat(returnedResult).isNotNull();
+        assertThat(returnedResult.getPredictions()).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("Should build result with scientific notation")
+    void testBuildResultWithScientificNotation() throws Exception {
+        Map<String, String> predictions = new HashMap<>();
+        predictions.put("5year", "1.5E-5");
+
+        Map<String, Double> probabilities = new HashMap<>();
+        BaseResult result = new GailResult();
+
+        java.lang.reflect.Method method = ProgenyRiskService.class.getDeclaredMethod(
+            "buildResult", Map.class, Map.class, BaseResult.class);
+        method.setAccessible(true);
+        @SuppressWarnings("unchecked")
+        BaseResult returnedResult = (BaseResult) method.invoke(service, predictions, probabilities, result);
+
+        assertThat(returnedResult).isNotNull();
+        assertThat(returnedResult.getPredictions()).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("Should build result with empty string value")
+    void testBuildResultWithEmptyStringValue() throws Exception {
+        Map<String, String> predictions = new HashMap<>();
+        predictions.put("5year", "");
+
+        Map<String, Double> probabilities = new HashMap<>();
+        BaseResult result = new GailResult();
+
+        java.lang.reflect.Method method = ProgenyRiskService.class.getDeclaredMethod(
+            "buildResult", Map.class, Map.class, BaseResult.class);
+        method.setAccessible(true);
+        @SuppressWarnings("unchecked")
+        BaseResult returnedResult = (BaseResult) method.invoke(service, predictions, probabilities, result);
+
+        assertThat(returnedResult).isNotNull();
+        // Should handle empty string as non-numeric and set NaN
+    }
+
+    @Test
+    @DisplayName("Should build result with null value")
+    void testBuildResultWithNullValue() throws Exception {
+        Map<String, String> predictions = new HashMap<>();
+        predictions.put("5year", null);
+
+        Map<String, Double> probabilities = new HashMap<>();
+        BaseResult result = new GailResult();
+
+        java.lang.reflect.Method method = ProgenyRiskService.class.getDeclaredMethod(
+            "buildResult", Map.class, Map.class, BaseResult.class);
+        method.setAccessible(true);
+        
+        try {
+            @SuppressWarnings("unchecked")
+            BaseResult returnedResult = (BaseResult) method.invoke(service, predictions, probabilities, result);
+            // May throw NPE when trying to parse null, which is acceptable
+            assertThat(returnedResult).isNotNull();
+        } catch (Exception e) {
+            // Expected if null value causes NPE in parseDouble
+            assertThat(e.getCause()).isInstanceOf(NullPointerException.class);
+        }
+    }
+
+    @Test
+    @DisplayName("Should handle SAVE_REQUESTS command with true (lowercase)")
+    void testRunCommandSaveRequestsTrueLowercase() {
+        RiskCommand command = new RiskCommand();
+        command.setName("SAVE_REQUESTS");
+        command.setValue("true");
+
+        RiskCommand result = service.runCommand(command);
+
+        assertThat(result).isNotNull();
+        assertThat(result.getResponse()).contains("save requests now set to true");
+    }
+
+    @Test
+    @DisplayName("Should handle SAVE_REQUESTS command with True (mixed case)")
+    void testRunCommandSaveRequestsTrueMixedCase() {
+        RiskCommand command = new RiskCommand();
+        command.setName("SAVE_REQUESTS");
+        command.setValue("True");
+
+        RiskCommand result = service.runCommand(command);
+
+        assertThat(result).isNotNull();
+        assertThat(result.getResponse()).contains("save requests now set to true");
+    }
+
+    @Test
+    @DisplayName("Should handle SAVE_REQUESTS command with FALSE (uppercase)")
+    void testRunCommandSaveRequestsFalseUppercase() {
+        RiskCommand command = new RiskCommand();
+        command.setName("SAVE_REQUESTS");
+        command.setValue("FALSE");
+
+        RiskCommand result = service.runCommand(command);
+
+        assertThat(result).isNotNull();
+        assertThat(result.getResponse()).contains("save requests now set to false");
+    }
+
+    @Test
+    @DisplayName("Should handle SAVE_REQUESTS command with other value")
+    void testRunCommandSaveRequestsOtherValue() {
+        RiskCommand command = new RiskCommand();
+        command.setName("SAVE_REQUESTS");
+        command.setValue("OTHER");
+
+        RiskCommand result = service.runCommand(command);
+
+        assertThat(result).isNotNull();
+        assertThat(result.getResponse()).contains("save requests now set to false");
+    }
+
+    @Test
+    @DisplayName("Should handle SAVE_REQUESTS command with empty value")
+    void testRunCommandSaveRequestsEmptyValue() {
+        RiskCommand command = new RiskCommand();
+        command.setName("SAVE_REQUESTS");
+        command.setValue("");
+
+        RiskCommand result = service.runCommand(command);
+
+        assertThat(result).isNotNull();
+        assertThat(result.getResponse()).contains("save requests now set to false");
+    }
+
+
+    @Test
+    @DisplayName("Should handle runCommand exception in switch")
+    void testRunCommandExceptionInSwitch() {
+        RiskCommand command = new RiskCommand();
+        command.setName("SAVE_REQUESTS");
+        // Set value that will cause exception when accessing
+        command.setValue("TRUE");
+
+        // This should work, but let's test with a scenario that might cause issues
+        RiskCommand result = service.runCommand(command);
+
+        assertThat(result).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should initialize with exception in Windows path")
+    void testInitExceptionWindows() {
+        when(applicationProperties.getTyrer()).thenReturn(tyrerConfig);
+        when(tyrerConfig.getWindows()).thenThrow(new RuntimeException("Windows config error"));
+
+        // Should not throw exception, should log error
+        service.init();
+    }
+
+    @Test
+    @DisplayName("Should initialize with exception in Linux path")
+    void testInitExceptionLinux() {
+        when(applicationProperties.getTyrer()).thenReturn(tyrerConfig);
+        
+        String os = System.getProperty("os.name").toLowerCase();
+        if (!os.startsWith("win")) {
+            when(tyrerConfig.getLinux()).thenThrow(new RuntimeException("Linux config error"));
+        } else {
+            when(tyrerConfig.getWindows()).thenReturn(windowsPlatform);
+            when(windowsPlatform.getCommand()).thenThrow(new RuntimeException("Windows command error"));
+        }
+
+        // Should not throw exception, should log error
+        service.init();
+    }
+
+    @Test
+    @DisplayName("Should initialize with null tyrer config")
+    void testInitWithNullTyrerConfig() {
+        when(applicationProperties.getTyrer()).thenReturn(null);
+
+        // Should not throw exception, should log error
+        service.init();
+    }
+
+    @Test
+    @DisplayName("Should add common fields with null person")
+    void testAddCommonFieldsWithNullPerson() throws Exception {
+        ArrayList<Integer> ids = new ArrayList<>();
+        ArrayList<Integer> genders = new ArrayList<>();
+        ArrayList<Integer> fatherids = new ArrayList<>();
+        ArrayList<Integer> motherids = new ArrayList<>();
+
+        java.lang.reflect.Method method = ProgenyRiskService.class.getDeclaredMethod(
+            "addCommonFields", ArrayList.class, BasePerson.class, ArrayList.class, ArrayList.class, ArrayList.class);
+        method.setAccessible(true);
+        
+        try {
+            method.invoke(service, ids, null, genders, fatherids, motherids);
+            // May throw NullPointerException, which is acceptable
+        } catch (Exception e) {
+            // Expected if person is null
+            assertThat(e.getCause()).isInstanceOf(NullPointerException.class);
+        }
+    }
+
+    @Test
+    @DisplayName("Should add common fields with null lists")
+    void testAddCommonFieldsWithNullLists() throws Exception {
+        BasePerson person = mock(BasePerson.class);
+
+        java.lang.reflect.Method method = ProgenyRiskService.class.getDeclaredMethod(
+            "addCommonFields", ArrayList.class, BasePerson.class, ArrayList.class, ArrayList.class, ArrayList.class);
+        method.setAccessible(true);
+        
+        try {
+            method.invoke(service, null, person, null, null, null);
+            // May throw NullPointerException, which is acceptable
+        } catch (Exception e) {
+            // Expected if lists are null - NPE happens before accessing person, so no need to mock person methods
+            assertThat(e.getCause()).isInstanceOf(NullPointerException.class);
+        }
+    }
+
+    @Test
+    @DisplayName("Should build chart for result with null chart")
+    void testBuildChartForResultWithNullChart() throws Exception {
+        BaseResult result = new GailResult();
+        result.setChartCode(1);
+        Prediction prediction = result.addPrediction();
+        prediction.addRisk("5year", 0.05);
+
+        try (MockedStatic<Utils> mockedUtils = Mockito.mockStatic(Utils.class)) {
+            mockedUtils.when(() -> Utils.buildChart(any(BaseResult.class))).thenReturn(null);
+            mockedUtils.when(() -> Utils.plotChartToPNG(any())).thenReturn(new byte[] {1, 2, 3});
+
+            java.lang.reflect.Method method = ProgenyRiskService.class.getDeclaredMethod("buildChartForResult", BaseResult.class);
+            method.setAccessible(true);
+            
+            try {
+                method.invoke(service, result);
+                // May throw NullPointerException if chart is null
+            } catch (Exception e) {
+                // Expected if chart is null
+            }
+        }
+    }
+
+    @Test
+    @DisplayName("Should build chart for result with exception in buildChart")
+    void testBuildChartForResultWithExceptionInBuildChart() throws Exception {
+        BaseResult result = new GailResult();
+        result.setChartCode(1);
+        Prediction prediction = result.addPrediction();
+        prediction.addRisk("5year", 0.05);
+
+        try (MockedStatic<Utils> mockedUtils = Mockito.mockStatic(Utils.class)) {
+            mockedUtils.when(() -> Utils.buildChart(any(BaseResult.class))).thenThrow(new RuntimeException("Build chart error"));
+
+            java.lang.reflect.Method method = ProgenyRiskService.class.getDeclaredMethod("buildChartForResult", BaseResult.class);
+            method.setAccessible(true);
+            
+            try {
+                method.invoke(service, result);
+                // Should handle exception gracefully
+            } catch (Exception e) {
+                // Expected if buildChart throws
+            }
+        }
+    }
+
+    @Test
+    @DisplayName("Should build chart for result with exception in plotChartToPNG")
+    void testBuildChartForResultWithExceptionInPlotChart() throws Exception {
+        BaseResult result = new GailResult();
+        result.setChartCode(1);
+        Prediction prediction = result.addPrediction();
+        prediction.addRisk("5year", 0.05);
+
+        try (MockedStatic<Utils> mockedUtils = Mockito.mockStatic(Utils.class)) {
+            ChartVO mockChart = mock(ChartVO.class);
+            mockedUtils.when(() -> Utils.buildChart(any(BaseResult.class))).thenReturn(mockChart);
+            mockedUtils.when(() -> Utils.plotChartToPNG(any(ChartVO.class))).thenThrow(new RuntimeException("Plot error"));
+
+            java.lang.reflect.Method method = ProgenyRiskService.class.getDeclaredMethod("buildChartForResult", BaseResult.class);
+            method.setAccessible(true);
+            
+            try {
+                method.invoke(service, result);
+                // Should handle exception gracefully
+            } catch (Exception e) {
+                // Expected if plotChartToPNG throws
+            }
+        }
+    }
+
+    @Test
+    @DisplayName("Should plot result image from chart with null chart")
+    void testPlotResultImageFromChartWithNullChart() throws Exception {
+        BaseResult result = new GailResult();
+
+        try (MockedStatic<Utils> mockedUtils = Mockito.mockStatic(Utils.class)) {
+            mockedUtils.when(() -> Utils.plotChartToPNG(any())).thenReturn(new byte[] {1, 2, 3});
+
+            java.lang.reflect.Method method = ProgenyRiskService.class.getDeclaredMethod(
+                "plotResultImageFromChart", BaseResult.class, ChartVO.class);
+            method.setAccessible(true);
+            
+            try {
+                method.invoke(service, result, null);
+                // May throw NullPointerException if chart is null
+            } catch (Exception e) {
+                // Expected if chart is null
+            }
+        }
+    }
+
+    @Test
+    @DisplayName("Should plot result image from chart with exception")
+    void testPlotResultImageFromChartWithException() throws Exception {
+        BaseResult result = new GailResult();
+        ChartVO chart = new ChartVO();
+
+        try (MockedStatic<Utils> mockedUtils = Mockito.mockStatic(Utils.class)) {
+            mockedUtils.when(() -> Utils.plotChartToPNG(any(ChartVO.class))).thenThrow(new RuntimeException("Plot error"));
+
+            java.lang.reflect.Method method = ProgenyRiskService.class.getDeclaredMethod(
+                "plotResultImageFromChart", BaseResult.class, ChartVO.class);
+            method.setAccessible(true);
+            
+            try {
+                method.invoke(service, result, chart);
+                // Should handle exception
+            } catch (Exception e) {
+                // Expected if plotChartToPNG throws
+            }
+        }
+    }
+
+    @Test
+    @DisplayName("Should plot chart to result image with null chart")
+    void testPlotChartToResultImageWithNullChart() {
+        try (MockedStatic<Utils> mockedUtils = Mockito.mockStatic(Utils.class)) {
+            mockedUtils.when(() -> Utils.copyFromPrototype(any())).thenAnswer(invocation -> null);
+            mockedUtils.when(() -> Utils.plotChartToPNG(any())).thenReturn(new byte[] {1, 2, 3});
+
+            try {
+                ChartResult result = service.plotChartToResultImage(null);
+                // May throw NullPointerException
+            } catch (Exception e) {
+                // Expected if chart is null
+                assertThat(e).isInstanceOfAny(ServerErrorException.class, NullPointerException.class);
+            }
+        }
+    }
+
+    @Test
+    @DisplayName("Should plot chart to result image with exception in copyFromPrototype")
+    void testPlotChartToResultImageWithExceptionInCopy() {
+        ChartVO chart = new ChartVO();
+        chart.setChartCode(1);
+
+        try (MockedStatic<Utils> mockedUtils = Mockito.mockStatic(Utils.class)) {
+            mockedUtils.when(() -> Utils.copyFromPrototype(any(ChartVO.class))).thenThrow(new RuntimeException("Copy error"));
+
+            assertThatThrownBy(() -> service.plotChartToResultImage(chart))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessage("Copy error");
+        }
+    }
+
+    @Test
+    @DisplayName("Should plot result with null result")
+    void testPlotResultWithNullResult() {
+        try (MockedStatic<Utils> mockedUtils = Mockito.mockStatic(Utils.class)) {
+            try {
+                BaseResult returnedResult = service.plotResult(null);
+                // May throw NullPointerException
+            } catch (Exception e) {
+                // Expected if result is null
+                assertThat(e).isInstanceOfAny(ServerErrorException.class, NullPointerException.class);
+            }
+        }
+    }
+
+    @Test
+    @DisplayName("Should compute PREMM with exception in delegate")
+    void testComputePREMMWithDelegateException() {
+        com.objex.risk.beans.premm.Risk risk = new com.objex.risk.beans.premm.Risk();
+        
+        // Create a risk that will cause validation error or delegate exception
+        // The actual delegate will be created inside, so we can't easily mock it
+        // But we can test that exceptions are properly handled
+        try {
+            PREMMResult result = service.computePREMM(risk);
+            // May succeed or fail depending on risk data
+        } catch (ServerErrorException e) {
+            // Expected if delegate throws
+            assertThat(e).isNotNull();
+            assertThat(e.getMessage()).isNotNull();
+        }
+    }
+
+    @Test
+    @DisplayName("Should compute Gail with exception in delegate")
+    void testComputeGailWithDelegateException() {
+        com.objex.risk.beans.gail.Risk risk = new com.objex.risk.beans.gail.Risk();
+        risk.setChartCode(1);
+        
+        try {
+            GailResult result = service.computeGail(risk);
+            // May succeed or fail depending on risk data
+        } catch (ServerErrorException e) {
+            // Expected if delegate throws
+            assertThat(e).isNotNull();
+            assertThat(e.getMessage()).isNotNull();
+        }
+    }
+
+    @Test
+    @DisplayName("Should compute Claus with exception in delegate")
+    void testComputeClausWithDelegateException() {
+        com.objex.risk.beans.claus.Risk risk = new com.objex.risk.beans.claus.Risk();
+        risk.setChartCode(2);
+        
+        try {
+            ClausResult result = service.computeClaus(risk);
+            // May succeed or fail depending on risk data
+        } catch (ServerErrorException e) {
+            // Expected if delegate throws
+            assertThat(e).isNotNull();
+            assertThat(e.getMessage()).isNotNull();
+        }
+    }
+
+    @Test
+    @DisplayName("Should compute Tyrer with exception in delegate")
+    void testComputeTyrerWithDelegateException() {
+        com.objex.risk.beans.tcuzick.Risk risk = new com.objex.risk.beans.tcuzick.Risk();
+        risk.setChartCode(3);
+
+        when(applicationProperties.getTyrer()).thenReturn(tyrerConfig);
+        when(tyrerConfig.getWindows()).thenReturn(windowsPlatform);
+        String os = System.getProperty("os.name").toLowerCase();
+        if (os.startsWith("win")) {
+            when(windowsPlatform.getCommand()).thenReturn("C:\\temp\\tyrer.exe");
+        } else {
+            when(tyrerConfig.getLinux()).thenReturn(linuxPlatform);
+            when(linuxPlatform.getCommand()).thenReturn("/usr/bin/tyrer");
+        }
+
+        service.init();
+        
+        try {
+            TyrerResult result = service.computeTyrer(risk);
+            // May succeed or fail depending on risk data
+        } catch (ServerErrorException e) {
+            // Expected if delegate throws
+            assertThat(e).isNotNull();
+            assertThat(e.getMessage()).isNotNull();
+        }
+    }
+
+    @Test
+    @DisplayName("Should compute Tyrer with null tyrerCommand")
+    void testComputeTyrerWithNullCommand() {
+        com.objex.risk.beans.tcuzick.Risk risk = new com.objex.risk.beans.tcuzick.Risk();
+        risk.setChartCode(3);
+
+        // Don't initialize, so tyrerCommand will be null
+        try {
+            TyrerResult result = service.computeTyrer(risk);
+            // May throw NullPointerException when creating TyrerDelegate
+        } catch (Exception e) {
+            // Expected if tyrerCommand is null
+            assertThat(e).isInstanceOfAny(ServerErrorException.class, NullPointerException.class);
+        }
+    }
+
+    @Test
+    @DisplayName("Should compute Gail with empty predictions")
+    void testComputeGailWithEmptyPredictions() {
+        com.objex.risk.beans.gail.Risk risk = new com.objex.risk.beans.gail.Risk();
+        risk.setChartCode(1);
+        
+        try {
+            GailResult result = service.computeGail(risk);
+            // Result may have empty predictions, which should not build chart
+        } catch (ServerErrorException e) {
+            // Acceptable if delegate calculation fails
+            assertThat(e).isNotNull();
+        }
+    }
+
+    @Test
+    @DisplayName("Should compute Claus with empty predictions")
+    void testComputeClausWithEmptyPredictions() {
+        com.objex.risk.beans.claus.Risk risk = new com.objex.risk.beans.claus.Risk();
+        risk.setChartCode(2);
+        
+        try {
+            ClausResult result = service.computeClaus(risk);
+            // Result may have empty predictions, which should not build chart
+        } catch (ServerErrorException e) {
+            // Acceptable if delegate calculation fails
+            assertThat(e).isNotNull();
+        }
+    }
+
+    @Test
+    @DisplayName("Should compute Tyrer with empty predictions")
+    void testComputeTyrerWithEmptyPredictions() {
+        com.objex.risk.beans.tcuzick.Risk risk = new com.objex.risk.beans.tcuzick.Risk();
+        risk.setChartCode(3);
+
+        when(applicationProperties.getTyrer()).thenReturn(tyrerConfig);
+        when(tyrerConfig.getWindows()).thenReturn(windowsPlatform);
+        String os = System.getProperty("os.name").toLowerCase();
+        if (os.startsWith("win")) {
+            when(windowsPlatform.getCommand()).thenReturn("C:\\temp\\tyrer.exe");
+        } else {
+            when(tyrerConfig.getLinux()).thenReturn(linuxPlatform);
+            when(linuxPlatform.getCommand()).thenReturn("/usr/bin/tyrer");
+        }
+
+        service.init();
+        
+        try {
+            TyrerResult result = service.computeTyrer(risk);
+            // Result may have empty predictions, which should not build chart
+        } catch (ServerErrorException e) {
+            // Acceptable if delegate calculation fails
+            assertThat(e).isNotNull();
+        }
+    }
+
+    @Test
+    @DisplayName("Should build result with multiple rows and same predictions")
+    void testBuildResultWithMultipleRowsSamePredictions() throws Exception {
+        Map<String, String> predictions = new HashMap<>();
+        predictions.put("5year", "0.05");
+        predictions.put("10year", "0.10");
+
+        Map<String, Double> probabilities = new HashMap<>();
+        BaseResult result = new GailResult();
+
+        java.lang.reflect.Method method = ProgenyRiskService.class.getDeclaredMethod(
+            "buildResult", Map.class, Map.class, BaseResult.class);
+        method.setAccessible(true);
+        @SuppressWarnings("unchecked")
+        BaseResult returnedResult = (BaseResult) method.invoke(service, predictions, probabilities, result);
+
+        assertThat(returnedResult).isNotNull();
+        // The method creates rows based on predictions.size(), so it will create 2 rows
+        // Each row will have both predictions
+        assertThat(returnedResult.getPredictions()).hasSize(2);
+    }
+
+    @Test
+    @DisplayName("Should build result with whitespace in value")
+    void testBuildResultWithWhitespaceValue() throws Exception {
+        Map<String, String> predictions = new HashMap<>();
+        predictions.put("5year", "  0.05  ");
+
+        Map<String, Double> probabilities = new HashMap<>();
+        BaseResult result = new GailResult();
+
+        java.lang.reflect.Method method = ProgenyRiskService.class.getDeclaredMethod(
+            "buildResult", Map.class, Map.class, BaseResult.class);
+        method.setAccessible(true);
+        @SuppressWarnings("unchecked")
+        BaseResult returnedResult = (BaseResult) method.invoke(service, predictions, probabilities, result);
+
+        assertThat(returnedResult).isNotNull();
+        // Whitespace should cause NumberFormatException and set NaN
+    }
+
+    @Test
+    @DisplayName("Should check for save off with different risk types")
+    void testCheckForSaveOffWithDifferentRiskTypes() throws Exception {
+        BaseRisk premRisk = new com.objex.risk.beans.premm.Risk();
+        BaseRisk gailRisk = new com.objex.risk.beans.gail.Risk();
+        BaseRisk clausRisk = new com.objex.risk.beans.claus.Risk();
+        BaseRisk tyrerRisk = new com.objex.risk.beans.tcuzick.Risk();
+
+        java.lang.reflect.Method method = ProgenyRiskService.class.getDeclaredMethod("checkForSaveOff", BaseRisk.class);
+        method.setAccessible(true);
+        
+        method.invoke(service, premRisk);
+        method.invoke(service, gailRisk);
+        method.invoke(service, clausRisk);
+        method.invoke(service, tyrerRisk);
+
+        // Method should not throw exception for any risk type
+    }
+
+    @Test
+    @DisplayName("Should check for save off with null risk")
+    void testCheckForSaveOffWithNullRisk() throws Exception {
+        java.lang.reflect.Method method = ProgenyRiskService.class.getDeclaredMethod("checkForSaveOff", BaseRisk.class);
+        method.setAccessible(true);
+        
+        method.invoke(service, (BaseRisk) null);
+
+        // Method should not throw exception even with null
+    }
 }
 

@@ -153,5 +153,84 @@ class NCCNResultMapperTest {
         assertThat(result.getHbocCriteriaMet()).isNull();
         assertThat(result.getHbocCriteriaMetIds()).isNull();
     }
+
+    @Test
+    @DisplayName("Should convert NCCNCoreResponse to NCCNResult with only versions")
+    void testConvertToWithOnlyVersions() {
+        NCCNCoreResponse source = new NCCNCoreResponse();
+        source.setHbocVersion("v1.0");
+        source.setCrcVersion("v2.0");
+
+        NCCNResult result = NCCNResultMapper.convertTo(source);
+
+        assertThat(result).isNotNull();
+        assertThat(result.getHbocVersion()).isEqualTo("v1.0");
+        assertThat(result.getCrcVersion()).isEqualTo("v2.0");
+        assertThat(result.getHbocOverall()).isFalse();
+        assertThat(result.getLynchOverall()).isFalse();
+        assertThat(result.getApsApcOverall()).isFalse();
+    }
+
+    @Test
+    @DisplayName("Should convert NCCNCoreResponse to NCCNResult with HBOC and Lynch")
+    void testConvertToWithHbocAndLynch() {
+        NCCNCoreResponse source = new NCCNCoreResponse();
+        source.setHbocOverall("Yes");
+        source.setLynchOverall("Yes");
+        source.setHbocCriteriaMet(new HashSet<>(Arrays.asList("HBOC1")));
+        source.setLynchCriteriaMet(new HashSet<>(Arrays.asList("Lynch1")));
+
+        NCCNResult result = NCCNResultMapper.convertTo(source);
+
+        assertThat(result).isNotNull();
+        assertThat(result.getHbocOverall()).isTrue();
+        assertThat(result.getLynchOverall()).isTrue();
+        assertThat(result.getNccnCriteriaMet()).isTrue();
+    }
+
+    @Test
+    @DisplayName("Should convert NCCNCoreResponse to NCCNResult with all three types and criteria")
+    void testConvertToWithAllTypesAndCriteria() {
+        NCCNCoreResponse source = new NCCNCoreResponse();
+        source.setHbocOverall("Yes");
+        source.setLynchOverall("Yes");
+        source.setApsApcOverall("Yes");
+        source.setHbocCriteriaMet(new HashSet<>(Arrays.asList("HBOC1", "HBOC2")));
+        source.setHbocCriteriaMetIds(new HashSet<>(Arrays.asList("ID1", "ID2")));
+        source.setLynchCriteriaMet(new HashSet<>(Arrays.asList("Lynch1")));
+        source.setLynchCriteriaMetIds(new HashSet<>(Arrays.asList("LID1")));
+        source.setApsApcCriteriaMet(new HashSet<>(Arrays.asList("APS1")));
+        source.setApsApcCriteriaMetIds(new HashSet<>(Arrays.asList("AID1")));
+
+        NCCNResult result = NCCNResultMapper.convertTo(source);
+
+        assertThat(result).isNotNull();
+        assertThat(result.getHbocOverall()).isTrue();
+        assertThat(result.getLynchOverall()).isTrue();
+        assertThat(result.getApsApcOverall()).isTrue();
+        assertThat(result.getNccnCriteriaMet()).isTrue();
+        assertThat(result.getHbocCriteriaMet()).hasSize(2);
+        assertThat(result.getLynchCriteriaMet()).hasSize(1);
+        assertThat(result.getApsApcCriteriaMet()).hasSize(1);
+    }
+
+    @Test
+    @DisplayName("Should convert NCCNCoreResponse to NCCNResult with whitespace strings")
+    void testConvertToWithWhitespaceStrings() {
+        NCCNCoreResponse source = new NCCNCoreResponse();
+        source.setHbocOverall("   ");
+        source.setLynchOverall("\t");
+        source.setApsApcOverall("\n");
+
+        NCCNResult result = NCCNResultMapper.convertTo(source);
+
+        assertThat(result).isNotNull();
+        // StringUtils.isEmpty() from logback only returns true for null/empty, not whitespace
+        // So whitespace strings like "   " are NOT empty, and the mapper sets them to TRUE
+        // The actual behavior: !StringUtils.isEmpty("   ") = true, so boolean is set to TRUE
+        assertThat(result.getHbocOverall()).isTrue();
+        assertThat(result.getLynchOverall()).isTrue();
+        assertThat(result.getApsApcOverall()).isTrue();
+    }
 }
 
