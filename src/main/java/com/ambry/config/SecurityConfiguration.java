@@ -21,9 +21,11 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfiguration {
 
+    private final ApplicationProperties applicationProperties;
     private final UnoFrameworkConfig unoFrameworkConfigProperties;
 
-    public SecurityConfiguration(UnoFrameworkConfig unoFrameworkConfigProperties) {
+    public SecurityConfiguration(ApplicationProperties applicationProperties, UnoFrameworkConfig unoFrameworkConfigProperties) {
+        this.applicationProperties = applicationProperties;
         this.unoFrameworkConfigProperties = unoFrameworkConfigProperties;
     }
 
@@ -48,17 +50,14 @@ public class SecurityConfiguration {
                     .requestMatchers(mvc.pattern("/api/account/reset-password/init")).permitAll()
                     .requestMatchers(mvc.pattern("/api/account/reset-password/finish")).permitAll()
                     .requestMatchers(mvc.pattern("/api/admin/**")).hasAuthority(AuthoritiesConstants.ADMIN)
-                    .requestMatchers(mvc.pattern("/risk/**")).permitAll()
                     .requestMatchers(mvc.pattern("/risk/api/models/swagger-ui/**")).permitAll()
                     .requestMatchers(mvc.pattern("/risk/api/models/api-docs/**")).permitAll()
-                    //.requestMatchers(mvc.pattern("/management/health")).permitAll()
-                    //.requestMatchers(mvc.pattern("/management/health/**")).permitAll()
-                    //.requestMatchers(mvc.pattern("/management/info")).permitAll()
-                    //.requestMatchers(mvc.pattern("/management/prometheus")).permitAll()
                     .requestMatchers(mvc.pattern("/resources/**")).permitAll()
-                    .requestMatchers(mvc.pattern("/calculate/**")).permitAll()
+                    .requestMatchers(mvc.pattern("/calculate/**")).authenticated()
                     .requestMatchers(mvc.pattern("/bayescalculate/**")).permitAll()
                     .requestMatchers(mvc.pattern("/risk/management/**")).hasAuthority(AuthoritiesConstants.ADMIN)
+                    .requestMatchers(mvc.pattern(applicationProperties.getPublicPath() == null ? "/risk/version" : applicationProperties.getPublicPath())).permitAll()
+                    .requestMatchers(mvc.pattern("/risk/api/*/models/**")).authenticated()
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .exceptionHandling(exceptions ->

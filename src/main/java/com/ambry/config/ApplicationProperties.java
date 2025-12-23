@@ -11,7 +11,9 @@ public class ApplicationProperties {
 
     private TyrerConfig tyrer = new TyrerConfig();
     private BayesMendelConfig bayesMendel = new BayesMendelConfig();
-    
+
+    private String publicPath;
+
     public TyrerConfig getTyrer() {
         return tyrer;
     }
@@ -24,6 +26,17 @@ public class ApplicationProperties {
 
     public void setTyrer(TyrerConfig tyrer) {
         this.tyrer = tyrer;
+    }
+    public String getPublicPath() {
+        return publicPath;
+    }
+
+    public void setPublicPath(String publicPath) {
+            if (publicPath == null || publicPath.isBlank()) {
+                this.publicPath = null;
+            } else {
+                this.publicPath = publicPath;
+            }
     }
 
     public class TyrerConfig {
@@ -68,7 +81,7 @@ public class ApplicationProperties {
             }
         }
     }
-    
+
     public class BayesMendelConfig {
 
         private Platform linux;
