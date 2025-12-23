@@ -32,6 +32,7 @@ import com.genomebrain.backend.service.dto.FamilyHistory;
 import com.genomebrain.backend.service.dto.GuidelineDetailsDTO;
 import com.genomebrain.backend.service.dto.NCCNCoreRequest;
 import com.genomebrain.backend.service.dto.NCCNCoreResponse;
+import com.genomebrain.backend.service.dto.PolypDetails;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("CareAPIUtil Unit Tests")
@@ -1214,6 +1215,1492 @@ class CareAPIUtilTest {
         NCCNCoreRequest request = new NCCNCoreRequest();
 
         NCCNCoreResponse result = careAPIUtil.CAREAPIResponseMapper(guidelineDetailsDTO, request);
+
+        assertThat(result).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getFamilyCancerStatus with female cousin")
+    void testGetFamilyCancerStatusWithFemaleCousin() {
+        List<ClinicalHistory> clinicalHistories = new ArrayList<>();
+        ClinicalHistory proband = new ClinicalHistory();
+        proband.setRelationship("Proband");
+        proband.setSexAtBirth("male");
+        proband.setCancerFeatureDetails(Collections.emptyList());
+        clinicalHistories.add(proband);
+
+        ClinicalHistory cousin = new ClinicalHistory();
+        cousin.setRelationship("Cousin - 1st");
+        cousin.setSexAtBirth("female");
+        CancerFeatureDetails cancerFeature = new CancerFeatureDetails();
+        cancerFeature.setCancerFeature("BREAST");
+        cousin.setCancerFeatureDetails(Arrays.asList(cancerFeature));
+        clinicalHistories.add(cousin);
+
+        FamilyHistory familyHistoryObj = new FamilyHistory();
+
+        List<ClinicalHistory> result = careAPIUtil.getFamilyCancerStatus(clinicalHistories, familyHistoryObj);
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+    }
+
+    @Test
+    @DisplayName("Should handle getFamilyCancerStatus with proband having no cancer")
+    void testGetFamilyCancerStatusWithProbandNoCancer() {
+        List<ClinicalHistory> clinicalHistories = new ArrayList<>();
+        ClinicalHistory proband = new ClinicalHistory();
+        proband.setRelationship("Proband");
+        proband.setSexAtBirth("male");
+        proband.setCancerFeatureDetails(Collections.emptyList());
+        clinicalHistories.add(proband);
+
+        FamilyHistory familyHistoryObj = new FamilyHistory();
+
+        List<ClinicalHistory> result = careAPIUtil.getFamilyCancerStatus(clinicalHistories, familyHistoryObj);
+
+        assertThat(result).isNotNull();
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    @DisplayName("Should handle getFamilyCancerStatus with family member having empty cancer feature details")
+    void testGetFamilyCancerStatusWithEmptyCancerFeatureDetails() {
+        List<ClinicalHistory> clinicalHistories = new ArrayList<>();
+        ClinicalHistory proband = new ClinicalHistory();
+        proband.setRelationship("Proband");
+        proband.setSexAtBirth("male");
+        proband.setCancerFeatureDetails(Collections.emptyList());
+        clinicalHistories.add(proband);
+
+        ClinicalHistory familyMember = new ClinicalHistory();
+        familyMember.setRelationship("Mother");
+        familyMember.setSexAtBirth("female");
+        familyMember.setCancerFeatureDetails(Collections.emptyList());
+        clinicalHistories.add(familyMember);
+
+        FamilyHistory familyHistoryObj = new FamilyHistory();
+
+        List<ClinicalHistory> result = careAPIUtil.getFamilyCancerStatus(clinicalHistories, familyHistoryObj);
+
+        assertThat(result).isNotNull();
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    @DisplayName("Should handle parseJson with null JSON")
+    void testParseJsonWithNullJson() {
+        assertThatThrownBy(() -> CareAPIUtil.parseJson(null))
+            .isInstanceOf(Exception.class);
+    }
+
+    @Test
+    @DisplayName("Should handle getQuestionObject with proband cancerOverall NO")
+    void testGetQuestionObjectWithProbandCancerOverallNO() throws ConnectException {
+        NCCNCoreRequest request = new NCCNCoreRequest();
+        List<ClinicalHistory> clinicalHistories = new ArrayList<>();
+        
+        ClinicalHistory proband = new ClinicalHistory();
+        proband.setRelationship("Proband");
+        proband.setSexAtBirth("male");
+        proband.setEthnicity(Arrays.asList("CAUCASIAN"));
+        proband.setCancerOverall("NO");
+        proband.setCancerFeatureDetails(Collections.emptyList());
+        clinicalHistories.add(proband);
+        
+        request.setClinicalHistory(clinicalHistories);
+        
+        GuidelineDetailsDTO guidelineDetailsDTO = new GuidelineDetailsDTO();
+        ClinicalSummary clinicalSummary = new ClinicalSummary();
+        clinicalSummary.setRiskAssessmentNccnForHBOC(Collections.emptySet());
+        guidelineDetailsDTO.setClinicalSummary(clinicalSummary);
+        guidelineDetailsDTO.setHBOC(false);
+        guidelineDetailsDTO.setLYNCH(false);
+        guidelineDetailsDTO.setAPS(false);
+        guidelineDetailsDTO.setReasoningStatementAndTagsSet("{\"reasoningStatements\":[]}");
+        
+        when(guideLineUtility.getClinicalSummaryAndTags(any(), anyBoolean(), any(), anyString(), anyBoolean(), anyBoolean()))
+            .thenReturn(guidelineDetailsDTO);
+
+        NCCNCoreResponse result = careAPIUtil.getQuestionObject(request);
+
+        assertThat(result).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getQuestionObject with proband cancerOverall NOT_PROVIDED")
+    void testGetQuestionObjectWithProbandCancerOverallNOT_PROVIDED() throws ConnectException {
+        NCCNCoreRequest request = new NCCNCoreRequest();
+        List<ClinicalHistory> clinicalHistories = new ArrayList<>();
+        
+        ClinicalHistory proband = new ClinicalHistory();
+        proband.setRelationship("Proband");
+        proband.setSexAtBirth("male");
+        proband.setEthnicity(Arrays.asList("CAUCASIAN"));
+        proband.setCancerOverall("NOT_PROVIDED");
+        proband.setCancerFeatureDetails(Collections.emptyList());
+        clinicalHistories.add(proband);
+        
+        request.setClinicalHistory(clinicalHistories);
+        
+        GuidelineDetailsDTO guidelineDetailsDTO = new GuidelineDetailsDTO();
+        ClinicalSummary clinicalSummary = new ClinicalSummary();
+        clinicalSummary.setRiskAssessmentNccnForHBOC(Collections.emptySet());
+        guidelineDetailsDTO.setClinicalSummary(clinicalSummary);
+        guidelineDetailsDTO.setHBOC(false);
+        guidelineDetailsDTO.setLYNCH(false);
+        guidelineDetailsDTO.setAPS(false);
+        guidelineDetailsDTO.setReasoningStatementAndTagsSet("{\"reasoningStatements\":[]}");
+        
+        when(guideLineUtility.getClinicalSummaryAndTags(any(), anyBoolean(), any(), anyString(), anyBoolean(), anyBoolean()))
+            .thenReturn(guidelineDetailsDTO);
+
+        NCCNCoreResponse result = careAPIUtil.getQuestionObject(request);
+
+        assertThat(result).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getQuestionObject with proband polypOverall YES")
+    void testGetQuestionObjectWithProbandPolypOverallYES() throws ConnectException {
+        NCCNCoreRequest request = new NCCNCoreRequest();
+        List<ClinicalHistory> clinicalHistories = new ArrayList<>();
+        
+        ClinicalHistory proband = new ClinicalHistory();
+        proband.setRelationship("Proband");
+        proband.setSexAtBirth("male");
+        proband.setEthnicity(Arrays.asList("CAUCASIAN"));
+        proband.setCancerOverall("NO");
+        proband.setPolypOverall("YES");
+        PolypDetails polypDetail = new PolypDetails();
+        polypDetail.setPolypType("Adenoma");
+        polypDetail.setExactNumOfPolyps("5");
+        proband.setPolypDetails(Arrays.asList(polypDetail));
+        proband.setCancerFeatureDetails(Collections.emptyList());
+        clinicalHistories.add(proband);
+        
+        request.setClinicalHistory(clinicalHistories);
+        
+        GuidelineDetailsDTO guidelineDetailsDTO = new GuidelineDetailsDTO();
+        ClinicalSummary clinicalSummary = new ClinicalSummary();
+        clinicalSummary.setRiskAssessmentNccnForHBOC(Collections.emptySet());
+        guidelineDetailsDTO.setClinicalSummary(clinicalSummary);
+        guidelineDetailsDTO.setHBOC(false);
+        guidelineDetailsDTO.setLYNCH(false);
+        guidelineDetailsDTO.setAPS(false);
+        guidelineDetailsDTO.setReasoningStatementAndTagsSet("{\"reasoningStatements\":[]}");
+        
+        when(guideLineUtility.getClinicalSummaryAndTags(any(), anyBoolean(), any(), anyString(), anyBoolean(), anyBoolean()))
+            .thenReturn(guidelineDetailsDTO);
+
+        NCCNCoreResponse result = careAPIUtil.getQuestionObject(request);
+
+        assertThat(result).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getQuestionObject with proband polypOverall NO")
+    void testGetQuestionObjectWithProbandPolypOverallNO() throws ConnectException {
+        NCCNCoreRequest request = new NCCNCoreRequest();
+        List<ClinicalHistory> clinicalHistories = new ArrayList<>();
+        
+        ClinicalHistory proband = new ClinicalHistory();
+        proband.setRelationship("Proband");
+        proband.setSexAtBirth("male");
+        proband.setEthnicity(Arrays.asList("CAUCASIAN"));
+        proband.setCancerOverall("NO");
+        proband.setPolypOverall("NO");
+        proband.setCancerFeatureDetails(Collections.emptyList());
+        clinicalHistories.add(proband);
+        
+        request.setClinicalHistory(clinicalHistories);
+        
+        GuidelineDetailsDTO guidelineDetailsDTO = new GuidelineDetailsDTO();
+        ClinicalSummary clinicalSummary = new ClinicalSummary();
+        clinicalSummary.setRiskAssessmentNccnForHBOC(Collections.emptySet());
+        guidelineDetailsDTO.setClinicalSummary(clinicalSummary);
+        guidelineDetailsDTO.setHBOC(false);
+        guidelineDetailsDTO.setLYNCH(false);
+        guidelineDetailsDTO.setAPS(false);
+        guidelineDetailsDTO.setReasoningStatementAndTagsSet("{\"reasoningStatements\":[]}");
+        
+        when(guideLineUtility.getClinicalSummaryAndTags(any(), anyBoolean(), any(), anyString(), anyBoolean(), anyBoolean()))
+            .thenReturn(guidelineDetailsDTO);
+
+        NCCNCoreResponse result = careAPIUtil.getQuestionObject(request);
+
+        assertThat(result).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getQuestionObject with proband polypOverall NOT_PROVIDED")
+    void testGetQuestionObjectWithProbandPolypOverallNOT_PROVIDED() throws ConnectException {
+        NCCNCoreRequest request = new NCCNCoreRequest();
+        List<ClinicalHistory> clinicalHistories = new ArrayList<>();
+        
+        ClinicalHistory proband = new ClinicalHistory();
+        proband.setRelationship("Proband");
+        proband.setSexAtBirth("male");
+        proband.setEthnicity(Arrays.asList("CAUCASIAN"));
+        proband.setCancerOverall("NO");
+        proband.setPolypOverall("NOT_PROVIDED");
+        proband.setCancerFeatureDetails(Collections.emptyList());
+        clinicalHistories.add(proband);
+        
+        request.setClinicalHistory(clinicalHistories);
+        
+        GuidelineDetailsDTO guidelineDetailsDTO = new GuidelineDetailsDTO();
+        ClinicalSummary clinicalSummary = new ClinicalSummary();
+        clinicalSummary.setRiskAssessmentNccnForHBOC(Collections.emptySet());
+        guidelineDetailsDTO.setClinicalSummary(clinicalSummary);
+        guidelineDetailsDTO.setHBOC(false);
+        guidelineDetailsDTO.setLYNCH(false);
+        guidelineDetailsDTO.setAPS(false);
+        guidelineDetailsDTO.setReasoningStatementAndTagsSet("{\"reasoningStatements\":[]}");
+        
+        when(guideLineUtility.getClinicalSummaryAndTags(any(), anyBoolean(), any(), anyString(), anyBoolean(), anyBoolean()))
+            .thenReturn(guidelineDetailsDTO);
+
+        NCCNCoreResponse result = careAPIUtil.getQuestionObject(request);
+
+        assertThat(result).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getQuestionObject with proband polyp with exactNumOfPolyps > 9")
+    void testGetQuestionObjectWithProbandPolypExactNumGreaterThan9() throws ConnectException {
+        NCCNCoreRequest request = new NCCNCoreRequest();
+        List<ClinicalHistory> clinicalHistories = new ArrayList<>();
+        
+        ClinicalHistory proband = new ClinicalHistory();
+        proband.setRelationship("Proband");
+        proband.setSexAtBirth("male");
+        proband.setEthnicity(Arrays.asList("CAUCASIAN"));
+        proband.setCancerOverall("NO");
+        proband.setPolypOverall("YES");
+        PolypDetails polypDetail = new PolypDetails();
+        polypDetail.setPolypType("Adenoma");
+        polypDetail.setExactNumOfPolyps("15");
+        proband.setPolypDetails(Arrays.asList(polypDetail));
+        proband.setCancerFeatureDetails(Collections.emptyList());
+        clinicalHistories.add(proband);
+        
+        request.setClinicalHistory(clinicalHistories);
+        
+        GuidelineDetailsDTO guidelineDetailsDTO = new GuidelineDetailsDTO();
+        ClinicalSummary clinicalSummary = new ClinicalSummary();
+        clinicalSummary.setRiskAssessmentNccnForHBOC(Collections.emptySet());
+        guidelineDetailsDTO.setClinicalSummary(clinicalSummary);
+        guidelineDetailsDTO.setHBOC(false);
+        guidelineDetailsDTO.setLYNCH(false);
+        guidelineDetailsDTO.setAPS(false);
+        guidelineDetailsDTO.setReasoningStatementAndTagsSet("{\"reasoningStatements\":[]}");
+        
+        when(guideLineUtility.getClinicalSummaryAndTags(any(), anyBoolean(), any(), anyString(), anyBoolean(), anyBoolean()))
+            .thenReturn(guidelineDetailsDTO);
+
+        NCCNCoreResponse result = careAPIUtil.getQuestionObject(request);
+
+        assertThat(result).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getQuestionObject with proband polyp with minNumOfPolyps > 9")
+    void testGetQuestionObjectWithProbandPolypMinNumGreaterThan9() throws ConnectException {
+        NCCNCoreRequest request = new NCCNCoreRequest();
+        List<ClinicalHistory> clinicalHistories = new ArrayList<>();
+        
+        ClinicalHistory proband = new ClinicalHistory();
+        proband.setRelationship("Proband");
+        proband.setSexAtBirth("male");
+        proband.setEthnicity(Arrays.asList("CAUCASIAN"));
+        proband.setCancerOverall("NO");
+        proband.setPolypOverall("YES");
+        PolypDetails polypDetail = new PolypDetails();
+        polypDetail.setPolypType("Adenoma");
+        polypDetail.setMinNumOfPolyps("12");
+        proband.setPolypDetails(Arrays.asList(polypDetail));
+        proband.setCancerFeatureDetails(Collections.emptyList());
+        clinicalHistories.add(proband);
+        
+        request.setClinicalHistory(clinicalHistories);
+        
+        GuidelineDetailsDTO guidelineDetailsDTO = new GuidelineDetailsDTO();
+        ClinicalSummary clinicalSummary = new ClinicalSummary();
+        clinicalSummary.setRiskAssessmentNccnForHBOC(Collections.emptySet());
+        guidelineDetailsDTO.setClinicalSummary(clinicalSummary);
+        guidelineDetailsDTO.setHBOC(false);
+        guidelineDetailsDTO.setLYNCH(false);
+        guidelineDetailsDTO.setAPS(false);
+        guidelineDetailsDTO.setReasoningStatementAndTagsSet("{\"reasoningStatements\":[]}");
+        
+        when(guideLineUtility.getClinicalSummaryAndTags(any(), anyBoolean(), any(), anyString(), anyBoolean(), anyBoolean()))
+            .thenReturn(guidelineDetailsDTO);
+
+        NCCNCoreResponse result = careAPIUtil.getQuestionObject(request);
+
+        assertThat(result).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getQuestionObject with proband polyp with otherNumOfPolyps NUMEROUS")
+    void testGetQuestionObjectWithProbandPolypOtherNumNumerous() throws ConnectException {
+        NCCNCoreRequest request = new NCCNCoreRequest();
+        List<ClinicalHistory> clinicalHistories = new ArrayList<>();
+        
+        ClinicalHistory proband = new ClinicalHistory();
+        proband.setRelationship("Proband");
+        proband.setSexAtBirth("male");
+        proband.setEthnicity(Arrays.asList("CAUCASIAN"));
+        proband.setCancerOverall("NO");
+        proband.setPolypOverall("YES");
+        PolypDetails polypDetail = new PolypDetails();
+        polypDetail.setPolypType("Adenoma");
+        polypDetail.setOtherNumOfPolyps("NUMEROUS");
+        proband.setPolypDetails(Arrays.asList(polypDetail));
+        proband.setCancerFeatureDetails(Collections.emptyList());
+        clinicalHistories.add(proband);
+        
+        request.setClinicalHistory(clinicalHistories);
+        
+        GuidelineDetailsDTO guidelineDetailsDTO = new GuidelineDetailsDTO();
+        ClinicalSummary clinicalSummary = new ClinicalSummary();
+        clinicalSummary.setRiskAssessmentNccnForHBOC(Collections.emptySet());
+        guidelineDetailsDTO.setClinicalSummary(clinicalSummary);
+        guidelineDetailsDTO.setHBOC(false);
+        guidelineDetailsDTO.setLYNCH(false);
+        guidelineDetailsDTO.setAPS(false);
+        guidelineDetailsDTO.setReasoningStatementAndTagsSet("{\"reasoningStatements\":[]}");
+        
+        when(guideLineUtility.getClinicalSummaryAndTags(any(), anyBoolean(), any(), anyString(), anyBoolean(), anyBoolean()))
+            .thenReturn(guidelineDetailsDTO);
+
+        NCCNCoreResponse result = careAPIUtil.getQuestionObject(request);
+
+        assertThat(result).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getQuestionObject with proband polyp with non-adenoma type")
+    void testGetQuestionObjectWithProbandPolypNonAdenoma() throws ConnectException {
+        NCCNCoreRequest request = new NCCNCoreRequest();
+        List<ClinicalHistory> clinicalHistories = new ArrayList<>();
+        
+        ClinicalHistory proband = new ClinicalHistory();
+        proband.setRelationship("Proband");
+        proband.setSexAtBirth("male");
+        proband.setEthnicity(Arrays.asList("CAUCASIAN"));
+        proband.setCancerOverall("NO");
+        proband.setPolypOverall("YES");
+        PolypDetails polypDetail = new PolypDetails();
+        polypDetail.setPolypType("Hyperplastic");
+        proband.setPolypDetails(Arrays.asList(polypDetail));
+        proband.setCancerFeatureDetails(Collections.emptyList());
+        clinicalHistories.add(proband);
+        
+        request.setClinicalHistory(clinicalHistories);
+        
+        GuidelineDetailsDTO guidelineDetailsDTO = new GuidelineDetailsDTO();
+        ClinicalSummary clinicalSummary = new ClinicalSummary();
+        clinicalSummary.setRiskAssessmentNccnForHBOC(Collections.emptySet());
+        guidelineDetailsDTO.setClinicalSummary(clinicalSummary);
+        guidelineDetailsDTO.setHBOC(false);
+        guidelineDetailsDTO.setLYNCH(false);
+        guidelineDetailsDTO.setAPS(false);
+        guidelineDetailsDTO.setReasoningStatementAndTagsSet("{\"reasoningStatements\":[]}");
+        
+        when(guideLineUtility.getClinicalSummaryAndTags(any(), anyBoolean(), any(), anyString(), anyBoolean(), anyBoolean()))
+            .thenReturn(guidelineDetailsDTO);
+
+        NCCNCoreResponse result = careAPIUtil.getQuestionObject(request);
+
+        assertThat(result).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getQuestionObject with proband Desmoids cancer feature")
+    void testGetQuestionObjectWithProbandDesmoids() throws ConnectException {
+        NCCNCoreRequest request = new NCCNCoreRequest();
+        List<ClinicalHistory> clinicalHistories = new ArrayList<>();
+        
+        ClinicalHistory proband = new ClinicalHistory();
+        proband.setRelationship("Proband");
+        proband.setSexAtBirth("male");
+        proband.setEthnicity(Arrays.asList("CAUCASIAN"));
+        proband.setCancerOverall("YES");
+        CancerFeatureDetails desmoids = new CancerFeatureDetails();
+        desmoids.setCancerFeature("DESMOIDS");
+        proband.setCancerFeatureDetails(Arrays.asList(desmoids));
+        clinicalHistories.add(proband);
+        
+        request.setClinicalHistory(clinicalHistories);
+        
+        GuidelineDetailsDTO guidelineDetailsDTO = new GuidelineDetailsDTO();
+        ClinicalSummary clinicalSummary = new ClinicalSummary();
+        clinicalSummary.setRiskAssessmentNccnForHBOC(Collections.emptySet());
+        guidelineDetailsDTO.setClinicalSummary(clinicalSummary);
+        guidelineDetailsDTO.setHBOC(false);
+        guidelineDetailsDTO.setLYNCH(false);
+        guidelineDetailsDTO.setAPS(false);
+        guidelineDetailsDTO.setReasoningStatementAndTagsSet("{\"reasoningStatements\":[]}");
+        
+        when(guideLineUtility.getClinicalSummaryAndTags(any(), anyBoolean(), any(), anyString(), anyBoolean(), anyBoolean()))
+            .thenReturn(guidelineDetailsDTO);
+
+        NCCNCoreResponse result = careAPIUtil.getQuestionObject(request);
+
+        assertThat(result).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with minDxAge for proband")
+    void testGetCancerObjectWithMinDxAgeForProband() {
+        List<CancerFeatureDetails> cancerFeatureDetailsList = new ArrayList<>();
+        CancerFeatureDetails cancer = new CancerFeatureDetails();
+        cancer.setCancerFeature("BREAST");
+        cancer.setMinDxAge("45");
+        cancerFeatureDetailsList.add(cancer);
+        
+        CancerDetails personalCancer = new CancerDetails();
+
+        careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
+
+        assertThat(personalCancer.getBreast()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with maxDxAge for proband")
+    void testGetCancerObjectWithMaxDxAgeForProband() {
+        List<CancerFeatureDetails> cancerFeatureDetailsList = new ArrayList<>();
+        CancerFeatureDetails cancer = new CancerFeatureDetails();
+        cancer.setCancerFeature("BREAST");
+        cancer.setMaxDxAge("50");
+        cancerFeatureDetailsList.add(cancer);
+        
+        CancerDetails personalCancer = new CancerDetails();
+
+        careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
+
+        assertThat(personalCancer.getBreast()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with otherDxAge for proband")
+    void testGetCancerObjectWithOtherDxAgeForProband() {
+        List<CancerFeatureDetails> cancerFeatureDetailsList = new ArrayList<>();
+        CancerFeatureDetails cancer = new CancerFeatureDetails();
+        cancer.setCancerFeature("BREAST");
+        cancer.setOtherDxAge("PRENATAL");
+        cancerFeatureDetailsList.add(cancer);
+        
+        CancerDetails personalCancer = new CancerDetails();
+
+        careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
+
+        assertThat(personalCancer.getBreast()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Breast cancer ipsilateral for proband")
+    void testGetCancerObjectWithBreastIpsilateralForProband() {
+        List<CancerFeatureDetails> cancerFeatureDetailsList = new ArrayList<>();
+        CancerFeatureDetails breastCancer = new CancerFeatureDetails();
+        breastCancer.setCancerFeature("BREAST");
+        breastCancer.setExactDxAge("45");
+        breastCancer.setBreastIpsilateral("Yes");
+        cancerFeatureDetailsList.add(breastCancer);
+        
+        CancerDetails personalCancer = new CancerDetails();
+
+        careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
+
+        assertThat(personalCancer.getBreast()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Breast cancer ER positive for proband")
+    void testGetCancerObjectWithBreastERPositiveForProband() {
+        List<CancerFeatureDetails> cancerFeatureDetailsList = new ArrayList<>();
+        CancerFeatureDetails breastCancer = new CancerFeatureDetails();
+        breastCancer.setCancerFeature("BREAST");
+        breastCancer.setExactDxAge("45");
+        breastCancer.setBreastEr("Positive");
+        breastCancer.setBreastPr("Positive");
+        breastCancer.setBreastHer2("Positive");
+        cancerFeatureDetailsList.add(breastCancer);
+        
+        CancerDetails personalCancer = new CancerDetails();
+
+        careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
+
+        assertThat(personalCancer.getBreast()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Breast cancer ER NOT_PROVIDED for proband")
+    void testGetCancerObjectWithBreastERNOT_PROVIDEDForProband() {
+        List<CancerFeatureDetails> cancerFeatureDetailsList = new ArrayList<>();
+        CancerFeatureDetails breastCancer = new CancerFeatureDetails();
+        breastCancer.setCancerFeature("BREAST");
+        breastCancer.setExactDxAge("45");
+        // No ER/PR/Her2 set
+        cancerFeatureDetailsList.add(breastCancer);
+        
+        CancerDetails personalCancer = new CancerDetails();
+
+        careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
+
+        assertThat(personalCancer.getBreast()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Breast cancer for relative")
+    void testGetCancerObjectWithBreastForRelative() {
+        List<CancerFeatureDetails> cancerFeatureDetailsList = new ArrayList<>();
+        CancerFeatureDetails breastCancer = new CancerFeatureDetails();
+        breastCancer.setCancerFeature("BREAST");
+        breastCancer.setExactDxAge("45");
+        breastCancer.setMultiplePrimaries("YES");
+        breastCancer.setBreastBilateral("Yes");
+        breastCancer.setBreastEr("Negative");
+        breastCancer.setBreastPr("Negative");
+        breastCancer.setBreastHer2("Negative");
+        cancerFeatureDetailsList.add(breastCancer);
+        
+        com.genomebrain.backend.quesstionnaire.relative.Mother mother = 
+            new com.genomebrain.backend.quesstionnaire.relative.Mother();
+
+        careAPIUtil.getCancerObject(cancerFeatureDetailsList, null, false, mother);
+
+        assertThat(mother.getBreast()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Prostate cancer Gleason score <= 7 for proband")
+    void testGetCancerObjectWithProstateGleasonLessThanOrEqual7ForProband() {
+        List<CancerFeatureDetails> cancerFeatureDetailsList = new ArrayList<>();
+        CancerFeatureDetails prostateCancer = new CancerFeatureDetails();
+        prostateCancer.setCancerFeature("PROSTATE");
+        prostateCancer.setExactDxAge("65");
+        prostateCancer.setProstateGleasonScore("7");
+        cancerFeatureDetailsList.add(prostateCancer);
+        
+        CancerDetails personalCancer = new CancerDetails();
+
+        careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
+
+        assertThat(personalCancer.getProstate()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Prostate cancer Grade Group 5 for proband")
+    void testGetCancerObjectWithProstateGradeGroup5ForProband() {
+        List<CancerFeatureDetails> cancerFeatureDetailsList = new ArrayList<>();
+        CancerFeatureDetails prostateCancer = new CancerFeatureDetails();
+        prostateCancer.setCancerFeature("PROSTATE");
+        prostateCancer.setExactDxAge("65");
+        prostateCancer.setProstateGradeGroup("Grade Group 5");
+        cancerFeatureDetailsList.add(prostateCancer);
+        
+        CancerDetails personalCancer = new CancerDetails();
+
+        careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
+
+        assertThat(personalCancer.getProstate()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Prostate cancer High Risk Group for proband")
+    void testGetCancerObjectWithProstateHighRiskGroupForProband() {
+        List<CancerFeatureDetails> cancerFeatureDetailsList = new ArrayList<>();
+        CancerFeatureDetails prostateCancer = new CancerFeatureDetails();
+        prostateCancer.setCancerFeature("PROSTATE");
+        prostateCancer.setExactDxAge("65");
+        prostateCancer.setProstateRiskGroup("High Risk Group");
+        cancerFeatureDetailsList.add(prostateCancer);
+        
+        CancerDetails personalCancer = new CancerDetails();
+
+        careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
+
+        assertThat(personalCancer.getProstate()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Prostate cancer for relative")
+    void testGetCancerObjectWithProstateForRelative() {
+        List<CancerFeatureDetails> cancerFeatureDetailsList = new ArrayList<>();
+        CancerFeatureDetails prostateCancer = new CancerFeatureDetails();
+        prostateCancer.setCancerFeature("PROSTATE");
+        prostateCancer.setExactDxAge("65");
+        prostateCancer.setProstateGleasonScore("8");
+        prostateCancer.setMetastatic("Yes");
+        cancerFeatureDetailsList.add(prostateCancer);
+        
+        com.genomebrain.backend.quesstionnaire.relative.Father father = 
+            new com.genomebrain.backend.quesstionnaire.relative.Father();
+
+        careAPIUtil.getCancerObject(cancerFeatureDetailsList, null, false, father);
+
+        assertThat(father.getProstate()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Skin cancer for proband")
+    void testGetCancerObjectWithSkinForProband() {
+        List<CancerFeatureDetails> cancerFeatureDetailsList = new ArrayList<>();
+        CancerFeatureDetails skinCancer = new CancerFeatureDetails();
+        skinCancer.setCancerFeature("SKIN");
+        skinCancer.setExactDxAge("40");
+        skinCancer.setBreastCancerTypes(Arrays.asList("Sebaceous carcinoma"));
+        cancerFeatureDetailsList.add(skinCancer);
+        
+        CancerDetails personalCancer = new CancerDetails();
+
+        careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
+
+        assertThat(personalCancer.getSkin()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Skin cancer for relative")
+    void testGetCancerObjectWithSkinForRelative() {
+        List<CancerFeatureDetails> cancerFeatureDetailsList = new ArrayList<>();
+        CancerFeatureDetails skinCancer = new CancerFeatureDetails();
+        skinCancer.setCancerFeature("SKIN");
+        skinCancer.setExactDxAge("40");
+        skinCancer.setBreastCancerTypes(Arrays.asList("Sebaceous Carcinoma"));
+        cancerFeatureDetailsList.add(skinCancer);
+        
+        com.genomebrain.backend.quesstionnaire.relative.Mother mother = 
+            new com.genomebrain.backend.quesstionnaire.relative.Mother();
+
+        careAPIUtil.getCancerObject(cancerFeatureDetailsList, null, false, mother);
+
+        assertThat(mother.getSkin()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Unknown/Other cancer not listed")
+    void testGetCancerObjectWithUnknownOtherCancer() {
+        List<CancerFeatureDetails> cancerFeatureDetailsList = new ArrayList<>();
+        CancerFeatureDetails unknownCancer = new CancerFeatureDetails();
+        unknownCancer.setCancerFeature("Unknown/Other cancer not listed here");
+        unknownCancer.setExactDxAge("50");
+        cancerFeatureDetailsList.add(unknownCancer);
+        
+        CancerDetails personalCancer = new CancerDetails();
+
+        careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
+
+        assertThat(personalCancer.getBreast()).isNull(); // Unknown cancer doesn't set specific fields
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with SmallIntestine cancer for proband")
+    void testGetCancerObjectWithSmallIntestineForProband() {
+        List<CancerFeatureDetails> cancerFeatureDetailsList = new ArrayList<>();
+        CancerFeatureDetails cancer = new CancerFeatureDetails();
+        cancer.setCancerFeature("SMALLINTESTINE");
+        cancer.setExactDxAge("55");
+        cancerFeatureDetailsList.add(cancer);
+        
+        CancerDetails personalCancer = new CancerDetails();
+
+        careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
+
+        assertThat(personalCancer.getSmallIntestine()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with BiliaryTract cancer for proband")
+    void testGetCancerObjectWithBiliaryTractForProband() {
+        List<CancerFeatureDetails> cancerFeatureDetailsList = new ArrayList<>();
+        CancerFeatureDetails cancer = new CancerFeatureDetails();
+        cancer.setCancerFeature("BILIARY");
+        cancer.setExactDxAge("60");
+        cancerFeatureDetailsList.add(cancer);
+        
+        CancerDetails personalCancer = new CancerDetails();
+
+        careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
+
+        assertThat(personalCancer.getBiliaryTract()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Kidney cancer for proband")
+    void testGetCancerObjectWithKidneyForProband() {
+        List<CancerFeatureDetails> cancerFeatureDetailsList = new ArrayList<>();
+        CancerFeatureDetails cancer = new CancerFeatureDetails();
+        cancer.setCancerFeature("KIDNEY");
+        cancer.setExactDxAge("55");
+        cancerFeatureDetailsList.add(cancer);
+        
+        CancerDetails personalCancer = new CancerDetails();
+
+        careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
+
+        assertThat(personalCancer.getKidney()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Ureter cancer for proband")
+    void testGetCancerObjectWithUreterForProband() {
+        List<CancerFeatureDetails> cancerFeatureDetailsList = new ArrayList<>();
+        CancerFeatureDetails cancer = new CancerFeatureDetails();
+        cancer.setCancerFeature("URETER");
+        cancer.setExactDxAge("50");
+        cancerFeatureDetailsList.add(cancer);
+        
+        CancerDetails personalCancer = new CancerDetails();
+
+        careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
+
+        assertThat(personalCancer.getUreter()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Leukemia cancer for proband")
+    void testGetCancerObjectWithLeukemiaForProband() {
+        List<CancerFeatureDetails> cancerFeatureDetailsList = new ArrayList<>();
+        CancerFeatureDetails cancer = new CancerFeatureDetails();
+        cancer.setCancerFeature("LEUKEMIA");
+        cancer.setExactDxAge("40");
+        cancerFeatureDetailsList.add(cancer);
+        
+        CancerDetails personalCancer = new CancerDetails();
+
+        careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
+
+        assertThat(personalCancer.getLeukemia()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Lymphoma cancer for proband")
+    void testGetCancerObjectWithLymphomaForProband() {
+        List<CancerFeatureDetails> cancerFeatureDetailsList = new ArrayList<>();
+        CancerFeatureDetails cancer = new CancerFeatureDetails();
+        cancer.setCancerFeature("LYMPHOMA");
+        cancer.setExactDxAge("45");
+        cancerFeatureDetailsList.add(cancer);
+        
+        CancerDetails personalCancer = new CancerDetails();
+
+        careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
+
+        assertThat(personalCancer.getLymphoma()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Gallbladder cancer for proband")
+    void testGetCancerObjectWithGallbladderForProband() {
+        List<CancerFeatureDetails> cancerFeatureDetailsList = new ArrayList<>();
+        CancerFeatureDetails cancer = new CancerFeatureDetails();
+        cancer.setCancerFeature("GALLBLADDER");
+        cancer.setExactDxAge("60");
+        cancerFeatureDetailsList.add(cancer);
+        
+        CancerDetails personalCancer = new CancerDetails();
+
+        careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
+
+        assertThat(personalCancer.getGallbladder()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Cervical cancer for proband")
+    void testGetCancerObjectWithCervicalForProband() {
+        List<CancerFeatureDetails> cancerFeatureDetailsList = new ArrayList<>();
+        CancerFeatureDetails cancer = new CancerFeatureDetails();
+        cancer.setCancerFeature("CERVICAL");
+        cancer.setExactDxAge("35");
+        cancerFeatureDetailsList.add(cancer);
+        
+        CancerDetails personalCancer = new CancerDetails();
+
+        careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
+
+        assertThat(personalCancer.getCervical()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Bladder cancer for proband")
+    void testGetCancerObjectWithBladderForProband() {
+        List<CancerFeatureDetails> cancerFeatureDetailsList = new ArrayList<>();
+        CancerFeatureDetails cancer = new CancerFeatureDetails();
+        cancer.setCancerFeature("BLADDER");
+        cancer.setExactDxAge("65");
+        cancerFeatureDetailsList.add(cancer);
+        
+        CancerDetails personalCancer = new CancerDetails();
+
+        careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
+
+        assertThat(personalCancer.getBladder()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Throat cancer for proband")
+    void testGetCancerObjectWithThroatForProband() {
+        List<CancerFeatureDetails> cancerFeatureDetailsList = new ArrayList<>();
+        CancerFeatureDetails cancer = new CancerFeatureDetails();
+        cancer.setCancerFeature("THROAT");
+        cancer.setExactDxAge("55");
+        cancerFeatureDetailsList.add(cancer);
+        
+        CancerDetails personalCancer = new CancerDetails();
+
+        careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
+
+        assertThat(personalCancer.getThroat()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Thyroid cancer for proband")
+    void testGetCancerObjectWithThyroidForProband() {
+        List<CancerFeatureDetails> cancerFeatureDetailsList = new ArrayList<>();
+        CancerFeatureDetails cancer = new CancerFeatureDetails();
+        cancer.setCancerFeature("THYROID");
+        cancer.setExactDxAge("40");
+        cancerFeatureDetailsList.add(cancer);
+        
+        CancerDetails personalCancer = new CancerDetails();
+
+        careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
+
+        assertThat(personalCancer.getThyroid()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Oral cancer for proband")
+    void testGetCancerObjectWithOralForProband() {
+        List<CancerFeatureDetails> cancerFeatureDetailsList = new ArrayList<>();
+        CancerFeatureDetails cancer = new CancerFeatureDetails();
+        cancer.setCancerFeature("ORAL");
+        cancer.setExactDxAge("50");
+        cancerFeatureDetailsList.add(cancer);
+        
+        CancerDetails personalCancer = new CancerDetails();
+
+        careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
+
+        assertThat(personalCancer.getOral()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Liver cancer for proband")
+    void testGetCancerObjectWithLiverForProband() {
+        List<CancerFeatureDetails> cancerFeatureDetailsList = new ArrayList<>();
+        CancerFeatureDetails cancer = new CancerFeatureDetails();
+        cancer.setCancerFeature("LIVER");
+        cancer.setExactDxAge("60");
+        cancerFeatureDetailsList.add(cancer);
+        
+        CancerDetails personalCancer = new CancerDetails();
+
+        careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
+
+        assertThat(personalCancer.getLiver()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Testicular cancer for proband")
+    void testGetCancerObjectWithTesticularForProband() {
+        List<CancerFeatureDetails> cancerFeatureDetailsList = new ArrayList<>();
+        CancerFeatureDetails cancer = new CancerFeatureDetails();
+        cancer.setCancerFeature("TESTICULAR");
+        cancer.setExactDxAge("30");
+        cancerFeatureDetailsList.add(cancer);
+        
+        CancerDetails personalCancer = new CancerDetails();
+
+        careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
+
+        assertThat(personalCancer.getTesticular()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Paraganglioma cancer for proband")
+    void testGetCancerObjectWithParagangliomaForProband() {
+        List<CancerFeatureDetails> cancerFeatureDetailsList = new ArrayList<>();
+        CancerFeatureDetails cancer = new CancerFeatureDetails();
+        cancer.setCancerFeature("PARAGANGLIOMA");
+        cancer.setExactDxAge("45");
+        cancerFeatureDetailsList.add(cancer);
+        
+        CancerDetails personalCancer = new CancerDetails();
+
+        careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
+
+        assertThat(personalCancer.getParaganglioma()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Pheochromocytoma cancer for proband")
+    void testGetCancerObjectWithPheochromocytomaForProband() {
+        List<CancerFeatureDetails> cancerFeatureDetailsList = new ArrayList<>();
+        CancerFeatureDetails cancer = new CancerFeatureDetails();
+        cancer.setCancerFeature("PHEOCHROMOCYTOMA");
+        cancer.setExactDxAge("40");
+        cancerFeatureDetailsList.add(cancer);
+        
+        CancerDetails personalCancer = new CancerDetails();
+
+        careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
+
+        assertThat(personalCancer.getPheochromocytoma()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Lung cancer for proband")
+    void testGetCancerObjectWithLungForProband() {
+        List<CancerFeatureDetails> cancerFeatureDetailsList = new ArrayList<>();
+        CancerFeatureDetails cancer = new CancerFeatureDetails();
+        cancer.setCancerFeature("LUNG");
+        cancer.setExactDxAge("65");
+        cancerFeatureDetailsList.add(cancer);
+        
+        CancerDetails personalCancer = new CancerDetails();
+
+        careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
+
+        assertThat(personalCancer.getLung()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Sarcoma cancer for proband")
+    void testGetCancerObjectWithSarcomaForProband() {
+        List<CancerFeatureDetails> cancerFeatureDetailsList = new ArrayList<>();
+        CancerFeatureDetails cancer = new CancerFeatureDetails();
+        cancer.setCancerFeature("SARCOMA");
+        cancer.setExactDxAge("50");
+        cancerFeatureDetailsList.add(cancer);
+        
+        CancerDetails personalCancer = new CancerDetails();
+
+        careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
+
+        assertThat(personalCancer.getSarcoma()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getFamilyCancerDetails with Granddaughter relationship")
+    void testGetFamilyCancerDetailsWithGranddaughter() {
+        List<ClinicalHistory> clinicalHistories = new ArrayList<>();
+        ClinicalHistory granddaughter = new ClinicalHistory();
+        granddaughter.setRelationship("Granddaughter");
+        CancerFeatureDetails cancerFeature = new CancerFeatureDetails();
+        cancerFeature.setCancerFeature("BREAST");
+        granddaughter.setCancerFeatureDetails(Arrays.asList(cancerFeature));
+        clinicalHistories.add(granddaughter);
+        
+        FamilyHistory familyHistory = new FamilyHistory();
+
+        careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
+
+        assertThat(familyHistory.getFamilyCancerDetails()).isNotNull();
+        assertThat(familyHistory.getFamilyCancerDetails().getGrandDaughters()).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("Should handle getFamilyCancerDetails with Grandson relationship")
+    void testGetFamilyCancerDetailsWithGrandson() {
+        List<ClinicalHistory> clinicalHistories = new ArrayList<>();
+        ClinicalHistory grandson = new ClinicalHistory();
+        grandson.setRelationship("Grandson");
+        CancerFeatureDetails cancerFeature = new CancerFeatureDetails();
+        cancerFeature.setCancerFeature("PROSTATE");
+        grandson.setCancerFeatureDetails(Arrays.asList(cancerFeature));
+        clinicalHistories.add(grandson);
+        
+        FamilyHistory familyHistory = new FamilyHistory();
+
+        careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
+
+        assertThat(familyHistory.getFamilyCancerDetails()).isNotNull();
+        assertThat(familyHistory.getFamilyCancerDetails().getGrandSons()).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("Should handle getFamilyCancerDetails with Half sister relationship")
+    void testGetFamilyCancerDetailsWithHalfSister() {
+        List<ClinicalHistory> clinicalHistories = new ArrayList<>();
+        ClinicalHistory halfSister = new ClinicalHistory();
+        halfSister.setRelationship("Half sister");
+        halfSister.setSideOfFam("MATERNAL");
+        CancerFeatureDetails cancerFeature = new CancerFeatureDetails();
+        cancerFeature.setCancerFeature("BREAST");
+        halfSister.setCancerFeatureDetails(Arrays.asList(cancerFeature));
+        clinicalHistories.add(halfSister);
+        
+        FamilyHistory familyHistory = new FamilyHistory();
+
+        careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
+
+        assertThat(familyHistory.getFamilyCancerDetails()).isNotNull();
+        assertThat(familyHistory.getFamilyCancerDetails().getHalfSisters()).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("Should handle getFamilyCancerDetails with Half brother relationship")
+    void testGetFamilyCancerDetailsWithHalfBrother() {
+        List<ClinicalHistory> clinicalHistories = new ArrayList<>();
+        ClinicalHistory halfBrother = new ClinicalHistory();
+        halfBrother.setRelationship("Half brother");
+        halfBrother.setSideOfFam("PATERNAL");
+        CancerFeatureDetails cancerFeature = new CancerFeatureDetails();
+        cancerFeature.setCancerFeature("PROSTATE");
+        halfBrother.setCancerFeatureDetails(Arrays.asList(cancerFeature));
+        clinicalHistories.add(halfBrother);
+        
+        FamilyHistory familyHistory = new FamilyHistory();
+
+        careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
+
+        assertThat(familyHistory.getFamilyCancerDetails()).isNotNull();
+        assertThat(familyHistory.getFamilyCancerDetails().getHalfBrothers()).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("Should handle getFamilyCancerDetails with First cousin (male) relationship")
+    void testGetFamilyCancerDetailsWithFirstCousinMale() {
+        List<ClinicalHistory> clinicalHistories = new ArrayList<>();
+        ClinicalHistory cousin = new ClinicalHistory();
+        cousin.setRelationship("First cousin (male)");
+        cousin.setSideOfFam("MATERNAL");
+        CancerFeatureDetails cancerFeature = new CancerFeatureDetails();
+        cancerFeature.setCancerFeature("PROSTATE");
+        cousin.setCancerFeatureDetails(Arrays.asList(cancerFeature));
+        clinicalHistories.add(cousin);
+        
+        FamilyHistory familyHistory = new FamilyHistory();
+
+        careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
+
+        assertThat(familyHistory.getFamilyCancerDetails()).isNotNull();
+        assertThat(familyHistory.getFamilyCancerDetails().getFirstCousinsMale()).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("Should handle getFamilyCancerDetails with First cousin (female) relationship")
+    void testGetFamilyCancerDetailsWithFirstCousinFemale() {
+        List<ClinicalHistory> clinicalHistories = new ArrayList<>();
+        ClinicalHistory cousin = new ClinicalHistory();
+        cousin.setRelationship("First cousin (female)");
+        cousin.setSideOfFam("PATERNAL");
+        CancerFeatureDetails cancerFeature = new CancerFeatureDetails();
+        cancerFeature.setCancerFeature("BREAST");
+        cousin.setCancerFeatureDetails(Arrays.asList(cancerFeature));
+        clinicalHistories.add(cousin);
+        
+        FamilyHistory familyHistory = new FamilyHistory();
+
+        careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
+
+        assertThat(familyHistory.getFamilyCancerDetails()).isNotNull();
+        assertThat(familyHistory.getFamilyCancerDetails().getFirstCousinsFemale()).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("Should handle getFamilyCancerDetails with Great grandmother relationship")
+    void testGetFamilyCancerDetailsWithGreatGrandmother() {
+        List<ClinicalHistory> clinicalHistories = new ArrayList<>();
+        ClinicalHistory greatGrandmother = new ClinicalHistory();
+        greatGrandmother.setRelationship("Great grandmother");
+        greatGrandmother.setSideOfFam("MATERNAL");
+        CancerFeatureDetails cancerFeature = new CancerFeatureDetails();
+        cancerFeature.setCancerFeature("OVARIAN");
+        greatGrandmother.setCancerFeatureDetails(Arrays.asList(cancerFeature));
+        clinicalHistories.add(greatGrandmother);
+        
+        FamilyHistory familyHistory = new FamilyHistory();
+
+        careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
+
+        assertThat(familyHistory.getFamilyCancerDetails()).isNotNull();
+        assertThat(familyHistory.getFamilyCancerDetails().getGreatGrandMothers()).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("Should handle getFamilyCancerDetails with Great grandfather relationship")
+    void testGetFamilyCancerDetailsWithGreatGrandfather() {
+        List<ClinicalHistory> clinicalHistories = new ArrayList<>();
+        ClinicalHistory greatGrandfather = new ClinicalHistory();
+        greatGrandfather.setRelationship("Great grandfather");
+        greatGrandfather.setSideOfFam("PATERNAL");
+        CancerFeatureDetails cancerFeature = new CancerFeatureDetails();
+        cancerFeature.setCancerFeature("PROSTATE");
+        greatGrandfather.setCancerFeatureDetails(Arrays.asList(cancerFeature));
+        clinicalHistories.add(greatGrandfather);
+        
+        FamilyHistory familyHistory = new FamilyHistory();
+
+        careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
+
+        assertThat(familyHistory.getFamilyCancerDetails()).isNotNull();
+        assertThat(familyHistory.getFamilyCancerDetails().getGreatGrandFathers()).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("Should handle getFamilyCancerDetails with Great aunt relationship")
+    void testGetFamilyCancerDetailsWithGreatAunt() {
+        List<ClinicalHistory> clinicalHistories = new ArrayList<>();
+        ClinicalHistory greatAunt = new ClinicalHistory();
+        greatAunt.setRelationship("Great aunt");
+        greatAunt.setSideOfFam("MATERNAL");
+        CancerFeatureDetails cancerFeature = new CancerFeatureDetails();
+        cancerFeature.setCancerFeature("BREAST");
+        greatAunt.setCancerFeatureDetails(Arrays.asList(cancerFeature));
+        clinicalHistories.add(greatAunt);
+        
+        FamilyHistory familyHistory = new FamilyHistory();
+
+        careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
+
+        assertThat(familyHistory.getFamilyCancerDetails()).isNotNull();
+        assertThat(familyHistory.getFamilyCancerDetails().getGreatAunts()).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("Should handle getFamilyCancerDetails with Great uncle relationship")
+    void testGetFamilyCancerDetailsWithGreatUncle() {
+        List<ClinicalHistory> clinicalHistories = new ArrayList<>();
+        ClinicalHistory greatUncle = new ClinicalHistory();
+        greatUncle.setRelationship("Great uncle");
+        greatUncle.setSideOfFam("PATERNAL");
+        CancerFeatureDetails cancerFeature = new CancerFeatureDetails();
+        cancerFeature.setCancerFeature("PROSTATE");
+        greatUncle.setCancerFeatureDetails(Arrays.asList(cancerFeature));
+        clinicalHistories.add(greatUncle);
+        
+        FamilyHistory familyHistory = new FamilyHistory();
+
+        careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
+
+        assertThat(familyHistory.getFamilyCancerDetails()).isNotNull();
+        assertThat(familyHistory.getFamilyCancerDetails().getGreatUncles()).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("Should handle getFamilyCancerDetails with Great nephew relationship")
+    void testGetFamilyCancerDetailsWithGreatNephew() {
+        List<ClinicalHistory> clinicalHistories = new ArrayList<>();
+        ClinicalHistory greatNephew = new ClinicalHistory();
+        greatNephew.setRelationship("Great nephew");
+        CancerFeatureDetails cancerFeature = new CancerFeatureDetails();
+        cancerFeature.setCancerFeature("PROSTATE");
+        greatNephew.setCancerFeatureDetails(Arrays.asList(cancerFeature));
+        clinicalHistories.add(greatNephew);
+        
+        FamilyHistory familyHistory = new FamilyHistory();
+
+        careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
+
+        assertThat(familyHistory.getFamilyCancerDetails()).isNotNull();
+        assertThat(familyHistory.getFamilyCancerDetails().getGreatNephews()).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("Should handle getFamilyCancerDetails with Great niece relationship")
+    void testGetFamilyCancerDetailsWithGreatNiece() {
+        List<ClinicalHistory> clinicalHistories = new ArrayList<>();
+        ClinicalHistory greatNiece = new ClinicalHistory();
+        greatNiece.setRelationship("Great niece");
+        CancerFeatureDetails cancerFeature = new CancerFeatureDetails();
+        cancerFeature.setCancerFeature("BREAST");
+        greatNiece.setCancerFeatureDetails(Arrays.asList(cancerFeature));
+        clinicalHistories.add(greatNiece);
+        
+        FamilyHistory familyHistory = new FamilyHistory();
+
+        careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
+
+        assertThat(familyHistory.getFamilyCancerDetails()).isNotNull();
+        assertThat(familyHistory.getFamilyCancerDetails().getGreatNieces()).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("Should handle getFamilyCancerDetails with Great granddaughter relationship")
+    void testGetFamilyCancerDetailsWithGreatGranddaughter() {
+        List<ClinicalHistory> clinicalHistories = new ArrayList<>();
+        ClinicalHistory greatGranddaughter = new ClinicalHistory();
+        greatGranddaughter.setRelationship("Great granddaughter");
+        CancerFeatureDetails cancerFeature = new CancerFeatureDetails();
+        cancerFeature.setCancerFeature("BREAST");
+        greatGranddaughter.setCancerFeatureDetails(Arrays.asList(cancerFeature));
+        clinicalHistories.add(greatGranddaughter);
+        
+        FamilyHistory familyHistory = new FamilyHistory();
+
+        careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
+
+        assertThat(familyHistory.getFamilyCancerDetails()).isNotNull();
+        assertThat(familyHistory.getFamilyCancerDetails().getGreatGrandDaughters()).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("Should handle getFamilyCancerDetails with Great grandson relationship")
+    void testGetFamilyCancerDetailsWithGreatGrandson() {
+        List<ClinicalHistory> clinicalHistories = new ArrayList<>();
+        ClinicalHistory greatGrandson = new ClinicalHistory();
+        greatGrandson.setRelationship("Great grandson");
+        CancerFeatureDetails cancerFeature = new CancerFeatureDetails();
+        cancerFeature.setCancerFeature("PROSTATE");
+        greatGrandson.setCancerFeatureDetails(Arrays.asList(cancerFeature));
+        clinicalHistories.add(greatGrandson);
+        
+        FamilyHistory familyHistory = new FamilyHistory();
+
+        careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
+
+        assertThat(familyHistory.getFamilyCancerDetails()).isNotNull();
+        assertThat(familyHistory.getFamilyCancerDetails().getGreatGrandSons()).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("Should handle getFamilyCancerDetails with Half aunt relationship")
+    void testGetFamilyCancerDetailsWithHalfAunt() {
+        List<ClinicalHistory> clinicalHistories = new ArrayList<>();
+        ClinicalHistory halfAunt = new ClinicalHistory();
+        halfAunt.setRelationship("Half aunt");
+        halfAunt.setSideOfFam("MATERNAL");
+        CancerFeatureDetails cancerFeature = new CancerFeatureDetails();
+        cancerFeature.setCancerFeature("OVARIAN");
+        halfAunt.setCancerFeatureDetails(Arrays.asList(cancerFeature));
+        clinicalHistories.add(halfAunt);
+        
+        FamilyHistory familyHistory = new FamilyHistory();
+
+        careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
+
+        assertThat(familyHistory.getFamilyCancerDetails()).isNotNull();
+        assertThat(familyHistory.getFamilyCancerDetails().getHalfAunts()).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("Should handle getFamilyCancerDetails with Half uncle relationship")
+    void testGetFamilyCancerDetailsWithHalfUncle() {
+        List<ClinicalHistory> clinicalHistories = new ArrayList<>();
+        ClinicalHistory halfUncle = new ClinicalHistory();
+        halfUncle.setRelationship("Half uncle");
+        halfUncle.setSideOfFam("PATERNAL");
+        CancerFeatureDetails cancerFeature = new CancerFeatureDetails();
+        cancerFeature.setCancerFeature("PROSTATE");
+        halfUncle.setCancerFeatureDetails(Arrays.asList(cancerFeature));
+        clinicalHistories.add(halfUncle);
+        
+        FamilyHistory familyHistory = new FamilyHistory();
+
+        careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
+
+        assertThat(familyHistory.getFamilyCancerDetails()).isNotNull();
+        assertThat(familyHistory.getFamilyCancerDetails().getHalfUncles()).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("Should handle getFamilyCancerDetails with Half niece relationship")
+    void testGetFamilyCancerDetailsWithHalfNiece() {
+        List<ClinicalHistory> clinicalHistories = new ArrayList<>();
+        ClinicalHistory halfNiece = new ClinicalHistory();
+        halfNiece.setRelationship("Half niece");
+        CancerFeatureDetails cancerFeature = new CancerFeatureDetails();
+        cancerFeature.setCancerFeature("BREAST");
+        halfNiece.setCancerFeatureDetails(Arrays.asList(cancerFeature));
+        clinicalHistories.add(halfNiece);
+        
+        FamilyHistory familyHistory = new FamilyHistory();
+
+        careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
+
+        assertThat(familyHistory.getFamilyCancerDetails()).isNotNull();
+        assertThat(familyHistory.getFamilyCancerDetails().getHalfNieces()).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("Should handle getFamilyCancerDetails with Half nephew relationship")
+    void testGetFamilyCancerDetailsWithHalfNephew() {
+        List<ClinicalHistory> clinicalHistories = new ArrayList<>();
+        ClinicalHistory halfNephew = new ClinicalHistory();
+        halfNephew.setRelationship("Half nephew");
+        CancerFeatureDetails cancerFeature = new CancerFeatureDetails();
+        cancerFeature.setCancerFeature("PROSTATE");
+        halfNephew.setCancerFeatureDetails(Arrays.asList(cancerFeature));
+        clinicalHistories.add(halfNephew);
+        
+        FamilyHistory familyHistory = new FamilyHistory();
+
+        careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
+
+        assertThat(familyHistory.getFamilyCancerDetails()).isNotNull();
+        assertThat(familyHistory.getFamilyCancerDetails().getHalfNephews()).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("Should handle getFamilyCancerDetails with Others relationship")
+    void testGetFamilyCancerDetailsWithOthers() {
+        List<ClinicalHistory> clinicalHistories = new ArrayList<>();
+        ClinicalHistory other = new ClinicalHistory();
+        other.setRelationship("Others");
+        CancerFeatureDetails cancerFeature = new CancerFeatureDetails();
+        cancerFeature.setCancerFeature("BREAST");
+        other.setCancerFeatureDetails(Arrays.asList(cancerFeature));
+        clinicalHistories.add(other);
+        
+        FamilyHistory familyHistory = new FamilyHistory();
+
+        careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
+
+        assertThat(familyHistory.getFamilyCancerDetails()).isNotNull();
+        assertThat(familyHistory.getFamilyCancerDetails().getOthers()).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("Should handle getFamilyCancerDetails with unknown relationship")
+    void testGetFamilyCancerDetailsWithUnknownRelationship() {
+        List<ClinicalHistory> clinicalHistories = new ArrayList<>();
+        ClinicalHistory unknown = new ClinicalHistory();
+        unknown.setRelationship("Unknown Relationship");
+        CancerFeatureDetails cancerFeature = new CancerFeatureDetails();
+        cancerFeature.setCancerFeature("BREAST");
+        unknown.setCancerFeatureDetails(Arrays.asList(cancerFeature));
+        clinicalHistories.add(unknown);
+        
+        FamilyHistory familyHistory = new FamilyHistory();
+
+        careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
+
+        assertThat(familyHistory.getFamilyCancerDetails()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle CAREAPIResponseMapper with HBOC and empty criteria met")
+    void testCAREAPIResponseMapperWithHBOCEmptyCriteriaMet() throws Exception {
+        GuidelineDetailsDTO guidelineDetailsDTO = new GuidelineDetailsDTO();
+        guidelineDetailsDTO.setHBOC(true);
+        ClinicalSummary clinicalSummary = new ClinicalSummary();
+        clinicalSummary.setRiskAssessmentNccnForHBOC(new HashSet<>());
+        guidelineDetailsDTO.setClinicalSummary(clinicalSummary);
+        guidelineDetailsDTO.setReasoningStatementAndTagsSet("{\"reasoningStatements\":[]}");
+        
+        NCCNCoreRequest request = new NCCNCoreRequest();
+
+        NCCNCoreResponse result = careAPIUtil.CAREAPIResponseMapper(guidelineDetailsDTO, request);
+
+        assertThat(result).isNotNull();
+        assertThat(result.getHbocOverall()).isEqualTo("HBOC NCCN met");
+    }
+
+    @Test
+    @DisplayName("Should handle CAREAPIResponseMapper with LYNCH and empty overall")
+    void testCAREAPIResponseMapperWithLYNCHEmptyOverall() throws Exception {
+        GuidelineDetailsDTO guidelineDetailsDTO = new GuidelineDetailsDTO();
+        guidelineDetailsDTO.setLYNCH(true);
+        ClinicalSummary clinicalSummary = new ClinicalSummary();
+        clinicalSummary.setRiskAssessmentNccnForLYNCH(new HashSet<>());
+        guidelineDetailsDTO.setClinicalSummary(clinicalSummary);
+        guidelineDetailsDTO.setReasoningStatementAndTagsSet("{\"reasoningStatements\":[{\"reasoningStatementId\":\"CRCRS3\"}]}");
+        
+        NCCNCoreRequest request = new NCCNCoreRequest();
+
+        NCCNCoreResponse result = careAPIUtil.CAREAPIResponseMapper(guidelineDetailsDTO, request);
+
+        assertThat(result).isNotNull();
+        assertThat(result.getLynchOverall()).isEqualTo("Lynch NCCN met");
+    }
+
+    @Test
+    @DisplayName("Should handle getQuestionObject with proband ethnicityOther")
+    void testGetQuestionObjectWithProbandEthnicityOther() throws ConnectException {
+        NCCNCoreRequest request = new NCCNCoreRequest();
+        List<ClinicalHistory> clinicalHistories = new ArrayList<>();
+        
+        ClinicalHistory proband = new ClinicalHistory();
+        proband.setRelationship("Proband");
+        proband.setSexAtBirth("male");
+        proband.setEthnicity(Arrays.asList("CAUCASIAN"));
+        proband.setEthnicityOther("Other Ethnicity");
+        proband.setCancerOverall("NO");
+        proband.setCancerFeatureDetails(Collections.emptyList());
+        clinicalHistories.add(proband);
+        
+        request.setClinicalHistory(clinicalHistories);
+        
+        GuidelineDetailsDTO guidelineDetailsDTO = new GuidelineDetailsDTO();
+        ClinicalSummary clinicalSummary = new ClinicalSummary();
+        clinicalSummary.setRiskAssessmentNccnForHBOC(Collections.emptySet());
+        guidelineDetailsDTO.setClinicalSummary(clinicalSummary);
+        guidelineDetailsDTO.setHBOC(false);
+        guidelineDetailsDTO.setLYNCH(false);
+        guidelineDetailsDTO.setAPS(false);
+        guidelineDetailsDTO.setReasoningStatementAndTagsSet("{\"reasoningStatements\":[]}");
+        
+        when(guideLineUtility.getClinicalSummaryAndTags(any(), anyBoolean(), any(), anyString(), anyBoolean(), anyBoolean()))
+            .thenReturn(guidelineDetailsDTO);
+
+        NCCNCoreResponse result = careAPIUtil.getQuestionObject(request);
+
+        assertThat(result).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getQuestionObject with proband pathologyOther")
+    void testGetQuestionObjectWithProbandPathologyOther() throws ConnectException {
+        NCCNCoreRequest request = new NCCNCoreRequest();
+        List<ClinicalHistory> clinicalHistories = new ArrayList<>();
+        
+        ClinicalHistory proband = new ClinicalHistory();
+        proband.setRelationship("Proband");
+        proband.setSexAtBirth("male");
+        proband.setEthnicity(Arrays.asList("CAUCASIAN"));
+        proband.setCancerOverall("YES");
+        CancerFeatureDetails breastCancer = new CancerFeatureDetails();
+        breastCancer.setCancerFeature("BREAST");
+        breastCancer.setExactDxAge("45");
+        breastCancer.setBreastCancerTypes(new ArrayList<>(Arrays.asList("DCIS")));
+        breastCancer.setPathologyOther("Other Pathology");
+        proband.setCancerFeatureDetails(Arrays.asList(breastCancer));
+        clinicalHistories.add(proband);
+        
+        request.setClinicalHistory(clinicalHistories);
+        
+        GuidelineDetailsDTO guidelineDetailsDTO = new GuidelineDetailsDTO();
+        ClinicalSummary clinicalSummary = new ClinicalSummary();
+        clinicalSummary.setRiskAssessmentNccnForHBOC(Collections.emptySet());
+        guidelineDetailsDTO.setClinicalSummary(clinicalSummary);
+        guidelineDetailsDTO.setHBOC(false);
+        guidelineDetailsDTO.setLYNCH(false);
+        guidelineDetailsDTO.setAPS(false);
+        guidelineDetailsDTO.setReasoningStatementAndTagsSet("{\"reasoningStatements\":[]}");
+        
+        when(guideLineUtility.getClinicalSummaryAndTags(any(), anyBoolean(), any(), anyString(), anyBoolean(), anyBoolean()))
+            .thenReturn(guidelineDetailsDTO);
+
+        NCCNCoreResponse result = careAPIUtil.getQuestionObject(request);
+
+        assertThat(result).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getQuestionObject with exception in getClinicalSummaryAndTags")
+    void testGetQuestionObjectWithException() throws ConnectException {
+        NCCNCoreRequest request = new NCCNCoreRequest();
+        List<ClinicalHistory> clinicalHistories = new ArrayList<>();
+        
+        ClinicalHistory proband = new ClinicalHistory();
+        proband.setRelationship("Proband");
+        proband.setSexAtBirth("male");
+        proband.setEthnicity(Arrays.asList("CAUCASIAN"));
+        proband.setCancerOverall("YES");
+        proband.setCancerFeatureDetails(Collections.emptyList());
+        clinicalHistories.add(proband);
+        
+        request.setClinicalHistory(clinicalHistories);
+        
+        when(guideLineUtility.getClinicalSummaryAndTags(any(), anyBoolean(), any(), anyString(), anyBoolean(), anyBoolean()))
+            .thenThrow(new RuntimeException("Test exception"));
+
+        NCCNCoreResponse result = careAPIUtil.getQuestionObject(request);
 
         assertThat(result).isNotNull();
     }

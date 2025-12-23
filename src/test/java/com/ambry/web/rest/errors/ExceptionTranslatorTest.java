@@ -12,19 +12,28 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.core.MethodParameter;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.ErrorResponse;
+import org.springframework.web.ErrorResponseException;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.ServletWebRequest;
+
+import com.ambry.config.UnoFrameworkConstants;
+import com.ambry.web.rest.errors.UnoProblemDetailEx.ProblemDetailWithCauseBuilder;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.lang.reflect.Method;
+import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @DisplayName("ExceptionTranslator Unit Tests")
 class ExceptionTranslatorTest {
@@ -210,6 +219,315 @@ class ExceptionTranslatorTest {
         assertThat(problem).isNotNull();
         assertThat(problem.getTitle()).isEqualTo("Method argument not valid");
         assertThat(problem.getType()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle BadRequestAlertException with headers")
+    void testHandleBadRequestAlertException() {
+        BadRequestAlertException exception = new BadRequestAlertException("Test error", "testEntity", "testError");
+        when(environment.getActiveProfiles()).thenReturn(new String[]{"dev"});
+        
+        // Use reflection to set applicationName since it's @Value injected
+        try {
+            java.lang.reflect.Field field = ExceptionTranslator.class.getDeclaredField("applicationName");
+            field.setAccessible(true);
+            field.set(exceptionTranslator, "testApp");
+        } catch (Exception e) {
+            // If reflection fails, continue without setting it
+        }
+
+        ResponseEntity<Object> response = exceptionTranslator.handleAnyException(exception, nativeWebRequest);
+
+        assertThat(response).isNotNull();
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(response.getHeaders()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle HttpMessageConversionException in production")
+    void testHandleHttpMessageConversionExceptionInProduction() {
+        HttpMessageConversionException exception = new HttpMessageConversionException("Conversion error");
+        when(environment.getActiveProfiles()).thenReturn(new String[]{UnoFrameworkConstants.SPRING_PROFILE_PRODUCTION});
+
+        UnoProblemDetailEx problem = exceptionTranslator.wrapAndCustomizeProblem(exception, nativeWebRequest);
+
+        assertThat(problem).isNotNull();
+        assertThat(problem.getDetail()).isEqualTo("Unable to convert http message");
+    }
+
+    @Test
+    @DisplayName("Should handle exception with package name in production")
+    void testHandleExceptionWithPackageNameInProduction() {
+        RuntimeException exception = new RuntimeException("com.ambry.SomeException: Error occurred");
+        when(environment.getActiveProfiles()).thenReturn(new String[]{UnoFrameworkConstants.SPRING_PROFILE_PRODUCTION});
+
+        UnoProblemDetailEx problem = exceptionTranslator.wrapAndCustomizeProblem(exception, nativeWebRequest);
+
+        assertThat(problem).isNotNull();
+        assertThat(problem.getDetail()).isEqualTo("Unexpected runtime exception");
+    }
+
+    @Test
+    @DisplayName("Should handle exception with various package name patterns in production")
+    void testHandleExceptionWithVariousPackageNames() {
+        String[] packageNames = {"org.", "java.", "net.", "jakarta.", "javax.", "com.", "io.", "de.", "com.ambry"};
+        
+        for (String packageName : packageNames) {
+            RuntimeException exception = new RuntimeException(packageName + "SomeClass: Error");
+            when(environment.getActiveProfiles()).thenReturn(new String[]{UnoFrameworkConstants.SPRING_PROFILE_PRODUCTION});
+
+            UnoProblemDetailEx problem = exceptionTranslator.wrapAndCustomizeProblem(exception, nativeWebRequest);
+
+            assertThat(problem).isNotNull();
+            assertThat(problem.getDetail()).isEqualTo("Unexpected runtime exception");
+        }
+    }
+
+    @Test
+    @DisplayName("Should handle exception with cause in production")
+    void testHandleExceptionWithCauseInProduction() {
+        RuntimeException cause = new RuntimeException("Root cause");
+        RuntimeException exception = new RuntimeException("Wrapper exception", cause);
+        when(environment.getActiveProfiles()).thenReturn(new String[]{UnoFrameworkConstants.SPRING_PROFILE_PRODUCTION});
+
+        UnoProblemDetailEx problem = exceptionTranslator.wrapAndCustomizeProblem(exception, nativeWebRequest);
+
+        assertThat(problem).isNotNull();
+        assertThat(problem.getDetail()).isEqualTo("Root cause");
+    }
+
+    @Test
+    @DisplayName("Should handle ErrorResponseException with UnoProblemDetailEx body")
+    void testHandleErrorResponseExceptionWithUnoProblemDetailEx() {
+        UnoProblemDetailEx existingProblem = ProblemDetailWithCauseBuilder.instance()
+            .withStatus(400)
+            .withTitle("Existing title")
+            .build();
+        
+        ErrorResponseException exception = new ErrorResponseException(
+            HttpStatus.BAD_REQUEST,
+            existingProblem,
+            null
+        );
+        when(environment.getActiveProfiles()).thenReturn(new String[]{"dev"});
+
+        UnoProblemDetailEx problem = exceptionTranslator.wrapAndCustomizeProblem(exception, nativeWebRequest);
+
+        assertThat(problem).isNotNull();
+        assertThat(problem).isEqualTo(existingProblem);
+    }
+
+    @Test
+    @DisplayName("Should handle field error with blank default message")
+    void testHandleFieldErrorWithBlankMessage() throws NoSuchMethodException {
+        BindingResult bindingResult = mock(BindingResult.class);
+        FieldError fieldError = new FieldError("testDTO", "field1", null, false, new String[]{"error.code"}, null, "error.code");
+        when(bindingResult.getFieldErrors()).thenReturn(List.of(fieldError));
+        
+        Method method = this.getClass().getDeclaredMethod("helperMethod", String.class);
+        MethodParameter methodParameter = new MethodParameter(method, 0);
+        MethodArgumentNotValidException exception = new MethodArgumentNotValidException(methodParameter, bindingResult);
+        when(environment.getActiveProfiles()).thenReturn(new String[]{"dev"});
+
+        UnoProblemDetailEx problem = exceptionTranslator.wrapAndCustomizeProblem(exception, nativeWebRequest);
+
+        assertThat(problem).isNotNull();
+        assertThat(problem.getProperties()).isNotNull();
+        assertThat(problem.getProperties().containsKey("fieldErrors")).isTrue();
+        
+        @SuppressWarnings("unchecked")
+        List<FieldErrorVM> fieldErrors = (List<FieldErrorVM>) problem.getProperties().get("fieldErrors");
+        assertThat(fieldErrors).isNotNull();
+        assertThat(fieldErrors).hasSize(1);
+        assertThat(fieldErrors.get(0).getMessage()).isEqualTo("error.code");
+    }
+
+    @Test
+    @DisplayName("Should handle field error with DTO suffix removal")
+    void testHandleFieldErrorWithDTOSuffix() throws NoSuchMethodException {
+        BindingResult bindingResult = mock(BindingResult.class);
+        FieldError fieldError = new FieldError("userDTO", "email", "Email is invalid");
+        when(bindingResult.getFieldErrors()).thenReturn(List.of(fieldError));
+        
+        Method method = this.getClass().getDeclaredMethod("helperMethod", String.class);
+        MethodParameter methodParameter = new MethodParameter(method, 0);
+        MethodArgumentNotValidException exception = new MethodArgumentNotValidException(methodParameter, bindingResult);
+        when(environment.getActiveProfiles()).thenReturn(new String[]{"dev"});
+
+        UnoProblemDetailEx problem = exceptionTranslator.wrapAndCustomizeProblem(exception, nativeWebRequest);
+
+        assertThat(problem).isNotNull();
+        @SuppressWarnings("unchecked")
+        List<FieldErrorVM> fieldErrors = (List<FieldErrorVM>) problem.getProperties().get("fieldErrors");
+        assertThat(fieldErrors).isNotNull();
+        assertThat(fieldErrors).hasSize(1);
+        assertThat(fieldErrors.get(0).getObjectName()).isEqualTo("user");
+    }
+
+    @Test
+    @DisplayName("Should handle exception with ResponseStatus annotation")
+    void testHandleExceptionWithResponseStatus() {
+        @ResponseStatus(HttpStatus.NOT_FOUND)
+        class NotFoundException extends RuntimeException {
+            NotFoundException(String message) {
+                super(message);
+            }
+        }
+
+        NotFoundException exception = new NotFoundException("Not found");
+        when(environment.getActiveProfiles()).thenReturn(new String[]{"dev"});
+
+        ResponseEntity<Object> response = exceptionTranslator.handleAnyException(exception, nativeWebRequest);
+
+        assertThat(response).isNotNull();
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    @Test
+    @DisplayName("Should handle exception with null message")
+    void testHandleExceptionWithNullMessage() {
+        RuntimeException exception = new RuntimeException((String) null);
+        when(environment.getActiveProfiles()).thenReturn(new String[]{"dev"});
+
+        UnoProblemDetailEx problem = exceptionTranslator.wrapAndCustomizeProblem(exception, nativeWebRequest);
+
+        assertThat(problem).isNotNull();
+        assertThat(problem.getStatus()).isGreaterThan(0);
+    }
+
+    @Test
+    @DisplayName("Should handle exception with null cause")
+    void testHandleExceptionWithNullCause() {
+        RuntimeException exception = new RuntimeException("Test", null);
+        when(environment.getActiveProfiles()).thenReturn(new String[]{"dev"});
+
+        UnoProblemDetailEx problem = exceptionTranslator.wrapAndCustomizeProblem(exception, nativeWebRequest);
+
+        assertThat(problem).isNotNull();
+        assertThat(problem.getDetail()).isEqualTo("Test");
+    }
+
+    @Test
+    @DisplayName("Should handle buildCause with null throwable")
+    void testBuildCauseWithNullThrowable() {
+        Optional<UnoProblemDetailEx> cause = exceptionTranslator.buildCause(null, nativeWebRequest);
+
+        assertThat(cause).isNotNull();
+        assertThat(cause.isEmpty()).isTrue();
+    }
+
+    @Test
+    @DisplayName("Should handle buildCause with casual chain disabled")
+    void testBuildCauseWithCasualChainDisabled() {
+        RuntimeException cause = new RuntimeException("Cause");
+        Optional<UnoProblemDetailEx> result = exceptionTranslator.buildCause(cause, nativeWebRequest);
+
+        assertThat(result).isNotNull();
+        assertThat(result.isEmpty()).isTrue();
+    }
+
+    @Test
+    @DisplayName("Should handle problem with about:blank type")
+    void testHandleProblemWithAboutBlankType() {
+        UnoProblemDetailEx problem = ProblemDetailWithCauseBuilder.instance()
+            .withStatus(500)
+            .withType(URI.create("about:blank"))
+            .build();
+        
+        RuntimeException exception = new RuntimeException("Test");
+        when(environment.getActiveProfiles()).thenReturn(new String[]{"dev"});
+
+        UnoProblemDetailEx customized = exceptionTranslator.customizeProblem(problem, exception, nativeWebRequest);
+
+        assertThat(customized).isNotNull();
+        assertThat(customized.getType()).isNotEqualTo(URI.create("about:blank"));
+    }
+
+    @Test
+    @DisplayName("Should handle problem with existing title")
+    void testHandleProblemWithExistingTitle() {
+        UnoProblemDetailEx problem = ProblemDetailWithCauseBuilder.instance()
+            .withStatus(500)
+            .withTitle("Existing Title")
+            .build();
+        
+        RuntimeException exception = new RuntimeException("Test");
+        when(environment.getActiveProfiles()).thenReturn(new String[]{"dev"});
+
+        UnoProblemDetailEx customized = exceptionTranslator.customizeProblem(problem, exception, nativeWebRequest);
+
+        assertThat(customized).isNotNull();
+        assertThat(customized.getTitle()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle problem with status <= 0")
+    void testHandleProblemWithInvalidStatus() {
+        UnoProblemDetailEx problem = ProblemDetailWithCauseBuilder.instance()
+            .withStatus(0)
+            .build();
+        
+        RuntimeException exception = new RuntimeException("Test");
+        when(environment.getActiveProfiles()).thenReturn(new String[]{"dev"});
+
+        UnoProblemDetailEx customized = exceptionTranslator.customizeProblem(problem, exception, nativeWebRequest);
+
+        assertThat(customized).isNotNull();
+        assertThat(customized.getStatus()).isGreaterThan(0);
+    }
+
+    @Test
+    @DisplayName("Should handle problem with existing properties")
+    void testHandleProblemWithExistingProperties() {
+        UnoProblemDetailEx problem = ProblemDetailWithCauseBuilder.instance()
+            .withStatus(500)
+            .withProperty("message", "existing.message")
+            .withProperty("path", "/existing/path")
+            .build();
+        
+        RuntimeException exception = new RuntimeException("Test");
+        when(environment.getActiveProfiles()).thenReturn(new String[]{"dev"});
+
+        UnoProblemDetailEx customized = exceptionTranslator.customizeProblem(problem, exception, nativeWebRequest);
+
+        assertThat(customized).isNotNull();
+        assertThat(customized.getProperties()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle request with null native request")
+    void testHandleRequestWithNullNativeRequest() {
+        NativeWebRequest nullRequest = mock(NativeWebRequest.class);
+        when(nullRequest.getNativeRequest(HttpServletRequest.class)).thenReturn(null);
+        
+        RuntimeException exception = new RuntimeException("Test");
+        when(environment.getActiveProfiles()).thenReturn(new String[]{"dev"});
+
+        UnoProblemDetailEx problem = exceptionTranslator.wrapAndCustomizeProblem(exception, nullRequest);
+
+        assertThat(problem).isNotNull();
+        assertThat(problem.getProperties()).isNotNull();
+        assertThat(problem.getProperties().get("path")).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle ErrorResponse with status")
+    void testHandleErrorResponse() {
+        // Create an ErrorResponseException which implements ErrorResponse and extends Throwable
+        org.springframework.http.ProblemDetail problemDetail = org.springframework.http.ProblemDetail.forStatus(400);
+        problemDetail.setTitle("Error");
+        ErrorResponseException errorResponseException = new ErrorResponseException(
+            HttpStatus.BAD_REQUEST,
+            problemDetail,
+            null
+        );
+
+        when(environment.getActiveProfiles()).thenReturn(new String[]{"dev"});
+
+        ResponseEntity<Object> response = exceptionTranslator.handleAnyException(errorResponseException, nativeWebRequest);
+
+        assertThat(response).isNotNull();
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
     // Helper method for creating MethodParameter

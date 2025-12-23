@@ -1995,5 +1995,1145 @@ class TagGenerationUtilityTest {
         assertThat(result).isNotNull();
         assertThat(result.getPersonalHistoryDetails().getCancerHx()).isEqualTo("Yes");
     }
+
+    // Additional test cases for missing cancer types in getRelativeCancerTags
+
+    @Test
+    @DisplayName("Should handle getRelativeCancerTags with ureter cancer")
+    void testGetRelativeCancerTagsWithUreter() {
+        RelativeHistory relativeHistory = new RelativeHistory();
+        QuestionSet qs = new QuestionSet();
+        qs.setQuestionKey("AMBRY029");
+        qs.setAnswerKey("AMBRY029_001");
+        qs.setAnswerText("55");
+        relativeHistory.setUreter(Arrays.asList(qs));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getRelativeCancerTags(relativeHistory, "Male", "v1");
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getCancerType()).isEqualTo("Ureter or Renal Pelvis");
+    }
+
+    @Test
+    @DisplayName("Should handle getRelativeCancerTags with sebaceous adenoma cancer")
+    void testGetRelativeCancerTagsWithSebaceousAdenoma() {
+        RelativeHistory relativeHistory = new RelativeHistory();
+        QuestionSet qs = new QuestionSet();
+        qs.setQuestionKey("AMBRY031");
+        qs.setAnswerKey("AMBRY031_001");
+        qs.setAnswerText("50");
+        relativeHistory.setSebaceousAdenoma(Arrays.asList(qs));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getRelativeCancerTags(relativeHistory, "Male", "v1");
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getCancerType()).isEqualTo("Sebaceous Adenoma or Carcinoma (Rare skin tumor or cancer)");
+    }
+
+    @Test
+    @DisplayName("Should handle getRelativeCancerTags with skin cancer")
+    void testGetRelativeCancerTagsWithSkin() {
+        RelativeHistory relativeHistory = new RelativeHistory();
+        QuestionSet qs = new QuestionSet();
+        qs.setQuestionKey("AMBRY032");
+        qs.setAnswerKey("AMBRY032_001");
+        qs.setAnswerText("60");
+        relativeHistory.setSkin(Arrays.asList(qs));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getRelativeCancerTags(relativeHistory, "Male", "v1");
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getCancerType()).isEqualTo("Skin");
+    }
+
+    @Test
+    @DisplayName("Should handle getRelativeCancerTags with leukemia")
+    void testGetRelativeCancerTagsWithLeukemia() {
+        RelativeHistory relativeHistory = new RelativeHistory();
+        QuestionSet qs = new QuestionSet();
+        qs.setQuestionKey("AMBRY036");
+        qs.setAnswerKey("AMBRY036_001");
+        qs.setAnswerText("45");
+        relativeHistory.setLeukemia(Arrays.asList(qs));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getRelativeCancerTags(relativeHistory, "Male", "v1");
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getCancerType()).isEqualTo("Leukemia");
+    }
+
+    @Test
+    @DisplayName("Should handle getRelativeCancerTags with lymphoma")
+    void testGetRelativeCancerTagsWithLymphoma() {
+        RelativeHistory relativeHistory = new RelativeHistory();
+        QuestionSet qs = new QuestionSet();
+        qs.setQuestionKey("AMBRY037");
+        qs.setAnswerKey("AMBRY037_001");
+        qs.setAnswerText("50");
+        relativeHistory.setLymphoma(Arrays.asList(qs));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getRelativeCancerTags(relativeHistory, "Male", "v1");
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getCancerType()).isEqualTo("Lymphoma");
+    }
+
+    @Test
+    @DisplayName("Should handle getRelativeCancerTags with gallbladder cancer")
+    void testGetRelativeCancerTagsWithGallbladder() {
+        RelativeHistory relativeHistory = new RelativeHistory();
+        QuestionSet qs = new QuestionSet();
+        qs.setQuestionKey("AMBRY038");
+        qs.setAnswerKey("AMBRY038_001");
+        qs.setAnswerText("55");
+        relativeHistory.setGallbladder(Arrays.asList(qs));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getRelativeCancerTags(relativeHistory, "Male", "v1");
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getCancerType()).isEqualTo("Gallbladder");
+    }
+
+    @Test
+    @DisplayName("Should handle getRelativeCancerTags with cervical cancer")
+    void testGetRelativeCancerTagsWithCervical() {
+        RelativeHistory relativeHistory = new RelativeHistory();
+        QuestionSet qs = new QuestionSet();
+        qs.setQuestionKey("AMBRY039");
+        qs.setAnswerKey("AMBRY039_001");
+        qs.setAnswerText("45");
+        relativeHistory.setCervical(Arrays.asList(qs));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getRelativeCancerTags(relativeHistory, "Female", "v1");
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getCancerType()).isEqualTo("Cervical");
+    }
+
+    @Test
+    @DisplayName("Should handle getRelativeCancerTags with bladder cancer")
+    void testGetRelativeCancerTagsWithBladder() {
+        RelativeHistory relativeHistory = new RelativeHistory();
+        QuestionSet qs = new QuestionSet();
+        qs.setQuestionKey("AMBRY040");
+        qs.setAnswerKey("AMBRY040_001");
+        qs.setAnswerText("50");
+        relativeHistory.setBladder(Arrays.asList(qs));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getRelativeCancerTags(relativeHistory, "Male", "v1");
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getCancerType()).isEqualTo("Bladder");
+    }
+
+    @Test
+    @DisplayName("Should handle getRelativeCancerTags with bladder cancer age < 50")
+    void testGetRelativeCancerTagsWithBladderAgeLessThan50() {
+        RelativeHistory relativeHistory = new RelativeHistory();
+        QuestionSet qs = new QuestionSet();
+        qs.setQuestionKey("AMBRY083");
+        qs.setAnswerKey("AMBRY083_001");
+        qs.setAnswerText("45");
+        relativeHistory.setBladder(Arrays.asList(qs));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getRelativeCancerTags(relativeHistory, "Male", "v1");
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getTags()).contains("FmBladder<50");
+        assertThat(result.get(0).getTags()).contains("FmBladder<=50");
+    }
+
+    @Test
+    @DisplayName("Should handle getRelativeCancerTags with bladder cancer age = 50")
+    void testGetRelativeCancerTagsWithBladderAgeEqualTo50() {
+        RelativeHistory relativeHistory = new RelativeHistory();
+        QuestionSet qs = new QuestionSet();
+        qs.setQuestionKey("AMBRY083");
+        qs.setAnswerKey("AMBRY083_001");
+        qs.setAnswerText("50");
+        relativeHistory.setBladder(Arrays.asList(qs));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getRelativeCancerTags(relativeHistory, "Male", "v1");
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getTags()).contains("FmBladder<=50");
+        assertThat(result.get(0).getTags()).doesNotContain("FmBladder<50");
+    }
+
+    @Test
+    @DisplayName("Should handle getRelativeCancerTags with throat cancer")
+    void testGetRelativeCancerTagsWithThroat() {
+        RelativeHistory relativeHistory = new RelativeHistory();
+        QuestionSet qs = new QuestionSet();
+        qs.setQuestionKey("AMBRY041");
+        qs.setAnswerKey("AMBRY041_001");
+        qs.setAnswerText("55");
+        relativeHistory.setThroat(Arrays.asList(qs));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getRelativeCancerTags(relativeHistory, "Male", "v1");
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getCancerType()).isEqualTo("Throat");
+    }
+
+    @Test
+    @DisplayName("Should handle getRelativeCancerTags with thyroid cancer")
+    void testGetRelativeCancerTagsWithThyroid() {
+        RelativeHistory relativeHistory = new RelativeHistory();
+        QuestionSet qs = new QuestionSet();
+        qs.setQuestionKey("AMBRY042");
+        qs.setAnswerKey("AMBRY042_001");
+        qs.setAnswerText("40");
+        relativeHistory.setThyroid(Arrays.asList(qs));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getRelativeCancerTags(relativeHistory, "Female", "v1");
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getCancerType()).isEqualTo("Thyroid");
+    }
+
+    @Test
+    @DisplayName("Should handle getRelativeCancerTags with oral cancer")
+    void testGetRelativeCancerTagsWithOral() {
+        RelativeHistory relativeHistory = new RelativeHistory();
+        QuestionSet qs = new QuestionSet();
+        qs.setQuestionKey("AMBRY043");
+        qs.setAnswerKey("AMBRY043_001");
+        qs.setAnswerText("50");
+        relativeHistory.setOral(Arrays.asList(qs));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getRelativeCancerTags(relativeHistory, "Male", "v1");
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getCancerType()).isEqualTo("Oral");
+    }
+
+    @Test
+    @DisplayName("Should handle getRelativeCancerTags with liver cancer")
+    void testGetRelativeCancerTagsWithLiver() {
+        RelativeHistory relativeHistory = new RelativeHistory();
+        QuestionSet qs = new QuestionSet();
+        qs.setQuestionKey("AMBRY044");
+        qs.setAnswerKey("AMBRY044_001");
+        qs.setAnswerText("55");
+        relativeHistory.setLiver(Arrays.asList(qs));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getRelativeCancerTags(relativeHistory, "Male", "v1");
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getCancerType()).isEqualTo("Liver");
+    }
+
+    @Test
+    @DisplayName("Should handle getRelativeCancerTags with testicular cancer")
+    void testGetRelativeCancerTagsWithTesticular() {
+        RelativeHistory relativeHistory = new RelativeHistory();
+        QuestionSet qs = new QuestionSet();
+        qs.setQuestionKey("AMBRY045");
+        qs.setAnswerKey("AMBRY045_001");
+        qs.setAnswerText("30");
+        relativeHistory.setTesticular(Arrays.asList(qs));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getRelativeCancerTags(relativeHistory, "Male", "v1");
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getCancerType()).isEqualTo("Testicular");
+    }
+
+    @Test
+    @DisplayName("Should handle getRelativeCancerTags with paraganglioma cancer")
+    void testGetRelativeCancerTagsWithParaganglioma() {
+        RelativeHistory relativeHistory = new RelativeHistory();
+        QuestionSet qs = new QuestionSet();
+        qs.setQuestionKey("AMBRY046");
+        qs.setAnswerKey("AMBRY046_001");
+        qs.setAnswerText("45");
+        relativeHistory.setParaganglioma(Arrays.asList(qs));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getRelativeCancerTags(relativeHistory, "Male", "v1");
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getCancerType()).isEqualTo("Paraganglioma");
+    }
+
+    @Test
+    @DisplayName("Should handle getRelativeCancerTags with pheochromocytoma cancer")
+    void testGetRelativeCancerTagsWithPheochromocytoma() {
+        RelativeHistory relativeHistory = new RelativeHistory();
+        QuestionSet qs = new QuestionSet();
+        qs.setQuestionKey("AMBRY047");
+        qs.setAnswerKey("AMBRY047_001");
+        qs.setAnswerText("50");
+        relativeHistory.setPheochromocytoma(Arrays.asList(qs));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getRelativeCancerTags(relativeHistory, "Male", "v1");
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getCancerType()).isEqualTo("Pheochromocytoma");
+    }
+
+    // Additional test cases for missing cancer types in getPersonalCancerTags
+
+    @Test
+    @DisplayName("Should handle getPersonalCancerTags with ureter cancer")
+    void testGetPersonalCancerTagsWithUreter() {
+        CancerDetails cancerDetails = new CancerDetails();
+        QuestionSet qs = new QuestionSet();
+        qs.setQuestionKey("AMBRY029");
+        qs.setAnswerKey("AMBRY029_001");
+        qs.setAnswerText("55");
+        cancerDetails.setUreter(Arrays.asList(qs));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getPersonalCancerTags(cancerDetails, false, null);
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getCancerType()).isEqualTo("Ureter or Renal Pelvis");
+    }
+
+    @Test
+    @DisplayName("Should handle getPersonalCancerTags with sebaceous adenoma cancer")
+    void testGetPersonalCancerTagsWithSebaceousAdenoma() {
+        CancerDetails cancerDetails = new CancerDetails();
+        QuestionSet qs = new QuestionSet();
+        qs.setQuestionKey("AMBRY031");
+        qs.setAnswerKey("AMBRY031_001");
+        qs.setAnswerText("50");
+        cancerDetails.setSebaceousAdenoma(Arrays.asList(qs));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getPersonalCancerTags(cancerDetails, false, null);
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getCancerType()).isEqualTo("Sebaceous Adenoma or Carcinoma (Rare skin tumor or cancer)");
+    }
+
+    @Test
+    @DisplayName("Should handle getPersonalCancerTags with skin cancer")
+    void testGetPersonalCancerTagsWithSkin() {
+        CancerDetails cancerDetails = new CancerDetails();
+        QuestionSet qs = new QuestionSet();
+        qs.setQuestionKey("AMBRY032");
+        qs.setAnswerKey("AMBRY032_001");
+        qs.setAnswerText("60");
+        cancerDetails.setSkin(Arrays.asList(qs));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getPersonalCancerTags(cancerDetails, false, null);
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getCancerType()).isEqualTo("Skin");
+    }
+
+    @Test
+    @DisplayName("Should handle getPersonalCancerTags with leukemia")
+    void testGetPersonalCancerTagsWithLeukemia() {
+        CancerDetails cancerDetails = new CancerDetails();
+        QuestionSet qs = new QuestionSet();
+        qs.setQuestionKey("AMBRY036");
+        qs.setAnswerKey("AMBRY036_001");
+        qs.setAnswerText("45");
+        cancerDetails.setLeukemia(Arrays.asList(qs));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getPersonalCancerTags(cancerDetails, false, null);
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getCancerType()).isEqualTo("Leukemia");
+    }
+
+    @Test
+    @DisplayName("Should handle getPersonalCancerTags with lymphoma")
+    void testGetPersonalCancerTagsWithLymphoma() {
+        CancerDetails cancerDetails = new CancerDetails();
+        QuestionSet qs = new QuestionSet();
+        qs.setQuestionKey("AMBRY037");
+        qs.setAnswerKey("AMBRY037_001");
+        qs.setAnswerText("50");
+        cancerDetails.setLymphoma(Arrays.asList(qs));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getPersonalCancerTags(cancerDetails, false, null);
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getCancerType()).isEqualTo("Lymphoma");
+    }
+
+    @Test
+    @DisplayName("Should handle getPersonalCancerTags with gallbladder cancer")
+    void testGetPersonalCancerTagsWithGallbladder() {
+        CancerDetails cancerDetails = new CancerDetails();
+        QuestionSet qs = new QuestionSet();
+        qs.setQuestionKey("AMBRY038");
+        qs.setAnswerKey("AMBRY038_001");
+        qs.setAnswerText("55");
+        cancerDetails.setGallbladder(Arrays.asList(qs));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getPersonalCancerTags(cancerDetails, false, null);
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getCancerType()).isEqualTo("Gallbladder");
+    }
+
+    @Test
+    @DisplayName("Should handle getPersonalCancerTags with cervical cancer")
+    void testGetPersonalCancerTagsWithCervical() {
+        CancerDetails cancerDetails = new CancerDetails();
+        QuestionSet qs = new QuestionSet();
+        qs.setQuestionKey("AMBRY039");
+        qs.setAnswerKey("AMBRY039_001");
+        qs.setAnswerText("45");
+        cancerDetails.setCervical(Arrays.asList(qs));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getPersonalCancerTags(cancerDetails, false, null);
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getCancerType()).isEqualTo("Cervical");
+    }
+
+    @Test
+    @DisplayName("Should handle getPersonalCancerTags with bladder cancer")
+    void testGetPersonalCancerTagsWithBladder() {
+        CancerDetails cancerDetails = new CancerDetails();
+        QuestionSet qs = new QuestionSet();
+        qs.setQuestionKey("AMBRY040");
+        qs.setAnswerKey("AMBRY040_001");
+        qs.setAnswerText("45");
+        cancerDetails.setBladder(Arrays.asList(qs));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getPersonalCancerTags(cancerDetails, false, null);
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getCancerType()).isEqualTo("Bladder");
+    }
+
+    @Test
+    @DisplayName("Should handle getPersonalCancerTags with bladder cancer age < 50")
+    void testGetPersonalCancerTagsWithBladderAgeLessThan50() {
+        CancerDetails cancerDetails = new CancerDetails();
+        QuestionSet qs = new QuestionSet();
+        qs.setQuestionKey("AMBRY040");
+        qs.setAnswerKey("AMBRY040_001");
+        qs.setAnswerText("45");
+        cancerDetails.setBladder(Arrays.asList(qs));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getPersonalCancerTags(cancerDetails, false, null);
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getTags()).contains("PrBladder<50");
+    }
+
+    @Test
+    @DisplayName("Should handle getPersonalCancerTags with throat cancer")
+    void testGetPersonalCancerTagsWithThroat() {
+        CancerDetails cancerDetails = new CancerDetails();
+        QuestionSet qs = new QuestionSet();
+        qs.setQuestionKey("AMBRY041");
+        qs.setAnswerKey("AMBRY041_001");
+        qs.setAnswerText("55");
+        cancerDetails.setThroat(Arrays.asList(qs));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getPersonalCancerTags(cancerDetails, false, null);
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getCancerType()).isEqualTo("Throat");
+    }
+
+    @Test
+    @DisplayName("Should handle getPersonalCancerTags with thyroid cancer")
+    void testGetPersonalCancerTagsWithThyroid() {
+        CancerDetails cancerDetails = new CancerDetails();
+        QuestionSet qs = new QuestionSet();
+        qs.setQuestionKey("AMBRY042");
+        qs.setAnswerKey("AMBRY042_001");
+        qs.setAnswerText("40");
+        cancerDetails.setThyroid(Arrays.asList(qs));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getPersonalCancerTags(cancerDetails, false, null);
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getCancerType()).isEqualTo("Thyroid");
+    }
+
+    @Test
+    @DisplayName("Should handle getPersonalCancerTags with oral cancer")
+    void testGetPersonalCancerTagsWithOral() {
+        CancerDetails cancerDetails = new CancerDetails();
+        QuestionSet qs = new QuestionSet();
+        qs.setQuestionKey("AMBRY043");
+        qs.setAnswerKey("AMBRY043_001");
+        qs.setAnswerText("50");
+        cancerDetails.setOral(Arrays.asList(qs));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getPersonalCancerTags(cancerDetails, false, null);
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getCancerType()).isEqualTo("Oral");
+    }
+
+    @Test
+    @DisplayName("Should handle getPersonalCancerTags with liver cancer")
+    void testGetPersonalCancerTagsWithLiver() {
+        CancerDetails cancerDetails = new CancerDetails();
+        QuestionSet qs = new QuestionSet();
+        qs.setQuestionKey("AMBRY044");
+        qs.setAnswerKey("AMBRY044_001");
+        qs.setAnswerText("55");
+        cancerDetails.setLiver(Arrays.asList(qs));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getPersonalCancerTags(cancerDetails, false, null);
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getCancerType()).isEqualTo("Liver");
+    }
+
+    @Test
+    @DisplayName("Should handle getPersonalCancerTags with testicular cancer")
+    void testGetPersonalCancerTagsWithTesticular() {
+        CancerDetails cancerDetails = new CancerDetails();
+        QuestionSet qs = new QuestionSet();
+        qs.setQuestionKey("AMBRY045");
+        qs.setAnswerKey("AMBRY045_001");
+        qs.setAnswerText("30");
+        cancerDetails.setTesticular(Arrays.asList(qs));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getPersonalCancerTags(cancerDetails, false, null);
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getCancerType()).isEqualTo("Testicular");
+    }
+
+    @Test
+    @DisplayName("Should handle getPersonalCancerTags with paraganglioma cancer")
+    void testGetPersonalCancerTagsWithParaganglioma() {
+        CancerDetails cancerDetails = new CancerDetails();
+        QuestionSet qs = new QuestionSet();
+        qs.setQuestionKey("AMBRY046");
+        qs.setAnswerKey("AMBRY046_001");
+        qs.setAnswerText("45");
+        cancerDetails.setParaganglioma(Arrays.asList(qs));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getPersonalCancerTags(cancerDetails, false, null);
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getCancerType()).isEqualTo("Paraganglioma");
+    }
+
+    @Test
+    @DisplayName("Should handle getPersonalCancerTags with pheochromocytoma cancer")
+    void testGetPersonalCancerTagsWithPheochromocytoma() {
+        CancerDetails cancerDetails = new CancerDetails();
+        QuestionSet qs = new QuestionSet();
+        qs.setQuestionKey("AMBRY047");
+        qs.setAnswerKey("AMBRY047_001");
+        qs.setAnswerText("50");
+        cancerDetails.setPheochromocytoma(Arrays.asList(qs));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getPersonalCancerTags(cancerDetails, false, null);
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getCancerType()).isEqualTo("Pheochromocytoma");
+    }
+
+    // Additional test cases for missing relatives in getFamilyCancerTags
+
+    @Test
+    @DisplayName("Should process great nieces in getFamilyCancerTags")
+    void testGetFamilyCancerTagsWithGreatNieces() {
+        FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
+        com.genomebrain.backend.quesstionnaire.relative.GreatNiece greatNiece = 
+            new com.genomebrain.backend.quesstionnaire.relative.GreatNiece();
+        greatNiece.setBasicQuestions(Collections.emptyList());
+        familyCancerDetails.setGreatNieces(Arrays.asList(greatNiece));
+
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getFamilyHistoryDetails().getFamilyMember()).isEqualTo("Great Niece");
+    }
+
+    @Test
+    @DisplayName("Should process great nephews in getFamilyCancerTags")
+    void testGetFamilyCancerTagsWithGreatNephews() {
+        FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
+        com.genomebrain.backend.quesstionnaire.relative.GreatNephew greatNephew = 
+            new com.genomebrain.backend.quesstionnaire.relative.GreatNephew();
+        greatNephew.setBasicQuestions(Collections.emptyList());
+        familyCancerDetails.setGreatNephews(Arrays.asList(greatNephew));
+
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getFamilyHistoryDetails().getFamilyMember()).isEqualTo("Great Nephew");
+    }
+
+    @Test
+    @DisplayName("Should process great granddaughters in getFamilyCancerTags")
+    void testGetFamilyCancerTagsWithGreatGrandDaughters() {
+        FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
+        com.genomebrain.backend.quesstionnaire.relative.GreatGranddaughter greatGranddaughter = 
+            new com.genomebrain.backend.quesstionnaire.relative.GreatGranddaughter();
+        greatGranddaughter.setBasicQuestions(Collections.emptyList());
+        familyCancerDetails.setGreatGrandDaughters(Arrays.asList(greatGranddaughter));
+
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getFamilyHistoryDetails().getFamilyMember()).isEqualTo("Great Granddaughter");
+    }
+
+    @Test
+    @DisplayName("Should process great grandsons in getFamilyCancerTags")
+    void testGetFamilyCancerTagsWithGreatGrandSons() {
+        FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
+        com.genomebrain.backend.quesstionnaire.relative.GreatGrandson greatGrandson = 
+            new com.genomebrain.backend.quesstionnaire.relative.GreatGrandson();
+        greatGrandson.setBasicQuestions(Collections.emptyList());
+        familyCancerDetails.setGreatGrandSons(Arrays.asList(greatGrandson));
+
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getFamilyHistoryDetails().getFamilyMember()).isEqualTo("Great Grandson");
+    }
+
+    @Test
+    @DisplayName("Should process half aunts in getFamilyCancerTags")
+    void testGetFamilyCancerTagsWithHalfAunts() {
+        FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
+        com.genomebrain.backend.quesstionnaire.relative.HalfAunt halfAunt = 
+            new com.genomebrain.backend.quesstionnaire.relative.HalfAunt();
+        halfAunt.setBasicQuestions(Collections.emptyList());
+        familyCancerDetails.setHalfAunts(Arrays.asList(halfAunt));
+
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getFamilyHistoryDetails().getFamilyMember()).isEqualTo("Half Aunt");
+    }
+
+    @Test
+    @DisplayName("Should process half uncles in getFamilyCancerTags")
+    void testGetFamilyCancerTagsWithHalfUncles() {
+        FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
+        com.genomebrain.backend.quesstionnaire.relative.HalfUncle halfUncle = 
+            new com.genomebrain.backend.quesstionnaire.relative.HalfUncle();
+        halfUncle.setBasicQuestions(Collections.emptyList());
+        familyCancerDetails.setHalfUncles(Arrays.asList(halfUncle));
+
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getFamilyHistoryDetails().getFamilyMember()).isEqualTo("Half Uncle");
+    }
+
+    @Test
+    @DisplayName("Should process half nieces in getFamilyCancerTags")
+    void testGetFamilyCancerTagsWithHalfNieces() {
+        FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
+        com.genomebrain.backend.quesstionnaire.relative.HalfNiece halfNiece = 
+            new com.genomebrain.backend.quesstionnaire.relative.HalfNiece();
+        halfNiece.setBasicQuestions(Collections.emptyList());
+        familyCancerDetails.setHalfNieces(Arrays.asList(halfNiece));
+
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getFamilyHistoryDetails().getFamilyMember()).isEqualTo("Half Niece");
+    }
+
+    @Test
+    @DisplayName("Should process half nephews in getFamilyCancerTags")
+    void testGetFamilyCancerTagsWithHalfNephews() {
+        FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
+        com.genomebrain.backend.quesstionnaire.relative.HalfNephew halfNephew = 
+            new com.genomebrain.backend.quesstionnaire.relative.HalfNephew();
+        halfNephew.setBasicQuestions(Collections.emptyList());
+        familyCancerDetails.setHalfNephews(Arrays.asList(halfNephew));
+
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getFamilyHistoryDetails().getFamilyMember()).isEqualTo("Half Nephew");
+    }
+
+    // Additional test cases for edge cases in breast cancer
+
+    @Test
+    @DisplayName("Should handle getRelativeCancerTags with breast cancer bilateral")
+    void testGetRelativeCancerTagsWithBreastBilateral() {
+        RelativeHistory relativeHistory = new RelativeHistory();
+        QuestionSet qs = new QuestionSet();
+        qs.setQuestionKey("AMBRY008");
+        qs.setAnswerKey("AMBRY008_002");
+        qs.setAnswerText("45");
+        relativeHistory.setBreast(Arrays.asList(qs));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getRelativeCancerTags(relativeHistory, "Female", "v1");
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getCancerType()).isEqualTo("Breast");
+    }
+
+    @Test
+    @DisplayName("Should handle getRelativeCancerTags with breast cancer age < 50")
+    void testGetRelativeCancerTagsWithBreastAgeLessThan50() {
+        RelativeHistory relativeHistory = new RelativeHistory();
+        QuestionSet qs = new QuestionSet();
+        qs.setQuestionKey("AMBRY008");
+        qs.setAnswerKey("AMBRY008_001");
+        qs.setAnswerText("45");
+        relativeHistory.setBreast(Arrays.asList(qs));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getRelativeCancerTags(relativeHistory, "Female", "v1");
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+    }
+
+    // Additional test cases for ovarian cancer edge cases
+
+    @Test
+    @DisplayName("Should handle getRelativeCancerTags with ovarian cancer age < 50")
+    void testGetRelativeCancerTagsWithOvarianAgeLessThan50() {
+        RelativeHistory relativeHistory = new RelativeHistory();
+        QuestionSet qs = new QuestionSet();
+        qs.setQuestionKey("AMBRY061");
+        qs.setAnswerKey("AMBRY061_001");
+        qs.setAnswerText("45");
+        relativeHistory.setOvarian(Arrays.asList(qs));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getRelativeCancerTags(relativeHistory, "Female", "v1");
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getTags()).contains("FmOvarian<50");
+        assertThat(result.get(0).getTags()).contains("FmOvarian<=50");
+    }
+
+    @Test
+    @DisplayName("Should handle getRelativeCancerTags with ovarian cancer age = 50")
+    void testGetRelativeCancerTagsWithOvarianAgeEqualTo50() {
+        RelativeHistory relativeHistory = new RelativeHistory();
+        QuestionSet qs = new QuestionSet();
+        qs.setQuestionKey("AMBRY061");
+        qs.setAnswerKey("AMBRY061_001");
+        qs.setAnswerText("50");
+        relativeHistory.setOvarian(Arrays.asList(qs));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getRelativeCancerTags(relativeHistory, "Female", "v1");
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getTags()).contains("FmOvarian<=50");
+        assertThat(result.get(0).getTags()).doesNotContain("FmOvarian<50");
+    }
+
+    @Test
+    @DisplayName("Should handle getPersonalCancerTags with ovarian cancer age < 50")
+    void testGetPersonalCancerTagsWithOvarianAgeLessThan50() {
+        CancerDetails cancerDetails = new CancerDetails();
+        QuestionSet qs = new QuestionSet();
+        qs.setQuestionKey("AMBRY013");
+        qs.setAnswerKey("AMBRY013_001");
+        qs.setAnswerText("45");
+        cancerDetails.setOvarian(Arrays.asList(qs));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getPersonalCancerTags(cancerDetails, false, null);
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getTags()).contains("PrOvarian<50");
+    }
+
+    // Additional test cases for prostate cancer with different Gleason scores
+
+    @Test
+    @DisplayName("Should handle getPersonalCancerTags with prostate cancer and Gleason score > 7")
+    void testGetPersonalCancerTagsWithProstateGleasonGt7() {
+        CancerDetails cancerDetails = new CancerDetails();
+        QuestionSet qs = new QuestionSet();
+        qs.setQuestionKey("AMBRY016");
+        qs.setAnswerKey("AMBRY016_001");
+        qs.setAnswerText("60");
+        QuestionSet gleasonQs = new QuestionSet();
+        gleasonQs.setQuestionKey("AMBRY017");
+        gleasonQs.setAnswerKey("AMBRY017_001");
+        cancerDetails.setProstate(Arrays.asList(qs, gleasonQs));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getPersonalCancerTags(cancerDetails, true, 8L);
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getCancerType()).isEqualTo("Prostate");
+    }
+
+    // Additional test cases for setBiopsyDetails
+
+    @Test
+    @DisplayName("Should handle getPersonalHistoryDetails with biopsy result I don't know")
+    void testGetPersonalHistoryDetailsWithBiopsyResultIDontKnow() {
+        Questionnaire questionnaire = new Questionnaire();
+        QuestionSet biopsyQs = new QuestionSet();
+        biopsyQs.setQuestionKey(TagGenerationUtility.PRIOR_BIOPSY_QUESTION);
+        biopsyQs.setAnswerKey("AMBRY180_001");
+        QuestionSet resultQs = new QuestionSet();
+        resultQs.setQuestionKey(TagGenerationUtility.BIOPSY_RESULT);
+        resultQs.setAnswerKey("AMBRY106_004"); // Assuming this is "I don't know" - adjust if needed
+        questionnaire.setTyrerCuzick(Arrays.asList(biopsyQs, resultQs));
+
+        PersonalHistoryDetails personalHistoryDetails = new PersonalHistoryDetails();
+
+        PersonalHistoryTagsDTO result = tagGenerationUtility.getPersonalHistoryDetails(
+            questionnaire, personalHistoryDetails, false, false, null, "v1", false, true);
+
+        assertThat(result).isNotNull();
+        // The actual value depends on OptionConstants - just verify it's set
+        assertThat(result.getPersonalHistoryDetails().getBreastBiopsyResult()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getPersonalHistoryDetails with prior biopsy I don't know")
+    void testGetPersonalHistoryDetailsWithPriorBiopsyIDontKnow() {
+        Questionnaire questionnaire = new Questionnaire();
+        QuestionSet biopsyQs = new QuestionSet();
+        biopsyQs.setQuestionKey(TagGenerationUtility.PRIOR_BIOPSY_QUESTION);
+        biopsyQs.setAnswerKey("AMBRY180_003");
+        questionnaire.setTyrerCuzick(Arrays.asList(biopsyQs));
+
+        PersonalHistoryDetails personalHistoryDetails = new PersonalHistoryDetails();
+
+        PersonalHistoryTagsDTO result = tagGenerationUtility.getPersonalHistoryDetails(
+            questionnaire, personalHistoryDetails, false, false, null, "v1", false, true);
+
+        assertThat(result).isNotNull();
+        assertThat(result.getPersonalHistoryDetails().getPreviousBiopsy()).isEqualTo("Unknown");
+    }
+
+    // Additional test cases for getFamilyHistoryDetails edge cases
+
+    @Test
+    @DisplayName("Should handle getFamilyHistoryDetails with Other relative type")
+    void testGetFamilyHistoryDetailsWithOtherRelativeType() {
+        FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
+        com.genomebrain.backend.quesstionnaire.Others other = 
+            new com.genomebrain.backend.quesstionnaire.Others();
+        other.setBasicQuestions(Collections.emptyList());
+        familyCancerDetails.setOthers(Arrays.asList(other));
+
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getTags()).isEmpty(); // Other relatives don't get tags
+    }
+
+    @Test
+    @DisplayName("Should handle getFamilyHistoryDetails with relative side Mat")
+    void testGetFamilyHistoryDetailsWithRelativeSideMat() {
+        FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
+        Sister sister = new Sister();
+        QuestionSet qs = new QuestionSet();
+        qs.setQuestionKey("AMBRY054");
+        qs.setAnswerKey("AMBRY054_001");
+        sister.setBasicQuestions(Arrays.asList(qs));
+        QuestionSet breastQs = new QuestionSet();
+        breastQs.setQuestionKey("AMBRY008");
+        breastQs.setAnswerKey("AMBRY008_001");
+        breastQs.setAnswerText("45");
+        sister.setBreast(Arrays.asList(breastQs));
+        familyCancerDetails.setSisters(Arrays.asList(sister));
+
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getFamilyHistoryDetails().getRelativeSide()).isEqualTo("Mother's side");
+    }
+
+    @Test
+    @DisplayName("Should handle getFamilyHistoryDetails with relative side Pat")
+    void testGetFamilyHistoryDetailsWithRelativeSidePat() {
+        FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
+        Brother brother = new Brother();
+        QuestionSet qs = new QuestionSet();
+        qs.setQuestionKey("AMBRY054");
+        qs.setAnswerKey("AMBRY054_002");
+        brother.setBasicQuestions(Arrays.asList(qs));
+        QuestionSet prostateQs = new QuestionSet();
+        prostateQs.setQuestionKey("AMBRY016");
+        prostateQs.setAnswerKey("AMBRY016_001");
+        prostateQs.setAnswerText("60");
+        brother.setProstate(Arrays.asList(prostateQs));
+        familyCancerDetails.setBrothers(Arrays.asList(brother));
+
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getFamilyHistoryDetails().getRelativeSide()).isEqualTo("Father's side");
+    }
+
+    @Test
+    @DisplayName("Should handle getFamilyHistoryDetails with Mother and N/A relative side")
+    void testGetFamilyHistoryDetailsWithMotherAndNASide() {
+        FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
+        RelativeHistory mother = new RelativeHistory();
+        mother.setBasicQuestions(Collections.emptyList());
+        QuestionSet breastQs = new QuestionSet();
+        breastQs.setQuestionKey("AMBRY008");
+        breastQs.setAnswerKey("AMBRY008_001");
+        breastQs.setAnswerText("45");
+        mother.setBreast(Arrays.asList(breastQs));
+        familyCancerDetails.setMother(mother);
+
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        // When relative side is N/A and relative type is Mother, tags should include Mat
+        assertThat(result.get(0).getTags()).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("Should handle getFamilyHistoryDetails with Father and N/A relative side")
+    void testGetFamilyHistoryDetailsWithFatherAndNASide() {
+        FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
+        RelativeHistory father = new RelativeHistory();
+        father.setBasicQuestions(Collections.emptyList());
+        QuestionSet prostateQs = new QuestionSet();
+        prostateQs.setQuestionKey("AMBRY016");
+        prostateQs.setAnswerKey("AMBRY016_001");
+        prostateQs.setAnswerText("60");
+        father.setProstate(Arrays.asList(prostateQs));
+        familyCancerDetails.setFather(father);
+
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        // When relative side is N/A and relative type is Father, tags should include Pat
+        assertThat(result.get(0).getTags()).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("Should handle getFamilyHistoryDetails with other relative and N/A relative side")
+    void testGetFamilyHistoryDetailsWithOtherRelativeAndNASide() {
+        FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
+        Sister sister = new Sister();
+        sister.setBasicQuestions(Collections.emptyList());
+        QuestionSet breastQs = new QuestionSet();
+        breastQs.setQuestionKey("AMBRY008");
+        breastQs.setAnswerKey("AMBRY008_001");
+        breastQs.setAnswerText("45");
+        sister.setBreast(Arrays.asList(breastQs));
+        familyCancerDetails.setSisters(Arrays.asList(sister));
+
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        // When relative side is N/A and relative type is not Mother/Father, tags should include both Mat and Pat
+        assertThat(result.get(0).getTags()).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("Should handle getFamilyHistoryDetails with cancer age null")
+    void testGetFamilyHistoryDetailsWithCancerAgeNull() {
+        FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
+        Sister sister = new Sister();
+        sister.setBasicQuestions(Collections.emptyList());
+        QuestionSet breastQs = new QuestionSet();
+        breastQs.setQuestionKey("AMBRY008");
+        breastQs.setAnswerKey("AMBRY008_001");
+        breastQs.setAnswerText(null);
+        sister.setBreast(Arrays.asList(breastQs));
+        familyCancerDetails.setSisters(Arrays.asList(sister));
+
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getFamilyHistoryDetails().getCancerDetails().get(0).getAge()).isEqualTo("-");
+    }
+
+    @Test
+    @DisplayName("Should handle getFamilyHistoryDetails with cancer age 0")
+    void testGetFamilyHistoryDetailsWithCancerAgeZero() {
+        FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
+        Sister sister = new Sister();
+        sister.setBasicQuestions(Collections.emptyList());
+        QuestionSet breastQs = new QuestionSet();
+        breastQs.setQuestionKey("AMBRY008");
+        breastQs.setAnswerKey("AMBRY008_001");
+        breastQs.setAnswerText("0");
+        sister.setBreast(Arrays.asList(breastQs));
+        familyCancerDetails.setSisters(Arrays.asList(sister));
+
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getFamilyHistoryDetails().getCancerDetails().get(0).getAge()).isEqualTo("Unknown");
+    }
+
+    @Test
+    @DisplayName("Should handle getFamilyHistoryDetails with additional information")
+    void testGetFamilyHistoryDetailsWithAdditionalInformation() {
+        FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
+        Sister sister = new Sister();
+        sister.setBasicQuestions(Collections.emptyList());
+        QuestionSet prostateQs = new QuestionSet();
+        prostateQs.setQuestionKey("AMBRY016");
+        prostateQs.setAnswerKey("AMBRY016_001");
+        prostateQs.setAnswerText("60");
+        QuestionSet gleasonQs = new QuestionSet();
+        gleasonQs.setQuestionKey("AMBRY017");
+        gleasonQs.setAnswerKey("AMBRY017_001");
+        sister.setProstate(Arrays.asList(prostateQs, gleasonQs));
+        familyCancerDetails.setSisters(Arrays.asList(sister));
+
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+    }
+
+    // Additional test cases for checkPersonalColorectalPolypsHistory with year of genetic testing
+
+    @Test
+    @DisplayName("Should handle checkPersonalColorectalPolypsHistory with year of genetic testing from answer key")
+    void testCheckPersonalColorectalPolypsHistoryYearOfGeneticTestingFromAnswerKey() {
+        QuestionSet qs = new QuestionSet();
+        qs.setQuestionKey("AMBRY126");
+        qs.setAnswerKey("AMBRY126_002");
+        List<QuestionSet> basicQuestions = Arrays.asList(qs);
+        PersonalHistoryTagsDTO personalHistoryTagsDTO = new PersonalHistoryTagsDTO();
+        PersonalHistoryDetails personalHistoryDetails = new PersonalHistoryDetails();
+        personalHistoryTagsDTO.setPersonalHistoryDetails(personalHistoryDetails);
+        personalHistoryTagsDTO.setTags(new HashSet<>());
+
+        PersonalHistoryTagsDTO result = tagGenerationUtility.checkPersonalColorectalPolypsHistory(
+            basicQuestions, personalHistoryTagsDTO, false);
+
+        assertThat(result).isNotNull();
+        assertThat(result.getPersonalHistoryDetails().getYearOfGeneticTesting()).isNotNull();
+    }
+
+    // Additional test cases for getPersonalHistoryDetails with empty personal history basic questions
+
+    @Test
+    @DisplayName("Should handle getPersonalHistoryDetails with null personal history basic questions")
+    void testGetPersonalHistoryDetailsWithNullPersonalHistoryBasicQuestions() {
+        Questionnaire questionnaire = new Questionnaire();
+        PersonalHistory personalHistory = new PersonalHistory();
+        CancerDetails cancerDetails = new CancerDetails();
+        personalHistory.setPersonalCancerDetails(cancerDetails);
+        personalHistory.setBasicQuestions(null);
+        questionnaire.setPersonalHistory(personalHistory);
+
+        PersonalHistoryDetails personalHistoryDetails = new PersonalHistoryDetails();
+
+        assertThatThrownBy(() -> tagGenerationUtility.getPersonalHistoryDetails(
+            questionnaire, personalHistoryDetails, true, false, null, "v1", false, true))
+            .isInstanceOf(NullPointerException.class);
+    }
+
+    // Additional test cases for getRelativeCancerTags with multiple cancer types
+
+    @Test
+    @DisplayName("Should handle getRelativeCancerTags with multiple cancer types")
+    void testGetRelativeCancerTagsWithMultipleCancerTypes() {
+        RelativeHistory relativeHistory = new RelativeHistory();
+        QuestionSet breastQs = new QuestionSet();
+        breastQs.setQuestionKey("AMBRY008");
+        breastQs.setAnswerKey("AMBRY008_001");
+        breastQs.setAnswerText("45");
+        relativeHistory.setBreast(Arrays.asList(breastQs));
+        
+        QuestionSet ovarianQs = new QuestionSet();
+        ovarianQs.setQuestionKey("AMBRY013");
+        ovarianQs.setAnswerKey("AMBRY013_001");
+        ovarianQs.setAnswerText("50");
+        relativeHistory.setOvarian(Arrays.asList(ovarianQs));
+        
+        QuestionSet colorectalQs = new QuestionSet();
+        colorectalQs.setQuestionKey("AMBRY021");
+        colorectalQs.setAnswerKey("AMBRY021_001");
+        colorectalQs.setAnswerText("55");
+        relativeHistory.setColorectal(Arrays.asList(colorectalQs));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getRelativeCancerTags(relativeHistory, "Female", "v1");
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(3);
+    }
+
+    // Additional test cases for getPersonalCancerTags with multiple cancer types
+
+    @Test
+    @DisplayName("Should handle getPersonalCancerTags with multiple cancer types")
+    void testGetPersonalCancerTagsWithMultipleCancerTypes() {
+        CancerDetails cancerDetails = new CancerDetails();
+        QuestionSet breastQs = new QuestionSet();
+        breastQs.setQuestionKey("AMBRY008");
+        breastQs.setAnswerKey("AMBRY008_001");
+        breastQs.setAnswerText("45");
+        cancerDetails.setBreast(Arrays.asList(breastQs));
+        
+        QuestionSet ovarianQs = new QuestionSet();
+        ovarianQs.setQuestionKey("AMBRY013");
+        ovarianQs.setAnswerKey("AMBRY013_001");
+        ovarianQs.setAnswerText("50");
+        cancerDetails.setOvarian(Arrays.asList(ovarianQs));
+        
+        QuestionSet colorectalQs = new QuestionSet();
+        colorectalQs.setQuestionKey("AMBRY021");
+        colorectalQs.setAnswerKey("AMBRY021_001");
+        colorectalQs.setAnswerText("55");
+        cancerDetails.setColorectal(Arrays.asList(colorectalQs));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getPersonalCancerTags(cancerDetails, false, null);
+
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(3);
+    }
 }
 

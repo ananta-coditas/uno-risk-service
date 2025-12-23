@@ -125,5 +125,136 @@ class APIConstantsTest {
         assertThat(APIConstants.PRELEUKEMIA).isNotNull();
         assertThat(APIConstants.MYELODYSPLASTIC_SYNDROMES).isNotNull();
     }
+
+    @Test
+    @DisplayName("Should have non-null pathology constant")
+    void testPathologyConstant() {
+        assertThat(APIConstants.PATHOLOGY).isNotNull();
+        assertThat(APIConstants.PATHOLOGY).isEqualTo("pathology");
+    }
+
+    @Test
+    @DisplayName("Should have non-null metastatic constant")
+    void testMetastaticConstant() {
+        assertThat(APIConstants.METASTATIC).isNotNull();
+        assertThat(APIConstants.METASTATIC).isEqualTo("metastatic");
+    }
+
+    @Test
+    @DisplayName("Should have non-null malignant constant")
+    void testMalignantConstant() {
+        assertThat(APIConstants.MALIGNANT).isNotNull();
+        assertThat(APIConstants.MALIGNANT).isEqualTo("malignant");
+    }
+
+    @Test
+    @DisplayName("Should have non-null adrenal constant")
+    void testAdrenalConstant() {
+        assertThat(APIConstants.ADRENAL).isNotNull();
+        assertThat(APIConstants.ADRENAL).isEqualTo("Adrenal");
+    }
+
+    @Test
+    @DisplayName("Should have non-null uterine endometrial constant")
+    void testUterineEndometrialConstant() {
+        assertThat(APIConstants.UTERINE_ENDOMETRIAL).isNotNull();
+        assertThat(APIConstants.UTERINE_ENDOMETRIAL).isEqualTo("Uterine/Endometrial");
+    }
+
+    @Test
+    @DisplayName("Should have non-null uterine constant")
+    void testUterineConstant() {
+        assertThat(APIConstants.UTERINE).isNotNull();
+        assertThat(APIConstants.UTERINE).isEqualTo("Uterine");
+    }
+
+    @Test
+    @DisplayName("Should have non-null small intestine constant")
+    void testSmallIntestineConstant() {
+        assertThat(APIConstants.SMALL_INTESTINE).isNotNull();
+        assertThat(APIConstants.SMALL_INTESTINE).isEqualTo("Small Intestine");
+    }
+
+    @Test
+    @DisplayName("Should have non-null biliary tract constants")
+    void testBiliaryTractConstants() {
+        assertThat(APIConstants.BILIARY_TRACT_NOS).isNotNull();
+        assertThat(APIConstants.BILIARY_TRACT_NOS).isEqualTo("Biliary Tract - NOS");
+        assertThat(APIConstants.BILIARY_TRACT).isNotNull();
+        assertThat(APIConstants.BILIARY_TRACT).isEqualTo("Biliary Tract");
+    }
+
+    @Test
+    @DisplayName("Should have non-null fallopian constants")
+    void testFallopianConstants() {
+        assertThat(APIConstants.FALLOPIAN).isNotNull();
+        assertThat(APIConstants.FALLOPIAN).isEqualTo("Fallopian");
+    }
+
+    @Test
+    @DisplayName("Should verify all constants have correct values")
+    void testConstantValues() {
+        assertThat(APIConstants.POLYP_OVERALL).isEqualTo("polypOverall");
+        assertThat(APIConstants.ADENOMA).isEqualTo("Adenoma");
+        assertThat(APIConstants.POLYP_TYPE).isEqualTo("polypType");
+        assertThat(APIConstants.EXACT_NUM_OF_POLYPS).isEqualTo("exactNumOfPolyps");
+        assertThat(APIConstants.POLYPS_10_TO_19).isEqualTo("10-19");
+        assertThat(APIConstants.NUMEROUS).isEqualTo("Numerous");
+        assertThat(APIConstants.DOZENS).isEqualTo("Dozens");
+        assertThat(APIConstants.CARPETED).isEqualTo("Carpeted");
+        assertThat(APIConstants.INNUMERABLE).isEqualTo("Innumerable");
+        assertThat(APIConstants.LOTS).isEqualTo("Lots");
+        assertThat(APIConstants.MANY).isEqualTo("Many");
+        assertThat(APIConstants.TOO_MANY_TO_COUNT).isEqualTo("Too Many To Count");
+        assertThat(APIConstants.RELATIVE).isEqualTo("relative");
+        assertThat(APIConstants.SEBACEOUS_CARCINOMA).isEqualTo("Sebaceous carcinoma");
+        assertThat(APIConstants.SEBACEOUS_CARCINOMA_ALT).isEqualTo("Sebaceous Carcinoma");
+        assertThat(APIConstants.SEBACEOUS_ADENOMAS).isEqualTo("Sebaceous adenomas");
+        assertThat(APIConstants.BOTH_BREASTS).isEqualTo("Both breasts (bilateral)");
+        assertThat(APIConstants.BREAST_IPSILATERAL).isEqualTo("breastIpsilateral");
+        assertThat(APIConstants.NEGATIVE).isEqualTo("Negative");
+        assertThat(APIConstants.BREAST_ER).isEqualTo("breastEr");
+        assertThat(APIConstants.RELATIVE_MULTIPLE_PRIMARIES).isEqualTo("relativeMultiplePrimaries");
+        assertThat(APIConstants.RELATIVE_PATHOLOGY).isEqualTo("relativePathology");
+        assertThat(APIConstants.RELATIVE_BREAST_IPSILATERAL).isEqualTo("relativeBreastIpsilateral");
+        assertThat(APIConstants.RELATIVE_BREAST_ER).isEqualTo("relativeBreastEr");
+        assertThat(APIConstants.PROSTATE_GLEASON_SCORE).isEqualTo("prostateGleasonScore");
+        assertThat(APIConstants.HIGHER_THAN_7).isEqualTo("Higher than 7");
+        assertThat(APIConstants.METASTATIC).isEqualTo("metastatic");
+        assertThat(APIConstants.RELATIVE_PROSTATE_GLEASON_SCORE).isEqualTo("relativeProstateGleasonScore");
+        assertThat(APIConstants.RELATIVE_METASTATIC).isEqualTo("relativeMetastatic");
+        assertThat(APIConstants.MALIGNANT).isEqualTo("malignant");
+        assertThat(APIConstants.COLORECTAL_MULTIPLE_PRIMARIES).isEqualTo("colorectalMultiplePrimaries");
+        assertThat(APIConstants.RELATIVE_COLORECTAL_MULTIPLE_PRIMARIES).isEqualTo("relativeColorectalMultiplePrimaries");
+        assertThat(APIConstants.SIDE_OF_FAM).isEqualTo("sideOfFam");
+        assertThat(APIConstants.RELATIVE_CANCER_FEATURE).isEqualTo("relativeCancerFeature");
+        assertThat(APIConstants.BLOOD).isEqualTo("Blood");
+        assertThat(APIConstants.PRELEUKEMIA).isEqualTo("Preleukemia");
+        assertThat(APIConstants.MYELODYSPLASTIC_SYNDROMES).isEqualTo("Myelodysplastic syndromes (MDS)");
+        assertThat(APIConstants.FALLOPIAN_TUBE).isEqualTo("Fallopian Tube");
+        assertThat(APIConstants.PERITONEAL).isEqualTo("Peritoneal");
+        assertThat(APIConstants.FALLOPIAN_TUBE_OR_PERITONEAL).isEqualTo("Fallopian Tube or Peritoneal");
+        assertThat(APIConstants.FALLOPIAN).isEqualTo("Fallopian");
+        assertThat(APIConstants.ADRENAL).isEqualTo("Adrenal");
+        assertThat(APIConstants.UTERINE_ENDOMETRIAL).isEqualTo("Uterine/Endometrial");
+        assertThat(APIConstants.UTERINE).isEqualTo("Uterine");
+        assertThat(APIConstants.SMALL_INTESTINE).isEqualTo("Small Intestine");
+        assertThat(APIConstants.BILIARY_TRACT_NOS).isEqualTo("Biliary Tract - NOS");
+        assertThat(APIConstants.BILIARY_TRACT).isEqualTo("Biliary Tract");
+    }
+
+    @Test
+    @DisplayName("Should have non-null validation message constants with correct values")
+    void testValidationMessageConstantValues() {
+        assertThat(APIConstants.PORTAL_ORDER_ID).isEqualTo("Please provide portalOrderId");
+        assertThat(APIConstants.PORTAL_PATIENT_ID).isEqualTo("Please provide portalPatientId");
+        assertThat(APIConstants.VALID_RELATIONSHIP).isEqualTo("Please provide valid Relationship");
+        assertThat(APIConstants.VALID_SEX_AT_BIRTH_COUSIN_1ST).isEqualTo("Please provide valid SexAtBirth for Cousin - 1st");
+        assertThat(APIConstants.VALID_SIDE_OF_FAM).isEqualTo("Please provide valid SideOfFam");
+        assertThat(APIConstants.VALID_SEX_AT_BIRTH).isEqualTo("Please provide valid SexAtBirth");
+        assertThat(APIConstants.VALID_CLINICAL_FEATURE_OVERALL).isEqualTo("Please provide valid ClinicalFeatureOverall");
+        assertThat(APIConstants.VALID_CANCER_OVERALL).isEqualTo("Please provide valid CancerOverall");
+        assertThat(APIConstants.VALID_POLYP_OVERALL_PROBAND).isEqualTo("Please provide valid PolypOverall for (PROBAND)");
+    }
 }
 

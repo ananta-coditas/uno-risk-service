@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.net.ConnectException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import com.genomebrain.backend.service.dto.ConditionHolder;
 import com.genomebrain.backend.service.dto.FamilyHistoryDetailsTagsDTO;
 import com.genomebrain.backend.service.dto.NCCNTagConstants;
 import com.genomebrain.backend.service.dto.ReasoningStatementObject;
@@ -167,6 +169,624 @@ class GastricReasoningStatementUtilityTest {
 
         assertThat(result).isNotNull();
         // The method checks for CRCTag29 when conditions are met
+    }
+
+    @Test
+    @DisplayName("Should test checkForCRCRS method with matching conditions")
+    void testCheckForCRCRS() throws Exception {
+        java.lang.reflect.Method method = GastricReasoningStatementUtility.class.getDeclaredMethod("checkForCRCRS", 
+            List.class, String.class, String.class);
+        method.setAccessible(true);
+
+        List<FamilyHistoryDetailsTagsDTO> familyHistory = new ArrayList<>();
+        String[] crcTag26AConditions = ConditionHolder.getInstance().getConditionMap().get("CRCTag26_A");
+        String[] crcTag26BConditions = ConditionHolder.getInstance().getConditionMap().get("CRCTag26_B");
+        
+        if (crcTag26AConditions != null && crcTag26AConditions.length > 0 && 
+            crcTag26BConditions != null && crcTag26BConditions.length > 0) {
+            // Create 2 relatives with CRCTag26_A matching tags
+            for (int i = 0; i < 2; i++) {
+                FamilyHistoryDetailsTagsDTO relative = new FamilyHistoryDetailsTagsDTO();
+                Set<String> tags = new HashSet<>();
+                tags.add(crcTag26AConditions[0]);
+                relative.setTags(tags);
+                familyHistory.add(relative);
+            }
+            
+            // Add CRCTag26_B tag to one relative
+            familyHistory.get(0).getTags().add(crcTag26BConditions[0]);
+
+            Boolean result = (Boolean) method.invoke(utility, familyHistory, "CRCTag26_A", "CRCTag26_B");
+            assertThat(result).isTrue();
+        }
+    }
+
+    @Test
+    @DisplayName("Should test checkForCRCRS method with checkForGastrichRS condition")
+    void testCheckForCRCRSWithGastrichRS() throws Exception {
+        java.lang.reflect.Method method = GastricReasoningStatementUtility.class.getDeclaredMethod("checkForCRCRS", 
+            List.class, String.class, String.class);
+        method.setAccessible(true);
+
+        List<FamilyHistoryDetailsTagsDTO> familyHistory = new ArrayList<>();
+        String[] crcTag26AConditions = ConditionHolder.getInstance().getConditionMap().get("CRCTag26_A");
+        String[] crcTag26BConditions = ConditionHolder.getInstance().getConditionMap().get("CRCTag26_B");
+        
+        if (crcTag26AConditions != null && crcTag26AConditions.length > 0 && 
+            crcTag26BConditions != null && crcTag26BConditions.length > 0) {
+            // Create relatives with same tag appearing twice (for checkForGastrichRS)
+            FamilyHistoryDetailsTagsDTO relative1 = new FamilyHistoryDetailsTagsDTO();
+            Set<String> tags1 = new HashSet<>();
+            tags1.add(crcTag26AConditions[0]);
+            relative1.setTags(tags1);
+            familyHistory.add(relative1);
+            
+            FamilyHistoryDetailsTagsDTO relative2 = new FamilyHistoryDetailsTagsDTO();
+            Set<String> tags2 = new HashSet<>();
+            tags2.add(crcTag26AConditions[0]); // Same tag
+            relative2.setTags(tags2);
+            familyHistory.add(relative2);
+            
+            // Add CRCTag26_B tag to one relative
+            familyHistory.get(0).getTags().add(crcTag26BConditions[0]);
+
+            Boolean result = (Boolean) method.invoke(utility, familyHistory, "CRCTag26_A", "CRCTag26_B");
+            assertThat(result).isTrue();
+        }
+    }
+
+    @Test
+    @DisplayName("Should test checkForCRCRS method with no matching conditions")
+    void testCheckForCRCRSNoMatch() throws Exception {
+        java.lang.reflect.Method method = GastricReasoningStatementUtility.class.getDeclaredMethod("checkForCRCRS", 
+            List.class, String.class, String.class);
+        method.setAccessible(true);
+
+        List<FamilyHistoryDetailsTagsDTO> familyHistory = new ArrayList<>();
+        FamilyHistoryDetailsTagsDTO relative = new FamilyHistoryDetailsTagsDTO();
+        relative.setTags(new HashSet<>(Arrays.asList("NonMatchingTag")));
+        familyHistory.add(relative);
+
+        Boolean result = (Boolean) method.invoke(utility, familyHistory, "CRCTag26_A", "CRCTag26_B");
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    @DisplayName("Should test checkForCRCRS method with getValue false and checkForGastrichRS false")
+    void testCheckForCRCRSBothFalse() throws Exception {
+        java.lang.reflect.Method method = GastricReasoningStatementUtility.class.getDeclaredMethod("checkForCRCRS", 
+            List.class, String.class, String.class);
+        method.setAccessible(true);
+
+        List<FamilyHistoryDetailsTagsDTO> familyHistory = new ArrayList<>();
+        FamilyHistoryDetailsTagsDTO relative = new FamilyHistoryDetailsTagsDTO();
+        relative.setTags(new HashSet<>(Arrays.asList("NonMatchingTag")));
+        familyHistory.add(relative);
+
+        Boolean result = (Boolean) method.invoke(utility, familyHistory, "CRCTag26_A", "CRCTag26_B");
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    @DisplayName("Should test checkForCRCRS method with conditionFound false")
+    void testCheckForCRCRSConditionFoundFalse() throws Exception {
+        java.lang.reflect.Method method = GastricReasoningStatementUtility.class.getDeclaredMethod("checkForCRCRS", 
+            List.class, String.class, String.class);
+        method.setAccessible(true);
+
+        List<FamilyHistoryDetailsTagsDTO> familyHistory = new ArrayList<>();
+        String[] crcTag26AConditions = ConditionHolder.getInstance().getConditionMap().get("CRCTag26_A");
+        
+        if (crcTag26AConditions != null && crcTag26AConditions.length > 0) {
+            // Create 2 relatives with CRCTag26_A matching tags but no CRCTag26_B
+            for (int i = 0; i < 2; i++) {
+                FamilyHistoryDetailsTagsDTO relative = new FamilyHistoryDetailsTagsDTO();
+                Set<String> tags = new HashSet<>();
+                tags.add(crcTag26AConditions[0]);
+                relative.setTags(tags);
+                familyHistory.add(relative);
+            }
+
+            Boolean result = (Boolean) method.invoke(utility, familyHistory, "CRCTag26_A", "CRCTag26_B");
+            assertThat(result).isFalse();
+        }
+    }
+
+    @Test
+    @DisplayName("Should test getValue method with matching tags")
+    void testGetValue() throws Exception {
+        java.lang.reflect.Method method = GastricReasoningStatementUtility.class.getDeclaredMethod("getValue", 
+            List.class, String.class, int.class);
+        method.setAccessible(true);
+
+        List<FamilyHistoryDetailsTagsDTO> familyHistory = new ArrayList<>();
+        String[] crcTag26AConditions = ConditionHolder.getInstance().getConditionMap().get("CRCTag26_A");
+        
+        if (crcTag26AConditions != null && crcTag26AConditions.length > 0) {
+            // Create 2 relatives with matching tags
+            for (int i = 0; i < 2; i++) {
+                FamilyHistoryDetailsTagsDTO relative = new FamilyHistoryDetailsTagsDTO();
+                Set<String> tags = new HashSet<>();
+                tags.add(crcTag26AConditions[0]);
+                relative.setTags(tags);
+                familyHistory.add(relative);
+            }
+
+            Boolean result = (Boolean) method.invoke(utility, familyHistory, "CRCTag26_A", 2);
+            assertThat(result).isTrue();
+        }
+    }
+
+    @Test
+    @DisplayName("Should test getValue method with insufficient matching tags")
+    void testGetValueInsufficientTags() throws Exception {
+        java.lang.reflect.Method method = GastricReasoningStatementUtility.class.getDeclaredMethod("getValue", 
+            List.class, String.class, int.class);
+        method.setAccessible(true);
+
+        List<FamilyHistoryDetailsTagsDTO> familyHistory = new ArrayList<>();
+        String[] crcTag26AConditions = ConditionHolder.getInstance().getConditionMap().get("CRCTag26_A");
+        
+        if (crcTag26AConditions != null && crcTag26AConditions.length > 0) {
+            // Create only 1 relative with matching tag (need 2)
+            FamilyHistoryDetailsTagsDTO relative = new FamilyHistoryDetailsTagsDTO();
+            Set<String> tags = new HashSet<>();
+            tags.add(crcTag26AConditions[0]);
+            relative.setTags(tags);
+            familyHistory.add(relative);
+
+            Boolean result = (Boolean) method.invoke(utility, familyHistory, "CRCTag26_A", 2);
+            assertThat(result).isFalse();
+        }
+    }
+
+    @Test
+    @DisplayName("Should test getValue method with empty tags")
+    void testGetValueEmptyTags() throws Exception {
+        java.lang.reflect.Method method = GastricReasoningStatementUtility.class.getDeclaredMethod("getValue", 
+            List.class, String.class, int.class);
+        method.setAccessible(true);
+
+        List<FamilyHistoryDetailsTagsDTO> familyHistory = new ArrayList<>();
+        FamilyHistoryDetailsTagsDTO relative = new FamilyHistoryDetailsTagsDTO();
+        relative.setTags(new HashSet<>()); // Empty tags
+        familyHistory.add(relative);
+
+        Boolean result = (Boolean) method.invoke(utility, familyHistory, "CRCTag26_A", 1);
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    @DisplayName("Should test getValue method with non-matching tags")
+    void testGetValueNonMatchingTags() throws Exception {
+        java.lang.reflect.Method method = GastricReasoningStatementUtility.class.getDeclaredMethod("getValue", 
+            List.class, String.class, int.class);
+        method.setAccessible(true);
+
+        List<FamilyHistoryDetailsTagsDTO> familyHistory = new ArrayList<>();
+        FamilyHistoryDetailsTagsDTO relative = new FamilyHistoryDetailsTagsDTO();
+        relative.setTags(new HashSet<>(Arrays.asList("NonMatchingTag")));
+        familyHistory.add(relative);
+
+        Boolean result = (Boolean) method.invoke(utility, familyHistory, "CRCTag26_A", 1);
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    @DisplayName("Should test getValue method with exactly matching count")
+    void testGetValueExactCount() throws Exception {
+        java.lang.reflect.Method method = GastricReasoningStatementUtility.class.getDeclaredMethod("getValue", 
+            List.class, String.class, int.class);
+        method.setAccessible(true);
+
+        List<FamilyHistoryDetailsTagsDTO> familyHistory = new ArrayList<>();
+        String[] crcTag26AConditions = ConditionHolder.getInstance().getConditionMap().get("CRCTag26_A");
+        
+        if (crcTag26AConditions != null && crcTag26AConditions.length > 0) {
+            // Create exactly 2 relatives with matching tags
+            for (int i = 0; i < 2; i++) {
+                FamilyHistoryDetailsTagsDTO relative = new FamilyHistoryDetailsTagsDTO();
+                Set<String> tags = new HashSet<>();
+                tags.add(crcTag26AConditions[0]);
+                relative.setTags(tags);
+                familyHistory.add(relative);
+            }
+
+            Boolean result = (Boolean) method.invoke(utility, familyHistory, "CRCTag26_A", 2);
+            assertThat(result).isTrue();
+            
+            // Test with count 3 (should fail)
+            Boolean result2 = (Boolean) method.invoke(utility, familyHistory, "CRCTag26_A", 3);
+            assertThat(result2).isFalse();
+        }
+    }
+
+    @Test
+    @DisplayName("Should test getValue method with more than required count")
+    void testGetValueMoreThanRequired() throws Exception {
+        java.lang.reflect.Method method = GastricReasoningStatementUtility.class.getDeclaredMethod("getValue", 
+            List.class, String.class, int.class);
+        method.setAccessible(true);
+
+        List<FamilyHistoryDetailsTagsDTO> familyHistory = new ArrayList<>();
+        String[] crcTag26AConditions = ConditionHolder.getInstance().getConditionMap().get("CRCTag26_A");
+        
+        if (crcTag26AConditions != null && crcTag26AConditions.length > 0) {
+            // Create 3 relatives with matching tags (need 2)
+            for (int i = 0; i < 3; i++) {
+                FamilyHistoryDetailsTagsDTO relative = new FamilyHistoryDetailsTagsDTO();
+                Set<String> tags = new HashSet<>();
+                tags.add(crcTag26AConditions[0]);
+                relative.setTags(tags);
+                familyHistory.add(relative);
+            }
+
+            Boolean result = (Boolean) method.invoke(utility, familyHistory, "CRCTag26_A", 2);
+            assertThat(result).isTrue();
+        }
+    }
+
+    @Test
+    @DisplayName("Should test checkForGastrichRS method with matching tags")
+    void testCheckForGastrichRS() throws Exception {
+        java.lang.reflect.Method method = GastricReasoningStatementUtility.class.getDeclaredMethod("checkForGastrichRS", 
+            List.class, String.class);
+        method.setAccessible(true);
+
+        List<FamilyHistoryDetailsTagsDTO> familyHistory = new ArrayList<>();
+        String[] crcTag26AConditions = ConditionHolder.getInstance().getConditionMap().get("CRCTag26_A");
+        
+        if (crcTag26AConditions != null && crcTag26AConditions.length > 0) {
+            // Create 2 relatives with same tag (appears >= 2 times)
+            FamilyHistoryDetailsTagsDTO relative1 = new FamilyHistoryDetailsTagsDTO();
+            Set<String> tags1 = new HashSet<>();
+            tags1.add(crcTag26AConditions[0]);
+            relative1.setTags(tags1);
+            familyHistory.add(relative1);
+            
+            FamilyHistoryDetailsTagsDTO relative2 = new FamilyHistoryDetailsTagsDTO();
+            Set<String> tags2 = new HashSet<>();
+            tags2.add(crcTag26AConditions[0]); // Same tag
+            relative2.setTags(tags2);
+            familyHistory.add(relative2);
+
+            Boolean result = (Boolean) method.invoke(utility, familyHistory, "CRCTag26_A");
+            assertThat(result).isTrue();
+        }
+    }
+
+    @Test
+    @DisplayName("Should test checkForGastrichRS method with no matching tags")
+    void testCheckForGastrichRSNoMatch() throws Exception {
+        java.lang.reflect.Method method = GastricReasoningStatementUtility.class.getDeclaredMethod("checkForGastrichRS", 
+            List.class, String.class);
+        method.setAccessible(true);
+
+        List<FamilyHistoryDetailsTagsDTO> familyHistory = new ArrayList<>();
+        FamilyHistoryDetailsTagsDTO relative = new FamilyHistoryDetailsTagsDTO();
+        relative.setTags(new HashSet<>(Arrays.asList("SomeOtherTag")));
+        familyHistory.add(relative);
+
+        Boolean result = (Boolean) method.invoke(utility, familyHistory, "CRCTag26_A");
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    @DisplayName("Should test checkForGastrichRS method with tag appearing only once")
+    void testCheckForGastrichRSSingleOccurrence() throws Exception {
+        java.lang.reflect.Method method = GastricReasoningStatementUtility.class.getDeclaredMethod("checkForGastrichRS", 
+            List.class, String.class);
+        method.setAccessible(true);
+
+        List<FamilyHistoryDetailsTagsDTO> familyHistory = new ArrayList<>();
+        String[] crcTag26AConditions = ConditionHolder.getInstance().getConditionMap().get("CRCTag26_A");
+        
+        if (crcTag26AConditions != null && crcTag26AConditions.length > 0) {
+            // Create only 1 relative with tag (need >= 2 occurrences)
+            FamilyHistoryDetailsTagsDTO relative = new FamilyHistoryDetailsTagsDTO();
+            Set<String> tags = new HashSet<>();
+            tags.add(crcTag26AConditions[0]);
+            relative.setTags(tags);
+            familyHistory.add(relative);
+
+            Boolean result = (Boolean) method.invoke(utility, familyHistory, "CRCTag26_A");
+            assertThat(result).isFalse();
+        }
+    }
+
+    @Test
+    @DisplayName("Should test checkForGastrichRS method with multiple relatives and same tag")
+    void testCheckForGastrichRSMultipleRelatives() throws Exception {
+        java.lang.reflect.Method method = GastricReasoningStatementUtility.class.getDeclaredMethod("checkForGastrichRS", 
+            List.class, String.class);
+        method.setAccessible(true);
+
+        List<FamilyHistoryDetailsTagsDTO> familyHistory = new ArrayList<>();
+        String[] crcTag26AConditions = ConditionHolder.getInstance().getConditionMap().get("CRCTag26_A");
+        
+        if (crcTag26AConditions != null && crcTag26AConditions.length > 0) {
+            // Create 3 relatives with same tag (appears 3 times)
+            for (int i = 0; i < 3; i++) {
+                FamilyHistoryDetailsTagsDTO relative = new FamilyHistoryDetailsTagsDTO();
+                Set<String> tags = new HashSet<>();
+                tags.add(crcTag26AConditions[0]);
+                relative.setTags(tags);
+                familyHistory.add(relative);
+            }
+
+            Boolean result = (Boolean) method.invoke(utility, familyHistory, "CRCTag26_A");
+            assertThat(result).isTrue();
+        }
+    }
+
+    @Test
+    @DisplayName("Should return CRCTag26 when 2+ relatives with matching conditions")
+    void testGetGastricReasoningStatementWithCRCTag26Matching() throws ConnectException {
+        List<FamilyHistoryDetailsTagsDTO> familyHistory = new ArrayList<>();
+        String[] crcTag26AConditions = ConditionHolder.getInstance().getConditionMap().get("CRCTag26_A");
+        String[] crcTag26BConditions = ConditionHolder.getInstance().getConditionMap().get("CRCTag26_B");
+        
+        if (crcTag26AConditions != null && crcTag26AConditions.length > 0 && 
+            crcTag26BConditions != null && crcTag26BConditions.length > 0) {
+            // Create 2 relatives with CRCTag26_A matching tags
+            for (int i = 0; i < 2; i++) {
+                FamilyHistoryDetailsTagsDTO relative = new FamilyHistoryDetailsTagsDTO();
+                Set<String> tags = new HashSet<>();
+                tags.add(crcTag26AConditions[0]);
+                relative.setTags(tags);
+                familyHistory.add(relative);
+            }
+            
+            // Add CRCTag26_B tag to one relative
+            familyHistory.get(0).getTags().add(crcTag26BConditions[0]);
+            
+            Set<String> tagsSet = new HashSet<>();
+
+            ReasoningStatementObject result = utility.getGastricReasoningStatement(familyHistory, tagsSet);
+
+            assertThat(result).isNotNull();
+            assertThat(result.getReasoningStatementEn()).isNotEmpty();
+            
+            boolean hasCRCTag26 = result.getReasoningStatementAndTags().stream()
+                .anyMatch(rs -> rs.getTagIds().contains(TagIdConstant.CRCTag26.getTagId()));
+            assertThat(hasCRCTag26).isTrue();
+        }
+    }
+
+    @Test
+    @DisplayName("Should return CRCTag27 when 2+ relatives with matching conditions")
+    void testGetGastricReasoningStatementWithCRCTag27Matching() throws ConnectException {
+        List<FamilyHistoryDetailsTagsDTO> familyHistory = new ArrayList<>();
+        String[] crcTag27AConditions = ConditionHolder.getInstance().getConditionMap().get("CRCTag27_A");
+        String[] crcTag27BConditions = ConditionHolder.getInstance().getConditionMap().get("CRCTag27_B");
+        
+        if (crcTag27AConditions != null && crcTag27AConditions.length > 0 && 
+            crcTag27BConditions != null && crcTag27BConditions.length > 0) {
+            // Create 2 relatives with CRCTag27_A matching tags
+            for (int i = 0; i < 2; i++) {
+                FamilyHistoryDetailsTagsDTO relative = new FamilyHistoryDetailsTagsDTO();
+                Set<String> tags = new HashSet<>();
+                tags.add(crcTag27AConditions[0]);
+                relative.setTags(tags);
+                familyHistory.add(relative);
+            }
+            
+            // Add CRCTag27_B tag to one relative
+            familyHistory.get(0).getTags().add(crcTag27BConditions[0]);
+            
+            Set<String> tagsSet = new HashSet<>();
+
+            ReasoningStatementObject result = utility.getGastricReasoningStatement(familyHistory, tagsSet);
+
+            assertThat(result).isNotNull();
+            assertThat(result.getReasoningStatementEn()).isNotEmpty();
+            
+            boolean hasCRCTag27 = result.getReasoningStatementAndTags().stream()
+                .anyMatch(rs -> rs.getTagIds().contains(TagIdConstant.CRCTAG27.getTagId()));
+            assertThat(hasCRCTag27).isTrue();
+        }
+    }
+
+    @Test
+    @DisplayName("Should return CRCTag26 when checkForGastrichRS returns true")
+    void testGetGastricReasoningStatementWithCRCTag26GastrichRS() throws ConnectException {
+        List<FamilyHistoryDetailsTagsDTO> familyHistory = new ArrayList<>();
+        String[] crcTag26AConditions = ConditionHolder.getInstance().getConditionMap().get("CRCTag26_A");
+        String[] crcTag26BConditions = ConditionHolder.getInstance().getConditionMap().get("CRCTag26_B");
+        
+        if (crcTag26AConditions != null && crcTag26AConditions.length > 0 && 
+            crcTag26BConditions != null && crcTag26BConditions.length > 0) {
+            // Create 2 relatives with same CRCTag26_A tag (for checkForGastrichRS)
+            FamilyHistoryDetailsTagsDTO relative1 = new FamilyHistoryDetailsTagsDTO();
+            Set<String> tags1 = new HashSet<>();
+            tags1.add(crcTag26AConditions[0]);
+            relative1.setTags(tags1);
+            familyHistory.add(relative1);
+            
+            FamilyHistoryDetailsTagsDTO relative2 = new FamilyHistoryDetailsTagsDTO();
+            Set<String> tags2 = new HashSet<>();
+            tags2.add(crcTag26AConditions[0]); // Same tag
+            relative2.setTags(tags2);
+            familyHistory.add(relative2);
+            
+            // Add CRCTag26_B tag to one relative
+            familyHistory.get(0).getTags().add(crcTag26BConditions[0]);
+            
+            Set<String> tagsSet = new HashSet<>();
+
+            ReasoningStatementObject result = utility.getGastricReasoningStatement(familyHistory, tagsSet);
+
+            assertThat(result).isNotNull();
+            assertThat(result.getReasoningStatementEn()).isNotEmpty();
+            
+            boolean hasCRCTag26 = result.getReasoningStatementAndTags().stream()
+                .anyMatch(rs -> rs.getTagIds().contains(TagIdConstant.CRCTag26.getTagId()));
+            assertThat(hasCRCTag26).isTrue();
+        }
+    }
+
+    @Test
+    @DisplayName("Should return CRCTag27 when checkForGastrichRS returns true")
+    void testGetGastricReasoningStatementWithCRCTag27GastrichRS() throws ConnectException {
+        List<FamilyHistoryDetailsTagsDTO> familyHistory = new ArrayList<>();
+        String[] crcTag27AConditions = ConditionHolder.getInstance().getConditionMap().get("CRCTag27_A");
+        String[] crcTag27BConditions = ConditionHolder.getInstance().getConditionMap().get("CRCTag27_B");
+        
+        if (crcTag27AConditions != null && crcTag27AConditions.length > 0 && 
+            crcTag27BConditions != null && crcTag27BConditions.length > 0) {
+            // Create 2 relatives with same CRCTag27_A tag (for checkForGastrichRS)
+            FamilyHistoryDetailsTagsDTO relative1 = new FamilyHistoryDetailsTagsDTO();
+            Set<String> tags1 = new HashSet<>();
+            tags1.add(crcTag27AConditions[0]);
+            relative1.setTags(tags1);
+            familyHistory.add(relative1);
+            
+            FamilyHistoryDetailsTagsDTO relative2 = new FamilyHistoryDetailsTagsDTO();
+            Set<String> tags2 = new HashSet<>();
+            tags2.add(crcTag27AConditions[0]); // Same tag
+            relative2.setTags(tags2);
+            familyHistory.add(relative2);
+            
+            // Add CRCTag27_B tag to one relative
+            familyHistory.get(0).getTags().add(crcTag27BConditions[0]);
+            
+            Set<String> tagsSet = new HashSet<>();
+
+            ReasoningStatementObject result = utility.getGastricReasoningStatement(familyHistory, tagsSet);
+
+            assertThat(result).isNotNull();
+            assertThat(result.getReasoningStatementEn()).isNotEmpty();
+            
+            boolean hasCRCTag27 = result.getReasoningStatementAndTags().stream()
+                .anyMatch(rs -> rs.getTagIds().contains(TagIdConstant.CRCTAG27.getTagId()));
+            assertThat(hasCRCTag27).isTrue();
+        }
+    }
+
+    @Test
+    @DisplayName("Should handle empty strings in reasoning statement")
+    void testGetGastricReasoningStatementRemovesEmptyStrings() throws ConnectException {
+        List<FamilyHistoryDetailsTagsDTO> familyHistory = Collections.emptyList();
+        Set<String> tagsSet = new HashSet<>();
+
+        ReasoningStatementObject result = utility.getGastricReasoningStatement(familyHistory, tagsSet);
+
+        assertThat(result).isNotNull();
+        // Empty strings should be removed
+        assertThat(result.getReasoningStatementEn()).doesNotContain("");
+    }
+
+    @Test
+    @DisplayName("Should handle family history with size exactly 2")
+    void testGetGastricReasoningStatementWithSizeExactly2() throws ConnectException {
+        List<FamilyHistoryDetailsTagsDTO> familyHistory = createFamilyHistoryWithTwoRelatives();
+        Set<String> tagsSet = new HashSet<>();
+
+        ReasoningStatementObject result = utility.getGastricReasoningStatement(familyHistory, tagsSet);
+
+        assertThat(result).isNotNull();
+        // Should check for CRCTag26 and CRCTag27 when size >= 2
+    }
+
+    @Test
+    @DisplayName("Should handle family history with size greater than 2")
+    void testGetGastricReasoningStatementWithSizeGreaterThan2() throws ConnectException {
+        List<FamilyHistoryDetailsTagsDTO> familyHistory = new ArrayList<>(createFamilyHistoryWithTwoRelatives());
+        FamilyHistoryDetailsTagsDTO relative3 = new FamilyHistoryDetailsTagsDTO();
+        relative3.setTags(new HashSet<>(Arrays.asList("Tag5", "Tag6")));
+        familyHistory.add(relative3);
+        
+        Set<String> tagsSet = new HashSet<>();
+
+        ReasoningStatementObject result = utility.getGastricReasoningStatement(familyHistory, tagsSet);
+
+        assertThat(result).isNotNull();
+        // Should check for CRCTag26 and CRCTag27 when size >= 2
+    }
+
+    @Test
+    @DisplayName("Should handle family history with size 1")
+    void testGetGastricReasoningStatementWithSize1() throws ConnectException {
+        List<FamilyHistoryDetailsTagsDTO> familyHistory = new ArrayList<>();
+        FamilyHistoryDetailsTagsDTO relative = new FamilyHistoryDetailsTagsDTO();
+        relative.setTags(new HashSet<>(Arrays.asList("Tag1")));
+        familyHistory.add(relative);
+        
+        Set<String> tagsSet = new HashSet<>();
+
+        ReasoningStatementObject result = utility.getGastricReasoningStatement(familyHistory, tagsSet);
+
+        assertThat(result).isNotNull();
+        // Should not check for CRCTag26 and CRCTag27 (need size >= 2)
+    }
+
+    @Test
+    @DisplayName("Should return both CRCTag25 and CRCTag26 when conditions are met")
+    void testGetGastricReasoningStatementWithMultipleConditions() throws ConnectException {
+        List<FamilyHistoryDetailsTagsDTO> familyHistory = new ArrayList<>();
+        String[] crcTag26AConditions = ConditionHolder.getInstance().getConditionMap().get("CRCTag26_A");
+        String[] crcTag26BConditions = ConditionHolder.getInstance().getConditionMap().get("CRCTag26_B");
+        
+        if (crcTag26AConditions != null && crcTag26AConditions.length > 0 && 
+            crcTag26BConditions != null && crcTag26BConditions.length > 0) {
+            // Create 2 relatives with CRCTag26_A matching tags
+            for (int i = 0; i < 2; i++) {
+                FamilyHistoryDetailsTagsDTO relative = new FamilyHistoryDetailsTagsDTO();
+                Set<String> tags = new HashSet<>();
+                tags.add(crcTag26AConditions[0]);
+                relative.setTags(tags);
+                familyHistory.add(relative);
+            }
+            
+            // Add CRCTag26_B tag to one relative
+            familyHistory.get(0).getTags().add(crcTag26BConditions[0]);
+            
+            Set<String> tagsSet = new HashSet<>();
+            tagsSet.add(NCCNTagConstants.PR_GASTRIC_DIFFUSE.getValue());
+
+            ReasoningStatementObject result = utility.getGastricReasoningStatement(familyHistory, tagsSet);
+
+            assertThat(result).isNotNull();
+            assertThat(result.getReasoningStatementEn()).isNotEmpty();
+            
+            boolean hasCRCTag25 = result.getReasoningStatementAndTags().stream()
+                .anyMatch(rs -> rs.getTagIds().contains(TagIdConstant.CRCTag25.getTagId()));
+            boolean hasCRCTag26 = result.getReasoningStatementAndTags().stream()
+                .anyMatch(rs -> rs.getTagIds().contains(TagIdConstant.CRCTag26.getTagId()));
+            
+            assertThat(hasCRCTag25).isTrue();
+            assertThat(hasCRCTag26).isTrue();
+        }
+    }
+
+    @Test
+    @DisplayName("Should test checkForCRCRS with getValue returning true for tagIdA")
+    void testCheckForCRCRSWithGetValueTrue() throws Exception {
+        java.lang.reflect.Method method = GastricReasoningStatementUtility.class.getDeclaredMethod("checkForCRCRS", 
+            List.class, String.class, String.class);
+        method.setAccessible(true);
+
+        List<FamilyHistoryDetailsTagsDTO> familyHistory = new ArrayList<>();
+        String[] crcTag26AConditions = ConditionHolder.getInstance().getConditionMap().get("CRCTag26_A");
+        String[] crcTag26BConditions = ConditionHolder.getInstance().getConditionMap().get("CRCTag26_B");
+        
+        if (crcTag26AConditions != null && crcTag26AConditions.length > 0 && 
+            crcTag26BConditions != null && crcTag26BConditions.length > 0) {
+            // Create 2 relatives with CRCTag26_A matching tags (for getValue to return true)
+            for (int i = 0; i < 2; i++) {
+                FamilyHistoryDetailsTagsDTO relative = new FamilyHistoryDetailsTagsDTO();
+                Set<String> tags = new HashSet<>();
+                tags.add(crcTag26AConditions[0]);
+                relative.setTags(tags);
+                familyHistory.add(relative);
+            }
+            
+            // Add CRCTag26_B tag to one relative
+            familyHistory.get(0).getTags().add(crcTag26BConditions[0]);
+
+            Boolean result = (Boolean) method.invoke(utility, familyHistory, "CRCTag26_A", "CRCTag26_B");
+            assertThat(result).isTrue();
+        }
     }
 }
 

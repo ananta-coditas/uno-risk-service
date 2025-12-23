@@ -1,6 +1,7 @@
 package com.genomebrain.backend.service.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -258,6 +259,210 @@ class NCCNQuestionMapperTest {
         assertThat(NCCNQuestionMapper.isPresent("ethnicity")).isTrue();
         assertThat(NCCNQuestionMapper.isPresent("cancerFeature")).isTrue();
         assertThat(NCCNQuestionMapper.isPresent("relationship")).isTrue();
+    }
+
+    @Test
+    @DisplayName("Should normalize SmallIntestine to Small Intestine (Small Bowel) in getQuestionSetForCancerFeature")
+    void testGetQuestionSetForCancerFeatureSmallIntestine() {
+        QuestionSet result = NCCNQuestionMapper.getQuestionSetForCancerFeature("cancerFeature", "SmallIntestine");
+        
+        assertThat(result).isNotNull();
+        assertThat(result.getQuestionKey()).isEqualTo("AMBRY005");
+    }
+
+    @Test
+    @DisplayName("Should normalize Fallopian to Fallopian tube or Peritoneal in getQuestionSetForCancerFeature")
+    void testGetQuestionSetForCancerFeatureFallopian() {
+        QuestionSet result = NCCNQuestionMapper.getQuestionSetForCancerFeature("cancerFeature", "Fallopian");
+        
+        assertThat(result).isNotNull();
+        assertThat(result.getQuestionKey()).isEqualTo("AMBRY005");
+    }
+
+    @Test
+    @DisplayName("Should normalize Biliary to Biliary Tract in getQuestionSetForCancerFeature")
+    void testGetQuestionSetForCancerFeatureBiliary() {
+        QuestionSet result = NCCNQuestionMapper.getQuestionSetForCancerFeature("cancerFeature", "Biliary");
+        
+        assertThat(result).isNotNull();
+        assertThat(result.getQuestionKey()).isEqualTo("AMBRY005");
+    }
+
+    @Test
+    @DisplayName("Should normalize Ureter to Ureter or Renal Pelvis in getQuestionSetForCancerFeature")
+    void testGetQuestionSetForCancerFeatureUreter() {
+        QuestionSet result = NCCNQuestionMapper.getQuestionSetForCancerFeature("cancerFeature", "Ureter");
+        
+        assertThat(result).isNotNull();
+        assertThat(result.getQuestionKey()).isEqualTo("AMBRY005");
+    }
+
+    @Test
+    @DisplayName("Should return empty QuestionSet for invalid cancer name in getQuestionSetForAgeAtDiagnosis")
+    void testGetQuestionSetForAgeAtDiagnosisWithInvalidCancerName() {
+        QuestionSet result = NCCNQuestionMapper.getQuestionSetForAgeAtDiagnosis("INVALID_CANCER", "45");
+        
+        assertThat(result).isNotNull();
+        assertThat(result.getQuestionText()).isNull();
+    }
+
+    @Test
+    @DisplayName("Should return QuestionSet for all cancer types in getQuestionSetForAgeAtDiagnosis")
+    void testGetQuestionSetForAgeAtDiagnosisAllCancerTypes() {
+        String[] cancerTypes = {"BREAST", "OVARIAN", "FALLOPIAN", "PROSTATE", "COLORECTAL", 
+                               "PANCREATIC", "UTERINE", "GASTRIC", "SMALLINTESTINE", "BILIARY",
+                               "KIDNEY", "URETER", "BRAIN", "SKIN", "MELANOMA", "OTHER",
+                               "LEUKEMIA", "LYMPHOMA", "GALLBLADDER", "CERVICAL", "BLADDER",
+                               "THROAT", "THYROID", "ORAL", "LIVER", "TESTICULAR", 
+                               "PARAGANGLIOMA", "PHEOCHROMOCYTOMA", "LUNG", "SARCOMA"};
+        
+        for (String cancerType : cancerTypes) {
+            QuestionSet result = NCCNQuestionMapper.getQuestionSetForAgeAtDiagnosis(cancerType, "50");
+            assertThat(result).isNotNull();
+            assertThat(result.getQuestionText()).isNotNull();
+        }
+    }
+
+    @Test
+    @DisplayName("Should handle getQuestionSetForMultipleAnswer with single answer")
+    void testGetQuestionSetForMultipleAnswerWithSingleAnswer() {
+        List<String> answers = Arrays.asList("MOTHER");
+        QuestionSet result = NCCNQuestionMapper.getQuestionSetForMultipleAnswer("relationship", answers);
+        
+        assertThat(result).isNotNull();
+        assertThat(result.getQuestionKey()).isEqualTo("AMBRY053");
+        assertThat(result.getAnswerText()).contains("MOTHER");
+        assertThat(result.getAnswerKey()).contains("AMBRY053_001");
+    }
+
+    @Test
+    @DisplayName("Should handle getQuestionSetForMultipleAnswer with many answers")
+    void testGetQuestionSetForMultipleAnswerWithManyAnswers() {
+        List<String> answers = Arrays.asList("MOTHER", "FATHER", "SISTER", "BROTHER");
+        QuestionSet result = NCCNQuestionMapper.getQuestionSetForMultipleAnswer("relationship", answers);
+        
+        assertThat(result).isNotNull();
+        assertThat(result.getQuestionKey()).isEqualTo("AMBRY053");
+        assertThat(result.getAnswerText()).contains("MOTHER");
+        assertThat(result.getAnswerText()).contains("FATHER");
+        assertThat(result.getAnswerText()).contains("SISTER");
+        assertThat(result.getAnswerText()).contains("BROTHER");
+    }
+
+    @Test
+    @DisplayName("Should handle getQuestionSetForMultipleAnswer with invalid question key")
+    void testGetQuestionSetForMultipleAnswerWithInvalidQuestionKey() {
+        List<String> answers = Arrays.asList("MOTHER");
+        QuestionSet result = NCCNQuestionMapper.getQuestionSetForMultipleAnswer("INVALID_KEY", answers);
+        
+        assertThat(result).isNotNull();
+        assertThat(result.getQuestionText()).isNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getQuestionSet with null answer value")
+    void testGetQuestionSetWithNullAnswerValue() {
+        QuestionSet result = NCCNQuestionMapper.getQuestionSet("sexAtBirth", null);
+        
+        assertThat(result).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should throw NullPointerException when getQuestionSetForCancerFeature receives null answer value")
+    void testGetQuestionSetForCancerFeatureWithNullAnswerValue() {
+        assertThatThrownBy(() -> NCCNQuestionMapper.getQuestionSetForCancerFeature("cancerFeature", null))
+            .isInstanceOf(NullPointerException.class);
+    }
+
+    @Test
+    @DisplayName("Should throw NullPointerException when getQuestionSetForAgeAtDiagnosis receives null age value")
+    void testGetQuestionSetForAgeAtDiagnosisWithNullAgeValue() {
+        assertThatThrownBy(() -> NCCNQuestionMapper.getQuestionSetForAgeAtDiagnosis("BREAST", null))
+            .isInstanceOf(NullPointerException.class);
+    }
+
+    @Test
+    @DisplayName("Should handle getQuestionSetForAgeAtDiagnosis with empty age value")
+    void testGetQuestionSetForAgeAtDiagnosisWithEmptyAgeValue() {
+        QuestionSet result = NCCNQuestionMapper.getQuestionSetForAgeAtDiagnosis("BREAST", "");
+        
+        assertThat(result).isNotNull();
+        assertThat(result.getAnswerText()).isEmpty();
+    }
+
+    @Test
+    @DisplayName("Should handle getQuestionSetForAgeAtDiagnosis with zero age")
+    void testGetQuestionSetForAgeAtDiagnosisWithZeroAge() {
+        QuestionSet result = NCCNQuestionMapper.getQuestionSetForAgeAtDiagnosis("BREAST", "0");
+        
+        assertThat(result).isNotNull();
+        assertThat(result.getAnswerText()).isEqualTo("0");
+    }
+
+    @Test
+    @DisplayName("Should handle getQuestionSetForAgeAtDiagnosis with negative age")
+    void testGetQuestionSetForAgeAtDiagnosisWithNegativeAge() {
+        QuestionSet result = NCCNQuestionMapper.getQuestionSetForAgeAtDiagnosis("BREAST", "-10");
+        
+        assertThat(result).isNotNull();
+        assertThat(result.getAnswerText()).isEmpty();
+    }
+
+    @Test
+    @DisplayName("Should handle getQuestionSetForAgeAtDiagnosis with very large age")
+    void testGetQuestionSetForAgeAtDiagnosisWithVeryLargeAge() {
+        QuestionSet result = NCCNQuestionMapper.getQuestionSetForAgeAtDiagnosis("BREAST", "150");
+        
+        assertThat(result).isNotNull();
+        assertThat(result.getAnswerText()).isEqualTo("150");
+    }
+
+    @Test
+    @DisplayName("Should handle getQuestionSetForCancerFeature with case insensitive answer")
+    void testGetQuestionSetForCancerFeatureCaseInsensitive() {
+        QuestionSet result = NCCNQuestionMapper.getQuestionSetForCancerFeature("cancerFeature", "breast");
+        
+        assertThat(result).isNotNull();
+        assertThat(result.getQuestionKey()).isEqualTo("AMBRY005");
+    }
+
+    @Test
+    @DisplayName("Should handle getQuestionSetForCancerFeature with Other cancer type not in main list")
+    void testGetQuestionSetForCancerFeatureOtherNotInMainList() {
+        QuestionSet result = NCCNQuestionMapper.getQuestionSetForCancerFeature("cancerFeature", "UNKNOWN_CANCER");
+        
+        assertThat(result).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should verify enum values are accessible")
+    void testEnumValues() {
+        NCCNQuestionMapper[] values = NCCNQuestionMapper.values();
+        assertThat(values).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("Should verify enum valueOf with valid name")
+    void testValueOfValidName() {
+        NCCNQuestionMapper mapper = NCCNQuestionMapper.valueOf("sexAtBirth");
+        assertThat(mapper).isNotNull();
+        assertThat(mapper).isEqualTo(NCCNQuestionMapper.sexAtBirth);
+    }
+
+    @Test
+    @DisplayName("Should throw exception for invalid enum name in valueOf")
+    void testValueOfInvalidName() {
+        assertThatThrownBy(() -> NCCNQuestionMapper.valueOf("INVALID_ENUM"))
+            .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    @DisplayName("Should verify enum getParameters method")
+    void testGetParameters() {
+        NCCNQuestionMapper mapper = NCCNQuestionMapper.sexAtBirth;
+        List<String> parameters = mapper.getParameters();
+        assertThat(parameters).isNotNull();
+        assertThat(parameters).isNotEmpty();
     }
 }
 
