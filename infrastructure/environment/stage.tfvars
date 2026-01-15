@@ -160,7 +160,7 @@ applications_config = {
     frontend_config = {
       port                = 443
       protocol            = "HTTPS"
-      acm_certificate_arn = "arn:aws:acm:us-west-2:480802442620:certificate/974677d6-de6f-41af-bb3e-4dcbd56fa71f"
+      acm_certificate_arn = "arn:aws:acm:us-west-2:480802442620:certificate/93059c1b-dd13-491e-8576-dbd35f75aa74"
       ssl_policy          = "ELBSecurityPolicy-TLS-1-1-2017-01"
     }
     backend_config = {
