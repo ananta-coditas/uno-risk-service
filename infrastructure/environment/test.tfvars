@@ -10,7 +10,7 @@ aws_region     = "us-west-2"
 lb_security_group_egress_rule_id = "sgr-0535509f00c3b756f"
 // ----------------------------------------- //
 elb_security_groups ={
-  lb_security_group_ids = ["sgr-0535509f00c3b756f"]
+  lb_security_group_ids = ["sg-0fd54bcac95c5735f"]
 }
 // -------- --------------------------------- //
 vpc_config = {
