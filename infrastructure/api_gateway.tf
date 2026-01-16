@@ -46,7 +46,7 @@ module "api_gateway" {
     log_group_retention_in_days = 7
   }
   # Ensure load balancer and VPC link are created first
-  depends_on = [module.load_balancer, aws_apigatewayv2_vpc_link.alb]
+  depends_on = [aws_apigatewayv2_vpc_link.alb]
   #depends_on = [module.load_balancer]
 }
 
