@@ -60,6 +60,6 @@ resource "aws_apigatewayv2_vpc_link" "alb" {
     Name = "${var.application_name}-${var.environment_name}-vpc-link-v2"
   }
 
-  depends_on = [module.load_balancer, module.elb_security_group]
+  #depends_on = [module.load_balancer, module.elb_security_group]
 }
 
