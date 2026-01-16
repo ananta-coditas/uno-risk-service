@@ -9,6 +9,10 @@ environment_name  = "staging"
 aws_region     = "us-west-2"
 // -------- --------------------------------- //
 lb_security_group_egress_rule_id = "sgr-024cf8b3d96cff3f7"
+// ----------------------------------------- //
+elb_security_groups ={
+  lb_security_group_ids = ["sgr-024cf8b3d96cff3f7"]
+}
 // -------- --------------------------------- //
 vpc_config = {
   vpc_id                 = "vpc-0e20392ac4d80ae14"

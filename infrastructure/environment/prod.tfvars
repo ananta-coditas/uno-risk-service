@@ -9,6 +9,10 @@ environment_name  = "prod"
 aws_region     = "us-west-2"
 // -------- --------------------------------- //
 lb_security_group_egress_rule_id = "sgr-00d44bba603a0e6cf"
+// ----------------------------------------- //
+elb_security_groups ={
+  lb_security_group_ids = ["sgr-00d44bba603a0e6cf"]
+}
 // -------- --------------------------------- //
 vpc_config = {
   vpc_id                 = "vpc-0fe63812d82fa70c4"
