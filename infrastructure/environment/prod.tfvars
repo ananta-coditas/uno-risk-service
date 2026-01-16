@@ -175,3 +175,31 @@ applications_config = {
     }
   },
 }
+// ----------------------------------------- //
+api_gateway_config = {
+  stage_name = "prod"
+  routes = [
+    {
+      route_key           = "POST /*"
+      authorization_type  = "NONE"
+      target              = "integrations/{integration_id}"
+    },
+    {
+      route_key           = "$default"
+      authorization_type  = "NONE"
+      target              = "integrations/{integration_id}"
+    }
+  ]
+  cors_configuration = {
+    allow_origins     = ["*"]
+    allow_methods     = ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"]
+    allow_headers     = ["*"]
+    expose_headers    = []
+    allow_credentials = false
+    max_age           = 300
+  }
+  domain_name         = "api-uno-prod.ambrygen.com"
+  listener_arn        = "arn:aws:elasticloadbalancing:us-west-2:658178292836:listener/app/uno-prod-elb/e7feb74b017a1629/6bca251544ad1dce"
+  domain_name_certificate_arn = "arn:aws:acm:us-west-2:480802442620:certificate/2527acc3-64a2-464f-bb47-a53640b55df3"
+  access_logging      = null
+}

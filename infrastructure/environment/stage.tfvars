@@ -191,3 +191,31 @@ applications_config = {
     }
   },
 }
+// ----------------------------------------- //
+api_gateway_config = {
+  stage_name = "stage"
+  routes = [
+    {
+      route_key           = "POST /*"
+      authorization_type  = "NONE"
+      target              = "integrations/{integration_id}"
+    },
+    {
+      route_key           = "$default"
+      authorization_type  = "NONE"
+      target              = "integrations/{integration_id}"
+    }
+  ]
+  cors_configuration = {
+    allow_origins     = ["*"]
+    allow_methods     = ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"]
+    allow_headers     = ["*"]
+    expose_headers    = []
+    allow_credentials = false
+    max_age           = 300
+  }
+  domain_name         = "api-uno-stage.ambrygen.com"
+  listener_arn        = "arn:aws:elasticloadbalancing:us-west-2:480802442620:listener/app/uno-staging-elb/f7088d37e40cc4c5/2e70f4e7a5faf1f2"
+  domain_name_certificate_arn = "arn:aws:acm:us-west-2:480802442620:certificate/93059c1b-dd13-491e-8576-dbd35f75aa74"
+  access_logging      = null
+}

@@ -212,3 +212,39 @@ variable "load_balancer_type" {
   description = "The Type of the EC2 Load Balancer."
   type        = string
 }
+// -------------------------------------------- //
+variable "api_gateway_config" {
+  description = "Configuration for API Gateway HTTP API v2."
+  type = object({
+    stage_name = string
+    routes = list(object({
+      route_key         = string
+      authorization_type = string
+      target            = string
+    }))
+    cors_configuration = optional(object({
+      allow_origins     = list(string)
+      allow_methods     = list(string)
+      allow_headers     = optional(list(string))
+      expose_headers    = optional(list(string))
+      allow_credentials = optional(bool)
+      max_age           = optional(number)
+    }))
+    domain_name                = optional(string)
+    domain_name_certificate_arn = optional(string)
+    listener_arn = optional(string)
+    access_logging = optional(object({
+      destination_arn = string
+      format         = string
+    }))
+  })
+  default = {
+    stage_name = "default"
+    routes = []
+    cors_configuration = null
+    domain_name = null
+    domain_name_certificate_arn = null
+    access_logging = null
+  }
+}
+// ----------------------------------------- //
