@@ -8,6 +8,10 @@ environment_name  = "test"
 aws_region     = "us-west-2"
 // -------- --------------------------------- //
 lb_security_group_egress_rule_id = "sgr-0535509f00c3b756f"
+// ----------------------------------------- //
+elb_security_groups ={
+  lb_security_group_ids = ["sgr-0535509f00c3b756f"]
+}
 // -------- --------------------------------- //
 vpc_config = {
   vpc_id                 = "vpc-0c5f0396c6ed1c9ef"
@@ -131,4 +135,32 @@ applications_config = {
       path_pattern_value = ["/api/risk/*", "/risk/*", "/management/health"]
     }
   },
+}
+// ----------------------------------------- //
+api_gateway_config = {
+  stage_name = "test"
+  routes = [
+    {
+      route_key           = "POST /*"
+      authorization_type  = "NONE"
+      target              = "integrations/{integration_id}"
+    },
+    {
+      route_key           = "$default"
+      authorization_type  = "NONE"
+      target              = "integrations/{integration_id}"
+    }
+  ]
+  cors_configuration = {
+    allow_origins     = ["*"]
+    allow_methods     = ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"]
+    allow_headers     = ["*"]
+    expose_headers    = []
+    allow_credentials = false
+    max_age           = 300
+  }
+  domain_name         = "api-uno-test.ambrygen.com"
+  listener_arn        = "arn:aws:elasticloadbalancing:us-west-2:411233202044:listener/app/uno-test-elb/f2e6d54c0fb23072/731f9bb15d6e7f24"
+  domain_name_certificate_arn = "arn:aws:acm:us-west-2:411233202044:certificate/7cfe279f-bf49-496a-949d-f49fc154068c"
+  access_logging      = null
 }

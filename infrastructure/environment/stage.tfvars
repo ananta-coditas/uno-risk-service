@@ -9,6 +9,10 @@ environment_name  = "staging"
 aws_region     = "us-west-2"
 // -------- --------------------------------- //
 lb_security_group_egress_rule_id = "sgr-024cf8b3d96cff3f7"
+// ----------------------------------------- //
+elb_security_groups ={
+  lb_security_group_ids = ["sgr-024cf8b3d96cff3f7"]
+}
 // -------- --------------------------------- //
 vpc_config = {
   vpc_id                 = "vpc-0e20392ac4d80ae14"
@@ -190,4 +194,32 @@ applications_config = {
       path_pattern_value = ["/api/risk/*", "/risk/*"]
     }
   },
+}
+// ----------------------------------------- //
+api_gateway_config = {
+  stage_name = "stage"
+  routes = [
+    {
+      route_key           = "POST /*"
+      authorization_type  = "NONE"
+      target              = "integrations/{integration_id}"
+    },
+    {
+      route_key           = "$default"
+      authorization_type  = "NONE"
+      target              = "integrations/{integration_id}"
+    }
+  ]
+  cors_configuration = {
+    allow_origins     = ["*"]
+    allow_methods     = ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"]
+    allow_headers     = ["*"]
+    expose_headers    = []
+    allow_credentials = false
+    max_age           = 300
+  }
+  domain_name         = "api-uno-stage.ambrygen.com"
+  listener_arn        = "arn:aws:elasticloadbalancing:us-west-2:480802442620:listener/app/uno-staging-elb/f7088d37e40cc4c5/2e70f4e7a5faf1f2"
+  domain_name_certificate_arn = "arn:aws:acm:us-west-2:480802442620:certificate/93059c1b-dd13-491e-8576-dbd35f75aa74"
+  access_logging      = null
 }
