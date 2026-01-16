@@ -35,6 +35,18 @@ module "api_gateway" {
         connection_type         = "VPC_LINK" 
         connection_id           = aws_apigatewayv2_vpc_link.alb[0].id 
       }
+    },
+    "POST /risk/api/v1/models/calculate" = {
+      #route_key         = "ANY /{proxy+}"  # Catch-all default route
+      authorization_type        = "NONE"     # Or use a default value
+      integration = {
+        type                    = "HTTP_PROXY"
+        uri                     = var.api_gateway_config.listener_arn
+        method                  = "ANY"  # Changed to ANY for catch-all
+        timeout_milliseconds    = 29000
+        connection_type         = "VPC_LINK" 
+        connection_id           = aws_apigatewayv2_vpc_link.alb[0].id 
+      }
     }
   }
 
