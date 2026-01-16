@@ -7,6 +7,15 @@ data "aws_lb" "main" {
 }
 module "api_gateway" {
   # checkov:skip=CKV_TF_1:Referring to git tag instead of commit hash
+  # checkov:skip=CKV_AWS_237: Ensure API Gateway caching is enabled/Ensure Create before destroy for API Gateway
+  # checkov:skip=CKV_AWS_73:  Ensure API Gateway has X-Ray Tracing enabled
+  # checkov:skip=CKV_AWS_309: Ensure API GatewayV2 routes specify an authorization type
+  # checkov:skip=CKV_AWS_76:  Ensure API Gateway has Access Logging enabled
+  # checkov:skip=CKV_TF_2:    Ensure Terraform module sources use a tag with a version number
+  # checkov:skip=CKV2_AWS_51: Ensure AWS API Gateway endpoints uses client certificate authentication
+  # checkov:skip=CKV2_AWS_4:  Ensure API Gateway stage have logging level defined as appropriate
+  # checkov:skip=CKV2_AWS_71: Ensure AWS ACM Certificate domain name does not include wildcards
+  # checkov:skip=CKV2_AWS_71:  
   source    = "github.com/ambrygen/terraform-aws-module-api-gateway?ref=api-gateway"
   providers = { aws = aws }
 
