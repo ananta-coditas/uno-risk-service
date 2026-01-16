@@ -216,7 +216,7 @@ variable "load_balancer_type" {
 variable "elb_security_groups" {
   description = "ELB Security groups."
   type = object({
-    lb_security_group_ids  = string
+    lb_security_group_ids  = list(string)
   })
 }
 // -------------------------------------------- //
