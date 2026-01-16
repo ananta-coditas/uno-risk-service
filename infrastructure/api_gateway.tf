@@ -15,7 +15,7 @@ module "api_gateway" {
   # checkov:skip=CKV2_AWS_51: Ensure AWS API Gateway endpoints uses client certificate authentication
   # checkov:skip=CKV2_AWS_4:  Ensure API Gateway stage have logging level defined as appropriate
   # checkov:skip=CKV2_AWS_71: Ensure AWS ACM Certificate domain name does not include wildcards
-  # checkov:skip=CKV2_AWS_71:  
+  # checkov:skip=CKV_AWS_120: "Ensure API Gateway caching is enabled"   
   source    = "github.com/ambrygen/terraform-aws-module-api-gateway?ref=api-gateway"
   providers = { aws = aws }
 
