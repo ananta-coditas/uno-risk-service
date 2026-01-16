@@ -3,9 +3,7 @@
 # ---------------------------------- #
 data "aws_lb" "main" {
   count = var.api_gateway_config != null ? 1 : 0
-  arn   = var.load_balancer_arn
-
-  depends_on = [module.load_balancer]
+  arn   = var.load_balancer_arn  
 }
 module "api_gateway" {
   # checkov:skip=CKV_TF_1:Referring to git tag instead of commit hash
