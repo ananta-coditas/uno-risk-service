@@ -53,7 +53,7 @@ resource "aws_apigatewayv2_vpc_link" "alb" {
   count = var.api_gateway_config != null ? 1 : 0
 
   name               = "${var.application_name}-${var.environment_name}-vpc-link-v2"
-  security_group_ids = [var.lb_security_group_egress_rule_id]
+  security_group_ids = var.elb_security_groups.lb_security_group_ids
   subnet_ids         = var.vpc_config.private_elb_subnets
 
   tags = {

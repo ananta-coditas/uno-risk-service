@@ -213,6 +213,13 @@ variable "load_balancer_type" {
   type        = string
 }
 // -------------------------------------------- //
+variable "elb_security_groups" {
+  description = "ELB Security groups."
+  type = object({
+    lb_security_group_ids  = string
+  })
+}
+// -------------------------------------------- //
 variable "api_gateway_config" {
   description = "Configuration for API Gateway HTTP API v2."
   type = object({
