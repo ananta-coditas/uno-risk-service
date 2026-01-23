@@ -5,6 +5,9 @@
  */
 package com.objex.progeny.risk;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
 import com.objex.risk.beans.BasePerson;
 import com.objex.risk.beans.BaseResult;
 import com.objex.risk.beans.BaseRisk;
@@ -15,10 +18,7 @@ import static com.objex.risk.beans.charts.ChartVO.Type.PIE;
 import com.objex.risk.beans.charts.DataPoint;
 import com.objex.risk.beans.charts.Series;
 import java.awt.Color;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.JAXBContext;
@@ -46,7 +46,7 @@ import org.slf4j.LoggerFactory;
  */
 public class Utils {
     final static Logger log = LoggerFactory.getLogger(Utils.class);
-    
+
      final static BasePerson NONE = new BasePerson() {
 
         @Override
@@ -58,20 +58,20 @@ public class Utils {
         NONE.setFatherId(-1);
         NONE.setMotherId(-1);
     }
-    
+
      public static void saveToFile(String filePath, byte[] data)
     {
         try (OutputStream stream = new FileOutputStream(filePath)) {
             stream.write(data);
         } catch ( Exception e) {
              log.error("Problem with save " + filePath, e);
-        }          
+        }
     }
-    
+
     /**
      * save Risk object to file
      * @param filePath
-     * @param risk 
+     * @param risk
      */
     public static void saveToFile(String filePath, BaseRisk risk)
     {
@@ -80,23 +80,23 @@ public class Utils {
 		java.io.File file = new java.io.File(filePath); //new java.io.File("C:\\temp\\converted.xml");
 		javax.xml.bind.JAXBContext jaxbContext = javax.xml.bind.JAXBContext.newInstance(risk.getClass());
 		javax.xml.bind.Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
- 
+
 		// output pretty printed
 		jaxbMarshaller.setProperty(javax.xml.bind.Marshaller.JAXB_FORMATTED_OUTPUT, true);
                // jaxbMarshaller.setProperty("eclipselink.media-type", "application/json");
- 
+
 		jaxbMarshaller.marshal(risk, file);
 		jaxbMarshaller.marshal(risk, System.out);
- 
+
             } catch (javax.xml.bind.JAXBException e) {
                 log.error("Problem with save " + filePath, e);
             }
     }
-    
+
     /**
-     * 
+     *
      * @param filePath
-     * @param result 
+     * @param result
      */
     public static void saveToFile(String filePath, Object result)
     {
@@ -105,19 +105,19 @@ public class Utils {
 		java.io.File file = new java.io.File(filePath); //new java.io.File("C:\\temp\\converted.xml");
 		javax.xml.bind.JAXBContext jaxbContext = javax.xml.bind.JAXBContext.newInstance(result.getClass());
 		javax.xml.bind.Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
- 
+
 		// output pretty printed
 		//jaxbMarshaller.setProperty(javax.xml.bind.Marshaller.JAXB_FORMATTED_OUTPUT, true);
                 //jaxbMarshaller.setProperty("eclipselink.media-type", "application/json");
-                
+
                  jaxbMarshaller.setProperty(MarshallerProperties.MEDIA_TYPE, "application/json");
 	        jaxbMarshaller.setProperty(MarshallerProperties.JSON_INCLUDE_ROOT, false);
 	        // Set it to true if you need the JSON output to formattet
 	        jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
- 
+
 		jaxbMarshaller.marshal(result, file);
 		jaxbMarshaller.marshal(result, System.out);
- 
+
             } catch (javax.xml.bind.JAXBException e) {
                 log.error("Problem with save " + filePath, e);
 
@@ -128,37 +128,37 @@ public class Utils {
 	JAXBContext jaxbContext = JAXBContext.newInstance(riskClass);
 	Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 	T risk = (T) jaxbUnmarshaller.unmarshal(file);
-	return risk;   
+	return risk;
     }
-     
+
      public static boolean inRange( Integer age,int floor, int ceiling, int defaultValue) {
       return (age == defaultValue) || (age <= ceiling && age >= floor);
     }
-	
+
 	public static void saveResultFile(String filePath, BaseResult result)
     {
          try {
- 
+
 		java.io.File file = new java.io.File(filePath); //new java.io.File("C:\\temp\\converted.xml");
 		javax.xml.bind.JAXBContext jaxbContext = javax.xml.bind.JAXBContext.newInstance(result.getClass());
 		javax.xml.bind.Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
- 
+
 		// output pretty printed
 		jaxbMarshaller.setProperty(javax.xml.bind.Marshaller.JAXB_FORMATTED_OUTPUT, true);
                //jaxbMarshaller.setProperty("eclipselink.media-type", "application/json");
- 
+
 		jaxbMarshaller.marshal(result, file);
 		jaxbMarshaller.marshal(result, System.out);
- 
+
             } catch (javax.xml.bind.JAXBException e) {
               e.printStackTrace();
             }
     }
-   
+
     public static void saveToMMRFile(String filePath, ArrayList fam) {
        saveToFile(filePath,createMMRRiskWithFamily(fam));
     }
-    public static com.objex.risk.beans.mmr.Risk createMMRRiskWithFamily(ArrayList fam) {      
+    public static com.objex.risk.beans.mmr.Risk createMMRRiskWithFamily(ArrayList fam) {
         com.objex.risk.beans.mmr.Risk outRisk = new com.objex.risk.beans.mmr.Risk();
         int rows = fam.size();
         for (int i=0; i< rows; i++) {
@@ -183,13 +183,22 @@ public class Utils {
                         person.setDiagnoseEndometriumAge((int)Double.parseDouble(res));
                     }
                 } catch (Exception e ) { log.error("Problem converting name:" + name + " row:" + i + " value:" + res); }
-                  
+
             }
         }
-        
-    return outRisk;   
+
+    return outRisk;
     }
-    
+
+    public static <T extends BaseRisk> T createRiskFromJsonFile(String filePath, Class<T> riskClass) throws IOException {
+        ObjectMapper om = new ObjectMapper();
+        //om.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
+        //om.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true);
+        ObjectReader or = om.readerFor(riskClass); //withDefaultPrettyPrinter();
+        T risk = (T) or.readValue(new File(filePath));
+        return risk;
+    }
+
     protected static void createCommon(Object name, BasePerson person, String res) throws NumberFormatException {
         if ("ID".equals(name)) {
             person.setId((int)Double.parseDouble(res));
@@ -213,26 +222,26 @@ public class Utils {
          }
         return relatives;
     }
-    
+
     /**
-     * removes a gender from the passed list.  
+     * removes a gender from the passed list.
      * @param <P>
      * @param people
      * @param keepFemales  if true keeps only the females, if false keeps only males
-     * @return 
+     * @return
      */
-    
-    public static <P extends BasePerson> List<P> filterSex(List<P> people, boolean keepFemales) { 
+
+    public static <P extends BasePerson> List<P> filterSex(List<P> people, boolean keepFemales) {
         List<P> relatives = new ArrayList();
         int gender = keepFemales ? 0 : 1;
         for (BasePerson rel : people) {
             if(rel.getGender() == gender) {
-               relatives.add((P)rel); 
+               relatives.add((P)rel);
             }
         }
         return relatives;
     }
-    
+
     public static <P extends BasePerson> List<P> getSiblings(P person, BaseRisk risk) {
         List<P> relatives = new ArrayList();
          for (BasePerson rel : risk.getFamily()) {
@@ -242,7 +251,7 @@ public class Utils {
          }
         return relatives;
     }
-    
+
     public static <P extends BasePerson> List<P> getSiblings(P person, List<P> family) {
         List<P> relatives = new ArrayList();
          for (BasePerson rel : family) {
@@ -252,7 +261,7 @@ public class Utils {
          }
         return relatives;
     }
-    
+
     public static <P extends BasePerson> List<P> getHalfSiblings(P person, BaseRisk risk) {
         List<P> relatives = new ArrayList();
          for (BasePerson rel : risk.getFamily()) {
@@ -271,7 +280,7 @@ public class Utils {
          }
         return relatives;
     }
-    
+
     public static <P extends BasePerson> List<P> getChildren(P person, BaseRisk risk) {
         List<P> relatives = new ArrayList();
          for (BasePerson rel : risk.getFamily()) {
@@ -286,7 +295,7 @@ public class Utils {
      * @param <P>
      * @param parents
      * @param risk
-     * @return 
+     * @return
      */
     public static <P extends BasePerson> List<P> getChildren(List<P> parents, BaseRisk risk) {
         List<P> relatives = new ArrayList();
@@ -300,13 +309,13 @@ public class Utils {
          }
         return relatives;
     }
-    
+
     //a relative's parent, sibling, or child.
     public static <P extends BasePerson> List<P> getFirstDegreeRelatives(BaseRisk risk, Class<P> clazz) {
         BasePerson proband = risk.getFamily().get(0);
         return getFirstDegreeRelatives(proband, risk, clazz);
     }
-    
+
     //a relative's parent, sibling, or child.
     public static <P extends BasePerson> List<P> getFirstDegreeRelatives(BasePerson person,BaseRisk risk, Class<P> clazz) {
         List<P> relatives = new ArrayList();
@@ -317,12 +326,12 @@ public class Utils {
             if (relative.isParent(person) || relative.isChild(person) || relative.isSibling(person)) {
                 relatives.add((P)relative);
             }
-            
+
         }
         return relatives;
     }
-    
-        /**A second-degree relative is defined as a blood relative which includes the individual's grandparents, grandchildren, aunts, uncles, nephews, 
+
+        /**A second-degree relative is defined as a blood relative which includes the individual's grandparents, grandchildren, aunts, uncles, nephews,
      * nieces or half-siblings
      */
     public static <P extends BasePerson> List<P> getSecondDegreeRelatives(BaseRisk risk, Class<P> clazz) {
@@ -346,7 +355,7 @@ public class Utils {
                 siblings.add(person.getId());
             }
         }
-         for (BasePerson person : risk.getFamily()) { 
+         for (BasePerson person : risk.getFamily()) {
             if (proband == person) {
                 continue;
             }
@@ -359,14 +368,14 @@ public class Utils {
             } else if (siblings.contains(person.getMotherId()) || siblings.contains(person.getFatherId())) {
                   relatives.add((P)person);  //nieces nephews
             }  else if (!siblings.contains(person.getId()) && ((proband.getMotherId() != 0 && proband.getMotherId().equals(person.getMotherId())) ||  (proband.getFatherId() != 0 && proband.getFatherId().equals(person.getFatherId())))) {
-                  relatives.add((P)person);   //halfsibling  
+                  relatives.add((P)person);   //halfsibling
             }
         }
         return relatives;
     }
-    
-    
-    /**A second-degree relative is defined as a blood relative which includes the individual's grandparents, grandchildren, aunts, uncles, nephews, 
+
+
+    /**A second-degree relative is defined as a blood relative which includes the individual's grandparents, grandchildren, aunts, uncles, nephews,
      * nieces or half-siblings
      */
     public static <P extends BasePerson> List<P> getSideOfFamilySecondDegreeRelatives(BaseRisk risk, Class<P> clazz, boolean maternal) {
@@ -392,18 +401,18 @@ public class Utils {
                 siblings.add(person.getId());
             }
         }
-        
+
         if (maternal) {
             parent = mother;
         } else {
             parent = father;
         }
-        
+
         if (parent != null){
             parentId = parent.getId();
         }
-        
-        for (BasePerson person : risk.getFamily()) { 
+
+        for (BasePerson person : risk.getFamily()) {
             if (proband == person) {
                 continue;
             }
@@ -416,27 +425,27 @@ public class Utils {
             } else if (siblings.contains(person.getMotherId()) || siblings.contains(person.getFatherId())) {
                   relatives.add((P)person);  //nieces nephews
             }  else if (!siblings.contains(person.getId()) && ((parentId != 0 && parentId.equals(person.getMotherId())) ||  (parentId.equals(person.getFatherId())))) {
-                  relatives.add((P)person);   //halfsibling  
+                  relatives.add((P)person);   //halfsibling
             }
         }
         return relatives;
     }
-    
+
     /**
      * Build a chart based off of a risk result
      * @param result
-     * @return 
+     * @return
      */
 
     public static ChartVO buildChart(BaseResult result) {
-        
+
         ChartVO chart = ChartBuilder.instance().createChart(result.getChartCode(), result.getModel());
         for (Prediction pred : result.getPredictions()) {
         	try {
 				for (Series series : chart.getSeries())   {
 					Double risk = pred.getResult(series.getName()) * 100; //charts use percent
 					series.add(new DataPoint(pred.getAge(), risk));
-				}    
+				}
         	} catch (Exception e) {
         		log.warn("Could not build datapoint for prediction age" + pred.getAge());
         	}
@@ -447,7 +456,7 @@ public class Utils {
     /**
      * turn chart vo into an image
      * @param chart
-     * @return 
+     * @return
      */
     public static byte[] plotChartToPNG(ChartVO chart) {
         byte[] response = null;
@@ -460,18 +469,18 @@ public class Utils {
     }
     /**
      * will initialize empty fields from prototype based on context and chart code
-     * @param chart 
+     * @param chart
      */
     public static void copyFromPrototype(ChartVO chart) {
         ChartVO prototype = ChartBuilder.instance().getPrototype(chart.getChartCode(), chart.getContext());
         prototype.copyChart(chart);
     }
-    
+
     /**
      * Create image with chart vo
      * @param chartObject
      * @param explode
-     * @return 
+     * @return
      */
     public static byte[] plotChartToPiePNG(ChartVO chartObject,boolean explode) {
            byte[] image = null;
@@ -484,29 +493,29 @@ public class Utils {
                   pieData.setValue(series.getLabel(),series.getDataMatrix()[0][0]);
                   plot.setSectionPaint(series.getLabel(),Color.decode(series.getPrimaryColor()));
             }
-            
+
            if (explode) {
                 plot.setExplodePercent(chartObject.getSeries().get(0).getLabel(), 0.5);
            }
            ByteArrayOutputStream bos = new ByteArrayOutputStream();
            ChartUtils.writeChartAsPNG(bos, pieChartObject, chartObject.getWidth(), chartObject.getHeight());
-           image = bos.toByteArray(); 
+           image = bos.toByteArray();
          }  catch (Exception i)          {
            log.error("Problem generating image ", i);
          }
         return image;
 }
     /**
-     * 
+     *
      * @param chartObject
      * @param showPoints
-     * @return 
+     * @return
      */
     public static byte[] plotChartToLinePNG(ChartVO chartObject,boolean showPoints) {
-         
+
         byte[] image = null;
         try {
-            
+
            DefaultCategoryDataset categoryDataset = new DefaultCategoryDataset();
            DefaultXYDataset xydataset = new DefaultXYDataset();
            for (Series series : chartObject.getSeries()) {
@@ -514,13 +523,13 @@ public class Utils {
                for (DataPoint point : series.getDataPoints()) {
                    Number y = point.getY();
                   categoryDataset.addValue(y,series.getLabel(), point.getX());
-                   
+
                }
            }
 
             JFreeChart lineChartObject=null;
             if (showPoints) {
-                lineChartObject = ChartFactory.createXYLineChart(chartObject.getTitle(),chartObject.getAxisX(),chartObject.getAxisY(),xydataset,PlotOrientation.VERTICAL,true,true,false);                
+                lineChartObject = ChartFactory.createXYLineChart(chartObject.getTitle(),chartObject.getAxisX(),chartObject.getAxisY(),xydataset,PlotOrientation.VERTICAL,true,true,false);
                 XYPlot xyplot = (XYPlot)lineChartObject.getPlot();
                 xyplot.setBackgroundPaint(Color.decode(chartObject.getBackgroundColor()));
                 for (int i = 0; i < chartObject.getSeries().size(); i++) {
@@ -536,7 +545,7 @@ public class Utils {
                     lplot.getRenderer().setSeriesPaint(i,Color.decode(chartObject.getSeries().get(i).getPrimaryColor()));
                 }
             }
- 
+
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             ChartUtils.writeChartAsPNG(bos, lineChartObject, chartObject.getWidth(), chartObject.getHeight());
             image = bos.toByteArray();
@@ -545,7 +554,7 @@ public class Utils {
          {
               log.error("Problem generating image ", i);
          }
-         return image;    
+         return image;
     }
-    
+
 }
