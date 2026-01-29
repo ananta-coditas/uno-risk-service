@@ -161,7 +161,7 @@ api_gateway_config = {
     max_age           = 300
   }
   domain_name         = "api-uno-dev.ambrygen.com"
-  listener_arn        = "arn:aws:elasticloadbalancing:us-west-2:411233202044:listener/app/uno-test-elb/f2e6d54c0fb23072/731f9bb15d6e7f24"
-  domain_name_certificate_arn = "arn:aws:acm:us-west-2:411233202044:certificate/7cfe279f-bf49-496a-949d-f49fc154068c"
+  listener_arn        = "arn:aws:elasticloadbalancing:us-west-2:034362031415:listener/app/uno-dev-elb/8bfe93ec63e21f2b/d5fcf6eb1cd6d1ea"
+  domain_name_certificate_arn = "arn:aws:acm:us-west-2:034362031415:certificate/f0f8f2d2-46c5-499d-9870-7a6f69cd78ae"
   access_logging      = null
 }
