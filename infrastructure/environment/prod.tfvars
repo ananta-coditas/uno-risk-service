@@ -204,6 +204,6 @@ api_gateway_config = {
   }
   domain_name         = "api-uno-prod.ambrygen.com"
   listener_arn        = "arn:aws:elasticloadbalancing:us-west-2:658178292836:listener/app/uno-prod-elb/e7feb74b017a1629/6bca251544ad1dce"
-  domain_name_certificate_arn = "arn:aws:acm:us-west-2:480802442620:certificate/2527acc3-64a2-464f-bb47-a53640b55df3"
+  domain_name_certificate_arn = "arn:aws:acm:us-west-2:658178292836:certificate/2527acc3-64a2-464f-bb47-a53640b55df3"
   access_logging      = null
 }
