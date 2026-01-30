@@ -174,7 +174,7 @@ applications_config = {
       alb_cookie_duration = 86400
     }
     listener_condition_config = {
-      host_header_value  = ["uno-prod.ambrygen.com"]
+      host_header_value  = ["ras.ambrygen.com"]
       path_pattern_value = ["/api/risk/*", "/risk/*"]
     }
   },
