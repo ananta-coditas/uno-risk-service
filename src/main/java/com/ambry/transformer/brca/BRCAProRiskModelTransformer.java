@@ -28,14 +28,14 @@ import com.objex.risk.services.RiskService;
 public class BRCAProRiskModelTransformer extends RiskModelTransformer implements RiskModelExecutor<com.objex.risk.beans.brca.Risk, BRCAResult, BRCAResult>{
 
     private final RiskService bayesExecuter;
-    
+
     private final BRCAProValidator brcaValidator;
-    
+
     public BRCAProRiskModelTransformer(RiskService bayesExecuter, BRCAProValidator brcaValidator) {
         this.bayesExecuter = bayesExecuter;
         this.brcaValidator = brcaValidator;
     }
-    
+
     @Override
     public ModelName getModelName() {
         return ModelName.BRCAPRO;
@@ -64,10 +64,24 @@ public class BRCAProRiskModelTransformer extends RiskModelTransformer implements
 	@Override
 	protected void add(BaseRisk fam, BasePerson basePerson) {
 		((com.objex.risk.beans.brca.Risk)fam).add((com.objex.risk.beans.brca.Person)basePerson);
-		
+
 	}
 
-	@Override
+    @Override
+    protected void mapModelRiskFields(Risk commonRisk, BaseRisk fam, Model model) {
+        super.mapModelRiskFields(commonRisk, fam, model);
+        Person proband = (Person) commonRisk.getProband();
+        try {
+            if (proband != null) {
+                com.objex.risk.beans.brca.Risk.Race race = com.objex.risk.beans.brca.Risk.Race.valueOf(proband.getFamilyRace().toString());
+                ((com.objex.risk.beans.brca.Risk) fam).setRace(race);
+            }
+        } catch (Exception e) {
+            //happens if there is no match
+        }
+    }
+
+    @Override
 	protected void mapModelFields(Person person, BasePerson basePerson) {
 		com.objex.risk.beans.brca.Person member = (com.objex.risk.beans.brca.Person) basePerson;
 		Cancer breast = person.getCancer(CancerType.BREAST);
@@ -98,7 +112,11 @@ public class BRCAProRiskModelTransformer extends RiskModelTransformer implements
 		}
 		member.setAgeMasectomy(person.getAgeMastectomy());
 		member.setAgeOophorectomy(person.getAgeOophorectomy());
-	    member.setEthnic(person.getEthnic());
+        if (person.getEthnic() == null) {
+            member.setEthnic(com.objex.risk.beans.brca.Person.Ethnic.nonAJ);
+        } else {
+            member.setEthnic(person.getEthnic());
+        }
 	    member.setPerformedMasectomy(person.isPerformedMastectomy());
 	    member.setPerformedOophorectomy(person.isPerformedOophorectomy());
 	    if (person.getMarker() != null) {
@@ -123,7 +141,7 @@ public class BRCAProRiskModelTransformer extends RiskModelTransformer implements
 	protected BasePerson createPersonObject() {
 		return new com.objex.risk.beans.brca.Person();
 	}
-	
+
 	protected void mapModelRiskInstruction(BaseRisk risk, String name, String value) {
 		try {
 			if ("impute".equals(name)) {

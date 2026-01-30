@@ -29,14 +29,14 @@ import com.objex.risk.beans.uno.Risk;
 public class TyrerRiskModelTransformer extends RiskModelTransformer implements RiskModelExecutor<com.objex.risk.beans.tcuzick.Risk, TyrerResult, TyrerResult>{
 
     private final ProgenyRiskService tyrerExecuter;
-    
+
     private final TyrerValidator tyrerValidator;
-    
+
     public TyrerRiskModelTransformer(ProgenyRiskService tyrerExecuter, TyrerValidator tyrerValidator) {
         this.tyrerExecuter = tyrerExecuter;
         this.tyrerValidator = tyrerValidator;
     }
-    
+
     @Override
     public ModelName getModelName() {
         return ModelName.TYRER;
@@ -65,7 +65,7 @@ public class TyrerRiskModelTransformer extends RiskModelTransformer implements R
 	@Override
 	protected void add(BaseRisk fam, BasePerson basePerson) {
 		((com.objex.risk.beans.tcuzick.Risk)fam).add((com.objex.risk.beans.tcuzick.Person)basePerson);
-		
+
 	}
 
 	@Override
@@ -95,14 +95,14 @@ public class TyrerRiskModelTransformer extends RiskModelTransformer implements R
 				member.setDiagnoseOvarianAge(ovarian.getDiagnoseAge());
 			}
 		}
-		
+
 		member.setDensityMeasure(person.getDensityMeasure());
 		member.setDensityValue(person.getDensityValue());
-		//if (person.getEthnic() == com.objex.risk.beans.brca.Person.Ethnic.AJ) {
-		//	member.setEthnic(com.objex.risk.beans.tcuzick.Person.Ethnic.AJ);
-		//} else {
-		//	member.setEthnic(com.objex.risk.beans.tcuzick.Person.Ethnic.nonAJ);
-		//}
+		if (person.getEthnic() == com.objex.risk.beans.brca.Person.Ethnic.AJ) {
+			member.setEthnic(com.objex.risk.beans.tcuzick.Person.Ethnic.AJ);
+		} else {
+			member.setEthnic(com.objex.risk.beans.tcuzick.Person.Ethnic.nonAJ);
+		}
 		member.setHasAtypicalHyperplasia(person.isHasAtypicalHyperplasia());
 		member.setHasLCIS(person.isHasLCIS());
 		member.setHasLiveBirth(person.getHasLiveBirth());
