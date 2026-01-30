@@ -36,6 +36,18 @@ public class TyrerRiskModelTransformer extends RiskModelTransformer implements R
         this.tyrerExecuter = tyrerExecuter;
         this.tyrerValidator = tyrerValidator;
     }
+    protected void mapModelRiskInstruction(BaseRisk risk, String name, String value) {
+        try {
+            if ("competingMortality".equals(name)) {
+                ((com.objex.risk.beans.tcuzick.Risk)risk).setCompetingMortality(Boolean.parseBoolean(value));
+                return;
+            }
+        }
+        catch (Exception e) {
+            super.mapModelRiskInstruction(risk, name, value);
+        }
+        super.mapModelRiskInstruction(risk, name, value);
+    }
 
     @Override
     public ModelName getModelName() {
