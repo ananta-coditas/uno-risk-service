@@ -35,23 +35,24 @@ on:
         required: true
         type: choice
         options:
-          - sandbox
+          #- sandbox
           - test
           - stage
           - prod
 
 jobs:
-  terraform-dev:
-    name: "TF-dev"
-    if: github.base_ref == 'develop' || github.ref == 'refs/heads/develop' || github.event.inputs.target_environment == 'sandbox'
-    uses: ambrygen/github-reusable-workflows/.github/workflows/terraform-workflow-source.yaml@v2
-    with:
-      terraform_action: ${{ ( github.event_name == 'push' || github.event.inputs.terraform_action == 'apply' ) && 'apply' || github.event.inputs.terraform_action == 'destroy' && 'destroy' || 'plan' }}
-      working_directory: "infrastructure"
-      tfvars: "environment/dev.tfvars"
-      env_file_name: "infrastructure/.env.dev"
-      # post_init_commands: "terraform state list"
-    secrets: inherit
+  # Disabled for now as we are not using the sandbox environment and certificate has expired
+  # terraform-dev:
+  #   name: "TF-dev"
+  #   if: github.base_ref == 'develop' || github.ref == 'refs/heads/develop' || github.event.inputs.target_environment == 'sandbox'
+  #   uses: ambrygen/github-reusable-workflows/.github/workflows/terraform-workflow-source.yaml@v2
+  #   with:
+  #     terraform_action: ${{ ( github.event_name == 'push' || github.event.inputs.terraform_action == 'apply' ) && 'apply' || github.event.inputs.terraform_action == 'destroy' && 'destroy' || 'plan' }}
+  #     working_directory: "infrastructure"
+  #     tfvars: "environment/dev.tfvars"
+  #     env_file_name: "infrastructure/.env.dev"
+  #     # post_init_commands: "terraform state list"
+  #   secrets: inherit
 
   terraform-test-plan:
     name: "TF-Test-Plan"
