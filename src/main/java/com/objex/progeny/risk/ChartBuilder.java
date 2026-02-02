@@ -4,8 +4,13 @@ package com.objex.progeny.risk;
 
 import com.objex.risk.beans.charts.ChartVO;
 import com.objex.risk.beans.charts.Series;
+
+import static com.objex.risk.beans.brca.BRCAResult.BRCAPRO;
 import static com.objex.risk.beans.claus.ClausResult.CLAUS;
 import static com.objex.risk.beans.gail.GailResult.GAIL;
+import static com.objex.risk.beans.mela.MelaResult.MELAPRO;
+import static com.objex.risk.beans.mmr.MMRResult.MMRPRO;
+import static com.objex.risk.beans.panc.PancResult.PANCPRO;
 import static com.objex.risk.beans.tcuzick.TyrerResult.TYRER;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,8 +22,8 @@ import java.util.Map;
 public class ChartBuilder {
    protected static ChartBuilder builder = new ChartBuilder();
    protected Map<String,Map<Integer,ChartVO>> prototypes = new HashMap<>();
-   
-   
+
+
    protected ChartBuilder() {
        setup();
    }
@@ -30,7 +35,7 @@ public class ChartBuilder {
  * want to support new charts without compilation
  */
     private void setup() {
-        
+
        ChartVO chart = new ChartVO();
        chart.setChartType(ChartVO.Type.LINE);
        chart.setTitle("Risk By Age");
@@ -44,7 +49,7 @@ public class ChartBuilder {
        breastSeries.setPrimaryColor("#008DCE");
        addPrototype(GAIL,1,chart);
        addPrototype(CLAUS,1,chart);
-       
+
        chart = new ChartVO();
        chart.setChartType(ChartVO.Type.LINE);
        chart.setTitle("Risk By Age");
@@ -53,22 +58,80 @@ public class ChartBuilder {
        chart.setShowPoints(Boolean.TRUE);
        chart.setAxisX("Age (years)");
        chart.setSize(640, 480);
-       
+
        breastSeries = chart.addSeries("breastRisk");
        breastSeries.setLabel("Breast Cancer Risk");
        breastSeries.setPrimaryColor("#008DCE");
-       
+
        Series populationSeries = chart.addSeries("populationRisk");
        populationSeries.setLabel("Population Breast Risk");
-       populationSeries.setPrimaryColor("#B7202F"); 
+       populationSeries.setPrimaryColor("#B7202F");
        addPrototype(TYRER,1,chart);
-        
+
+        chart = new ChartVO();
+        chart.setChartType(ChartVO.Type.LINE);
+        chart.setTitle("Risk By Age");
+        chart.setBackgroundColor("#EEEEEE");
+        chart.setAxisY("Risk (percent)");
+        chart.setShowPoints(Boolean.TRUE);
+        chart.setAxisX("Age (years)");
+        chart.setSize(640, 480);
+        breastSeries = chart.addSeries("breastRisk");
+        breastSeries.setLabel("Breast Cancer Risk");
+        breastSeries.setPrimaryColor("#008DCE");
+        Series ovarianSeries = chart.addSeries("ovarianRisk");
+        ovarianSeries.setLabel("Ovarian Cancer Risk");
+        ovarianSeries.setPrimaryColor("#B7202F");
+        addPrototype(BRCAPRO,1,chart);
+
+        chart = new ChartVO();
+        chart.setChartType(ChartVO.Type.LINE);
+        chart.setTitle("Risk By Age");
+        chart.setBackgroundColor("#EEEEEE");
+        chart.setAxisY("Risk (percent)");
+        chart.setShowPoints(Boolean.TRUE);
+        chart.setAxisX("Age (years)");
+        chart.setSize(640, 480);
+        Series colonSeries = chart.addSeries("colorectalRisk");
+        colonSeries.setLabel("Colorectal Cancer Risk");
+        colonSeries.setPrimaryColor("#008DCE");
+        Series endometrialSeries = chart.addSeries("endometrialRisk");
+        endometrialSeries.setLabel("Endometrial Cancer Risk");
+        endometrialSeries.setPrimaryColor("#B7202F");
+        addPrototype(MMRPRO,1,chart);
+
+        chart = new ChartVO();
+        chart.setChartType(ChartVO.Type.LINE);
+        chart.setTitle("Risk By Age");
+        chart.setBackgroundColor("#EEEEEE");
+        chart.setAxisY("Risk (percent)");
+        chart.setShowPoints(Boolean.TRUE);
+        chart.setAxisX("Age (years)");
+        chart.setSize(640, 480);
+        Series melaSeries = chart.addSeries("melanomaRisk");
+        melaSeries.setLabel("Melanoma Cancer Risk");
+        melaSeries.setPrimaryColor("#008DCE");
+        addPrototype(MELAPRO,1,chart);
+
+        chart = new ChartVO();
+        chart.setChartType(ChartVO.Type.LINE);
+        chart.setTitle("Risk By Age");
+        chart.setBackgroundColor("#EEEEEE");
+        chart.setAxisY("Risk (percent)");
+        chart.setShowPoints(Boolean.TRUE);
+        chart.setAxisX("Age (years)");
+        chart.setSize(640, 480);
+        Series pancSeries = chart.addSeries("pancreaticRisk");
+        pancSeries.setLabel("Pancreatic Cancer Risk");
+        pancSeries.setPrimaryColor("#008DCE");
+        addPrototype(PANCPRO,1,chart);
+
     }
     /**
      * add a new protoype by model and chart id
      * @param model
      * @param code
-     * @param chart 
+     * @param chart
      */
     private void addPrototype(String model, Integer code,ChartVO chart) {
         if (prototypes.get(model) == null){
