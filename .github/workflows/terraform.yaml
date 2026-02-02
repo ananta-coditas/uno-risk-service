@@ -56,14 +56,8 @@ jobs:
 
   terraform-test-plan:
     name: "TF-Test-Plan"
-    # Run on: PR created/updated (targeting develop or release), PR merged (push to develop), or manual run for test; exclude apply/destroy
-    if: |
-      (
-        (github.event_name == 'pull_request' && (github.base_ref == 'develop' || startsWith(github.base_ref, 'release/'))) ||
-        (github.event_name == 'push' && github.ref == 'refs/heads/develop') ||
-        (github.event_name == 'workflow_dispatch' && github.event.inputs.target_environment == 'test')
-      ) &&
-      !((github.event_name == 'push' && startsWith(github.ref, 'refs/heads/release/')) || github.event.inputs.terraform_action == 'apply' || github.event.inputs.terraform_action == 'destroy')
+    # Run if: we're targeting a release branch in a PR, or manually running the workflow on test, AND we're not meeting the criteria for an apply
+    if: (startsWith(github.base_ref, 'release/') || github.event.inputs.target_environment == 'test') && !((github.event_name == 'push' && startsWith(github.ref, 'refs/heads/release/')) || github.event.inputs.terraform_action == 'apply' || github.event.inputs.terraform_action == 'destroy')
     uses: ambrygen/github-reusable-workflows/.github/workflows/terraform-workflow-source.yaml@v2
     with:
       terraform_action: 'plan'
