@@ -31,7 +31,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class PremmDelegate {
     final static Logger LOG = LoggerFactory.getLogger(PremmDelegate.class);
-    
+
     public static final String PREMM_VERSION = "PREMM5 © 2018 DFCI. All Rights Reserved. PREMM® is a registered trademark of Dana-Farber Cancer Institute, Inc.";
     public static final Integer PROB_ENDO_MIN = 31;
     public static final Integer PROB_ENDO_MAX = 67;
@@ -45,14 +45,14 @@ public class PremmDelegate {
     public static final Integer FDR_COLON_MAX = 81;
     public static final Integer SDR_COLON_MIN = 30;
     public static final Integer SDR_COLON_MAX = 85;
-    
+
      final static int BASE_AGE = 45;
     final static com.objex.risk.beans.premm.Person NONE = new com.objex.risk.beans.premm.Person();
     static{
         NONE.setFatherId(-1);
         NONE.setMotherId(-1);
     }
-   
+
     public PREMMResult calculate(Risk risk) {
         PREMMResult result = new PREMMResult();
         Person proband = (Person) risk.getProband();
@@ -72,13 +72,15 @@ public class PremmDelegate {
                  matFDRs.remove(parent);
             }
         }
-        
+
         List<Person> secondDegreeRelatives = Utils.getSideOfFamilySecondDegreeRelatives(risk,Person.class,true);
-        PREMMResult matResult = calculate(risk,firstDegreeRelatives,secondDegreeRelatives);
-        
+        PREMMResult matResult = calculate(risk,matFDRs,secondDegreeRelatives);
+        //PREMMResult matResult = calculate(risk,firstDegreeRelatives,secondDegreeRelatives);
+
         secondDegreeRelatives = Utils.getSideOfFamilySecondDegreeRelatives(risk,Person.class,false);
-        PREMMResult patResult = calculate(risk,firstDegreeRelatives,secondDegreeRelatives);
-        
+        PREMMResult patResult = calculate(risk,patFDRs,secondDegreeRelatives);
+        //PREMMResult patResult = calculate(risk,firstDegreeRelatives,secondDegreeRelatives);
+
         LOG.debug("maternal: " + matResult.getProbabilityCarrier() + " paternal: " + patResult.getProbabilityCarrier());
         result = matResult.getProbabilityCarrier() > patResult.getProbabilityCarrier() ? matResult : patResult;
         roundResultValues(result);
@@ -86,9 +88,9 @@ public class PremmDelegate {
     }
 
     private void roundResultValues(PREMMResult result) {
-    	if (result.getProbabilityCarrier() != null && !result.getProbabilityCarrier().isNaN()) 
+    	if (result.getProbabilityCarrier() != null && !result.getProbabilityCarrier().isNaN())
     		result.setProbabilityCarrier(BigDecimal.valueOf(result.getProbabilityCarrier()).setScale(3,RoundingMode.HALF_UP).doubleValue());
-		
+
 	}
 
 	protected PREMMResult calculate(Risk risk, List<Person> firstDegreeRelatives, List<Person> secondDegreeRelatives) {
@@ -102,7 +104,7 @@ public class PremmDelegate {
         result.setVersion(PREMM_VERSION);
         return result;
     }
-        
+
     public int countAffectedColon(List<com.objex.risk.beans.premm.Person> relatives) {
       int count = 0;
       for (com.objex.risk.beans.premm.Person person : relatives)    {
@@ -121,14 +123,14 @@ public class PremmDelegate {
       }
       return count;
     }
-    
+
      /**
 	 * V8 = (minimum age of CRC in the proband-45) + (minimum age of CRC in a FDR-
      *  45) + (minimum age of CRC in a SDR-45)
 	 * @return
 	 */
-	
-    private Integer calcFamColonAgeMultiplier(com.objex.risk.beans.premm.Person proband,List<com.objex.risk.beans.premm.Person> fdrs, List<com.objex.risk.beans.premm.Person> sdrs,int affectedFDRCount, int affectedSDRCount, String mutation) { 
+
+    private Integer calcFamColonAgeMultiplier(com.objex.risk.beans.premm.Person proband,List<com.objex.risk.beans.premm.Person> fdrs, List<com.objex.risk.beans.premm.Person> sdrs,int affectedFDRCount, int affectedSDRCount, String mutation) {
         int diagnoseAgeProband = BASE_AGE; //leave if unaffected or unknown
         int diagnoseAgeFDR = BASE_AGE;
         int diagnoseAgeSDR = BASE_AGE;
@@ -214,14 +216,14 @@ public class PremmDelegate {
                 break;
             }
         }
-        
+
          for (com.objex.risk.beans.premm.Person person : sdrs)    {
             if (person.getAffectedRelatedType() != AffectedType.NONE) {
                 anySDR = true;
                 break;
             }
         }
-            
+
         Double val = 1 * presence(anyFDR)  + .5 * presence(anySDR);
         return val;
     }
@@ -260,25 +262,25 @@ public class PremmDelegate {
         }
         return adjusted;
     }
-   
+
     /**
      * ages of FDRs have a floor and ceiling which varies based on certain criteria
      * @param person
      * @param mutation
      * @param affectedCount
-     * @return 
+     * @return
      */
    public int adjustFDRDiagnoseColAge(com.objex.risk.beans.premm.Person person, String mutation, int affectedCount) {
        return doAdjust(person.getDiagnoseColonAge(),FDR_COLON_MIN,FDR_COLON_MAX);
    }
-   
+
    public int adjustSDRDiagnoseColAge(com.objex.risk.beans.premm.Person person, String mutation, int affectedCount) {
 
         return doAdjust(person.getDiagnoseColonAge(),SDR_COLON_MIN,SDR_COLON_MAX);
    }
-   
+
     public PREMMResult calculateMutationProbability (com.objex.risk.beans.premm.Person proband,Double prevFamColon, Double prevFamEndometrium, Double prevRelatedCancer, List firstDegreeRelatives, List secondDegreeRelatives) {
-    
+
         PREMMResult result = new PREMMResult();
         Integer gender = proband.getGender();
         int v1 = presence(proband.getAffectedColonType() == AffectedType.ONE);
@@ -286,21 +288,21 @@ public class PremmDelegate {
         int v3 = presence(proband.getAffectedEndometriumType().isAffected());
         int v4 = presence(proband.getAffectedRelatedType().isAffected());
         int ageV10 = proband.getAge();  //TODO complicate this
-        
-        int countColFDR = countAffectedColon(firstDegreeRelatives); 
+
+        int countColFDR = countAffectedColon(firstDegreeRelatives);
         int countColSDR = countAffectedColon(secondDegreeRelatives);
         Integer affectedFamAgeEndoMult = calcFamEndometriumAgeMultiplier(proband,firstDegreeRelatives, secondDegreeRelatives);
-        
+
         //could calculate in a cartesion way.  so nine calcs with mlh1 passed in every time
         Integer affectedFamAgeColonMult =  calcFamColonAgeMultiplier(proband,firstDegreeRelatives, secondDegreeRelatives, countColFDR,countColSDR, MLH1);
         Double lp_MLH1 = calc_lp_MLH1(gender, prevFamColon, prevFamEndometrium,prevRelatedCancer, affectedFamAgeColonMult,affectedFamAgeEndoMult, v1, v2, v3, v4,ageV10);
-        
+
         affectedFamAgeColonMult =  calcFamColonAgeMultiplier(proband,firstDegreeRelatives, secondDegreeRelatives, countColFDR,countColSDR, MSH2);
         Double lp_MSH2 = calc_lp_MSH2_EPCAM(gender, prevFamColon, prevFamEndometrium,prevRelatedCancer, affectedFamAgeColonMult,affectedFamAgeEndoMult, v1, v2, v3, v4,ageV10);
-        
+
         affectedFamAgeColonMult =  calcFamColonAgeMultiplier(proband,firstDegreeRelatives, secondDegreeRelatives, countColFDR,countColSDR, MSH6);
         Double lp_MSH6 = calc_lp_MSH6(gender, prevFamColon, prevFamEndometrium,prevRelatedCancer, affectedFamAgeColonMult,affectedFamAgeEndoMult, v1, v2, v3, v4,ageV10);
-        
+
         affectedFamAgeColonMult =  calcFamColonAgeMultiplier(proband,firstDegreeRelatives, secondDegreeRelatives, countColFDR,countColSDR, PMS2);
         Double lp_PMS2 = calc_lp_PMS2(gender, prevFamColon, prevFamEndometrium,prevRelatedCancer, affectedFamAgeColonMult,affectedFamAgeEndoMult, v1, v2, v3, v4,ageV10);
 
@@ -312,10 +314,10 @@ public class PremmDelegate {
 
         Double p_MSH6 =  Math.exp(lp_MSH6) / (1 + Math.exp(lp_MLH1) + Math.exp(lp_MSH2) + Math.exp(lp_MSH6) + Math.exp(lp_PMS2));
         result.setProbabilityMutationMSH6(p_MSH6);
-        
+
         Double p_PMS2 =  Math.exp(lp_PMS2) / (1 + Math.exp(lp_MLH1) + Math.exp(lp_MSH2) + Math.exp(lp_MSH6) + Math.exp(lp_PMS2));
         result.setProbabilityMutationPMS2(p_PMS2);
-        
+
         result.setProbabilityCarrier(p_MLH1 + p_MSH2 + p_MSH6 + result.getProbabilityMutationPMS2());
         return result;
     }
@@ -342,7 +344,7 @@ public class PremmDelegate {
                      + (-0.00946418 * affectedFamAgeColonMult) + (0.03435143 * affectedFamAgeEndoMult) + (-0.03629359 * ageV10);
 		return lp_MSH6;
     }
-    
+
     private Double calc_lp_PMS2(Integer gender, Double prevFamColonV5,	Double prevFamEndometriumV6, Double prevRelatedCancerV7,
                     Integer affectedFamAgeColonMultV8, Integer affectedFamAgeEndoMultV9,int v1, int v2, int v3, int v4, int currentAgeV10) {
 
@@ -367,18 +369,18 @@ public class PremmDelegate {
 
             Double val = 1 * presence(singleFDREndoCa) + 2 * presence(multiFDREndoCa) + .5 * presence(singleSDREndoCa) + 1 * presence(multiSDREndoCa);
             return val;
-    } 
+    }
     /* validate the incoming risk family data for Premm
      * @param proband
      * @param result
-     * @param risk 
-     */ 
-    protected void validateData(Person proband, PREMMResult result, Risk risk) {  
+     * @param risk
+     */
+    protected void validateData(Person proband, PREMMResult result, Risk risk) {
 
 	    if (proband.getAge() >= risk.getAgeTo()) {
 	        result.addError(new RiskError(proband.getId(),"Proband age is too high","ageTooHighForModelSettings"));
-	    }  
-	    
+	    }
+
 	    for (Person member : risk.getFamily()) {
 	    	validateMemberData(member, result);
 	    }
@@ -386,22 +388,22 @@ public class PremmDelegate {
 /**
  * Member validations for MMR
  * @param member
- * @param result 
+ * @param result
  */
 private void validateMemberData(Person member, PREMMResult result) {
     if (member.getAffectedColonType() != AffectedType.NONE && member.getDiagnoseColonAge() == 0) {
         result.addError(new RiskError(member.getId(),"Missing Age Colon","missingAgeColon"));
     }
-    
+
     if (member.getAffectedEndometriumType() !=  AffectedType.NONE  && member.getDiagnoseEndometriumAge() == 0) {
         result.addError(new RiskError(member.getId(),"Missing Age Endometrium","missingAgeEndometrium"));
     }
     if (member.getGender() == 1 && member.getAffectedEndometriumType()  !=  AffectedType.NONE) {
-        result.addError(new RiskError(member.getId(),"Invalid Gender for Endometrium","invalidGenderForEndometrium"));           
+        result.addError(new RiskError(member.getId(),"Invalid Gender for Endometrium","invalidGenderForEndometrium"));
     }
     if (member.getAge() < 0) {
         result.addError(new RiskError(member.getId(),"Invalid Age","invalidAge"));
-    } 
+    }
 }
-    
+
 }
