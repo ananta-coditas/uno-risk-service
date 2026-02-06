@@ -57,7 +57,11 @@ class Premm5VerificationTests {
         //Utils.saveToFile("classpath:test-input-data/risk/premmriskout_case1.xml",new Risk());
         PREMMResult result = premmDelegate.calculate(fam);
         assertThat(result).isNotNull();
+<<<<<<< SP12023
+        assertThat(result.getProbabilityCarrier()).isEqualTo(.351);
+=======
         assertThat(result.getProbabilityCarrier()).isEqualTo(.21);
+>>>>>>> develop
     }
 
     @Test
@@ -68,7 +72,11 @@ class Premm5VerificationTests {
         //Utils.saveToFile("classpath:test-input-data/risk/premmriskout_case1.xml",new Risk());
         PREMMResult result = premmDelegate.calculate(fam);
         assertThat(result).isNotNull();
+<<<<<<< SP12023
+        assertThat(result.getProbabilityCarrier()).isEqualTo(.429);
+=======
         assertThat(result.getProbabilityCarrier()).isEqualTo(.199);
+>>>>>>> develop
     }
     @Test
     @DisplayName("Verification case 5")

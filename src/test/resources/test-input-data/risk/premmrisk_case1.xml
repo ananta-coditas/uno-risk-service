@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Risk>
+    <ageBy>5</ageBy>
+    <ageTo>85</ageTo>
+    <chartCode>1</chartCode>
+    <consent>false</consent>
+    <familyId></familyId>
+    <saveIncoming>false</saveIncoming>
+    <Family>
+        <Person>
+            <age>40</age>
+            <ageOfDeath>40</ageOfDeath>
+            <fatherID>0</fatherID>
+            <gender>1</gender>
+            <ID>1</ID>
+            <motherID>0</motherID>
+            <proband>true</proband>
+            <testOrder>0</testOrder>
+            <twin>0</twin>
+            <vitalStatus>ALIVE</vitalStatus>
+            <affectedColonType>ONE</affectedColonType>
+            <affectedEndometriumType>NONE</affectedEndometriumType>
+            <affectedRelatedType>NONE</affectedRelatedType>
+            <diagnoseColonAge>40</diagnoseColonAge>
+            <diagnoseEndometriumAge>40</diagnoseEndometriumAge>
+        </Person>
+    </Family>
+</Risk>
