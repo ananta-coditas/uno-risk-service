@@ -10,7 +10,7 @@ aws_region     = "us-west-2"
 lb_security_group_egress_rule_id = "sgr-047803515e9b08959"
 // ----------------------------------------- //
 elb_security_groups ={
-  lb_security_group_ids = ["sgr-047803515e9b08959"]
+  lb_security_group_ids = ["sg-05d96445103219667"]
 }
 // -------- --------------------------------- //
 vpc_config = {
@@ -62,7 +62,7 @@ uno-risk-service = {
       required_cpu_units        = 2048  //2 GB
       required_memory_MiB_units = 4096 //4 GB
       ecr_image_uri             = "540051198529.dkr.ecr.us-west-2.amazonaws.com/uno-risk-service"
-      ecr_image_tag             = "uno-risk-service-202512111918-6fdba45-develop-25" // Update this field for each ecr image build
+      ecr_image_tag             = "uno-risk-service-202601202004-8c3f962-develop-26" // Update this field for each ecr image build
       sg_rule_config = {
         allowed_ingress_cidr = ["10.9.32.0/20"]
       }
@@ -160,8 +160,8 @@ api_gateway_config = {
     allow_credentials = false
     max_age           = 300
   }
-  domain_name         = "api-uno-test.ambrygen.com"
-  listener_arn        = "arn:aws:elasticloadbalancing:us-west-2:411233202044:listener/app/uno-test-elb/f2e6d54c0fb23072/731f9bb15d6e7f24"
-  domain_name_certificate_arn = "arn:aws:acm:us-west-2:411233202044:certificate/7cfe279f-bf49-496a-949d-f49fc154068c"
+  domain_name         = "api-uno-dev.ambrygen.com"
+  listener_arn        = "arn:aws:elasticloadbalancing:us-west-2:034362031415:listener/app/uno-dev-elb/8bfe93ec63e21f2b/d5fcf6eb1cd6d1ea"
+  domain_name_certificate_arn = "arn:aws:acm:us-west-2:034362031415:certificate/f0f8f2d2-46c5-499d-9870-7a6f69cd78ae"
   access_logging      = null
 }

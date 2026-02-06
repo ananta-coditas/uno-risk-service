@@ -10,7 +10,7 @@ aws_region     = "us-west-2"
 lb_security_group_egress_rule_id = "sgr-0535509f00c3b756f"
 // ----------------------------------------- //
 elb_security_groups ={
-  lb_security_group_ids = ["sg-0fd54bcac95c5735f"]
+  lb_security_group_ids = ["sg-076e7c87e6699268b"]
 }
 // -------- --------------------------------- //
 vpc_config = {
@@ -62,7 +62,7 @@ uno-risk-service = {
       required_cpu_units        = 2048  //2 GB
       required_memory_MiB_units = 4096  //4 GB
       ecr_image_uri             = "540051198529.dkr.ecr.us-west-2.amazonaws.com/uno-risk-service"
-      ecr_image_tag             = "uno-risk-service-202512111918-6fdba45-develop-25" // Update this field for each ecr image build
+      ecr_image_tag             = "uno-risk-service-202601202004-8c3f962-develop-26" // Update this field for each ecr image build
       sg_rule_config = {
         allowed_ingress_cidr = ["10.9.32.0/20", "10.0.0.0/8"]
       }

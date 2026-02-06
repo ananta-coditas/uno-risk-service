@@ -6,6 +6,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import io.micrometer.context.ContextExecutorService;
+import io.opentelemetry.api.GlobalOpenTelemetry;
+import io.opentelemetry.api.trace.Tracer;
+import io.opentelemetry.context.Context;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -20,12 +23,16 @@ import com.objex.risk.beans.uno.CombinedResult;
 import com.objex.risk.beans.uno.Model;
 import com.objex.risk.beans.uno.Risk;
 
+import io.opentelemetry.api.trace.Span;
+
+
 @Service
 public class CommonRiskService {
 
     private static Logger log = LoggerFactory.getLogger(CommonRiskService.class);
 
     private final RiskModelExecuterFactory riskModelTransformerFactory;
+    private static final Tracer tracer = GlobalOpenTelemetry.getTracer("uno-risk-service");
     private static final ExecutorService EXECUTOR = ContextExecutorService.wrap(Executors.newFixedThreadPool(5));
 
     public CommonRiskService(RiskModelExecuterFactory riskModelTransformerFactory) {
@@ -56,20 +63,31 @@ public class CommonRiskService {
      * @param result
      */
     private void processModel(Risk risk, Model model, CombinedResult result) {
+        Span childSpan = tracer.spanBuilder("risk.model")
+            .setParent(Context.current())  // Links to the current trace (root HTTP span)
+            .setAttribute("risk.model", String.valueOf(model.getName())).startSpan();
         try {
             RiskModelExecutor<?, ?, ? extends BaseResult> riskModelTransformer =
                 riskModelTransformerFactory.getRiskModelExecuter(model.getName());
             BaseResult modelResult = riskModelTransformer.execute(risk, model);
             result.addModelResult(model.getName(), modelResult);
+            childSpan.setAttribute("process.success", true);
         } catch (ValidationException validationException) {
+            childSpan.recordException(validationException);
+            childSpan.setStatus(io.opentelemetry.api.trace.StatusCode.ERROR, validationException.getMessage());
             log.error("Validation error while invoking Risk models: {}", model.getName());
             RiskModelErrorDto riskModelErrorDto = createValidationErrorDto(validationException);
             addErrorToResult(result, model, riskModelErrorDto);
         } catch (Exception exc) {
+            childSpan.recordException(exc);
+            childSpan.setStatus(io.opentelemetry.api.trace.StatusCode.ERROR, exc.getMessage());
             log.error("Error while invoking Risk model: {}", model.getName(), exc);
             RiskModelErrorDto riskModelErrorDto = new RiskModelErrorDto();
             riskModelErrorDto.addError(new RiskError(null, "", exc.getMessage()));
             addErrorToResult(result, model, riskModelErrorDto);
+        }
+        finally {
+            childSpan.end();
         }
     }
 

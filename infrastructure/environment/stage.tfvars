@@ -11,7 +11,7 @@ aws_region     = "us-west-2"
 lb_security_group_egress_rule_id = "sgr-024cf8b3d96cff3f7"
 // ----------------------------------------- //
 elb_security_groups ={
-  lb_security_group_ids = ["sg-0f9d02e8c79706e1f"]
+  lb_security_group_ids = ["sg-08b57c166776be5b4"]
 }
 // -------- --------------------------------- //
 vpc_config = {
@@ -46,8 +46,8 @@ uno-risk-service = {
   task_setting = {
     os_family                 = "LINUX"
     cpu_architecture          = "X86_64"
-    required_cpu_units        = 4096  //4 GB
-    required_memory_MiB_units = 8192 //8 GB
+    required_cpu_units        = 8192  //8 GB
+    required_memory_MiB_units = 16384 //16 GB
     task_volume_config = [
       {
         volume_name = "datadog-socket"
@@ -69,10 +69,10 @@ uno-risk-service = {
       #   mode             = "non-blocking"
       #   max_buffer_size   = "25m"
       #}
-      required_cpu_units        = 2048  //2 GB
-      required_memory_MiB_units = 4096 //4 GB
+      required_cpu_units        = 4096  //4 GB
+      required_memory_MiB_units = 8192 //8 GB
       ecr_image_uri             = "540051198529.dkr.ecr.us-west-2.amazonaws.com/uno-risk-service"
-      ecr_image_tag             = "uno-risk-service-202512111918-6fdba45-develop-25" // Update this field for each ecr image build
+      ecr_image_tag             = "uno-risk-service-202602052155-3ee6f75-develop-30" // Update this field for each ecr image build
       sg_rule_config = {
         allowed_ingress_cidr = ["10.9.32.0/20", "10.0.0.0/8"]
       }

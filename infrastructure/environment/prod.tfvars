@@ -11,7 +11,7 @@ aws_region     = "us-west-2"
 lb_security_group_egress_rule_id = "sgr-00d44bba603a0e6cf"
 // ----------------------------------------- //
 elb_security_groups ={
-  lb_security_group_ids = ["sg-0b74f65a5c131402f"]
+  lb_security_group_ids = ["sg-086b0b26318069458"]
 }
 // -------- --------------------------------- //
 vpc_config = {
@@ -46,8 +46,8 @@ uno-risk-service = {
   task_setting = {
     os_family                 = "LINUX"
     cpu_architecture          = "X86_64"
-    required_cpu_units        = 4096  //4 GB
-    required_memory_MiB_units = 8192 //8 GB
+    required_cpu_units        = 8192  //8 GB
+    required_memory_MiB_units = 16384 //16 GB
     task_volume_config = []
   }
   containers_list = [
@@ -64,10 +64,10 @@ uno-risk-service = {
       #   mode             = "non-blocking"
       #   max_buffer_size   = "25m"
       #}
-      required_cpu_units        = 2048  //2 GB
-      required_memory_MiB_units = 4096 //4 GB
+      required_cpu_units        = 4096  //4 GB
+      required_memory_MiB_units = 8192 //8 GB
       ecr_image_uri             = "540051198529.dkr.ecr.us-west-2.amazonaws.com/uno-risk-service"
-      ecr_image_tag             = "uno-risk-service-202512111918-6fdba45-develop-25" // Update this field for each ecr image build
+      ecr_image_tag             = "uno-risk-service-202602052155-3ee6f75-develop-30" // Update this field for each ecr image build
       sg_rule_config = {
         allowed_ingress_cidr = ["10.9.32.0/20", "10.0.0.0/8"]
       }
@@ -174,7 +174,7 @@ applications_config = {
       alb_cookie_duration = 86400
     }
     listener_condition_config = {
-      host_header_value  = ["uno-prod.ambrygen.com"]
+      host_header_value  = ["ras.ambrygen.com"]
       path_pattern_value = ["/api/risk/*", "/risk/*"]
     }
   },
@@ -204,6 +204,6 @@ api_gateway_config = {
   }
   domain_name         = "api-uno-prod.ambrygen.com"
   listener_arn        = "arn:aws:elasticloadbalancing:us-west-2:658178292836:listener/app/uno-prod-elb/e7feb74b017a1629/6bca251544ad1dce"
-  domain_name_certificate_arn = "arn:aws:acm:us-west-2:480802442620:certificate/2527acc3-64a2-464f-bb47-a53640b55df3"
+  domain_name_certificate_arn = "arn:aws:acm:us-west-2:658178292836:certificate/2527acc3-64a2-464f-bb47-a53640b55df3"
   access_logging      = null
 }
