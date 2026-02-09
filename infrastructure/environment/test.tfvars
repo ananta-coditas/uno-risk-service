@@ -69,7 +69,10 @@ uno-risk-service = {
       lb_config = {
         target_group_arn = "arn:aws:elasticloadbalancing:us-west-2:411233202044:targetgroup/uno-risk-service-8080-tg/1b43232d8fa98f67"
       }
-      environment_variables = null
+      environment_variables = {
+        ssm_based_variables_file = "/environment/env_vars/uno-risk-service/client/test.env"  #
+        create_secret       = true
+      }
       mount_nfs_drive = false
       essential_container = true
     }

@@ -43,11 +43,11 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          #jwk-set-uri: https://ambrygen.oktapreview.com/oauth2/aus2j10b9vgHBR3vp0h8/v1/keys
-          # issuer-uri: https://ambrygen.oktapreview.com/oauth2/aus2j10b9vgHBR3vp0h8
+          jwk-set-uri: https://ambrygen.oktapreview.com/oauth2/aus2j10b9vgHBR3vp0h8/v1/keys
+          issuer-uri: https://ambrygen.oktapreview.com/oauth2/aus2j10b9vgHBR3vp0h8
           jwk-set-uri: https://ambrygen.okta.com/oauth2/aus1qo166ovHNKI1M358/v1/keys
-          issuer-uri: https://ambrygen.okta.com/oauth2/aus1qo166ovHNKI1M358
-          audiences: api://risk-assessment_service
+          #issuer-uri: https://ambrygen.okta.com/oauth2/aus1qo166ovHNKI1M358
+          #audiences: api://risk-assessment_service
 server:
   port: 8080
   # make sure requests the proxy uri instead of the server one
