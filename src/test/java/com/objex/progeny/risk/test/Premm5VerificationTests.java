@@ -2,9 +2,7 @@ package com.objex.progeny.risk.test;
 
 import com.objex.progeny.risk.Utils;
 import com.objex.progeny.risk.premm.PremmDelegate;
-import com.objex.risk.beans.AffectedType;
 import com.objex.risk.beans.premm.PREMMResult;
-import com.objex.risk.beans.premm.Person;
 import com.objex.risk.beans.premm.Risk;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -17,10 +15,7 @@ import org.springframework.util.ResourceUtils;
 import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
-import static com.objex.risk.beans.premm.Person.MLH1;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -57,11 +52,7 @@ class Premm5VerificationTests {
         //Utils.saveToFile("classpath:test-input-data/risk/premmriskout_case1.xml",new Risk());
         PREMMResult result = premmDelegate.calculate(fam);
         assertThat(result).isNotNull();
-<<<<<<< SP12023
-        assertThat(result.getProbabilityCarrier()).isEqualTo(.351);
-=======
         assertThat(result.getProbabilityCarrier()).isEqualTo(.21);
->>>>>>> develop
     }
 
     @Test
@@ -72,11 +63,7 @@ class Premm5VerificationTests {
         //Utils.saveToFile("classpath:test-input-data/risk/premmriskout_case1.xml",new Risk());
         PREMMResult result = premmDelegate.calculate(fam);
         assertThat(result).isNotNull();
-<<<<<<< SP12023
-        assertThat(result.getProbabilityCarrier()).isEqualTo(.429);
-=======
         assertThat(result.getProbabilityCarrier()).isEqualTo(.199);
->>>>>>> develop
     }
     @Test
     @DisplayName("Verification case 5")
