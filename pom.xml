@@ -355,6 +355,18 @@
       <artifactId>jaxb-runtime</artifactId>
       <version>2.3.1</version>
     </dependency>
+    <!-- AWS SDK for Secrets Manager -->
+    <dependency>
+      <groupId>software.amazon.awssdk</groupId>
+      <artifactId>secretsmanager</artifactId>
+      <version>2.28.25</version>
+    </dependency>
+    <!-- AWS SDK Core -->
+    <dependency>
+      <groupId>software.amazon.awssdk</groupId>
+      <artifactId>aws-core</artifactId>
+      <version>2.28.25</version>
+    </dependency>
   </dependencies>
 
   <build>

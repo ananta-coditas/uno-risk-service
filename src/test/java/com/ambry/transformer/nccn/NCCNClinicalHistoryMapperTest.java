@@ -324,7 +324,7 @@ class NCCNClinicalHistoryMapperTest {
 
         assertThat(result.getCancerFeatureDetails()).hasSize(1);
         CancerFeatureDetails details = result.getCancerFeatureDetails().get(0);
-        assertThat(details.getMetastatic()).isEqualTo("yes");
+        assertThat(details.getMetastatic()).isEqualTo("YES");
         assertThat(details.getCancerFeature()).isEqualTo("BREAST");
     }
 
