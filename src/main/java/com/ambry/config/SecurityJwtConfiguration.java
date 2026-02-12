@@ -24,8 +24,8 @@ public class SecurityJwtConfiguration {
 
     @Value("${spring.security.oauth2.resourceserver.jwt.jwk-set-uri}")
     private String jwkSetKeyUri;
-
-    @Value("${uno.security.authentication.jwt.secretname:}")
+    
+    @Value("${spring.security.oauth2.resourceserver.jwt.secretname}")
     private String secretName;
 
     private final SecretsManager secretsManagerService;
@@ -39,7 +39,7 @@ public class SecurityJwtConfiguration {
         if (secretName != null && !secretName.isEmpty()) {
             Map<String, String> credentials = secretsManagerService.getOAuthCredentials(secretName);
 
-            // Create a decoder for each JWK Set URI
+            // Create a decoder for each JWK Set URI using credentials from Secrets Manager
             String progenyJwkSetUri = credentials.get("progeny-jwk-set-uri");
             String progenyIssuerUri = credentials.get("progeny-issuer-uri");
             NimbusJwtDecoder progenyDecoder = NimbusJwtDecoder.withJwkSetUri(progenyJwkSetUri).build();

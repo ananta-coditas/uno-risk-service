@@ -15,6 +15,7 @@ public class SecretsManagerProperties {
     private int timeout = 30000; // 30 seconds default
     private int maxRetries = 3;
     private long retryDelayMs = 1000;
+    private String secretName;
 
     public boolean isEnabled() {
         return enabled;
@@ -46,6 +47,14 @@ public class SecretsManagerProperties {
 
     public void setRetryDelayMs(long retryDelayMs) {
         this.retryDelayMs = retryDelayMs;
+    }
+
+    public String getSecretName() {
+        return secretName;
+    }
+
+    public void setSecretName(String secretName) {
+        this.secretName = secretName;
     }
 }
 

@@ -75,6 +75,35 @@ public class SecretsManager {
     }
 
     /**
+     * Retrieves a secret value from Secrets Manager using the configured secret name.
+     * 
+     * @return The secret value as a string
+     * @throws RuntimeException if the secret name is not configured or the secret cannot be retrieved
+     */
+    public String getSecretValue() {
+        String configuredSecretName = properties.getSecretName();
+        if (configuredSecretName == null || configuredSecretName.trim().isEmpty()) {
+            throw new IllegalStateException("Secret name is not configured in SecretsManagerProperties");
+        }
+        return getSecretValue(configuredSecretName);
+    }
+
+    /**
+     * Retrieves OAuth credentials from Secrets Manager using the configured secret name.
+     * The secret is expected to be a JSON object with OAuth credential fields.
+     * 
+     * @return Map containing OAuth credential keys (progeny-jwk-set-uri, progeny-issuer-uri, care-jwk-set-uri, care-issuer-uri)
+     * @throws RuntimeException if the secret name is not configured, the secret cannot be retrieved, or parsed
+     */
+    public Map<String, String> getOAuthCredentials() {
+        String configuredSecretName = properties.getSecretName();
+        if (configuredSecretName == null || configuredSecretName.trim().isEmpty()) {
+            throw new IllegalStateException("Secret name is not configured in SecretsManagerProperties");
+        }
+        return getOAuthCredentials(configuredSecretName);
+    }
+
+    /**
      * Retrieves username and password from Secrets Manager.
      * The secret is expected to be a JSON object with "username" and "password" fields.
      * 
