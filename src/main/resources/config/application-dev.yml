@@ -21,8 +21,6 @@ logging:
     com.ambry: DEBUG
 
 spring:
-  config:
-    import: optional:aws-secretsmanager:{SECRET_NAME:}
   devtools:
     restart:
       enabled: true
