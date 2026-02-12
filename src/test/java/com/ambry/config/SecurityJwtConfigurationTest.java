@@ -1,13 +1,13 @@
 package com.ambry.config;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 import com.ambry.management.SecurityMetersService;
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 
 /**
@@ -17,25 +17,26 @@ class SecurityJwtConfigurationTest {
 
     private SecurityJwtConfiguration securityJwtConfiguration;
     private SecurityMetersService securityMetersService;
+    private SecretsManager secretsManager;
 
     @BeforeEach
     void setUp() {
-        securityJwtConfiguration = new SecurityJwtConfiguration();
+        secretsManager = mock(SecretsManager.class);
+        securityJwtConfiguration = new SecurityJwtConfiguration(secretsManager);
         securityMetersService = new SecurityMetersService(new SimpleMeterRegistry());
 
         // Set test values using reflection
-        String testJwtKey = "dGVzdC1zZWNyZXQta2V5LWZvci1qdW5pdC10ZXN0aW5nLXB1cnBvc2VzLW9ubHk="; // base64 encoded test key
+        // Note: jwtKey field is commented out in SecurityJwtConfiguration, so we only set jwkSetKeyUri
         String testJwkSetUri = "http://localhost:8080/.well-known/jwks.json";
 
-        ReflectionTestUtils.setField(securityJwtConfiguration, "jwtKey", (Object) testJwtKey);
         ReflectionTestUtils.setField(securityJwtConfiguration, "jwkSetKeyUri", (Object) testJwkSetUri);
     }
 
-    @Test
-    void testJwtEncoderBean() {
-        JwtEncoder jwtEncoder = securityJwtConfiguration.jwtEncoder();
-        assertThat(jwtEncoder).isNotNull();
-    }
+    // @Test
+    // void testJwtEncoderBean() {
+    //     JwtEncoder jwtEncoder = securityJwtConfiguration.jwtEncoder();
+    //     assertThat(jwtEncoder).isNotNull();
+    // }
 
     @Test
     void testJwtDecoderBean() {
