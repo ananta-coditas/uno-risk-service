@@ -21,8 +21,6 @@ logging:
     com.ambry: DEBUG
 
 spring:
-  config:
-    import: optional:aws-secretsmanager:{SECRET_NAME:}
   devtools:
     restart:
       enabled: true
@@ -87,8 +85,7 @@ uno:
 
   security:
     authentication:
-      jwt:
-        base64-secret: ZjMzYTE0NGZiNjk4ZGNhZThkY2E2YWI2OTIwMWY1MTU4ZDljNzViMzAxOTgyYjkzMmRiYWZjY2EwMjgwMTYwODA2MTM1ZWUxMzFhYzk0OTA1ZjI0NzU5Nzc4ODRmNmNiMDIzOTc2ZGUwYTYzOTA0NDA5YWMxOWE3ZTJmZWZhMmY=
+      jwt:        
         token-validity-in-seconds: 86400
         token-validity-in-seconds-for-remember-me: 2592000       
 

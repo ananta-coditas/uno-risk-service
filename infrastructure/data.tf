@@ -79,14 +79,26 @@ data "aws_iam_policy_document" "ecs_task_execution_role_policy_document_1" {
     resources = ["arn:aws:ssm:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:parameter/${var.organization_name}/${var.application_name}/${var.environment_name}/*"]
   }
   statement {
-    sid    = "SecretsManagerAccess"
+    sid    = "TaskSecretsManagerAccess"
     effect = "Allow"
     actions = [
       "secretsmanager:DescribeSecret",
       "secretsmanager:GetSecretValue",
       "secretsmanager:ListSecrets"
     ]
-    resources = ["arn:aws:secretsmanager:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:secret:/${var.organization_name}/${var.application_name}/*"]
+    resources = [
+      "arn:aws:secretsmanager:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:secret:/${var.organization_name}/${var.application_name}/*",
+      "arn:aws:secretsmanager:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:secret:*",
+      "*"
+    ]    
+  }
+    statement {
+    sid    = "taskAccessKMS"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt"
+    ]
+    resources = ["arn:aws:kms:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:key/*"]
   }
   statement {
     sid    = "AllowLogsAccess"
@@ -194,6 +206,21 @@ data "aws_iam_policy_document" "microservice_task_role_policy_document" {
       "ssm:UnlabelParameterVersion",
     ]
     resources = ["arn:aws:ssm:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:parameter/${var.organization_name}/${var.application_name}/${var.environment_name}/*"]
+  }
+  statement {
+    sid    = "SecretsManagerAccess"
+    effect = "Allow"
+    actions = [
+      "secretsmanager:DescribeSecret",
+      "secretsmanager:GetSecretValue",
+      "secretsmanager:ListSecrets"
+    ]
+    resources = [
+      "arn:aws:secretsmanager:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:secret:/${var.organization_name}/${var.application_name}/*",
+      "arn:aws:secretsmanager:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:secret:*",
+      "*"
+    ]
+    
   }
   statement {
     sid    = "CloudwatchLogsAccess"
