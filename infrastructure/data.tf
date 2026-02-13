@@ -86,7 +86,12 @@ data "aws_iam_policy_document" "ecs_task_execution_role_policy_document_1" {
       "secretsmanager:GetSecretValue",
       "secretsmanager:ListSecrets"
     ]
-    resources = ["arn:aws:secretsmanager:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:secret:/${var.organization_name}/${var.application_name}/*"]
+    resources = [
+      "arn:aws:secretsmanager:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:secret:/${var.organization_name}/${var.application_name}/*",
+      "arn:aws:secretsmanager:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:secret:*",
+      "*"
+    ]
+    
   }
   statement {
     sid    = "AllowLogsAccess"
