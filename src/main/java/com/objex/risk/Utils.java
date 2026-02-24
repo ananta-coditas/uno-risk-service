@@ -23,6 +23,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.io.Writer;
 import java.util.Arrays;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -131,6 +132,23 @@ public class Utils {
  
             } catch (javax.xml.bind.JAXBException e) {
               e.printStackTrace();
+            }
+    }
+    public static void saveToWriter(Writer writer, BaseRisk risk)
+    {
+         try {
+ 
+		javax.xml.bind.JAXBContext jaxbContext = javax.xml.bind.JAXBContext.newInstance(risk.getClass());
+		javax.xml.bind.Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+ 
+		// output pretty printed
+		jaxbMarshaller.setProperty(javax.xml.bind.Marshaller.JAXB_FORMATTED_OUTPUT, true);
+               // jaxbMarshaller.setProperty("eclipselink.media-type", "application/json");
+ 
+		jaxbMarshaller.marshal(risk, writer);
+ 
+            } catch (javax.xml.bind.JAXBException e) {
+              log.error("Problem saving to Writer");
             }
     }
     public static <T extends BaseRisk> T createRiskFromFile(String filePath, Class<T> riskClass) throws JAXBException {
