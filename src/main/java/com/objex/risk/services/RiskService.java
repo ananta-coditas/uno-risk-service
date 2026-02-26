@@ -30,6 +30,7 @@ import org.springframework.web.server.ServerErrorException;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -223,7 +224,7 @@ public class RiskService {
         if (connectionCount >= (maxConnections - 3)) {
             LOG.warn("***WARNING*** Connection count of:" + connectionCount + " is nearing MAXIMUM of:" + maxConnections);
         }
-        return con.isConnected();
+        return con != null && con.isConnected();
     }
     /**
      * This is the entrypoint for the mmr model program.  Passing it a risk populated
@@ -432,6 +433,10 @@ public class RiskService {
         catch (REngineException e)
         {
             LOG.error("Risk Server Error trying to gather embedded error", e);
+            
+            StringWriter writer = new StringWriter();
+            Utils.saveToWriter(writer, risk);
+            LOG.error("Error Request " + writer.toString());
             try {
                  String rerror = con.parseAndEval("geterrmessage()").toString();
                 LOG.error("error in R" + rerror);
@@ -470,13 +475,13 @@ public class RiskService {
 
     protected static void close(RConnection con) {
     	try {
-	        if (connectionPooling) {
+	        if (connectionPooling  && con != null && con.isConnected()) {
 	            connections.add(con);
 	        } else {
 	            closeNonPool(con);
 	        }
                 conLock.notifyAll();
-    	} catch (Exception e) { //dont blow up in finally
+    	} catch (Throwable e) { //dont blow up in finally
 
     	}
     }
@@ -657,6 +662,7 @@ public class RiskService {
         String cmd = spawnCommand;
         try
         {
+            connectionCount = connections.size();
             while (connectionCount >= maxConnections && connections.isEmpty()) {
                 LOG.info("Sleeping to wait for connections to return");
                 conLock.wait(2000);
@@ -664,9 +670,13 @@ public class RiskService {
             //established above that connectionCount is not greater than maxconnection so feel free to create
             if (connectionPooling == false || connections.isEmpty()) {
                 conn = new RConnection();
-                connectionCount++;
+                connectionCount = 1;
             } else {
                 conn = connections.remove(0);
+                if (conn == null) {
+                    LOG.info("Connection From Pool is Null so will create a connection");
+                }
+                conn = new RConnection();  
             }
         }
         catch (RserveException e)

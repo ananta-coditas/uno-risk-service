@@ -120,7 +120,7 @@ public class TyrerRiskModelTransformer extends RiskModelTransformer implements R
 		member.setHasLiveBirth(person.getHasLiveBirth());
 		member.setHeight(person.getHeight());
 		member.setHrtType(person.getHrtType());
-		member.setHyperplasia(member.getHyperplasia());
+		member.setHyperplasia(person.getHyperplasiaType());
 		member.setLiveBirthAge(person.getLiveBirthAge());
 		member.setMenarcheAge(person.getMenarcheAge());
 		member.setMenopauseAge(person.getMenopauseAge());
