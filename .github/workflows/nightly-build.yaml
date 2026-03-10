@@ -1,0 +1,104 @@
+
+name: "Nightly Build and send notification to Slack"
+description: "Builds, scans, tests and sends notification to Slack."
+on:
+  push:
+    branches:
+      - develop
+
+  schedule:
+    # 2:00 AM PT: 9:00 UTC = 2 AM PDT (Mar–Nov), 1 AM PST (Nov–Mar). GitHub cron is UTC only.
+    - cron: "0 9 * * *"
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Branch to run against (e.g. develop). Uses this repo's default branch if empty."
+        required: false
+        type: string
+        default: "develop"
+      slack_channel_id:
+        description: "Slack channel ID for notifications (optional; uses vars.SLACK_CHANNEL_ID if empty)"
+        required: false
+        type: string
+        default: ""
+
+permissions:
+  contents: read
+  pull-requests: write
+  id-token: write
+  security-events: write
+  actions: read
+
+jobs:
+  # ===== CONFIGURATION: Update these values per app (same style as build_deploy_cos.yml) =====
+  set-config:
+    name: "Set Configuration"
+    runs-on: ubuntu-latest
+    env:
+      # NOTE: These parameters must match the values in your tfvars / build_deploy_cos set-config
+      ORGANIZATION_NAME: "ambry"
+      APPLICATION_NAME: "uno-risk-service"
+      #SERVICE_CONTAINER_MAPPING: '{"clinical-order-service": ["clinical-order-service"]}'
+    outputs:
+      organization_name: ${{ env.ORGANIZATION_NAME }}
+      application_name: ${{ env.APPLICATION_NAME }}
+
+    steps:
+      - run: echo "Configuration set"
+
+  nightly-deploy:
+    name: "Nightly Build & Deploy"
+    needs: [set-config]
+    uses: ambrygen/github-reusable-workflows/.github/workflows/nightlydeploy.yaml@main
+    with:
+      # Required by reusable workflow
+      service-name: ${{ needs.set-config.outputs.application_name }}
+      target-branch: ${{ github.event.inputs.branch || 'develop' }}
+      build-environment: "nightly"
+
+      # Test coverage (align with build_deploy_cos / your app)
+      enable-test-coverage: true
+      java-version: "21"
+      java-distribution: "temurin"
+      coverage-threshold-line: 90
+      coverage-threshold-branch: 40
+      build-tool: "maven"
+      maven-args: "-Dspring.profiles.active=test"
+      working-directory: "."
+      # Single-module repo: reusable workflow defaults to -pl backend. Override so root module is built (artifactId).
+      maven-module: "."
+      jacoco-report-path: "/target/site/jacoco/jacoco.xml"
+      fail-on-coverage: true
+
+      # Docker & Grype
+      enable-docker-grype-scan: true
+      dockerfile: "Dockerfile"
+      env-file-name: "infrastructure/.env.shared_services"
+      ecr-environment: "shared_services"
+      fail-on-severities-grype: "critical"
+      block-on-vulnerabilities: true
+      enable-ecr-inspector-scan: true
+
+      # Security scans
+      enable-snyk-scan: true
+      snyk-fail-on-severities: "critical"
+      snyk-block-on-vulnerabilities: true
+      enable-checkov-scan: true
+
+      # Notifications
+      enable-email-notifications: false
+      enable-slack-notifications: false
+      slack-channel-id: ${{ github.event.inputs.slack_channel_id || vars.SLACK_CHANNEL_ID || '' }}
+      workflow-name: "Nightly Build & Deploy: ${{ needs.set-config.outputs.application_name }}"
+
+      # Build and push to ECR (reusable runs this then deploy)
+      enable-build-and-push: false
+      build-env-file-name: "infrastructure/.env.shared_services"
+      build-github-environment: "shared_services"
+      build-checkout-ref: ${{ github.event.inputs.branch || 'develop' }}
+      build-args: |
+        SPRING_PROFILES_ACTIVE=dev
+
+      # ECS deploy to INT (runs only when collect-results AND build-and-push both succeed; if a scan/coverage job failed, deploy is skipped)
+      # enable-ecs-deploy: false
+    secrets: inherit
