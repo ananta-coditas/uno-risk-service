@@ -4,6 +4,7 @@ data "aws_region" "current" {}          # data.aws_region.current.region
 # ECS Task Execution Role Policy Document(s)
 #------------------------------------------------------------------------------
 data "aws_iam_policy_document" "ecs_task_execution_assume_role_policy_document" {
+  # checkov:skip=CKV_AWS_108: Ensure IAM policies does not allow data exfiltration
   version = "2012-10-17"
   statement {
     sid     = "EcsTaskAssumeRole"
@@ -16,6 +17,7 @@ data "aws_iam_policy_document" "ecs_task_execution_assume_role_policy_document" 
 }
 data "aws_iam_policy_document" "ecs_task_execution_role_policy_document_1" {
   # checkov:skip=CKV_AWS_356: ECR action need resource to be * to pull Service Connect Envoy Image
+  # checkov:skip=CKV_AWS_108: Ensure IAM policies does not allow data exfiltration
   version = "2012-10-17"
   statement {
     sid    = "EcrGetAuthorizationToken"
