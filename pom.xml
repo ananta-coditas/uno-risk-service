@@ -65,6 +65,12 @@
     <sonar-maven-plugin.version>4.0.0.4121</sonar-maven-plugin.version>
     <spotless-maven-plugin.version>2.43.0</spotless-maven-plugin.version>
     <spring-cloud-dependencies.version>2023.0.3</spring-cloud-dependencies.version>
+    <!-- Override Undertow to fix CVE-2025-12543 (GHSA-j382-5jj3-vw4j) - Host header validation -->
+    <undertow.version>2.3.21.Final</undertow.version>
+    <!-- Override Commons IO to fix CVE-2024-47554 (GHSA-78wr-2p64-hpwj) - XmlStreamReader DoS -->
+    <commons-io.version>2.14.0</commons-io.version>
+    <!-- Override Jackson core to fix GHSA-72hv-8253-57qq - async parser number length DoS -->
+    <jackson-bom.version>2.21.1</jackson-bom.version>
   </properties>
 <!--    <repositories>-->
 <!--      <repository>-->
@@ -86,6 +92,44 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+      <!-- Override Undertow to fix CVE-2025-12543 (GHSA-j382-5jj3-vw4j) - Host header validation -->
+      <dependency>
+        <groupId>io.undertow</groupId>
+        <artifactId>undertow-core</artifactId>
+        <version>${undertow.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.undertow</groupId>
+        <artifactId>undertow-servlet</artifactId>
+        <version>${undertow.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.undertow</groupId>
+        <artifactId>undertow-websockets-jsr</artifactId>
+        <version>${undertow.version}</version>
+      </dependency>
+      <!-- Override Commons IO to fix CVE-2024-47554 (GHSA-78wr-2p64-hpwj) -->
+      <dependency>
+        <groupId>commons-io</groupId>
+        <artifactId>commons-io</artifactId>
+        <version>${commons-io.version}</version>
+      </dependency>
+      <!-- Override Jackson to fix GHSA-72hv-8253-57qq (jackson-core async parser DoS) -->
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-core</artifactId>
+        <version>${jackson-bom.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>${jackson-bom.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-annotations</artifactId>
+        <version>2.21</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -100,11 +144,19 @@
       <groupId>com.progeny</groupId>
       <artifactId>GailModel</artifactId>
       <version>0.0.1-SNAPSHOT</version>
+      <exclusions>
+        <exclusion>
+          <groupId>log4j</groupId>
+          <artifactId>log4j</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
+    <!-- log4j for test only: GailModel's Risks/Helper classes require it to initialize -->
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
       <version>1.2.17</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.logstash.logback</groupId>
@@ -186,7 +238,7 @@
     <dependency>
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
-      <version>20140107</version> <!-- Use the latest stable version -->
+      <version>20240303</version> <!-- 20231013+ fixes GHSA-3vqj-43w4-2q58, GHSA-4jq9-2xhw-jpx7 -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>

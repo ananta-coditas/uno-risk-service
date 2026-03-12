@@ -1749,6 +1749,7 @@ class RiskServiceTest {
     @DisplayName("Should close connection with pooling enabled")
     void testCloseWithPooling() throws Exception {
         RConnection con = mock(RConnection.class);
+        when(con.isConnected()).thenReturn(true);
         
         // Set connectionPooling to true using reflection
         java.lang.reflect.Field poolingField = RiskService.class.getDeclaredField("connectionPooling");
@@ -3810,6 +3811,7 @@ class RiskServiceTest {
     @DisplayName("Should close connection with pooling and exception")
     void testCloseConnectionWithPoolingAndException() throws Exception {
         RConnection mockCon = mock(RConnection.class);
+        when(mockCon.isConnected()).thenReturn(true);
         
         try {
             java.lang.reflect.Field connectionPoolingField = RiskService.class.getDeclaredField("connectionPooling");
