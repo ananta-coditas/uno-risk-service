@@ -44,8 +44,8 @@ RUN mvn clean package -DskipTests
 
 
 ### Stage 2 ###
-
-FROM rockylinux/rockylinux:9.5
+# Use Rocky Linux 9.6 for patched libpng (CVE-2025-66293, CVE-2026-25646); 9.5 has vulnerable libpng.
+FROM rockylinux/rockylinux:9.6
 
 #for R
 RUN dnf install -y epel-release && dnf config-manager --set-enabled crb && dnf update -y
