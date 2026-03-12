@@ -5,7 +5,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,6 +70,21 @@ class GailDelegateTest {
         risk.getFamily().add(proband);
     }
 
+    /**
+     * Creates mocked Risks instances to avoid loading the real Risks class
+     * (which depends on log4j and can cause NoClassDefFoundError / initialization failures).
+     * Returns a pair: [for RiskCalc, for CalcPercentage]. CalcPercentage mock uses getAbsoluteRisk()/100 in delegate.
+     */
+    private Risks[] createMockedRisks() {
+        Risks mockRisks = mock(Risks.class);
+        lenient().when(mockRisks.getAbsoluteRisk()).thenReturn(5.0);
+        lenient().when(mockRisks.getAverageRisk()).thenReturn(3.0);
+        Risks mockRisksPctg = mock(Risks.class);
+        lenient().when(mockRisksPctg.getAbsoluteRisk()).thenReturn(500.0); // delegate returns getAbsoluteRisk()/100 -> 5.0
+        lenient().when(mockRisksPctg.getAverageRisk()).thenReturn(3.0);
+        return new Risks[] { mockRisks, mockRisksPctg };
+    }
+
     @Test
     @DisplayName("Should calculate risk successfully with valid input")
     void testCalculateWithValidInput() {
@@ -78,19 +96,12 @@ class GailDelegateTest {
             mockedUtils.when(() -> Utils.getFirstDegreeRelatives(any(Risk.class), eq(Person.class)))
                     .thenReturn(fdrs);
 
-            Risks mockRisks = new Risks();
-            mockRisks.setAbsoluteRisk(5.0);
-            mockRisks.setAverageRisk(3.0);
-
-            Risks mockRisksPctg = new Risks();
-            mockRisksPctg.setAbsoluteRisk(5.0);
-            mockRisksPctg.setAverageRisk(3.0);
-
+            Risks[] mocks = createMockedRisks();
             mockedHelper.when(() -> Helper.RiskCalc(anyInt(), anyInt(), anyInt(), anyInt(), anyInt(), 
                     anyInt(), anyInt(), anyInt(), anyInt(), anyInt()))
-                    .thenReturn(mockRisks);
+                    .thenReturn(mocks[0]);
             mockedHelper.when(() -> Helper.CalcPercentage(anyDouble(), anyDouble()))
-                    .thenReturn(mockRisksPctg);
+                    .thenReturn(mocks[1]);
 
             // When
             GailResult result = gailDelegate.calculate(risk);
@@ -574,19 +585,12 @@ class GailDelegateTest {
             mockedUtils.when(() -> Utils.getFirstDegreeRelatives(any(Risk.class), eq(Person.class)))
                     .thenReturn(fdrs);
 
-            Risks mockRisks = new Risks();
-            mockRisks.setAbsoluteRisk(5.0);
-            mockRisks.setAverageRisk(3.0);
-
-            Risks mockRisksPctg = new Risks();
-            mockRisksPctg.setAbsoluteRisk(5.0);
-            mockRisksPctg.setAverageRisk(3.0);
-
+            Risks[] mocks = createMockedRisks();
             mockedHelper.when(() -> Helper.RiskCalc(anyInt(), anyInt(), anyInt(), anyInt(), anyInt(), 
                     anyInt(), anyInt(), anyInt(), anyInt(), anyInt()))
-                    .thenReturn(mockRisks);
+                    .thenReturn(mocks[0]);
             mockedHelper.when(() -> Helper.CalcPercentage(anyDouble(), anyDouble()))
-                    .thenReturn(mockRisksPctg);
+                    .thenReturn(mocks[1]);
 
             // When
             GailResult result = gailDelegate.calculate(risk);
@@ -611,19 +615,12 @@ class GailDelegateTest {
             mockedUtils.when(() -> Utils.getFirstDegreeRelatives(any(Risk.class), eq(Person.class)))
                     .thenReturn(fdrs);
 
-            Risks mockRisks = new Risks();
-            mockRisks.setAbsoluteRisk(5.0);
-            mockRisks.setAverageRisk(3.0);
-
-            Risks mockRisksPctg = new Risks();
-            mockRisksPctg.setAbsoluteRisk(5.0);
-            mockRisksPctg.setAverageRisk(3.0);
-
+            Risks[] mocks = createMockedRisks();
             mockedHelper.when(() -> Helper.RiskCalc(anyInt(), anyInt(), anyInt(), anyInt(), anyInt(), 
                     anyInt(), anyInt(), anyInt(), anyInt(), anyInt()))
-                    .thenReturn(mockRisks);
+                    .thenReturn(mocks[0]);
             mockedHelper.when(() -> Helper.CalcPercentage(anyDouble(), anyDouble()))
-                    .thenReturn(mockRisksPctg);
+                    .thenReturn(mocks[1]);
 
             // When
             GailResult result = gailDelegate.calculate(risk);
@@ -647,19 +644,12 @@ class GailDelegateTest {
             mockedUtils.when(() -> Utils.getFirstDegreeRelatives(any(Risk.class), eq(Person.class)))
                     .thenReturn(fdrs);
 
-            Risks mockRisks = new Risks();
-            mockRisks.setAbsoluteRisk(5.0);
-            mockRisks.setAverageRisk(3.0);
-
-            Risks mockRisksPctg = new Risks();
-            mockRisksPctg.setAbsoluteRisk(5.0);
-            mockRisksPctg.setAverageRisk(3.0);
-
+            Risks[] mocks = createMockedRisks();
             mockedHelper.when(() -> Helper.RiskCalc(anyInt(), anyInt(), anyInt(), anyInt(), anyInt(), 
                     anyInt(), anyInt(), anyInt(), anyInt(), anyInt()))
-                    .thenReturn(mockRisks);
+                    .thenReturn(mocks[0]);
             mockedHelper.when(() -> Helper.CalcPercentage(anyDouble(), anyDouble()))
-                    .thenReturn(mockRisksPctg);
+                    .thenReturn(mocks[1]);
 
             // When
             GailResult result = gailDelegate.calculate(risk);
@@ -683,19 +673,12 @@ class GailDelegateTest {
             mockedUtils.when(() -> Utils.getFirstDegreeRelatives(any(Risk.class), eq(Person.class)))
                     .thenReturn(fdrs);
 
-            Risks mockRisks = new Risks();
-            mockRisks.setAbsoluteRisk(5.0);
-            mockRisks.setAverageRisk(3.0);
-
-            Risks mockRisksPctg = new Risks();
-            mockRisksPctg.setAbsoluteRisk(5.0);
-            mockRisksPctg.setAverageRisk(3.0);
-
+            Risks[] mocks = createMockedRisks();
             mockedHelper.when(() -> Helper.RiskCalc(anyInt(), anyInt(), anyInt(), anyInt(), anyInt(), 
                     anyInt(), anyInt(), anyInt(), anyInt(), anyInt()))
-                    .thenReturn(mockRisks);
+                    .thenReturn(mocks[0]);
             mockedHelper.when(() -> Helper.CalcPercentage(anyDouble(), anyDouble()))
-                    .thenReturn(mockRisksPctg);
+                    .thenReturn(mocks[1]);
 
             // When
             GailResult result = gailDelegate.calculate(risk);
@@ -721,19 +704,12 @@ class GailDelegateTest {
             mockedUtils.when(() -> Utils.getFirstDegreeRelatives(any(Risk.class), eq(Person.class)))
                     .thenReturn(fdrs);
 
-            Risks mockRisks = new Risks();
-            mockRisks.setAbsoluteRisk(5.0);
-            mockRisks.setAverageRisk(3.0);
-
-            Risks mockRisksPctg = new Risks();
-            mockRisksPctg.setAbsoluteRisk(5.0);
-            mockRisksPctg.setAverageRisk(3.0);
-
+            Risks[] mocks = createMockedRisks();
             mockedHelper.when(() -> Helper.RiskCalc(anyInt(), anyInt(), anyInt(), anyInt(), anyInt(), 
                     anyInt(), anyInt(), anyInt(), anyInt(), anyInt()))
-                    .thenReturn(mockRisks);
+                    .thenReturn(mocks[0]);
             mockedHelper.when(() -> Helper.CalcPercentage(anyDouble(), anyDouble()))
-                    .thenReturn(mockRisksPctg);
+                    .thenReturn(mocks[1]);
 
             // When
             GailResult result = gailDelegate.calculate(risk);
@@ -759,19 +735,12 @@ class GailDelegateTest {
             mockedUtils.when(() -> Utils.getFirstDegreeRelatives(any(Risk.class), eq(Person.class)))
                     .thenReturn(fdrs);
 
-            Risks mockRisks = new Risks();
-            mockRisks.setAbsoluteRisk(5.0);
-            mockRisks.setAverageRisk(3.0);
-
-            Risks mockRisksPctg = new Risks();
-            mockRisksPctg.setAbsoluteRisk(5.0);
-            mockRisksPctg.setAverageRisk(3.0);
-
+            Risks[] mocks = createMockedRisks();
             mockedHelper.when(() -> Helper.RiskCalc(anyInt(), anyInt(), anyInt(), anyInt(), anyInt(), 
                     anyInt(), anyInt(), anyInt(), anyInt(), anyInt()))
-                    .thenReturn(mockRisks);
+                    .thenReturn(mocks[0]);
             mockedHelper.when(() -> Helper.CalcPercentage(anyDouble(), anyDouble()))
-                    .thenReturn(mockRisksPctg);
+                    .thenReturn(mocks[1]);
 
             // When
             GailResult result = gailDelegate.calculate(risk);
@@ -795,19 +764,12 @@ class GailDelegateTest {
             mockedUtils.when(() -> Utils.getFirstDegreeRelatives(any(Risk.class), eq(Person.class)))
                     .thenReturn(fdrs);
 
-            Risks mockRisks = new Risks();
-            mockRisks.setAbsoluteRisk(5.0);
-            mockRisks.setAverageRisk(3.0);
-
-            Risks mockRisksPctg = new Risks();
-            mockRisksPctg.setAbsoluteRisk(5.0);
-            mockRisksPctg.setAverageRisk(3.0);
-
+            Risks[] mocks = createMockedRisks();
             mockedHelper.when(() -> Helper.RiskCalc(anyInt(), anyInt(), anyInt(), anyInt(), anyInt(), 
                     anyInt(), anyInt(), anyInt(), anyInt(), anyInt()))
-                    .thenReturn(mockRisks);
+                    .thenReturn(mocks[0]);
             mockedHelper.when(() -> Helper.CalcPercentage(anyDouble(), anyDouble()))
-                    .thenReturn(mockRisksPctg);
+                    .thenReturn(mocks[1]);
 
             // When
             GailResult result = gailDelegate.calculate(risk);
