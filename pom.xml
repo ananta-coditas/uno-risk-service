@@ -13,7 +13,7 @@
     <groupId>com.ambry</groupId>
     <artifactId>uno-spring-boot-foundation-bom</artifactId>
     <version>1.0.1-SNAPSHOT</version>
-    <relativePath>dependencies/uno-spring-boot-foundation-bom-1.0.1-SNAPSHOT.pom</relativePath>
+    <relativePath />
     <!-- lookup parent from repository -->
   </parent>
 
@@ -870,12 +870,12 @@
                       <limit>
                         <counter>LINE</counter>
                         <value>COVEREDRATIO</value>
-                        <minimum>0.80</minimum>
+                        <minimum>0.90</minimum>
                       </limit>
                       <limit>
                         <counter>BRANCH</counter>
                         <value>COVEREDRATIO</value>
-                        <minimum>0.70</minimum>
+                        <minimum>0.90</minimum>
                       </limit>
                     </limits>
                   </rule>

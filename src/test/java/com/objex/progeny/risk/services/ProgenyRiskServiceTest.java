@@ -3,6 +3,7 @@ package com.objex.progeny.risk.services;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -171,15 +172,15 @@ class ProgenyRiskServiceTest {
         com.objex.risk.beans.tcuzick.Risk risk = new com.objex.risk.beans.tcuzick.Risk();
         risk.setChartCode(3);
 
-        when(applicationProperties.getTyrer()).thenReturn(tyrerConfig);
-        when(tyrerConfig.getWindows()).thenReturn(windowsPlatform);
+        lenient().when(applicationProperties.getTyrer()).thenReturn(tyrerConfig);
+        lenient().when(tyrerConfig.getWindows()).thenReturn(windowsPlatform);
         // Provide a valid path with separator for TyrerDelegate constructor
         String os = System.getProperty("os.name").toLowerCase();
         if (os.startsWith("win")) {
-            when(windowsPlatform.getCommand()).thenReturn("C:\\temp\\tyrer.exe");
+            lenient().when(windowsPlatform.getCommand()).thenReturn("C:\\temp\\tyrer.exe");
         } else {
-            when(tyrerConfig.getLinux()).thenReturn(linuxPlatform);
-            when(linuxPlatform.getCommand()).thenReturn("/usr/bin/tyrer");
+            lenient().when(tyrerConfig.getLinux()).thenReturn(linuxPlatform);
+            lenient().when(linuxPlatform.getCommand()).thenReturn("/usr/bin/tyrer");
         }
 
         // Initialize service to set tyrerCommand
@@ -201,15 +202,15 @@ class ProgenyRiskServiceTest {
     void testComputeTyrerWithSaveRequests() {
         com.objex.risk.beans.tcuzick.Risk risk = new com.objex.risk.beans.tcuzick.Risk();
 
-        when(applicationProperties.getTyrer()).thenReturn(tyrerConfig);
-        when(tyrerConfig.getWindows()).thenReturn(windowsPlatform);
+        lenient().when(applicationProperties.getTyrer()).thenReturn(tyrerConfig);
+        lenient().when(tyrerConfig.getWindows()).thenReturn(windowsPlatform);
         // Provide a valid path with separator for TyrerDelegate constructor
         String os = System.getProperty("os.name").toLowerCase();
         if (os.startsWith("win")) {
-            when(windowsPlatform.getCommand()).thenReturn("C:\\temp\\tyrer.exe");
+            lenient().when(windowsPlatform.getCommand()).thenReturn("C:\\temp\\tyrer.exe");
         } else {
-            when(tyrerConfig.getLinux()).thenReturn(linuxPlatform);
-            when(linuxPlatform.getCommand()).thenReturn("/usr/bin/tyrer");
+            lenient().when(tyrerConfig.getLinux()).thenReturn(linuxPlatform);
+            lenient().when(linuxPlatform.getCommand()).thenReturn("/usr/bin/tyrer");
         }
 
         // Set saveRequests to true using reflection
@@ -244,15 +245,15 @@ class ProgenyRiskServiceTest {
     void testComputeTyrerFailure() {
         com.objex.risk.beans.tcuzick.Risk risk = new com.objex.risk.beans.tcuzick.Risk();
 
-        when(applicationProperties.getTyrer()).thenReturn(tyrerConfig);
-        when(tyrerConfig.getWindows()).thenReturn(windowsPlatform);
+        lenient().when(applicationProperties.getTyrer()).thenReturn(tyrerConfig);
+        lenient().when(tyrerConfig.getWindows()).thenReturn(windowsPlatform);
         // Provide a valid path with separator for TyrerDelegate constructor
         String os = System.getProperty("os.name").toLowerCase();
         if (os.startsWith("win")) {
-            when(windowsPlatform.getCommand()).thenReturn("C:\\temp\\tyrer.exe");
+            lenient().when(windowsPlatform.getCommand()).thenReturn("C:\\temp\\tyrer.exe");
         } else {
-            when(tyrerConfig.getLinux()).thenReturn(linuxPlatform);
-            when(linuxPlatform.getCommand()).thenReturn("/usr/bin/tyrer");
+            lenient().when(tyrerConfig.getLinux()).thenReturn(linuxPlatform);
+            lenient().when(linuxPlatform.getCommand()).thenReturn("/usr/bin/tyrer");
         }
 
         service.init();
@@ -543,9 +544,9 @@ class ProgenyRiskServiceTest {
     @Test
     @DisplayName("Should initialize with Windows command")
     void testInitWindows() {
-        when(applicationProperties.getTyrer()).thenReturn(tyrerConfig);
-        when(tyrerConfig.getWindows()).thenReturn(windowsPlatform);
-        when(windowsPlatform.getCommand()).thenReturn("tyrer.exe");
+        lenient().when(applicationProperties.getTyrer()).thenReturn(tyrerConfig);
+        lenient().when(tyrerConfig.getWindows()).thenReturn(windowsPlatform);
+        lenient().when(windowsPlatform.getCommand()).thenReturn("tyrer.exe");
 
         service.init();
 
@@ -880,8 +881,8 @@ class ProgenyRiskServiceTest {
     @Test
     @DisplayName("Should initialize with exception in Windows path")
     void testInitExceptionWindows() {
-        when(applicationProperties.getTyrer()).thenReturn(tyrerConfig);
-        when(tyrerConfig.getWindows()).thenThrow(new RuntimeException("Windows config error"));
+        lenient().when(applicationProperties.getTyrer()).thenReturn(tyrerConfig);
+        lenient().when(tyrerConfig.getWindows()).thenThrow(new RuntimeException("Windows config error"));
 
         // Should not throw exception, should log error
         service.init();
@@ -1169,14 +1170,14 @@ class ProgenyRiskServiceTest {
         com.objex.risk.beans.tcuzick.Risk risk = new com.objex.risk.beans.tcuzick.Risk();
         risk.setChartCode(3);
 
-        when(applicationProperties.getTyrer()).thenReturn(tyrerConfig);
-        when(tyrerConfig.getWindows()).thenReturn(windowsPlatform);
+        lenient().when(applicationProperties.getTyrer()).thenReturn(tyrerConfig);
+        lenient().when(tyrerConfig.getWindows()).thenReturn(windowsPlatform);
         String os = System.getProperty("os.name").toLowerCase();
         if (os.startsWith("win")) {
-            when(windowsPlatform.getCommand()).thenReturn("C:\\temp\\tyrer.exe");
+            lenient().when(windowsPlatform.getCommand()).thenReturn("C:\\temp\\tyrer.exe");
         } else {
-            when(tyrerConfig.getLinux()).thenReturn(linuxPlatform);
-            when(linuxPlatform.getCommand()).thenReturn("/usr/bin/tyrer");
+            lenient().when(tyrerConfig.getLinux()).thenReturn(linuxPlatform);
+            lenient().when(linuxPlatform.getCommand()).thenReturn("/usr/bin/tyrer");
         }
 
         service.init();
@@ -1243,14 +1244,14 @@ class ProgenyRiskServiceTest {
         com.objex.risk.beans.tcuzick.Risk risk = new com.objex.risk.beans.tcuzick.Risk();
         risk.setChartCode(3);
 
-        when(applicationProperties.getTyrer()).thenReturn(tyrerConfig);
-        when(tyrerConfig.getWindows()).thenReturn(windowsPlatform);
+        lenient().when(applicationProperties.getTyrer()).thenReturn(tyrerConfig);
+        lenient().when(tyrerConfig.getWindows()).thenReturn(windowsPlatform);
         String os = System.getProperty("os.name").toLowerCase();
         if (os.startsWith("win")) {
-            when(windowsPlatform.getCommand()).thenReturn("C:\\temp\\tyrer.exe");
+            lenient().when(windowsPlatform.getCommand()).thenReturn("C:\\temp\\tyrer.exe");
         } else {
-            when(tyrerConfig.getLinux()).thenReturn(linuxPlatform);
-            when(linuxPlatform.getCommand()).thenReturn("/usr/bin/tyrer");
+            lenient().when(tyrerConfig.getLinux()).thenReturn(linuxPlatform);
+            lenient().when(linuxPlatform.getCommand()).thenReturn("/usr/bin/tyrer");
         }
 
         service.init();

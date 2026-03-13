@@ -8,7 +8,7 @@
 		<groupId>com.ambry</groupId>
 		<artifactId>uno-java-foundation-bom</artifactId>
 		<version>1.0.1-SNAPSHOT</version>
-		<relativePath>uno-java-foundation-bom-1.0.1-SNAPSHOT.pom</relativePath>
+		<relativePath></relativePath>
 	</parent>
 	<packaging>pom</packaging>
 	<name>UNO Spring Boot Foundation BOM</name>
