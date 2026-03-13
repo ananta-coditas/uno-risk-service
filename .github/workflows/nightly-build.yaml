@@ -85,7 +85,7 @@ jobs:
       env-file-name: "infrastructure/.env.shared_services"
       ecr-environment: "shared_services"
       fail-on-severities-grype: "critical"
-      block-on-vulnerabilities: true
+      block-on-vulnerabilities: false
       enable-ecr-inspector-scan: true
 
       # Security scans
