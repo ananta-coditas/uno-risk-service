@@ -44,14 +44,16 @@ RUN mvn clean package -DskipTests
 
 
 ### Stage 2 ###
-# Use Rocky Linux 9.6 for patched libpng (CVE-2025-66293, CVE-2026-25646); 9.5 has vulnerable libpng.
+# Use Rocky Linux 9.6; run dnf update and install libpng so we get patched libpng (>=1.6.55)
+# addressing CVE-2025-66293 (oob read in png_image_read_composite) and CVE-2026-25646 (oob in png_set_quantize).
 FROM rockylinux/rockylinux:9.6
 
-#for R
+# Update all packages (including libpng security fixes) then install runtime deps. Explicit libpng ensures patched version.
 RUN dnf install -y epel-release && dnf config-manager --set-enabled crb && dnf update -y
 RUN dnf install -y \
       glibc \
       libgcc \
+      libpng \
       R-core \
       R-core-devel \
       java-21-openjdk-headless \

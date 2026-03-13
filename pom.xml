@@ -34,7 +34,7 @@
     <git-commit-id-maven-plugin.version>9.0.1</git-commit-id-maven-plugin.version>
     <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
     <jib-maven-plugin.architecture>amd64</jib-maven-plugin.architecture>
-    <!-- Use jammy (Ubuntu 22.04) for patched libpng: CVE-2025-66293, CVE-2026-25646 (focal has vulnerable libpng) -->
+    <!-- Use jammy (Ubuntu 22.04) for patched libpng >=1.6.55: CVE-2025-66293, CVE-2026-25646 (focal has vulnerable libpng) -->
     <jib-maven-plugin.image>eclipse-temurin:21-jre-jammy</jib-maven-plugin.image>
     <jib-maven-plugin.version>3.4.3</jib-maven-plugin.version>
     <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
