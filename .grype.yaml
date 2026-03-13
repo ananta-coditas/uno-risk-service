@@ -1,0 +1,7 @@
+# Ignore CVEs mitigated by java-21-openjdk-headless >= 21.0.10.0.7 (patched libpng 1.6.55+).
+# See Dockerfile stage 2: version constraint and verification step.
+ignore:
+  - vulnerability: CVE-2025-66293
+    reason: "Mitigated: java-21-openjdk-headless >= 21.0.10.0.7 (patched libpng); see Dockerfile"
+  - vulnerability: CVE-2026-25646
+    reason: "Mitigated: java-21-openjdk-headless >= 21.0.10.0.7 (patched libpng 1.6.55+); see Dockerfile"
