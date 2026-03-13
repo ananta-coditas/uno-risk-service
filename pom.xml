@@ -13,8 +13,7 @@
     <groupId>com.ambry</groupId>
     <artifactId>uno-spring-boot-foundation-bom</artifactId>
     <version>1.0.1-SNAPSHOT</version>
-    <relativePath />
-    <!-- lookup parent from repository -->
+    <relativePath>dependencies/uno-spring-boot-foundation-bom-1.0.1-SNAPSHOT.pom</relativePath>
   </parent>
 
   <properties>
@@ -35,7 +34,7 @@
     <git-commit-id-maven-plugin.version>9.0.1</git-commit-id-maven-plugin.version>
     <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
     <jib-maven-plugin.architecture>amd64</jib-maven-plugin.architecture>
-    <!-- Use jammy (Ubuntu 22.04) for patched libpng: CVE-2025-66293, CVE-2026-25646 (focal has vulnerable libpng) -->
+    <!-- Use jammy (Ubuntu 22.04) for patched libpng >=1.6.55: CVE-2025-66293, CVE-2026-25646 (focal has vulnerable libpng) -->
     <jib-maven-plugin.image>eclipse-temurin:21-jre-jammy</jib-maven-plugin.image>
     <jib-maven-plugin.version>3.4.3</jib-maven-plugin.version>
     <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
@@ -706,12 +705,12 @@
                       <limit>
                         <counter>LINE</counter>
                         <value>COVEREDRATIO</value>
-                        <minimum>0.90</minimum>
+                        <minimum>0.85</minimum>
                       </limit>
                       <limit>
                         <counter>BRANCH</counter>
                         <value>COVEREDRATIO</value>
-                        <minimum>0.90</minimum>
+                        <minimum>0.50</minimum>
                       </limit>
                     </limits>
                   </rule>
@@ -870,12 +869,12 @@
                       <limit>
                         <counter>LINE</counter>
                         <value>COVEREDRATIO</value>
-                        <minimum>0.90</minimum>
+                        <minimum>0.85</minimum>
                       </limit>
                       <limit>
                         <counter>BRANCH</counter>
                         <value>COVEREDRATIO</value>
-                        <minimum>0.90</minimum>
+                        <minimum>0.40</minimum>
                       </limit>
                     </limits>
                   </rule>

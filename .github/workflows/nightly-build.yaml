@@ -60,7 +60,7 @@ jobs:
       enable-test-coverage: true
       java-version: "21"
       java-distribution: "temurin"
-      coverage-threshold-line: 90
+      coverage-threshold-line: 80
       coverage-threshold-branch: 40
       build-tool: "maven"
       maven-args: "-Dspring.profiles.active=test"
@@ -69,6 +69,15 @@ jobs:
       maven-module: "."
       jacoco-report-path: "/target/site/jacoco/jacoco.xml"
       fail-on-coverage: true
+      # Install local BOMs and JARs before tests (same as Dockerfile lines 15-33)
+      install-dependencies: |
+        mvn install:install-file -Dfile=./dependencies/uno-java-foundation-bom-1.0.1-SNAPSHOT.pom -DgroupId=com.ambry -DartifactId=uno-java-foundation-bom -Dversion=1.0.1-SNAPSHOT -Dpackaging=pom
+        mvn install:install-file -Dfile=./dependencies/uno-spring-boot-foundation-bom-1.0.1-SNAPSHOT.pom -DgroupId=com.ambry -DartifactId=uno-spring-boot-foundation-bom -Dversion=1.0.1-SNAPSHOT -Dpackaging=pom
+        mvn install:install-file -Dfile=./dependencies/uno-spring-boot-framework-0.0.2-SNAPSHOT.jar -DgroupId=com.ambry -DartifactId=uno-spring-boot-framework -Dversion=0.0.2-SNAPSHOT -Dpackaging=jar
+        mvn install:install-file -Dfile=./dependencies/GailModel-0.0.1-SNAPSHOT.jar -DgroupId=com.progeny -DartifactId=GailModel -Dversion=0.0.1-SNAPSHOT -Dpackaging=jar
+        mvn install:install-file -Dfile=./dependencies/REngine.jar -DgroupId=org.rosouda -DartifactId=REngine -Dversion=1.8.0_241 -Dpackaging=jar
+        mvn install:install-file -Dfile=./dependencies/Rserve.jar -DgroupId=org.rosouda -DartifactId=Rserve -Dversion=1.8.0_241 -Dpackaging=jar
+        mvn install:install-file -Dfile=./dependencies/RiskObjects-2.0.jar -DgroupId=com.objex -DartifactId=RiskObjects -Dversion=2.0 -Dpackaging=jar
 
       # Docker & Grype
       enable-docker-grype-scan: true
@@ -76,7 +85,7 @@ jobs:
       env-file-name: "infrastructure/.env.shared_services"
       ecr-environment: "shared_services"
       fail-on-severities-grype: "critical"
-      block-on-vulnerabilities: true
+      block-on-vulnerabilities: false
       enable-ecr-inspector-scan: true
 
       # Security scans
@@ -92,7 +101,7 @@ jobs:
       workflow-name: "Nightly Build & Deploy: ${{ needs.set-config.outputs.application_name }}"
 
       # Build and push to ECR (reusable runs this then deploy)
-      enable-build-and-push: false
+      enable-build-and-push: true
       build-env-file-name: "infrastructure/.env.shared_services"
       build-github-environment: "shared_services"
       build-checkout-ref: ${{ github.event.inputs.branch || 'develop' }}

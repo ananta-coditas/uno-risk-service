@@ -44,19 +44,25 @@ RUN mvn clean package -DskipTests
 
 
 ### Stage 2 ###
-# Use Rocky Linux 9.6 for patched libpng (CVE-2025-66293, CVE-2026-25646); 9.5 has vulnerable libpng.
+# Use Rocky Linux 9.6; run dnf update and install OpenJDK 21.0.10+ which includes patched libpng (>=1.6.55)
+# addressing CVE-2025-66293 (libpng oob read in png_image_read_composite) and
+# CVE-2026-25646 (libpng heap buffer overflow in png_set_quantize).
 FROM rockylinux/rockylinux:9.6
 
-#for R
+# Update all packages then install runtime deps. Require java-21-openjdk-headless >= 21.0.10.0.7
+# so we get builds that include the libpng security fixes (both CVEs are in bundled libpng).
 RUN dnf install -y epel-release && dnf config-manager --set-enabled crb && dnf update -y
 RUN dnf install -y \
       glibc \
       libgcc \
+      libpng \
       R-core \
       R-core-devel \
-      java-21-openjdk-headless \
+      'java-21-openjdk-headless >= 21.0.10.0.7' \
   && dnf clean all \
   && rm -rf /var/cache/dnf /tmp/* /var/tmp/* /usr/share/doc /usr/share/man /usr/share/locale
+# Verify OpenJDK is 21.0.10+ (includes CVE-2025-66293 and CVE-2026-25646 fixes)
+RUN java -version 2>&1 | grep -qE "21\.0\.(1[0-9]|[2-9][0-9])" || (echo "ERROR: OpenJDK 21.0.10+ required for CVE-2025-66293 and CVE-2026-25646" && exit 1)
 # && dnf remove -y R-core-devel \
 #gcc gcc-c++ gcc-fortran make
 
