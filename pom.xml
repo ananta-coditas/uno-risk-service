@@ -13,8 +13,7 @@
     <groupId>com.ambry</groupId>
     <artifactId>uno-spring-boot-foundation-bom</artifactId>
     <version>1.0.1-SNAPSHOT</version>
-    <relativePath />
-    <!-- lookup parent from repository -->
+    <relativePath>dependencies/uno-spring-boot-foundation-bom-1.0.1-SNAPSHOT.pom</relativePath>
   </parent>
 
   <properties>
