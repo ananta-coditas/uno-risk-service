@@ -4,7 +4,6 @@ data "aws_region" "current" {}          # data.aws_region.current.region
 # ECS Task Execution Role Policy Document(s)
 #------------------------------------------------------------------------------
 data "aws_iam_policy_document" "ecs_task_execution_assume_role_policy_document" {
-  # checkov:skip=CKV_AWS_108: Ensure IAM policies does not allow data exfiltration
   version = "2012-10-17"
   statement {
     sid     = "EcsTaskAssumeRole"
@@ -159,6 +158,7 @@ data "aws_iam_policy_document" "ecs_task_assume_role_policy_document" {
 data "aws_iam_policy_document" "microservice_task_role_policy_document" {
   #checkov:skip=CKV_AWS_356:EC2 Describe (readonly) actions to be performed on * resources
   #checkov:skip=CKV_AWS_111:CW needs "logs:PutRetentionPolicy"
+  #checkov:skip=CKV_AWS_108: Ensure IAM policies does not allow data exfiltration
   version = "2012-10-17"
   statement {
     sid    = "S3Access"

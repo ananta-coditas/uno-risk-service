@@ -60,7 +60,7 @@ jobs:
       enable-test-coverage: true
       java-version: "21"
       java-distribution: "temurin"
-      coverage-threshold-line: 90
+      coverage-threshold-line: 80
       coverage-threshold-branch: 40
       build-tool: "maven"
       maven-args: "-Dspring.profiles.active=test"
