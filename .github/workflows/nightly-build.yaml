@@ -101,7 +101,7 @@ jobs:
       workflow-name: "Nightly Build & Deploy: ${{ needs.set-config.outputs.application_name }}"
 
       # Build and push to ECR (reusable runs this then deploy)
-      enable-build-and-push: false
+      enable-build-and-push: true
       build-env-file-name: "infrastructure/.env.shared_services"
       build-github-environment: "shared_services"
       build-checkout-ref: ${{ github.event.inputs.branch || 'develop' }}
