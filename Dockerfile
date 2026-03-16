@@ -50,6 +50,7 @@ RUN mvn clean package -DskipTests
 FROM rockylinux/rockylinux:9.6
 
 # Single RUN: update repos then install so we always get latest patched java-21-openjdk-headless (no stale cache).
+# dnf update also pulls patched system libs when available (e.g. libarchive for CVE-2026-4111).
 RUN dnf install -y epel-release && dnf config-manager --set-enabled crb \
   && dnf update -y \
   && dnf install -y \
