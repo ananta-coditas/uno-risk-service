@@ -18,7 +18,7 @@ import com.objex.risk.beans.mela.MelaResult;
 import com.objex.risk.beans.mmr.MMRResult;
 import com.objex.risk.beans.panc.PancResult;
 import jakarta.annotation.PostConstruct;
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.rosuda.REngine.*;
 import org.rosuda.REngine.Rserve.RConnection;
 import org.rosuda.REngine.Rserve.RserveException;
