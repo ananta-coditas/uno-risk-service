@@ -71,6 +71,14 @@
     <commons-io.version>2.14.0</commons-io.version>
     <!-- Override Jackson core to fix GHSA-72hv-8253-57qq - async parser number length DoS -->
     <jackson-bom.version>2.21.1</jackson-bom.version>
+    <!-- Override Guava to fix CVE-2023-2976, CVE-2018-10237 -->
+    <guava.version>33.3.1-jre</guava.version>
+    <!-- Override Netty to fix CVE-2025-67735 (CRLF injection in netty-codec-http) -->
+    <netty.version>4.1.129.Final</netty.version>
+    <!-- Override Commons Lang3 to fix CVE-2025-48924 (commons-lang/commons-lang3 uncontrolled recursion) -->
+    <commons-lang3.version>3.18.0</commons-lang3.version>
+    <!-- Override Logback to fix CVE-2026-1225 (arbitrary class instantiation via config) -->
+    <logback.version>1.5.25</logback.version>
   </properties>
 <!--    <repositories>-->
 <!--      <repository>-->
@@ -129,6 +137,40 @@
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-annotations</artifactId>
         <version>2.21</version>
+      </dependency>
+      <!-- Override Guava to fix CVE-2023-2976, CVE-2018-10237 -->
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>${guava.version}</version>
+      </dependency>
+      <!-- Override Netty to fix CVE-2025-67735 -->
+      <dependency>
+        <groupId>io.netty</groupId>
+        <artifactId>netty-codec-http</artifactId>
+        <version>${netty.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.netty</groupId>
+        <artifactId>netty-codec-http2</artifactId>
+        <version>${netty.version}</version>
+      </dependency>
+      <!-- Override Commons Lang3 to fix CVE-2025-48924 -->
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+        <version>${commons-lang3.version}</version>
+      </dependency>
+      <!-- Override Logback to fix CVE-2026-1225 -->
+      <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+        <version>${logback.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-core</artifactId>
+        <version>${logback.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -375,7 +417,7 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>14.0.1</version>
+      <version>${guava.version}</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
@@ -390,11 +432,6 @@
       <groupId>org.rosuda.REngine</groupId>
       <artifactId>Rserve</artifactId>
       <version>1.8.1</version>
-    </dependency>
-    <dependency>
-      <groupId>commons-lang</groupId>
-      <artifactId>commons-lang</artifactId>
-      <version>2.6</version>
     </dependency>
     <!-- JAXB dependencies for Java 9+ -->
     <dependency>
