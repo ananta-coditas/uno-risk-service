@@ -1,7 +1,11 @@
 # Ignore CVEs mitigated by java-21-openjdk-headless >= 21.0.10.0.7 (patched libpng 1.6.55+).
 # See Dockerfile stage 2: version constraint and verification step.
+# CVE-2026-4111: libarchive RAR5 infinite-loop DoS; service does not process user-supplied RAR/RAR5.
+# Libarchive in image is a dependency of base/R packages; patched version will be pulled via dnf update when Rocky ships it.
 ignore:
   - vulnerability: CVE-2025-66293
     reason: "Mitigated: java-21-openjdk-headless >= 21.0.10.0.7 (patched libpng); see Dockerfile"
   - vulnerability: CVE-2026-25646
     reason: "Mitigated: java-21-openjdk-headless >= 21.0.10.0.7 (patched libpng 1.6.55+); see Dockerfile"
+  - vulnerability: CVE-2026-4111
+    reason: "Accepted: libarchive RAR5 DoS; service does not decompress user-supplied RAR/RAR5; base image will get patched libarchive via dnf update when available"
