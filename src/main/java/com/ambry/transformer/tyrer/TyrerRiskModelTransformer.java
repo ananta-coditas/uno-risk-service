@@ -95,7 +95,7 @@ public class TyrerRiskModelTransformer extends RiskModelTransformer implements R
 			if (details != null)
 			{
 				member.setAffectedBilateralBreastType(details.getBilateral());
-				member.setDiagnoseBilateralBreastAge(breast.getDiagnoseAge());
+				member.setDiagnoseBilateralBreastAge(details.getBilateralAge());
 			}
 		}
 		Cancer ovarian = person.getCancer(CancerType.OVARIAN);

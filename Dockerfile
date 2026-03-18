@@ -128,4 +128,4 @@ EXPOSE 8080
 # Run the Spring Boot app
 # ENTRYPOINT ["java", "-jar", "uno-risk-service.jar"]
 
-CMD bash -c "R -e \"Rserve::Rserve(args='--RS-enable-remote --no-save')\" & java -javaagent:/app/dd-java-agent.jar -Ddd.service=uno-risk-service -Ddd.env=\${DD_ENV:-prod} -Ddd.version=\${DD_VERSION:-unknown} -Ddd.trace.otel.enabled=true -Ddd.agent.host=localhost -Ddd.trace.agent.port=8126 -jar /app/uno-risk-service.jar"
+CMD bash -c "R -e \"Rserve::Rserve(args='--RS-enable-remote --no-save')\" & java -javaagent:/app/dd-java-agent.jar -Ddd.service=uno-risk-service -Ddd.env=\${DD_ENV:-prod} -Ddd.version=\${DD_VERSION:-unknown} -Ddd.trace.otel.enabled=true -Ddd.trace.agent.url=${DD_TRACE_AGENT_URL:localhost} -Ddd.trace.agent.port=8126 -jar /app/uno-risk-service.jar"

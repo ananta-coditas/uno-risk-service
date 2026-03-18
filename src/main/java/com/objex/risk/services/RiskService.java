@@ -30,7 +30,6 @@ import org.springframework.web.server.ServerErrorException;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -433,8 +432,7 @@ public class RiskService {
         catch (REngineException e)
         {
             LOG.error("Risk Server Error trying to gather embedded error", e);
-            
-            StringWriter writer = new StringWriter();
+			StringWriter writer = new StringWriter();
             Utils.saveToWriter(writer, risk);
             LOG.error("Error Request " + writer.toString());
             try {
@@ -475,13 +473,13 @@ public class RiskService {
 
     protected static void close(RConnection con) {
     	try {
-	        if (connectionPooling  && con != null && con.isConnected()) {
+	        if (connectionPooling) {
 	            connections.add(con);
 	        } else {
 	            closeNonPool(con);
 	        }
                 conLock.notifyAll();
-    	} catch (Throwable e) { //dont blow up in finally
+    	} catch (Exception e) { //dont blow up in finally
 
     	}
     }
@@ -660,40 +658,49 @@ public class RiskService {
     {
         RConnection conn = null;
         String cmd = spawnCommand;
-        try
-        {
-            connectionCount = connections.size();
-            while (connectionCount >= maxConnections && connections.isEmpty()) {
-                LOG.info("Sleeping to wait for connections to return");
-                conLock.wait(2000);
-            }
-            //established above that connectionCount is not greater than maxconnection so feel free to create
-            if (connectionPooling == false || connections.isEmpty()) {
-                conn = new RConnection();
-                connectionCount = 1;
-            } else {
-                conn = connections.remove(0);
-                if (conn == null) {
-                    LOG.info("Connection From Pool is Null so will create a connection");
-                }
-                conn = new RConnection();  
-            }
+        REngineException returnEx = null;
+        while (connectionCount >= maxConnections && connections.isEmpty()) {
+            LOG.info("Sleeping to wait for connections to return");
+            Thread.sleep(25);
         }
-        catch (RserveException e)
+        //established above that connectionCount is not greater than maxconnection so feel free to create
+        int retry = 0;
+        while(conn == null && retry < 3)
+        {
+            try {
+                if (connectionPooling == false || connections.isEmpty()) {
+                    LOG.info("creating connection retry " + retry);
+                    conn = new RConnection();
+                    connectionCount++;
+                }
+                else {
+                    conn = connections.remove(0);
+                    verify(conn);
+                    LOG.info("returning connection " + connections.size());
+                }
+                
+            } catch (REngineException r) {
+                    returnEx = r;
+                    retry++;
+                    Thread.sleep(2000);
+            }
+        }    
+        if (conn == null)
         {
             LOG.error("Could not connect to RServ.  Spawning is " + spawnServer);
+     
             if (spawnServer) {
                 LOG.info("attempting to spawn with cmd: " + cmd);
                 Process p = Runtime.getRuntime().exec(cmd);
                 if (OS != null && !OS.startsWith("win")) {
                     p.waitFor();
                 }
-                p.wait(3000);
+                Thread.sleep(3000);
                 conn = new RConnection(); //createConnection(false, cmd); //avoid loop
                 connectionCount = 1;
             }
             else {
-                throw e;
+                LOG.error("Connection build failed", returnEx);
             }
         }
         return conn;
