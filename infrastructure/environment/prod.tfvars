@@ -46,8 +46,8 @@ uno-risk-service = {
   task_setting = {
     os_family                 = "LINUX"
     cpu_architecture          = "X86_64"
-    required_cpu_units        = 8192  //8 GB
-    required_memory_MiB_units = 16384 //16 GB
+    required_cpu_units        = 16384  //16 vcpu
+    required_memory_MiB_units = 32768 //32 GB
     task_volume_config = []
   }
   containers_list = [
@@ -64,10 +64,11 @@ uno-risk-service = {
       #   mode             = "non-blocking"
       #   max_buffer_size   = "25m"
       #}
-      required_cpu_units        = 4096  //4 GB
-      required_memory_MiB_units = 8192 //8 GB
+      required_cpu_units        = 15360  // 15 vcpus
+      required_memory_MiB_units = 30720 //30 GB
       ecr_image_uri             = "540051198529.dkr.ecr.us-west-2.amazonaws.com/uno-risk-service"
-      ecr_image_tag             = "uno-risk-service-202602251306-7716bb0-release-v2-0-0-37" // Update this field for each ecr image build
+      # ecr_image_tag             = "uno-risk-service-202603052208-2f58d0c-hotfix-1-9-9-43" // Update this field for each ecr image build
+	  ecr_image_tag             = "uno-risk-service-202603162021-b8d9bc9-hotfix-1-9-9-45" // 
       sg_rule_config = {
         allowed_ingress_cidr = ["10.9.32.0/20", "10.0.0.0/8"]
       }
@@ -161,7 +162,7 @@ applications_config = {
     health_check_setting = {
       healthy_threshold_count   = 3
       unhealthy_threshold_count = 5
-      timeout_secs              = 10
+      timeout_secs              = 30
       interval_secs             = 60
       hc_port                   = 8080
       hc_path                   = "/risk/api/models/api-docs"

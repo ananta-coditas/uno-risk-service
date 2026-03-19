@@ -155,6 +155,7 @@ class TyrerRiskModelTransformerTest {
         Cancer breast = new Cancer(Cancer.CancerType.BREAST, AffectedType.ONE.value, 45);
         CancerDetails details = new CancerDetails();
         details.setBilateral(AffectedType.ONE);
+        details.setBilateralAge(45);
         breast.setCancerDetails(details);
         unoPerson.addCancer(breast);
 
