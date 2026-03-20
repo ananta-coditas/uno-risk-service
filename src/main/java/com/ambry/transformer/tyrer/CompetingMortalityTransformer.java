@@ -29,6 +29,6 @@ public class CompetingMortalityTransformer extends TyrerRiskModelTransformer imp
 
     @Override
     public ModelName getModelName() {
-        return ModelName.COMPETING_MORTALITY_SCENARIO;
+        return ModelName.TYRER_COMPETING_MORTALITY;
     }
 }
