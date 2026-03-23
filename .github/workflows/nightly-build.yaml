@@ -103,7 +103,7 @@ jobs:
       # Build and push to ECR (reusable runs this then deploy)
       enable-build-and-push: true
       enable-ecs-deploy: true
-      deploy-env-file-name: "infrastructure/.env.dev"
+      deploy-env-file-name: "infrastructure/.env.test"
       deploy-github-environment: "test"
       deploy-cluster-name: "uno-test-cluster"
       deploy-core-container-name: "uno-risk-service-container"
