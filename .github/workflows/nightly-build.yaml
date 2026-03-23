@@ -105,7 +105,7 @@ jobs:
       enable-ecs-deploy: true
       deploy-env-file-name: "infrastructure/.env.dev"
       deploy-github-environment: "test"
-      deploy-cluster-name: "uno-dev-cluster"
+      deploy-cluster-name: "uno-test-cluster"
       deploy-core-container-name: "uno-risk-service-container"
       deploy-service-container-mapping: '{"uno-risk-service": ["uno-risk-service-container"]}'
       build-env-file-name: "infrastructure/.env.shared_services"
