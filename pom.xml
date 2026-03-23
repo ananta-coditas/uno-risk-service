@@ -79,6 +79,10 @@
     <commons-lang3.version>3.18.0</commons-lang3.version>
     <!-- Override Logback to fix CVE-2026-1225 (arbitrary class instantiation via config) -->
     <logback.version>1.5.25</logback.version>
+    <!-- Spring Security 6.5.9+ fixes CVE-2026-22732 / GHSA-mf92-479x-3373 (HTTP headers not written) -->
+    <spring-security.version>6.5.9</spring-security.version>
+    <!-- Spring Framework 6.2.17+ fixes CVE-2026-22737 (script view path limitation); Spring Boot 3.5.7 pins 6.2.12 -->
+    <spring-framework.version>6.2.17</spring-framework.version>
   </properties>
 <!--    <repositories>-->
 <!--      <repository>-->
@@ -93,6 +97,21 @@
 <!--    </repositories>-->
   <dependencyManagement>
     <dependencies>
+      <!-- Align spring-security-* (CVE-2026-22732) and spring-* Framework (CVE-2026-22737); Spring Boot 3.5.7 pins older patch lines -->
+      <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-bom</artifactId>
+        <version>${spring-security.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-framework-bom</artifactId>
+        <version>${spring-framework.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
       <dependency>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-dependencies</artifactId>

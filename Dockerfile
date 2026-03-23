@@ -44,18 +44,25 @@ RUN mvn clean package -DskipTests
 
 
 ### Stage 2 ###
-# Rocky Linux 9.6 + OpenJDK 21.0.10+ with patched libpng (>=1.6.55) to fix:
-# - CVE-2025-66293 (libpng oob read): https://nvd.nist.gov/vuln/detail/CVE-2025-66293
-# - CVE-2026-25646 (libpng heap overflow in png_set_quantize): https://nvd.nist.gov/vuln/detail/CVE-2026-25646
-FROM rockylinux/rockylinux:9.6
+# Rocky Linux 9 (latest minor) + OpenJDK 21 with patched system libs. Floating :9 tag picks up security updates for:
+# - libpng (CVE-2025-66293, CVE-2026-25646), giflib, libarchive, libnghttp2, python3, perl-XML-Parser (errata-dependent; see .grype.yaml)
+FROM rockylinux/rockylinux:9
 
-# Single RUN: update repos then install so we always get latest patched java-21-openjdk-headless (no stale cache).
-# dnf update also pulls patched system libs when available (e.g. libarchive for CVE-2026-4111).
+# Single RUN: update repos then install so we always get latest patched RPMs (no stale cache).
+# Explicit packages pull current RPMs: giflib (e.g. CVE-2026-26740, CVE-2026-23868), libarchive (CVE-2026-4424),
+# libnghttp2 (CVE-2026-27135; upstream nghttp2 1.68.1+ — distro EVR may differ with backports),
+# python3/python3-libs (CVE-2026-4519), perl-XML-Parser (CVE-2006-10003 needs XML-Parser 2.48+ when Rocky ships it).
 RUN dnf install -y epel-release && dnf config-manager --set-enabled crb \
   && dnf update -y \
   && dnf install -y \
       glibc \
       libgcc \
+      giflib \
+      libarchive \
+      libnghttp2 \
+      python3 \
+      python3-libs \
+      perl-XML-Parser \
       libpng \
       R-core \
       R-core-devel \
