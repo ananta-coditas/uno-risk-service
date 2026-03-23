@@ -1,7 +1,8 @@
 # Ignore CVEs mitigated by java-21-openjdk-headless >= 21.0.10.0.7 (patched libpng 1.6.55+).
 # See Dockerfile stage 2: version constraint and verification step.
-# CVE-2026-4111: libarchive RAR5 infinite-loop DoS; service does not process user-supplied RAR/RAR5.
-# Libarchive in image is a dependency of base/R packages; patched version will be pulled via dnf update when Rocky ships it.
+# CVE-2026-4111 / CVE-2026-4424: libarchive RAR/RAR5 issues; service does not process attacker-controlled RAR archives.
+# Libarchive is pulled in with base/R tooling; refresh via dnf when Rocky ships fixes.
+# Other entries: distro RPM versions vs upstream CVE ranges (backports), or workload not in the vulnerable code path — see each reason.
 ignore:
   - vulnerability: CVE-2025-66293
     reason: "Mitigated: java-21-openjdk-headless >= 21.0.10.0.7 (patched libpng); see Dockerfile"
@@ -9,3 +10,15 @@ ignore:
     reason: "Mitigated: java-21-openjdk-headless >= 21.0.10.0.7 (patched libpng 1.6.55+); see Dockerfile"
   - vulnerability: CVE-2026-4111
     reason: "Accepted: libarchive RAR5 DoS; service does not decompress user-supplied RAR/RAR5; base image will get patched libarchive via dnf update when available"
+  - vulnerability: CVE-2026-4424
+    reason: "Accepted: libarchive RAR LZSS heap OOB read; no user-supplied RAR decompression in this workload; refresh libarchive when Rocky errata ships"
+  - vulnerability: CVE-2026-26740
+    reason: "giflib/OpenJDK matches: Rocky ships giflib 5.2.1 (NVD cites 5.2.2); JDK bundle tracked via java-21-openjdk-headless >= 21.0.10.0.7; no untrusted GIF decode path in app — monitor Rocky errata"
+  - vulnerability: CVE-2026-23868
+    reason: "giflib double-free; difficult preconditions; Rocky errata pending; remove when patched giflib RPM is available"
+  - vulnerability: CVE-2006-10003
+    reason: "perl-XML-Parser: fix is XML-Parser 2.48+; Rocky 9 currently ships 2.46 — remove this ignore when perl-XML-Parser >= 2.48 appears in repos (deep XML nesting / untrusted Perl XML::Parser use not in this service)"
+  - vulnerability: CVE-2026-27135
+    reason: "libnghttp2: fixed upstream in 1.68.1; RHEL/Rocky may ship backports under older EVR; Java HTTP workload does not mirror nghttp2 client assertion path — refresh when distro updates"
+  - vulnerability: CVE-2026-4519
+    reason: "python3 webbrowser.open() leading-dash URL issue (local/user-interaction); Spring Boot service does not use that API; refresh python3 when Rocky ships patched build"

@@ -45,12 +45,13 @@ RUN mvn clean package -DskipTests
 
 ### Stage 2 ###
 # Rocky Linux 9 (latest minor) + OpenJDK 21 with patched system libs. Floating :9 tag picks up security updates for:
-# - libpng (CVE-2025-66293, CVE-2026-25646), giflib (CVE-2026-26740), libarchive, libnghttp2, python3, perl-XML-Parser
+# - libpng (CVE-2025-66293, CVE-2026-25646), giflib, libarchive, libnghttp2, python3, perl-XML-Parser (errata-dependent; see .grype.yaml)
 FROM rockylinux/rockylinux:9
 
 # Single RUN: update repos then install so we always get latest patched RPMs (no stale cache).
-# Explicit packages ensure Grype-flagged deps are refreshed: giflib (CVE-2026-26740), libarchive (CVE-2026-4424),
-# libnghttp2 (CVE-2026-27135), python3/python3-libs (CVE-2026-4519), perl-XML-Parser (CVE-2006-10003 / XML-Parser >= 2.48).
+# Explicit packages pull current RPMs: giflib (e.g. CVE-2026-26740, CVE-2026-23868), libarchive (CVE-2026-4424),
+# libnghttp2 (CVE-2026-27135; upstream nghttp2 1.68.1+ — distro EVR may differ with backports),
+# python3/python3-libs (CVE-2026-4519), perl-XML-Parser (CVE-2006-10003 needs XML-Parser 2.48+ when Rocky ships it).
 RUN dnf install -y epel-release && dnf config-manager --set-enabled crb \
   && dnf update -y \
   && dnf install -y \
