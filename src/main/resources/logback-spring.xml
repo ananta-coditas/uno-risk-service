@@ -40,6 +40,8 @@
   <logger name="com.zaxxer" level="WARN"/>
   <logger name="io.undertow" level="WARN"/>
   <logger name="io.undertow.websockets.jsr" level="ERROR"/>
+  <logger name="java.lang.ProcessBuilder" level="INFO" />
+  <logger name="i.m.t.o.p.BaggageTextMapPropagator" level="INFO" />
   <logger name="org.apache" level="WARN"/>
   <logger name="org.apache.catalina.startup.DigesterFactory" level="OFF"/>
   <logger name="org.bson" level="WARN"/>
@@ -65,7 +67,7 @@
   <logger name="io.micrometer.tracing.opentelemetry" level="WARN"/>
   <logger name="io.micrometer.tracing.opentelemetry.propagation.BaggageTextMapPropagator" level="WARN"/>
   <logger name="io.micrometer.tracing.opentelemetry.propagation" level="WARN"/>
-
+ 
   <springProperty name="log.level" source="logging.level.root" defaultValue="INFO" />
   <root level="${log.level}">
     <appender-ref ref="CONSOLE" />
