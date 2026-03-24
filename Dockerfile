@@ -112,6 +112,13 @@ RUN R -e "install.packages('kinship2', dependencies=TRUE, repos = 'https://cloud
 RUN R -e "install.packages('Rserve', dependencies=TRUE, repos = 'https://cloud.r-project.org')"
 RUN R -e "install.packages('/tmp/BayesMendel_2.1-8.tar.gz',type='source',REPOS= NULL, dependencies=TRUE)"
 
+# Drop R build/devel stack after source installs (R-core stays for runtime). This removes go-srpm-macros
+# and related SRPM tooling flagged for CVE-2026-25679 (Go net/url; scan CPE maps to that RPM). Not needed at runtime.
+RUN dnf remove -y R-core-devel \
+  && dnf autoremove -y \
+  && dnf clean all \
+  && rm -rf /var/cache/dnf /tmp/* /var/tmp/*
+
 RUN curl -L https://dtdg.co/latest-java-tracer -o /app/dd-java-agent.jar
 
 # Set ownership to the app user
