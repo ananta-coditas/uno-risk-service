@@ -38,7 +38,7 @@ class NCCNClinicalHistoryMapperTest {
         person.setFamilyRace(createFamilyRace("CAUCASIAN"));
         relationshipDetails = new HashMap<>();
     }
-    
+
     // Helper method to create NCCNEnum instance
     @SuppressWarnings("unchecked")
     private Person.NCCNEnum createNCCNEnum(String value) {
@@ -54,7 +54,7 @@ class NCCNClinicalHistoryMapperTest {
                     // Try to find by toString match
                     Person.NCCNEnum[] allValues = Person.NCCNEnum.values();
                     for (Person.NCCNEnum enumValue : allValues) {
-                        if (enumValue.toString().equals(value) || 
+                        if (enumValue.toString().equals(value) ||
                             enumValue.toString().equalsIgnoreCase(value) ||
                             enumValue.name().equalsIgnoreCase(value)) {
                             return enumValue;
@@ -75,7 +75,7 @@ class NCCNClinicalHistoryMapperTest {
                     if ("NCCNEnum".equals(innerClass.getSimpleName()) && innerClass.isEnum()) {
                         Enum<?>[] enumConstants = ((Class<? extends Enum<?>>) innerClass).getEnumConstants();
                         for (Enum<?> enumConstant : enumConstants) {
-                            if (enumConstant.name().equalsIgnoreCase(value) || 
+                            if (enumConstant.name().equalsIgnoreCase(value) ||
                                 enumConstant.toString().equalsIgnoreCase(value)) {
                                 return (Person.NCCNEnum) enumConstant;
                             }
@@ -89,10 +89,10 @@ class NCCNClinicalHistoryMapperTest {
                 // Ignore reflection errors
             }
         }
-        throw new RuntimeException("Cannot create NCCNEnum instance for value: " + value + 
+        throw new RuntimeException("Cannot create NCCNEnum instance for value: " + value +
             ". Available values may not include: " + value);
     }
-    
+
     // Helper method to create FamilyRace enum instance
     @SuppressWarnings("unchecked")
     private Person.FamilyRace createFamilyRace(String value) {
@@ -108,7 +108,7 @@ class NCCNClinicalHistoryMapperTest {
                     // Try to find by toString match
                     Person.FamilyRace[] allValues = Person.FamilyRace.values();
                     for (Person.FamilyRace enumValue : allValues) {
-                        if (enumValue.toString().equals(value) || 
+                        if (enumValue.toString().equals(value) ||
                             enumValue.toString().equalsIgnoreCase(value) ||
                             enumValue.name().equalsIgnoreCase(value)) {
                             return enumValue;
@@ -129,7 +129,7 @@ class NCCNClinicalHistoryMapperTest {
                     if ("FamilyRace".equals(innerClass.getSimpleName()) && innerClass.isEnum()) {
                         Enum<?>[] enumConstants = ((Class<? extends Enum<?>>) innerClass).getEnumConstants();
                         for (Enum<?> enumConstant : enumConstants) {
-                            if (enumConstant.name().equalsIgnoreCase(value) || 
+                            if (enumConstant.name().equalsIgnoreCase(value) ||
                                 enumConstant.toString().equalsIgnoreCase(value)) {
                                 return (Person.FamilyRace) enumConstant;
                             }
@@ -143,10 +143,10 @@ class NCCNClinicalHistoryMapperTest {
                 // Ignore reflection errors
             }
         }
-        throw new RuntimeException("Cannot create FamilyRace instance for value: " + value + 
+        throw new RuntimeException("Cannot create FamilyRace instance for value: " + value +
             ". Available values may not include: " + value);
     }
-    
+
 
     @Test
     @DisplayName("Should transform person with relationship details")
@@ -220,7 +220,7 @@ class NCCNClinicalHistoryMapperTest {
     void testTransformWithPolypOverall() {
         person.setPolypOverall(createNCCNEnum("YES"));
         person.setFamilyRace(createFamilyRace("CAUCASIAN"));
-        
+
         PolypDetails polypDetails = new PolypDetails();
         polypDetails.setNumOfColorectalPolyps(5);
         polypDetails.setPolypType("Adenomatous");
@@ -300,9 +300,9 @@ class NCCNClinicalHistoryMapperTest {
 
         assertThat(result.getCancerFeatureDetails()).hasSize(1);
         CancerFeatureDetails details = result.getCancerFeatureDetails().get(0);
-        assertThat(details.getCancerFeature()).isEqualTo("BREAST");
+        assertThat(details.getCancerFeature()).isEqualTo(CancerType.BREAST.name());
         assertThat(details.getCancerFeatureType()).isEqualTo("cancer");
-        assertThat(details.getExactDxAge()).isEqualTo("50.5");
+        assertThat(details.getExactDxAge()).isEqualTo("50");
     }
 
     @Test
@@ -313,7 +313,7 @@ class NCCNClinicalHistoryMapperTest {
         Cancer cancer = new Cancer();
         cancer.setCancerType(CancerType.BREAST);
         cancer.setDiagnoseAge(45);
-        
+
         CancerDetails cancerDetails = new CancerDetails();
         cancerDetails.setMetastatic("YES");
         cancer.setCancerDetails(cancerDetails);
@@ -336,7 +336,7 @@ class NCCNClinicalHistoryMapperTest {
         Cancer cancer = new Cancer();
         cancer.setCancerType(CancerType.BREAST);
         cancer.setDiagnoseAge(45);
-        
+
         CancerDetails cancerDetails = new CancerDetails();
         // The mapper expects getMultiplePrimaries() to return something assignable to String
         // Based on the mapper code: details.setMultiplePrimaries(cancer.getCancerDetails().getMultiplePrimaries())
@@ -367,7 +367,7 @@ class NCCNClinicalHistoryMapperTest {
         Cancer cancer = new Cancer();
         cancer.setCancerType(CancerType.BREAST);
         cancer.setDiagnoseAge(45);
-        
+
         CancerDetails cancerDetails = new CancerDetails();
         // The mapper expects getBreastCancerTypes() to return a List of Enum objects
         // We need to use the actual CancerDetails.BreastCancerType enum, not our test enum
@@ -407,17 +407,17 @@ class NCCNClinicalHistoryMapperTest {
     void testTransformWithMultipleCancers() {
         person.setFamilyRace(createFamilyRace("CAUCASIAN"));
         List<Cancer> cancers = new ArrayList<>();
-        
+
         Cancer cancer1 = new Cancer();
         cancer1.setCancerType(CancerType.BREAST);
         cancer1.setDiagnoseAge(45);
         cancers.add(cancer1);
-        
+
         Cancer cancer2 = new Cancer();
         cancer2.setCancerType(CancerType.OVARIAN);
         cancer2.setDiagnoseAge(50);
         cancers.add(cancer2);
-        
+
         person.setCancers(cancers);
 
         ClinicalHistory result = mapper.transform(person, relationshipDetails);
@@ -450,7 +450,7 @@ class NCCNClinicalHistoryMapperTest {
     void testTransformWithPolypDetails() {
         person.setPolypOverall(createNCCNEnum("YES"));
         person.setFamilyRace(createFamilyRace("CAUCASIAN"));
-        
+
         PolypDetails polypDetails = new PolypDetails();
         polypDetails.setNumOfColorectalPolyps(10);
         polypDetails.setPolypType("Hyperplastic");

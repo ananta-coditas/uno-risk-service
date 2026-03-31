@@ -17,6 +17,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.objex.risk.beans.uno.Cancer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -330,7 +331,7 @@ class CareAPIUtilTest {
     void testGetQuestionObjectWithProbandAndFamily() throws ConnectException {
         NCCNCoreRequest request = new NCCNCoreRequest();
         List<ClinicalHistory> clinicalHistories = new ArrayList<>();
-        
+
         ClinicalHistory proband = new ClinicalHistory();
         proband.setRelationship("Proband");
         proband.setSexAtBirth("male");
@@ -338,16 +339,16 @@ class CareAPIUtilTest {
         proband.setCancerOverall("YES");
         proband.setCancerFeatureDetails(Collections.emptyList());
         clinicalHistories.add(proband);
-        
+
         ClinicalHistory mother = new ClinicalHistory();
         mother.setRelationship("Mother");
         CancerFeatureDetails cancerFeature = new CancerFeatureDetails();
         cancerFeature.setCancerFeature("BREAST");
         mother.setCancerFeatureDetails(Arrays.asList(cancerFeature));
         clinicalHistories.add(mother);
-        
+
         request.setClinicalHistory(clinicalHistories);
-        
+
         GuidelineDetailsDTO guidelineDetailsDTO = new GuidelineDetailsDTO();
         ClinicalSummary clinicalSummary = new ClinicalSummary();
         clinicalSummary.setRiskAssessmentNccnForHBOC(Collections.emptySet());
@@ -356,7 +357,7 @@ class CareAPIUtilTest {
         guidelineDetailsDTO.setLYNCH(false);
         guidelineDetailsDTO.setAPS(false);
         guidelineDetailsDTO.setReasoningStatementAndTagsSet("{\"reasoningStatements\":[]}");
-        
+
         when(guideLineUtility.getClinicalSummaryAndTags(any(), anyBoolean(), any(), anyString(), anyBoolean(), anyBoolean()))
             .thenReturn(guidelineDetailsDTO);
 
@@ -396,7 +397,7 @@ class CareAPIUtilTest {
         clinicalSummary.setRiskAssessmentNccnForHBOC(new HashSet<>(Arrays.asList("HBOCRS1")));
         guidelineDetailsDTO.setClinicalSummary(clinicalSummary);
         guidelineDetailsDTO.setReasoningStatementAndTagsSet("{\"reasoningStatements\":[{\"reasoningStatementId\":\"HBOCRS1\"}]}");
-        
+
         NCCNCoreRequest request = new NCCNCoreRequest();
 
         NCCNCoreResponse result = careAPIUtil.CAREAPIResponseMapper(guidelineDetailsDTO, request);
@@ -414,7 +415,7 @@ class CareAPIUtilTest {
         clinicalSummary.setRiskAssessmentNccnForLYNCH(new HashSet<>(Arrays.asList("CRCRS3")));
         guidelineDetailsDTO.setClinicalSummary(clinicalSummary);
         guidelineDetailsDTO.setReasoningStatementAndTagsSet("{\"reasoningStatements\":[{\"reasoningStatementId\":\"CRCRS3\"}]}");
-        
+
         NCCNCoreRequest request = new NCCNCoreRequest();
 
         NCCNCoreResponse result = careAPIUtil.CAREAPIResponseMapper(guidelineDetailsDTO, request);
@@ -432,7 +433,7 @@ class CareAPIUtilTest {
         clinicalSummary.setRiskAssessmentNccnForAPS(new HashSet<>(Arrays.asList("CRCRS1")));
         guidelineDetailsDTO.setClinicalSummary(clinicalSummary);
         guidelineDetailsDTO.setReasoningStatementAndTagsSet("{\"reasoningStatements\":[{\"reasoningStatementId\":\"CRCRS1\"}]}");
-        
+
         NCCNCoreRequest request = new NCCNCoreRequest();
 
         NCCNCoreResponse result = careAPIUtil.CAREAPIResponseMapper(guidelineDetailsDTO, request);
@@ -451,7 +452,7 @@ class CareAPIUtilTest {
         cancerFeature.setCancerFeature("BREAST");
         mother.setCancerFeatureDetails(Arrays.asList(cancerFeature));
         clinicalHistories.add(mother);
-        
+
         FamilyHistory familyHistory = new FamilyHistory();
 
         careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
@@ -470,7 +471,7 @@ class CareAPIUtilTest {
         cancerFeature.setCancerFeature("PROSTATE");
         father.setCancerFeatureDetails(Arrays.asList(cancerFeature));
         clinicalHistories.add(father);
-        
+
         FamilyHistory familyHistory = new FamilyHistory();
 
         careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
@@ -489,7 +490,7 @@ class CareAPIUtilTest {
         cancerFeature.setCancerFeature("BREAST");
         sister.setCancerFeatureDetails(Arrays.asList(cancerFeature));
         clinicalHistories.add(sister);
-        
+
         FamilyHistory familyHistory = new FamilyHistory();
 
         careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
@@ -508,7 +509,7 @@ class CareAPIUtilTest {
         cancerFeature.setCancerFeature("PROSTATE");
         brother.setCancerFeatureDetails(Arrays.asList(cancerFeature));
         clinicalHistories.add(brother);
-        
+
         FamilyHistory familyHistory = new FamilyHistory();
 
         careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
@@ -528,7 +529,7 @@ class CareAPIUtilTest {
         cancerFeature.setCancerFeature("OVARIAN");
         aunt.setCancerFeatureDetails(Arrays.asList(cancerFeature));
         clinicalHistories.add(aunt);
-        
+
         FamilyHistory familyHistory = new FamilyHistory();
 
         careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
@@ -558,7 +559,7 @@ class CareAPIUtilTest {
         breastCancer.setMultiplePrimaries("NO");
         breastCancer.setBreastCancerTypes(Arrays.asList("DCIS"));
         cancerFeatureDetailsList.add(breastCancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -575,7 +576,7 @@ class CareAPIUtilTest {
         prostateCancer.setExactDxAge("65");
         prostateCancer.setProstateGleasonScore("8");
         cancerFeatureDetailsList.add(prostateCancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -592,7 +593,7 @@ class CareAPIUtilTest {
         colorectalCancer.setExactDxAge("55");
         colorectalCancer.setMultiplePrimaries("NO");
         cancerFeatureDetailsList.add(colorectalCancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -608,8 +609,8 @@ class CareAPIUtilTest {
         ovarianCancer.setCancerFeature("OVARIAN");
         ovarianCancer.setExactDxAge("50");
         cancerFeatureDetailsList.add(ovarianCancer);
-        
-        com.genomebrain.backend.quesstionnaire.relative.Mother mother = 
+
+        com.genomebrain.backend.quesstionnaire.relative.Mother mother =
             new com.genomebrain.backend.quesstionnaire.relative.Mother();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, null, false, mother);
@@ -628,7 +629,7 @@ class CareAPIUtilTest {
         cancerFeature.setCancerFeature("PROSTATE");
         proband.setCancerFeatureDetails(Arrays.asList(cancerFeature));
         clinicalHistories.add(proband);
-        
+
         FamilyHistory familyHistory = new FamilyHistory();
 
         List<ClinicalHistory> result = careAPIUtil.getFamilyCancerStatus(clinicalHistories, familyHistory);
@@ -646,7 +647,7 @@ class CareAPIUtilTest {
         proband.setSexAtBirth("male");
         proband.setCancerFeatureDetails(Collections.emptyList());
         clinicalHistories.add(proband);
-        
+
         FamilyHistory familyHistory = new FamilyHistory();
 
         List<ClinicalHistory> result = careAPIUtil.getFamilyCancerStatus(clinicalHistories, familyHistory);
@@ -663,7 +664,7 @@ class CareAPIUtilTest {
         ovarianCancer.setCancerFeature("OVARIAN");
         ovarianCancer.setExactDxAge("50");
         cancerFeatureDetailsList.add(ovarianCancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -679,7 +680,7 @@ class CareAPIUtilTest {
         pancreaticCancer.setCancerFeature("PANCREATIC");
         pancreaticCancer.setExactDxAge("60");
         cancerFeatureDetailsList.add(pancreaticCancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -692,10 +693,10 @@ class CareAPIUtilTest {
     void testGetCancerObjectWithUterineForProband() {
         List<CancerFeatureDetails> cancerFeatureDetailsList = new ArrayList<>();
         CancerFeatureDetails uterineCancer = new CancerFeatureDetails();
-        uterineCancer.setCancerFeature("UTERINE");
+        uterineCancer.setCancerFeature(Cancer.CancerType.Uterine.name());
         uterineCancer.setExactDxAge("45");
         cancerFeatureDetailsList.add(uterineCancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -708,10 +709,10 @@ class CareAPIUtilTest {
     void testGetCancerObjectWithGastricForProband() {
         List<CancerFeatureDetails> cancerFeatureDetailsList = new ArrayList<>();
         CancerFeatureDetails gastricCancer = new CancerFeatureDetails();
-        gastricCancer.setCancerFeature("GASTRIC");
+        gastricCancer.setCancerFeature(Cancer.CancerType.Gastric.name());
         gastricCancer.setExactDxAge("55");
         cancerFeatureDetailsList.add(gastricCancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -724,10 +725,10 @@ class CareAPIUtilTest {
     void testGetCancerObjectWithFallopianTubeForProband() {
         List<CancerFeatureDetails> cancerFeatureDetailsList = new ArrayList<>();
         CancerFeatureDetails fallopianCancer = new CancerFeatureDetails();
-        fallopianCancer.setCancerFeature("FALLOPIAN");
+        fallopianCancer.setCancerFeature(Cancer.CancerType.Fallopian_Tube.name());
         fallopianCancer.setExactDxAge("50");
         cancerFeatureDetailsList.add(fallopianCancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -743,7 +744,7 @@ class CareAPIUtilTest {
         sebaceousCancer.setCancerFeature("Sebaceous Carcinoma");
         sebaceousCancer.setExactDxAge("40");
         cancerFeatureDetailsList.add(sebaceousCancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -759,7 +760,7 @@ class CareAPIUtilTest {
         sebaceousCancer.setCancerFeature("Sebaceous adenomas");
         sebaceousCancer.setExactDxAge("40");
         cancerFeatureDetailsList.add(sebaceousCancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -777,7 +778,7 @@ class CareAPIUtilTest {
         breastCancer.setMultiplePrimaries("NO");
         breastCancer.setBreastBilateral("Yes");
         cancerFeatureDetailsList.add(breastCancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -797,7 +798,7 @@ class CareAPIUtilTest {
         breastCancer.setBreastPr("Negative");
         breastCancer.setBreastHer2("Negative");
         cancerFeatureDetailsList.add(breastCancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -814,7 +815,7 @@ class CareAPIUtilTest {
         prostateCancer.setExactDxAge("65");
         prostateCancer.setProstateGleasonScore("8");
         cancerFeatureDetailsList.add(prostateCancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -831,7 +832,7 @@ class CareAPIUtilTest {
         prostateCancer.setExactDxAge("65");
         prostateCancer.setProstateGradeGroup("Grade Group 4");
         cancerFeatureDetailsList.add(prostateCancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -848,7 +849,7 @@ class CareAPIUtilTest {
         prostateCancer.setExactDxAge("65");
         prostateCancer.setProstateRiskGroup("Very High Risk Group");
         cancerFeatureDetailsList.add(prostateCancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -865,7 +866,7 @@ class CareAPIUtilTest {
         prostateCancer.setExactDxAge("65");
         prostateCancer.setMetastatic("Yes");
         cancerFeatureDetailsList.add(prostateCancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -882,7 +883,7 @@ class CareAPIUtilTest {
         colorectalCancer.setExactDxAge("55");
         colorectalCancer.setMultiplePrimaries("YES");
         cancerFeatureDetailsList.add(colorectalCancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -899,7 +900,7 @@ class CareAPIUtilTest {
         brainCancer.setExactDxAge("50");
         brainCancer.setMultiplePrimaries("YES");
         cancerFeatureDetailsList.add(brainCancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -917,7 +918,7 @@ class CareAPIUtilTest {
         cancerFeature.setCancerFeature("BREAST");
         daughter.setCancerFeatureDetails(Arrays.asList(cancerFeature));
         clinicalHistories.add(daughter);
-        
+
         FamilyHistory familyHistory = new FamilyHistory();
 
         careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
@@ -936,7 +937,7 @@ class CareAPIUtilTest {
         cancerFeature.setCancerFeature("PROSTATE");
         son.setCancerFeatureDetails(Arrays.asList(cancerFeature));
         clinicalHistories.add(son);
-        
+
         FamilyHistory familyHistory = new FamilyHistory();
 
         careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
@@ -956,7 +957,7 @@ class CareAPIUtilTest {
         cancerFeature.setCancerFeature("OVARIAN");
         grandmother.setCancerFeatureDetails(Arrays.asList(cancerFeature));
         clinicalHistories.add(grandmother);
-        
+
         FamilyHistory familyHistory = new FamilyHistory();
 
         careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
@@ -976,7 +977,7 @@ class CareAPIUtilTest {
         cancerFeature.setCancerFeature("PROSTATE");
         grandfather.setCancerFeatureDetails(Arrays.asList(cancerFeature));
         clinicalHistories.add(grandfather);
-        
+
         FamilyHistory familyHistory = new FamilyHistory();
 
         careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
@@ -996,7 +997,7 @@ class CareAPIUtilTest {
         cancerFeature.setCancerFeature("PROSTATE");
         uncle.setCancerFeatureDetails(Arrays.asList(cancerFeature));
         clinicalHistories.add(uncle);
-        
+
         FamilyHistory familyHistory = new FamilyHistory();
 
         careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
@@ -1015,7 +1016,7 @@ class CareAPIUtilTest {
         cancerFeature.setCancerFeature("PROSTATE");
         nephew.setCancerFeatureDetails(Arrays.asList(cancerFeature));
         clinicalHistories.add(nephew);
-        
+
         FamilyHistory familyHistory = new FamilyHistory();
 
         careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
@@ -1034,7 +1035,7 @@ class CareAPIUtilTest {
         cancerFeature.setCancerFeature("BREAST");
         niece.setCancerFeatureDetails(Arrays.asList(cancerFeature));
         clinicalHistories.add(niece);
-        
+
         FamilyHistory familyHistory = new FamilyHistory();
 
         careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
@@ -1101,7 +1102,7 @@ class CareAPIUtilTest {
         proband.setSexAtBirth("male");
         proband.setCancerFeatureDetails(Collections.emptyList());
         clinicalHistories.add(proband);
-        
+
         ClinicalHistory mother = new ClinicalHistory();
         mother.setRelationship("Mother");
         mother.setSexAtBirth("female");
@@ -1109,7 +1110,7 @@ class CareAPIUtilTest {
         cancerFeature.setCancerFeature("BREAST");
         mother.setCancerFeatureDetails(Arrays.asList(cancerFeature));
         clinicalHistories.add(mother);
-        
+
         ClinicalHistory father = new ClinicalHistory();
         father.setRelationship("Father");
         father.setSexAtBirth("male");
@@ -1117,7 +1118,7 @@ class CareAPIUtilTest {
         prostateCancer.setCancerFeature("PROSTATE");
         father.setCancerFeatureDetails(Arrays.asList(prostateCancer));
         clinicalHistories.add(father);
-        
+
         FamilyHistory familyHistory = new FamilyHistory();
 
         List<ClinicalHistory> result = careAPIUtil.getFamilyCancerStatus(clinicalHistories, familyHistory);
@@ -1135,7 +1136,7 @@ class CareAPIUtilTest {
         proband.setSexAtBirth("male");
         proband.setCancerFeatureDetails(Collections.emptyList());
         clinicalHistories.add(proband);
-        
+
         ClinicalHistory cousin = new ClinicalHistory();
         cousin.setRelationship("Cousin - 1st");
         cousin.setSexAtBirth("female");
@@ -1143,7 +1144,7 @@ class CareAPIUtilTest {
         cancerFeature.setCancerFeature("BREAST");
         cousin.setCancerFeatureDetails(Arrays.asList(cancerFeature));
         clinicalHistories.add(cousin);
-        
+
         FamilyHistory familyHistory = new FamilyHistory();
 
         List<ClinicalHistory> result = careAPIUtil.getFamilyCancerStatus(clinicalHistories, familyHistory);
@@ -1161,7 +1162,7 @@ class CareAPIUtilTest {
         proband.setSexAtBirth("male");
         proband.setCancerFeatureDetails(Collections.emptyList());
         clinicalHistories.add(proband);
-        
+
         ClinicalHistory cousin = new ClinicalHistory();
         cousin.setRelationship("Cousin - 1st");
         cousin.setSexAtBirth("male");
@@ -1169,7 +1170,7 @@ class CareAPIUtilTest {
         cancerFeature.setCancerFeature("PROSTATE");
         cousin.setCancerFeatureDetails(Arrays.asList(cancerFeature));
         clinicalHistories.add(cousin);
-        
+
         FamilyHistory familyHistory = new FamilyHistory();
 
         List<ClinicalHistory> result = careAPIUtil.getFamilyCancerStatus(clinicalHistories, familyHistory);
@@ -1191,7 +1192,7 @@ class CareAPIUtilTest {
         clinicalSummary.setRiskAssessmentNccnForAPS(new HashSet<>());
         guidelineDetailsDTO.setClinicalSummary(clinicalSummary);
         guidelineDetailsDTO.setReasoningStatementAndTagsSet("{\"reasoningStatements\":[]}");
-        
+
         NCCNCoreRequest request = new NCCNCoreRequest();
 
         NCCNCoreResponse result = careAPIUtil.CAREAPIResponseMapper(guidelineDetailsDTO, request);
@@ -1211,7 +1212,7 @@ class CareAPIUtilTest {
         clinicalSummary.setRiskAssessmentNccnForHBOC(new HashSet<>());
         guidelineDetailsDTO.setClinicalSummary(clinicalSummary);
         guidelineDetailsDTO.setReasoningStatementAndTagsSet("{\"reasoningStatements\":[]}");
-        
+
         NCCNCoreRequest request = new NCCNCoreRequest();
 
         NCCNCoreResponse result = careAPIUtil.CAREAPIResponseMapper(guidelineDetailsDTO, request);
@@ -1299,7 +1300,7 @@ class CareAPIUtilTest {
     void testGetQuestionObjectWithProbandCancerOverallNO() throws ConnectException {
         NCCNCoreRequest request = new NCCNCoreRequest();
         List<ClinicalHistory> clinicalHistories = new ArrayList<>();
-        
+
         ClinicalHistory proband = new ClinicalHistory();
         proband.setRelationship("Proband");
         proband.setSexAtBirth("male");
@@ -1307,9 +1308,9 @@ class CareAPIUtilTest {
         proband.setCancerOverall("NO");
         proband.setCancerFeatureDetails(Collections.emptyList());
         clinicalHistories.add(proband);
-        
+
         request.setClinicalHistory(clinicalHistories);
-        
+
         GuidelineDetailsDTO guidelineDetailsDTO = new GuidelineDetailsDTO();
         ClinicalSummary clinicalSummary = new ClinicalSummary();
         clinicalSummary.setRiskAssessmentNccnForHBOC(Collections.emptySet());
@@ -1318,7 +1319,7 @@ class CareAPIUtilTest {
         guidelineDetailsDTO.setLYNCH(false);
         guidelineDetailsDTO.setAPS(false);
         guidelineDetailsDTO.setReasoningStatementAndTagsSet("{\"reasoningStatements\":[]}");
-        
+
         when(guideLineUtility.getClinicalSummaryAndTags(any(), anyBoolean(), any(), anyString(), anyBoolean(), anyBoolean()))
             .thenReturn(guidelineDetailsDTO);
 
@@ -1332,7 +1333,7 @@ class CareAPIUtilTest {
     void testGetQuestionObjectWithProbandCancerOverallNOT_PROVIDED() throws ConnectException {
         NCCNCoreRequest request = new NCCNCoreRequest();
         List<ClinicalHistory> clinicalHistories = new ArrayList<>();
-        
+
         ClinicalHistory proband = new ClinicalHistory();
         proband.setRelationship("Proband");
         proband.setSexAtBirth("male");
@@ -1340,9 +1341,9 @@ class CareAPIUtilTest {
         proband.setCancerOverall("NOT_PROVIDED");
         proband.setCancerFeatureDetails(Collections.emptyList());
         clinicalHistories.add(proband);
-        
+
         request.setClinicalHistory(clinicalHistories);
-        
+
         GuidelineDetailsDTO guidelineDetailsDTO = new GuidelineDetailsDTO();
         ClinicalSummary clinicalSummary = new ClinicalSummary();
         clinicalSummary.setRiskAssessmentNccnForHBOC(Collections.emptySet());
@@ -1351,7 +1352,7 @@ class CareAPIUtilTest {
         guidelineDetailsDTO.setLYNCH(false);
         guidelineDetailsDTO.setAPS(false);
         guidelineDetailsDTO.setReasoningStatementAndTagsSet("{\"reasoningStatements\":[]}");
-        
+
         when(guideLineUtility.getClinicalSummaryAndTags(any(), anyBoolean(), any(), anyString(), anyBoolean(), anyBoolean()))
             .thenReturn(guidelineDetailsDTO);
 
@@ -1365,7 +1366,7 @@ class CareAPIUtilTest {
     void testGetQuestionObjectWithProbandPolypOverallYES() throws ConnectException {
         NCCNCoreRequest request = new NCCNCoreRequest();
         List<ClinicalHistory> clinicalHistories = new ArrayList<>();
-        
+
         ClinicalHistory proband = new ClinicalHistory();
         proband.setRelationship("Proband");
         proband.setSexAtBirth("male");
@@ -1378,9 +1379,9 @@ class CareAPIUtilTest {
         proband.setPolypDetails(Arrays.asList(polypDetail));
         proband.setCancerFeatureDetails(Collections.emptyList());
         clinicalHistories.add(proband);
-        
+
         request.setClinicalHistory(clinicalHistories);
-        
+
         GuidelineDetailsDTO guidelineDetailsDTO = new GuidelineDetailsDTO();
         ClinicalSummary clinicalSummary = new ClinicalSummary();
         clinicalSummary.setRiskAssessmentNccnForHBOC(Collections.emptySet());
@@ -1389,7 +1390,7 @@ class CareAPIUtilTest {
         guidelineDetailsDTO.setLYNCH(false);
         guidelineDetailsDTO.setAPS(false);
         guidelineDetailsDTO.setReasoningStatementAndTagsSet("{\"reasoningStatements\":[]}");
-        
+
         when(guideLineUtility.getClinicalSummaryAndTags(any(), anyBoolean(), any(), anyString(), anyBoolean(), anyBoolean()))
             .thenReturn(guidelineDetailsDTO);
 
@@ -1403,7 +1404,7 @@ class CareAPIUtilTest {
     void testGetQuestionObjectWithProbandPolypOverallNO() throws ConnectException {
         NCCNCoreRequest request = new NCCNCoreRequest();
         List<ClinicalHistory> clinicalHistories = new ArrayList<>();
-        
+
         ClinicalHistory proband = new ClinicalHistory();
         proband.setRelationship("Proband");
         proband.setSexAtBirth("male");
@@ -1412,9 +1413,9 @@ class CareAPIUtilTest {
         proband.setPolypOverall("NO");
         proband.setCancerFeatureDetails(Collections.emptyList());
         clinicalHistories.add(proband);
-        
+
         request.setClinicalHistory(clinicalHistories);
-        
+
         GuidelineDetailsDTO guidelineDetailsDTO = new GuidelineDetailsDTO();
         ClinicalSummary clinicalSummary = new ClinicalSummary();
         clinicalSummary.setRiskAssessmentNccnForHBOC(Collections.emptySet());
@@ -1423,7 +1424,7 @@ class CareAPIUtilTest {
         guidelineDetailsDTO.setLYNCH(false);
         guidelineDetailsDTO.setAPS(false);
         guidelineDetailsDTO.setReasoningStatementAndTagsSet("{\"reasoningStatements\":[]}");
-        
+
         when(guideLineUtility.getClinicalSummaryAndTags(any(), anyBoolean(), any(), anyString(), anyBoolean(), anyBoolean()))
             .thenReturn(guidelineDetailsDTO);
 
@@ -1437,7 +1438,7 @@ class CareAPIUtilTest {
     void testGetQuestionObjectWithProbandPolypOverallNOT_PROVIDED() throws ConnectException {
         NCCNCoreRequest request = new NCCNCoreRequest();
         List<ClinicalHistory> clinicalHistories = new ArrayList<>();
-        
+
         ClinicalHistory proband = new ClinicalHistory();
         proband.setRelationship("Proband");
         proband.setSexAtBirth("male");
@@ -1446,9 +1447,9 @@ class CareAPIUtilTest {
         proband.setPolypOverall("NOT_PROVIDED");
         proband.setCancerFeatureDetails(Collections.emptyList());
         clinicalHistories.add(proband);
-        
+
         request.setClinicalHistory(clinicalHistories);
-        
+
         GuidelineDetailsDTO guidelineDetailsDTO = new GuidelineDetailsDTO();
         ClinicalSummary clinicalSummary = new ClinicalSummary();
         clinicalSummary.setRiskAssessmentNccnForHBOC(Collections.emptySet());
@@ -1457,7 +1458,7 @@ class CareAPIUtilTest {
         guidelineDetailsDTO.setLYNCH(false);
         guidelineDetailsDTO.setAPS(false);
         guidelineDetailsDTO.setReasoningStatementAndTagsSet("{\"reasoningStatements\":[]}");
-        
+
         when(guideLineUtility.getClinicalSummaryAndTags(any(), anyBoolean(), any(), anyString(), anyBoolean(), anyBoolean()))
             .thenReturn(guidelineDetailsDTO);
 
@@ -1471,7 +1472,7 @@ class CareAPIUtilTest {
     void testGetQuestionObjectWithProbandPolypExactNumGreaterThan9() throws ConnectException {
         NCCNCoreRequest request = new NCCNCoreRequest();
         List<ClinicalHistory> clinicalHistories = new ArrayList<>();
-        
+
         ClinicalHistory proband = new ClinicalHistory();
         proband.setRelationship("Proband");
         proband.setSexAtBirth("male");
@@ -1484,9 +1485,9 @@ class CareAPIUtilTest {
         proband.setPolypDetails(Arrays.asList(polypDetail));
         proband.setCancerFeatureDetails(Collections.emptyList());
         clinicalHistories.add(proband);
-        
+
         request.setClinicalHistory(clinicalHistories);
-        
+
         GuidelineDetailsDTO guidelineDetailsDTO = new GuidelineDetailsDTO();
         ClinicalSummary clinicalSummary = new ClinicalSummary();
         clinicalSummary.setRiskAssessmentNccnForHBOC(Collections.emptySet());
@@ -1495,7 +1496,7 @@ class CareAPIUtilTest {
         guidelineDetailsDTO.setLYNCH(false);
         guidelineDetailsDTO.setAPS(false);
         guidelineDetailsDTO.setReasoningStatementAndTagsSet("{\"reasoningStatements\":[]}");
-        
+
         when(guideLineUtility.getClinicalSummaryAndTags(any(), anyBoolean(), any(), anyString(), anyBoolean(), anyBoolean()))
             .thenReturn(guidelineDetailsDTO);
 
@@ -1509,7 +1510,7 @@ class CareAPIUtilTest {
     void testGetQuestionObjectWithProbandPolypMinNumGreaterThan9() throws ConnectException {
         NCCNCoreRequest request = new NCCNCoreRequest();
         List<ClinicalHistory> clinicalHistories = new ArrayList<>();
-        
+
         ClinicalHistory proband = new ClinicalHistory();
         proband.setRelationship("Proband");
         proband.setSexAtBirth("male");
@@ -1522,9 +1523,9 @@ class CareAPIUtilTest {
         proband.setPolypDetails(Arrays.asList(polypDetail));
         proband.setCancerFeatureDetails(Collections.emptyList());
         clinicalHistories.add(proband);
-        
+
         request.setClinicalHistory(clinicalHistories);
-        
+
         GuidelineDetailsDTO guidelineDetailsDTO = new GuidelineDetailsDTO();
         ClinicalSummary clinicalSummary = new ClinicalSummary();
         clinicalSummary.setRiskAssessmentNccnForHBOC(Collections.emptySet());
@@ -1533,7 +1534,7 @@ class CareAPIUtilTest {
         guidelineDetailsDTO.setLYNCH(false);
         guidelineDetailsDTO.setAPS(false);
         guidelineDetailsDTO.setReasoningStatementAndTagsSet("{\"reasoningStatements\":[]}");
-        
+
         when(guideLineUtility.getClinicalSummaryAndTags(any(), anyBoolean(), any(), anyString(), anyBoolean(), anyBoolean()))
             .thenReturn(guidelineDetailsDTO);
 
@@ -1547,7 +1548,7 @@ class CareAPIUtilTest {
     void testGetQuestionObjectWithProbandPolypOtherNumNumerous() throws ConnectException {
         NCCNCoreRequest request = new NCCNCoreRequest();
         List<ClinicalHistory> clinicalHistories = new ArrayList<>();
-        
+
         ClinicalHistory proband = new ClinicalHistory();
         proband.setRelationship("Proband");
         proband.setSexAtBirth("male");
@@ -1560,9 +1561,9 @@ class CareAPIUtilTest {
         proband.setPolypDetails(Arrays.asList(polypDetail));
         proband.setCancerFeatureDetails(Collections.emptyList());
         clinicalHistories.add(proband);
-        
+
         request.setClinicalHistory(clinicalHistories);
-        
+
         GuidelineDetailsDTO guidelineDetailsDTO = new GuidelineDetailsDTO();
         ClinicalSummary clinicalSummary = new ClinicalSummary();
         clinicalSummary.setRiskAssessmentNccnForHBOC(Collections.emptySet());
@@ -1571,7 +1572,7 @@ class CareAPIUtilTest {
         guidelineDetailsDTO.setLYNCH(false);
         guidelineDetailsDTO.setAPS(false);
         guidelineDetailsDTO.setReasoningStatementAndTagsSet("{\"reasoningStatements\":[]}");
-        
+
         when(guideLineUtility.getClinicalSummaryAndTags(any(), anyBoolean(), any(), anyString(), anyBoolean(), anyBoolean()))
             .thenReturn(guidelineDetailsDTO);
 
@@ -1585,7 +1586,7 @@ class CareAPIUtilTest {
     void testGetQuestionObjectWithProbandPolypNonAdenoma() throws ConnectException {
         NCCNCoreRequest request = new NCCNCoreRequest();
         List<ClinicalHistory> clinicalHistories = new ArrayList<>();
-        
+
         ClinicalHistory proband = new ClinicalHistory();
         proband.setRelationship("Proband");
         proband.setSexAtBirth("male");
@@ -1597,9 +1598,9 @@ class CareAPIUtilTest {
         proband.setPolypDetails(Arrays.asList(polypDetail));
         proband.setCancerFeatureDetails(Collections.emptyList());
         clinicalHistories.add(proband);
-        
+
         request.setClinicalHistory(clinicalHistories);
-        
+
         GuidelineDetailsDTO guidelineDetailsDTO = new GuidelineDetailsDTO();
         ClinicalSummary clinicalSummary = new ClinicalSummary();
         clinicalSummary.setRiskAssessmentNccnForHBOC(Collections.emptySet());
@@ -1608,7 +1609,7 @@ class CareAPIUtilTest {
         guidelineDetailsDTO.setLYNCH(false);
         guidelineDetailsDTO.setAPS(false);
         guidelineDetailsDTO.setReasoningStatementAndTagsSet("{\"reasoningStatements\":[]}");
-        
+
         when(guideLineUtility.getClinicalSummaryAndTags(any(), anyBoolean(), any(), anyString(), anyBoolean(), anyBoolean()))
             .thenReturn(guidelineDetailsDTO);
 
@@ -1622,7 +1623,7 @@ class CareAPIUtilTest {
     void testGetQuestionObjectWithProbandDesmoids() throws ConnectException {
         NCCNCoreRequest request = new NCCNCoreRequest();
         List<ClinicalHistory> clinicalHistories = new ArrayList<>();
-        
+
         ClinicalHistory proband = new ClinicalHistory();
         proband.setRelationship("Proband");
         proband.setSexAtBirth("male");
@@ -1632,9 +1633,9 @@ class CareAPIUtilTest {
         desmoids.setCancerFeature("DESMOIDS");
         proband.setCancerFeatureDetails(Arrays.asList(desmoids));
         clinicalHistories.add(proband);
-        
+
         request.setClinicalHistory(clinicalHistories);
-        
+
         GuidelineDetailsDTO guidelineDetailsDTO = new GuidelineDetailsDTO();
         ClinicalSummary clinicalSummary = new ClinicalSummary();
         clinicalSummary.setRiskAssessmentNccnForHBOC(Collections.emptySet());
@@ -1643,7 +1644,7 @@ class CareAPIUtilTest {
         guidelineDetailsDTO.setLYNCH(false);
         guidelineDetailsDTO.setAPS(false);
         guidelineDetailsDTO.setReasoningStatementAndTagsSet("{\"reasoningStatements\":[]}");
-        
+
         when(guideLineUtility.getClinicalSummaryAndTags(any(), anyBoolean(), any(), anyString(), anyBoolean(), anyBoolean()))
             .thenReturn(guidelineDetailsDTO);
 
@@ -1660,7 +1661,7 @@ class CareAPIUtilTest {
         cancer.setCancerFeature("BREAST");
         cancer.setMinDxAge("45");
         cancerFeatureDetailsList.add(cancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -1676,7 +1677,7 @@ class CareAPIUtilTest {
         cancer.setCancerFeature("BREAST");
         cancer.setMaxDxAge("50");
         cancerFeatureDetailsList.add(cancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -1692,7 +1693,7 @@ class CareAPIUtilTest {
         cancer.setCancerFeature("BREAST");
         cancer.setOtherDxAge("PRENATAL");
         cancerFeatureDetailsList.add(cancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -1709,7 +1710,7 @@ class CareAPIUtilTest {
         breastCancer.setExactDxAge("45");
         breastCancer.setBreastIpsilateral("Yes");
         cancerFeatureDetailsList.add(breastCancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -1728,7 +1729,7 @@ class CareAPIUtilTest {
         breastCancer.setBreastPr("Positive");
         breastCancer.setBreastHer2("Positive");
         cancerFeatureDetailsList.add(breastCancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -1745,7 +1746,7 @@ class CareAPIUtilTest {
         breastCancer.setExactDxAge("45");
         // No ER/PR/Her2 set
         cancerFeatureDetailsList.add(breastCancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -1766,8 +1767,8 @@ class CareAPIUtilTest {
         breastCancer.setBreastPr("Negative");
         breastCancer.setBreastHer2("Negative");
         cancerFeatureDetailsList.add(breastCancer);
-        
-        com.genomebrain.backend.quesstionnaire.relative.Mother mother = 
+
+        com.genomebrain.backend.quesstionnaire.relative.Mother mother =
             new com.genomebrain.backend.quesstionnaire.relative.Mother();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, null, false, mother);
@@ -1784,7 +1785,7 @@ class CareAPIUtilTest {
         prostateCancer.setExactDxAge("65");
         prostateCancer.setProstateGleasonScore("7");
         cancerFeatureDetailsList.add(prostateCancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -1801,7 +1802,7 @@ class CareAPIUtilTest {
         prostateCancer.setExactDxAge("65");
         prostateCancer.setProstateGradeGroup("Grade Group 5");
         cancerFeatureDetailsList.add(prostateCancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -1818,7 +1819,7 @@ class CareAPIUtilTest {
         prostateCancer.setExactDxAge("65");
         prostateCancer.setProstateRiskGroup("High Risk Group");
         cancerFeatureDetailsList.add(prostateCancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -1836,8 +1837,8 @@ class CareAPIUtilTest {
         prostateCancer.setProstateGleasonScore("8");
         prostateCancer.setMetastatic("Yes");
         cancerFeatureDetailsList.add(prostateCancer);
-        
-        com.genomebrain.backend.quesstionnaire.relative.Father father = 
+
+        com.genomebrain.backend.quesstionnaire.relative.Father father =
             new com.genomebrain.backend.quesstionnaire.relative.Father();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, null, false, father);
@@ -1854,7 +1855,7 @@ class CareAPIUtilTest {
         skinCancer.setExactDxAge("40");
         skinCancer.setBreastCancerTypes(Arrays.asList("Sebaceous carcinoma"));
         cancerFeatureDetailsList.add(skinCancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -1871,8 +1872,8 @@ class CareAPIUtilTest {
         skinCancer.setExactDxAge("40");
         skinCancer.setBreastCancerTypes(Arrays.asList("Sebaceous Carcinoma"));
         cancerFeatureDetailsList.add(skinCancer);
-        
-        com.genomebrain.backend.quesstionnaire.relative.Mother mother = 
+
+        com.genomebrain.backend.quesstionnaire.relative.Mother mother =
             new com.genomebrain.backend.quesstionnaire.relative.Mother();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, null, false, mother);
@@ -1888,7 +1889,7 @@ class CareAPIUtilTest {
         unknownCancer.setCancerFeature("Unknown/Other cancer not listed here");
         unknownCancer.setExactDxAge("50");
         cancerFeatureDetailsList.add(unknownCancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -1901,10 +1902,10 @@ class CareAPIUtilTest {
     void testGetCancerObjectWithSmallIntestineForProband() {
         List<CancerFeatureDetails> cancerFeatureDetailsList = new ArrayList<>();
         CancerFeatureDetails cancer = new CancerFeatureDetails();
-        cancer.setCancerFeature("SMALLINTESTINE");
+        cancer.setCancerFeature(Cancer.CancerType.SmallIntestine.name());
         cancer.setExactDxAge("55");
         cancerFeatureDetailsList.add(cancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -1917,10 +1918,10 @@ class CareAPIUtilTest {
     void testGetCancerObjectWithBiliaryTractForProband() {
         List<CancerFeatureDetails> cancerFeatureDetailsList = new ArrayList<>();
         CancerFeatureDetails cancer = new CancerFeatureDetails();
-        cancer.setCancerFeature("BILIARY");
+        cancer.setCancerFeature(Cancer.CancerType.BILIARY_TRACT.name());
         cancer.setExactDxAge("60");
         cancerFeatureDetailsList.add(cancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -1936,7 +1937,7 @@ class CareAPIUtilTest {
         cancer.setCancerFeature("KIDNEY");
         cancer.setExactDxAge("55");
         cancerFeatureDetailsList.add(cancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -1949,10 +1950,10 @@ class CareAPIUtilTest {
     void testGetCancerObjectWithUreterForProband() {
         List<CancerFeatureDetails> cancerFeatureDetailsList = new ArrayList<>();
         CancerFeatureDetails cancer = new CancerFeatureDetails();
-        cancer.setCancerFeature("URETER");
+        cancer.setCancerFeature(Cancer.CancerType.Ureter.name());
         cancer.setExactDxAge("50");
         cancerFeatureDetailsList.add(cancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -1968,7 +1969,7 @@ class CareAPIUtilTest {
         cancer.setCancerFeature("LEUKEMIA");
         cancer.setExactDxAge("40");
         cancerFeatureDetailsList.add(cancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -1984,7 +1985,7 @@ class CareAPIUtilTest {
         cancer.setCancerFeature("LYMPHOMA");
         cancer.setExactDxAge("45");
         cancerFeatureDetailsList.add(cancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -2000,7 +2001,7 @@ class CareAPIUtilTest {
         cancer.setCancerFeature("GALLBLADDER");
         cancer.setExactDxAge("60");
         cancerFeatureDetailsList.add(cancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -2016,7 +2017,7 @@ class CareAPIUtilTest {
         cancer.setCancerFeature("CERVICAL");
         cancer.setExactDxAge("35");
         cancerFeatureDetailsList.add(cancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -2032,7 +2033,7 @@ class CareAPIUtilTest {
         cancer.setCancerFeature("BLADDER");
         cancer.setExactDxAge("65");
         cancerFeatureDetailsList.add(cancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -2048,7 +2049,7 @@ class CareAPIUtilTest {
         cancer.setCancerFeature("THROAT");
         cancer.setExactDxAge("55");
         cancerFeatureDetailsList.add(cancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -2064,7 +2065,7 @@ class CareAPIUtilTest {
         cancer.setCancerFeature("THYROID");
         cancer.setExactDxAge("40");
         cancerFeatureDetailsList.add(cancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -2080,7 +2081,7 @@ class CareAPIUtilTest {
         cancer.setCancerFeature("ORAL");
         cancer.setExactDxAge("50");
         cancerFeatureDetailsList.add(cancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -2096,7 +2097,7 @@ class CareAPIUtilTest {
         cancer.setCancerFeature("LIVER");
         cancer.setExactDxAge("60");
         cancerFeatureDetailsList.add(cancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -2112,7 +2113,7 @@ class CareAPIUtilTest {
         cancer.setCancerFeature("TESTICULAR");
         cancer.setExactDxAge("30");
         cancerFeatureDetailsList.add(cancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -2128,7 +2129,7 @@ class CareAPIUtilTest {
         cancer.setCancerFeature("PARAGANGLIOMA");
         cancer.setExactDxAge("45");
         cancerFeatureDetailsList.add(cancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -2144,7 +2145,7 @@ class CareAPIUtilTest {
         cancer.setCancerFeature("PHEOCHROMOCYTOMA");
         cancer.setExactDxAge("40");
         cancerFeatureDetailsList.add(cancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -2160,7 +2161,7 @@ class CareAPIUtilTest {
         cancer.setCancerFeature("LUNG");
         cancer.setExactDxAge("65");
         cancerFeatureDetailsList.add(cancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -2176,7 +2177,7 @@ class CareAPIUtilTest {
         cancer.setCancerFeature("SARCOMA");
         cancer.setExactDxAge("50");
         cancerFeatureDetailsList.add(cancer);
-        
+
         CancerDetails personalCancer = new CancerDetails();
 
         careAPIUtil.getCancerObject(cancerFeatureDetailsList, personalCancer, true, null);
@@ -2194,7 +2195,7 @@ class CareAPIUtilTest {
         cancerFeature.setCancerFeature("BREAST");
         granddaughter.setCancerFeatureDetails(Arrays.asList(cancerFeature));
         clinicalHistories.add(granddaughter);
-        
+
         FamilyHistory familyHistory = new FamilyHistory();
 
         careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
@@ -2213,7 +2214,7 @@ class CareAPIUtilTest {
         cancerFeature.setCancerFeature("PROSTATE");
         grandson.setCancerFeatureDetails(Arrays.asList(cancerFeature));
         clinicalHistories.add(grandson);
-        
+
         FamilyHistory familyHistory = new FamilyHistory();
 
         careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
@@ -2233,7 +2234,7 @@ class CareAPIUtilTest {
         cancerFeature.setCancerFeature("BREAST");
         halfSister.setCancerFeatureDetails(Arrays.asList(cancerFeature));
         clinicalHistories.add(halfSister);
-        
+
         FamilyHistory familyHistory = new FamilyHistory();
 
         careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
@@ -2253,7 +2254,7 @@ class CareAPIUtilTest {
         cancerFeature.setCancerFeature("PROSTATE");
         halfBrother.setCancerFeatureDetails(Arrays.asList(cancerFeature));
         clinicalHistories.add(halfBrother);
-        
+
         FamilyHistory familyHistory = new FamilyHistory();
 
         careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
@@ -2273,7 +2274,7 @@ class CareAPIUtilTest {
         cancerFeature.setCancerFeature("PROSTATE");
         cousin.setCancerFeatureDetails(Arrays.asList(cancerFeature));
         clinicalHistories.add(cousin);
-        
+
         FamilyHistory familyHistory = new FamilyHistory();
 
         careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
@@ -2293,7 +2294,7 @@ class CareAPIUtilTest {
         cancerFeature.setCancerFeature("BREAST");
         cousin.setCancerFeatureDetails(Arrays.asList(cancerFeature));
         clinicalHistories.add(cousin);
-        
+
         FamilyHistory familyHistory = new FamilyHistory();
 
         careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
@@ -2313,7 +2314,7 @@ class CareAPIUtilTest {
         cancerFeature.setCancerFeature("OVARIAN");
         greatGrandmother.setCancerFeatureDetails(Arrays.asList(cancerFeature));
         clinicalHistories.add(greatGrandmother);
-        
+
         FamilyHistory familyHistory = new FamilyHistory();
 
         careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
@@ -2333,7 +2334,7 @@ class CareAPIUtilTest {
         cancerFeature.setCancerFeature("PROSTATE");
         greatGrandfather.setCancerFeatureDetails(Arrays.asList(cancerFeature));
         clinicalHistories.add(greatGrandfather);
-        
+
         FamilyHistory familyHistory = new FamilyHistory();
 
         careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
@@ -2353,7 +2354,7 @@ class CareAPIUtilTest {
         cancerFeature.setCancerFeature("BREAST");
         greatAunt.setCancerFeatureDetails(Arrays.asList(cancerFeature));
         clinicalHistories.add(greatAunt);
-        
+
         FamilyHistory familyHistory = new FamilyHistory();
 
         careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
@@ -2373,7 +2374,7 @@ class CareAPIUtilTest {
         cancerFeature.setCancerFeature("PROSTATE");
         greatUncle.setCancerFeatureDetails(Arrays.asList(cancerFeature));
         clinicalHistories.add(greatUncle);
-        
+
         FamilyHistory familyHistory = new FamilyHistory();
 
         careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
@@ -2392,7 +2393,7 @@ class CareAPIUtilTest {
         cancerFeature.setCancerFeature("PROSTATE");
         greatNephew.setCancerFeatureDetails(Arrays.asList(cancerFeature));
         clinicalHistories.add(greatNephew);
-        
+
         FamilyHistory familyHistory = new FamilyHistory();
 
         careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
@@ -2411,7 +2412,7 @@ class CareAPIUtilTest {
         cancerFeature.setCancerFeature("BREAST");
         greatNiece.setCancerFeatureDetails(Arrays.asList(cancerFeature));
         clinicalHistories.add(greatNiece);
-        
+
         FamilyHistory familyHistory = new FamilyHistory();
 
         careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
@@ -2430,7 +2431,7 @@ class CareAPIUtilTest {
         cancerFeature.setCancerFeature("BREAST");
         greatGranddaughter.setCancerFeatureDetails(Arrays.asList(cancerFeature));
         clinicalHistories.add(greatGranddaughter);
-        
+
         FamilyHistory familyHistory = new FamilyHistory();
 
         careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
@@ -2449,7 +2450,7 @@ class CareAPIUtilTest {
         cancerFeature.setCancerFeature("PROSTATE");
         greatGrandson.setCancerFeatureDetails(Arrays.asList(cancerFeature));
         clinicalHistories.add(greatGrandson);
-        
+
         FamilyHistory familyHistory = new FamilyHistory();
 
         careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
@@ -2469,7 +2470,7 @@ class CareAPIUtilTest {
         cancerFeature.setCancerFeature("OVARIAN");
         halfAunt.setCancerFeatureDetails(Arrays.asList(cancerFeature));
         clinicalHistories.add(halfAunt);
-        
+
         FamilyHistory familyHistory = new FamilyHistory();
 
         careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
@@ -2489,7 +2490,7 @@ class CareAPIUtilTest {
         cancerFeature.setCancerFeature("PROSTATE");
         halfUncle.setCancerFeatureDetails(Arrays.asList(cancerFeature));
         clinicalHistories.add(halfUncle);
-        
+
         FamilyHistory familyHistory = new FamilyHistory();
 
         careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
@@ -2508,7 +2509,7 @@ class CareAPIUtilTest {
         cancerFeature.setCancerFeature("BREAST");
         halfNiece.setCancerFeatureDetails(Arrays.asList(cancerFeature));
         clinicalHistories.add(halfNiece);
-        
+
         FamilyHistory familyHistory = new FamilyHistory();
 
         careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
@@ -2527,7 +2528,7 @@ class CareAPIUtilTest {
         cancerFeature.setCancerFeature("PROSTATE");
         halfNephew.setCancerFeatureDetails(Arrays.asList(cancerFeature));
         clinicalHistories.add(halfNephew);
-        
+
         FamilyHistory familyHistory = new FamilyHistory();
 
         careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
@@ -2546,7 +2547,7 @@ class CareAPIUtilTest {
         cancerFeature.setCancerFeature("BREAST");
         other.setCancerFeatureDetails(Arrays.asList(cancerFeature));
         clinicalHistories.add(other);
-        
+
         FamilyHistory familyHistory = new FamilyHistory();
 
         careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
@@ -2565,7 +2566,7 @@ class CareAPIUtilTest {
         cancerFeature.setCancerFeature("BREAST");
         unknown.setCancerFeatureDetails(Arrays.asList(cancerFeature));
         clinicalHistories.add(unknown);
-        
+
         FamilyHistory familyHistory = new FamilyHistory();
 
         careAPIUtil.getFamilyCancerDetails(clinicalHistories, familyHistory);
@@ -2582,7 +2583,7 @@ class CareAPIUtilTest {
         clinicalSummary.setRiskAssessmentNccnForHBOC(new HashSet<>());
         guidelineDetailsDTO.setClinicalSummary(clinicalSummary);
         guidelineDetailsDTO.setReasoningStatementAndTagsSet("{\"reasoningStatements\":[]}");
-        
+
         NCCNCoreRequest request = new NCCNCoreRequest();
 
         NCCNCoreResponse result = careAPIUtil.CAREAPIResponseMapper(guidelineDetailsDTO, request);
@@ -2600,7 +2601,7 @@ class CareAPIUtilTest {
         clinicalSummary.setRiskAssessmentNccnForLYNCH(new HashSet<>());
         guidelineDetailsDTO.setClinicalSummary(clinicalSummary);
         guidelineDetailsDTO.setReasoningStatementAndTagsSet("{\"reasoningStatements\":[{\"reasoningStatementId\":\"CRCRS3\"}]}");
-        
+
         NCCNCoreRequest request = new NCCNCoreRequest();
 
         NCCNCoreResponse result = careAPIUtil.CAREAPIResponseMapper(guidelineDetailsDTO, request);
@@ -2614,7 +2615,7 @@ class CareAPIUtilTest {
     void testGetQuestionObjectWithProbandEthnicityOther() throws ConnectException {
         NCCNCoreRequest request = new NCCNCoreRequest();
         List<ClinicalHistory> clinicalHistories = new ArrayList<>();
-        
+
         ClinicalHistory proband = new ClinicalHistory();
         proband.setRelationship("Proband");
         proband.setSexAtBirth("male");
@@ -2623,9 +2624,9 @@ class CareAPIUtilTest {
         proband.setCancerOverall("NO");
         proband.setCancerFeatureDetails(Collections.emptyList());
         clinicalHistories.add(proband);
-        
+
         request.setClinicalHistory(clinicalHistories);
-        
+
         GuidelineDetailsDTO guidelineDetailsDTO = new GuidelineDetailsDTO();
         ClinicalSummary clinicalSummary = new ClinicalSummary();
         clinicalSummary.setRiskAssessmentNccnForHBOC(Collections.emptySet());
@@ -2634,7 +2635,7 @@ class CareAPIUtilTest {
         guidelineDetailsDTO.setLYNCH(false);
         guidelineDetailsDTO.setAPS(false);
         guidelineDetailsDTO.setReasoningStatementAndTagsSet("{\"reasoningStatements\":[]}");
-        
+
         when(guideLineUtility.getClinicalSummaryAndTags(any(), anyBoolean(), any(), anyString(), anyBoolean(), anyBoolean()))
             .thenReturn(guidelineDetailsDTO);
 
@@ -2648,7 +2649,7 @@ class CareAPIUtilTest {
     void testGetQuestionObjectWithProbandPathologyOther() throws ConnectException {
         NCCNCoreRequest request = new NCCNCoreRequest();
         List<ClinicalHistory> clinicalHistories = new ArrayList<>();
-        
+
         ClinicalHistory proband = new ClinicalHistory();
         proband.setRelationship("Proband");
         proband.setSexAtBirth("male");
@@ -2661,9 +2662,9 @@ class CareAPIUtilTest {
         breastCancer.setPathologyOther("Other Pathology");
         proband.setCancerFeatureDetails(Arrays.asList(breastCancer));
         clinicalHistories.add(proband);
-        
+
         request.setClinicalHistory(clinicalHistories);
-        
+
         GuidelineDetailsDTO guidelineDetailsDTO = new GuidelineDetailsDTO();
         ClinicalSummary clinicalSummary = new ClinicalSummary();
         clinicalSummary.setRiskAssessmentNccnForHBOC(Collections.emptySet());
@@ -2672,7 +2673,7 @@ class CareAPIUtilTest {
         guidelineDetailsDTO.setLYNCH(false);
         guidelineDetailsDTO.setAPS(false);
         guidelineDetailsDTO.setReasoningStatementAndTagsSet("{\"reasoningStatements\":[]}");
-        
+
         when(guideLineUtility.getClinicalSummaryAndTags(any(), anyBoolean(), any(), anyString(), anyBoolean(), anyBoolean()))
             .thenReturn(guidelineDetailsDTO);
 
@@ -2686,7 +2687,7 @@ class CareAPIUtilTest {
     void testGetQuestionObjectWithException() throws ConnectException {
         NCCNCoreRequest request = new NCCNCoreRequest();
         List<ClinicalHistory> clinicalHistories = new ArrayList<>();
-        
+
         ClinicalHistory proband = new ClinicalHistory();
         proband.setRelationship("Proband");
         proband.setSexAtBirth("male");
@@ -2694,9 +2695,9 @@ class CareAPIUtilTest {
         proband.setCancerOverall("YES");
         proband.setCancerFeatureDetails(Collections.emptyList());
         clinicalHistories.add(proband);
-        
+
         request.setClinicalHistory(clinicalHistories);
-        
+
         when(guideLineUtility.getClinicalSummaryAndTags(any(), anyBoolean(), any(), anyString(), anyBoolean(), anyBoolean()))
             .thenThrow(new RuntimeException("Test exception"));
 

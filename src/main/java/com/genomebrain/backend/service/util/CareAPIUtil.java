@@ -4,7 +4,6 @@ import static com.genomebrain.backend.service.util.APIConstants.GRADE_GROUP_4;
 import static com.genomebrain.backend.service.util.APIConstants.GRADE_GROUP_5;
 import static com.genomebrain.backend.service.util.APIConstants.HIGH_RISK_GROUP;
 import static com.genomebrain.backend.service.util.APIConstants.VERY_HIGH_RISK_GROUP;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
@@ -66,6 +65,8 @@ import com.genomebrain.backend.service.dto.GuidelineDetailsDTO;
 import com.genomebrain.backend.service.dto.NCCNCoreRequest;
 import com.genomebrain.backend.service.dto.NCCNCoreResponse;
 import com.genomebrain.backend.service.dto.PolypDetails;
+
+import com.objex.risk.beans.uno.Cancer.CancerType;
 
 @Component
 public class CareAPIUtil{
@@ -334,7 +335,7 @@ public class CareAPIUtil{
         List<QuestionSet> personalCancerQuestions = new ArrayList<>();
         List<QuestionSet> relativeCancerQuestions = new ArrayList<>();
         for (CancerFeatureDetails cancerFeatureDetails : cancerFeatureDetailsList) {
-            cancerFeatureDetails.setCancerFeature(cancerFeatureDetails.getCancerFeature().toUpperCase());
+            cancerFeatureDetails.setCancerFeature(cancerFeatureDetails.getCancerFeature());
             if(cancerFeatureDetails.getCancerFeature().equalsIgnoreCase("Sebaceous Carcinoma") || cancerFeatureDetails.getCancerFeature().equalsIgnoreCase("Sebaceous adenomas"))
             {
                 cancerFeatureDetails.setCancerFeature(Skin);
@@ -390,8 +391,27 @@ public class CareAPIUtil{
                     relativeCancerQuestions.add(questionSet);
                 }
             }
-            switch (cancerName) {
-                case Breast:
+            if (cancerName.equals("Unknown/Other cancer not listed here")) {
+                if ((!StringUtils.isEmpty(cancerFeatureDetails.getExactDxAge()) || !StringUtils.isEmpty(cancerFeatureDetails.getMaxDxAge()) || !StringUtils.isEmpty(cancerFeatureDetails.getOtherDxAge()) || !StringUtils.isEmpty(cancerFeatureDetails.getMinDxAge())) && (!StringUtils.isEmpty(cancerFeatureDetails.getCancerFeature()))) {
+                    if (!StringUtils.isEmpty(cancerFeatureDetails.getExactDxAge()))
+                        ageAtDiagnosis = cancerFeatureDetails.getExactDxAge();
+                    else if (!StringUtils.isEmpty(cancerFeatureDetails.getMaxDxAge()))
+                        ageAtDiagnosis = cancerFeatureDetails.getMaxDxAge();
+                    else if (!StringUtils.isEmpty(cancerFeatureDetails.getMinDxAge())) {
+                        ageAtDiagnosis = cancerFeatureDetails.getMinDxAge();
+                    } else if (!StringUtils.isEmpty(cancerFeatureDetails.getOtherDxAge())) {
+                        String otherAge = cancerFeatureDetails.getOtherDxAge().trim().toUpperCase();
+                        if (otherDXAge.contains(otherAge)) {
+                            ageAtDiagnosis = otherDXAgeValue;
+                        }
+                    }
+                    questionSet = NCCNQuestionMapper.getQuestionSetForAgeAtDiagnosis(cancerFeatureDetails.getCancerFeature(), ageAtDiagnosis);
+                    personalCancerQuestions.add(questionSet);
+                }
+                return;
+            }
+            switch (CancerType.valueOf(cancerName)) {
+                case CancerType.BREAST:
                     if (isProband) {
                         if (!StringUtils.isEmpty(cancerFeatureDetails.getMultiplePrimaries()) && cancerFeatureDetails.getMultiplePrimaries().equalsIgnoreCase(YES)) {
                             questionSet = NCCNQuestionMapper.getQuestionSet(multiplePrimaries, YES);
@@ -469,7 +489,7 @@ public class CareAPIUtil{
                         relativeHistory.setBreast(relativeCancerQuestions);
                     }
                     break;
-                case Prostate:
+                case CancerType.PROSTATE:
                     if (isProband) {
 
                         if ((!StringUtils.isEmpty(cancerFeatureDetails.getProstateGleasonScore()) || !StringUtils.isEmpty(cancerFeatureDetails.getProstateGradeGroup()) || !StringUtils.isEmpty(cancerFeatureDetails.getProstateRiskGroup()))) {
@@ -520,7 +540,7 @@ public class CareAPIUtil{
                         relativeHistory.setProstate(relativeCancerQuestions);
                     }
                     break;
-                case Brain:
+                case CancerType.BRAIN:
                     if (isProband) {
                         if (!StringUtils.isEmpty(cancerFeatureDetails.getMultiplePrimaries())) {
 
@@ -532,19 +552,19 @@ public class CareAPIUtil{
                         relativeHistory.setBrain(relativeCancerQuestions);
                     break;
 
-                case Ovarian:
+                case CancerType.OVARIAN:
                     if (isProband)
                         personalCancer.setOvarian(personalCancerQuestions);
                     else
                         relativeHistory.setOvarian(relativeCancerQuestions);
                     break;
-                case FallopianTube:
+                case CancerType.Fallopian_Tube:
                     if (isProband)
                         personalCancer.setFallopianTube(personalCancerQuestions);
                     else
                         relativeHistory.setFallopianTube(relativeCancerQuestions);
                     break;
-                case Colorectal:
+                case CancerType.COLORECTAL:
                     if (isProband) {
                         if (!StringUtils.isEmpty(cancerFeatureDetails.getMultiplePrimaries())) {
 
@@ -561,50 +581,50 @@ public class CareAPIUtil{
                         relativeHistory.setColorectal(relativeCancerQuestions);
                     }
                     break;
-                case Pancreatic:
+                case CancerType.PANCREATIC:
                     if (isProband)
                         personalCancer.setPancreatic(personalCancerQuestions);
                     else
                         relativeHistory.setPancreatic(relativeCancerQuestions);
                     break;
-                case Uterine:
+                case CancerType.Uterine:
                     if (isProband)
                         personalCancer.setUterine(personalCancerQuestions);
                     else
                         relativeHistory.setUterine(relativeCancerQuestions);
                     break;
-                case Gastric:
+                case CancerType.Gastric:
                     if (isProband)
                         personalCancer.setStomach(personalCancerQuestions);
                     else
                         relativeHistory.setStomach(relativeCancerQuestions);
                     break;
-                case SmallIntestine:
+                case CancerType.SmallIntestine:
                     if (isProband)
                         personalCancer.setSmallIntestine(personalCancerQuestions);
                     else
                         relativeHistory.setSmallIntestine(relativeCancerQuestions);
                     break;
-                case BiliaryTract:
+                case CancerType.BILIARY_TRACT:
                     if (isProband)
                         personalCancer.setBiliaryTract(personalCancerQuestions);
                     else
                         relativeHistory.setBiliaryTract(relativeCancerQuestions);
                     break;
-                case Kidney:
+                case CancerType.KIDNEY:
                     if (isProband)
                         personalCancer.setKidney(personalCancerQuestions);
                     else
                         relativeHistory.setKidney(relativeCancerQuestions);
                     break;
-                case Ureter:
+                case CancerType.Ureter:
 
                     if (isProband)
                         personalCancer.setUreter(personalCancerQuestions);
                     else
                         relativeHistory.setUreter(relativeCancerQuestions);
                     break;
-                case Skin:
+                case CancerType.SKIN:
                     if ((cancerFeatureDetails.getBreastCancerTypes().contains(Sebaceous) ||  cancerFeatureDetails.getBreastCancerTypes().contains(Sebaceous_C))) {
                         if (isProband) {
                             if ((!StringUtils.isEmpty(cancerFeatureDetails.getExactDxAge()) || !StringUtils.isEmpty(cancerFeatureDetails.getMaxDxAge()) || !StringUtils.isEmpty(cancerFeatureDetails.getOtherDxAge()) || !StringUtils.isEmpty(cancerFeatureDetails.getMinDxAge())) && (!StringUtils.isEmpty(cancerFeatureDetails.getCancerFeature()))) {
@@ -660,95 +680,95 @@ public class CareAPIUtil{
                     }
                     break;
 
-                case Leukemia:
+                case CancerType.LEUKEMIA:
 
                     if (isProband)
                         personalCancer.setLeukemia(personalCancerQuestions);
                     else
                         relativeHistory.setLeukemia(relativeCancerQuestions);
                     break;
-                case Lymphoma:
+                case CancerType.LYMPHOMA:
 
                     if (isProband)
                         personalCancer.setLymphoma(personalCancerQuestions);
                     else
                         relativeHistory.setLymphoma(relativeCancerQuestions);
                     break;
-                case Gallbladder:
+                case CancerType.GALLBLADDER:
 
                     if (isProband)
                         personalCancer.setGallbladder(personalCancerQuestions);
                     else
                         relativeHistory.setGallbladder(relativeCancerQuestions);
                     break;
-                case Cervical:
+                case CancerType.CERVICAL:
                     if (isProband)
                         personalCancer.setCervical(personalCancerQuestions);
                     else
                         relativeHistory.setCervical(relativeCancerQuestions);
                     break;
-                case Bladder:
+                case CancerType.BLADDER:
                     if (isProband)
                         personalCancer.setBladder(personalCancerQuestions);
                     else
                         relativeHistory.setBladder(relativeCancerQuestions);
                     break;
-                case Throat:
+                case CancerType.THROAT:
                     if (isProband)
                         personalCancer.setThroat(personalCancerQuestions);
                     else
                         relativeHistory.setThroat(relativeCancerQuestions);
                     break;
-                case Thyroid:
+                case CancerType.THYROID:
                     if (isProband)
                         personalCancer.setThyroid(personalCancerQuestions);
                     else
                         relativeHistory.setThyroid(relativeCancerQuestions);
                     break;
-                case Oral:
+                case CancerType.ORAL:
                     if (isProband)
                         personalCancer.setOral(personalCancerQuestions);
                     else
                         relativeHistory.setOral(relativeCancerQuestions);
                     break;
-                case Liver:
+                case CancerType.LIVER:
                     if (isProband)
                         personalCancer.setLiver(personalCancerQuestions);
                     else
                         relativeHistory.setLiver(relativeCancerQuestions);
                     break;
-                case Testicular:
+                case CancerType.TESTICULAR:
                     if (isProband)
                         personalCancer.setTesticular(personalCancerQuestions);
                     else
                         relativeHistory.setTesticular(relativeCancerQuestions);
                     break;
-                case Paraganglioma:
+                case CancerType.PARAGANGLIOMA:
                     if (isProband)
                         personalCancer.setParaganglioma(personalCancerQuestions);
                     else
                         relativeHistory.setParaganglioma(relativeCancerQuestions);
                     break;
-                case Pheochromocytoma:
+                case CancerType.PHEOCHROMOCYTOMA:
                     if (isProband)
                         personalCancer.setPheochromocytoma(personalCancerQuestions);
                     else
                         relativeHistory.setPheochromocytoma(relativeCancerQuestions);
                     break;
-                case Lung:
+                case CancerType.LUNG:
                     if (isProband)
                         personalCancer.setLung(personalCancerQuestions);
                     else
                         relativeHistory.setLung(relativeCancerQuestions);
                     break;
-                case Sarcoma:
+                case CancerType.SARCOMA:
                     if (isProband) {
                         personalCancer.setSarcoma(personalCancerQuestions);
                     } else {
                         relativeHistory.setSarcoma(relativeCancerQuestions);
                     }
                     break;
-                case "Unknown/Other cancer not listed here":
+               /* case "Unknown/Other cancer not listed here":
                     if ((!StringUtils.isEmpty(cancerFeatureDetails.getExactDxAge()) || !StringUtils.isEmpty(cancerFeatureDetails.getMaxDxAge()) || !StringUtils.isEmpty(cancerFeatureDetails.getOtherDxAge())|| !StringUtils.isEmpty(cancerFeatureDetails.getMinDxAge())) && (!StringUtils.isEmpty(cancerFeatureDetails.getCancerFeature()))) {
                         if (!StringUtils.isEmpty(cancerFeatureDetails.getExactDxAge()))
                             ageAtDiagnosis = cancerFeatureDetails.getExactDxAge();
@@ -769,7 +789,7 @@ public class CareAPIUtil{
                         questionSet = NCCNQuestionMapper.getQuestionSetForAgeAtDiagnosis(cancerFeatureDetails.getCancerFeature(), ageAtDiagnosis);
                         personalCancerQuestions.add(questionSet);
                     }
-                    break;
+                    break; */
                 default:
                     System.out.println("Invalid cancer type");
                     break;
