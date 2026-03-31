@@ -311,7 +311,7 @@ class NCCNQuestionMapperTest {
     @DisplayName("Should return QuestionSet for all cancer types in getQuestionSetForAgeAtDiagnosis")
     void testGetQuestionSetForAgeAtDiagnosisAllCancerTypes() {
         String[] cancerTypes = {"BREAST", "OVARIAN", "FALLOPIAN", "PROSTATE", "COLORECTAL",
-                               "PANCREATIC", "UTERINE", "GASTRIC", "SMALLINTESTINE", "BILIARY",
+                               "PANCREATIC", "UTERINE", "GASTRIC", "SMALLINTESTINE", "BILIARY_TRACT",
                                "KIDNEY", "URETER", "BRAIN", "SKIN", "MELANOMA", "OTHER",
                                "LEUKEMIA", "LYMPHOMA", "GALLBLADDER", "CERVICAL", "BLADDER",
                                "THROAT", "THYROID", "ORAL", "LIVER", "TESTICULAR",
@@ -319,6 +319,7 @@ class NCCNQuestionMapperTest {
 
         for (String cancerType : cancerTypes) {
             QuestionSet result = NCCNQuestionMapper.getQuestionSetForAgeAtDiagnosis(cancerType, "50");
+            System.out.println(cancerType);
             assertThat(result).isNotNull();
             assertThat(result.getQuestionText()).isNotNull();
         }
