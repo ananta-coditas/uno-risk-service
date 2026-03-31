@@ -335,7 +335,7 @@ public class CareAPIUtil{
         List<QuestionSet> personalCancerQuestions = new ArrayList<>();
         List<QuestionSet> relativeCancerQuestions = new ArrayList<>();
         for (CancerFeatureDetails cancerFeatureDetails : cancerFeatureDetailsList) {
-            cancerFeatureDetails.setCancerFeature(cancerFeatureDetails.getCancerFeature().toUpperCase());
+            cancerFeatureDetails.setCancerFeature(cancerFeatureDetails.getCancerFeature());
             if(cancerFeatureDetails.getCancerFeature().equalsIgnoreCase("Sebaceous Carcinoma") || cancerFeatureDetails.getCancerFeature().equalsIgnoreCase("Sebaceous adenomas"))
             {
                 cancerFeatureDetails.setCancerFeature(Skin);

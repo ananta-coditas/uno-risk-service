@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import com.objex.risk.beans.uno.Cancer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +20,7 @@ class NCCNQuestionMapperTest {
     @DisplayName("Should return QuestionSet for valid question key and answer value")
     void testGetQuestionSetWithValidInput() {
         QuestionSet result = NCCNQuestionMapper.getQuestionSet("sexAtBirth", "MALE");
-        
+
         assertThat(result).isNotNull();
         assertThat(result.getQuestionText()).isEqualTo("What was your sex at birth?");
         assertThat(result.getQuestionKey()).isEqualTo("AMBRY002");
@@ -31,7 +32,7 @@ class NCCNQuestionMapperTest {
     @DisplayName("Should return empty QuestionSet for invalid question key")
     void testGetQuestionSetWithInvalidQuestionKey() {
         QuestionSet result = NCCNQuestionMapper.getQuestionSet("INVALID_KEY", "MALE");
-        
+
         assertThat(result).isNotNull();
         assertThat(result.getQuestionText()).isNull();
         assertThat(result.getQuestionKey()).isNull();
@@ -41,7 +42,7 @@ class NCCNQuestionMapperTest {
     @DisplayName("Should return QuestionSet for cancerOverall question")
     void testGetQuestionSetForCancerOverall() {
         QuestionSet result = NCCNQuestionMapper.getQuestionSet("cancerOverall", "YES");
-        
+
         assertThat(result).isNotNull();
         assertThat(result.getQuestionKey()).isEqualTo("AMBRY004");
     }
@@ -50,7 +51,7 @@ class NCCNQuestionMapperTest {
     @DisplayName("Should return QuestionSet for cancerFeature with standard cancer type")
     void testGetQuestionSetForCancerFeatureStandard() {
         QuestionSet result = NCCNQuestionMapper.getQuestionSetForCancerFeature("cancerFeature", "BREAST");
-        
+
         assertThat(result).isNotNull();
         assertThat(result.getQuestionKey()).isEqualTo("AMBRY005");
     }
@@ -59,7 +60,7 @@ class NCCNQuestionMapperTest {
     @DisplayName("Should normalize Gastric to Stomach in getQuestionSetForCancerFeature")
     void testGetQuestionSetForCancerFeatureGastric() {
         QuestionSet result = NCCNQuestionMapper.getQuestionSetForCancerFeature("cancerFeature", "Gastric");
-        
+
         assertThat(result).isNotNull();
         assertThat(result.getQuestionKey()).isEqualTo("AMBRY005");
     }
@@ -68,7 +69,7 @@ class NCCNQuestionMapperTest {
     @DisplayName("Should normalize Uterine to Uterine (Endometrial) in getQuestionSetForCancerFeature")
     void testGetQuestionSetForCancerFeatureUterine() {
         QuestionSet result = NCCNQuestionMapper.getQuestionSetForCancerFeature("cancerFeature", "Uterine");
-        
+
         assertThat(result).isNotNull();
         assertThat(result.getQuestionKey()).isEqualTo("AMBRY005");
     }
@@ -77,7 +78,7 @@ class NCCNQuestionMapperTest {
     @DisplayName("Should handle Other cancer type in getQuestionSetForCancerFeature")
     void testGetQuestionSetForCancerFeatureOther() {
         QuestionSet result = NCCNQuestionMapper.getQuestionSetForCancerFeature("cancerFeature", "LEUKEMIA");
-        
+
         assertThat(result).isNotNull();
         assertThat(result.getQuestionKey()).isEqualTo("AMBRY006");
     }
@@ -86,7 +87,7 @@ class NCCNQuestionMapperTest {
     @DisplayName("Should return QuestionSet for age at diagnosis with valid age")
     void testGetQuestionSetForAgeAtDiagnosisWithValidAge() {
         QuestionSet result = NCCNQuestionMapper.getQuestionSetForAgeAtDiagnosis("BREAST", "45");
-        
+
         assertThat(result).isNotNull();
         assertThat(result.getQuestionText()).contains("How old were you when you were first diagnosed");
         assertThat(result.getAnswerText()).isEqualTo("45");
@@ -97,7 +98,7 @@ class NCCNQuestionMapperTest {
     @DisplayName("Should return empty answer text for invalid age format")
     void testGetQuestionSetForAgeAtDiagnosisWithInvalidAge() {
         QuestionSet result = NCCNQuestionMapper.getQuestionSetForAgeAtDiagnosis("BREAST", "invalid");
-        
+
         assertThat(result).isNotNull();
         assertThat(result.getAnswerText()).isEmpty();
     }
@@ -107,7 +108,7 @@ class NCCNQuestionMapperTest {
     void testGetQuestionSetForMultipleAnswer() {
         List<String> answers = Arrays.asList("MOTHER", "FATHER");
         QuestionSet result = NCCNQuestionMapper.getQuestionSetForMultipleAnswer("relationship", answers);
-        
+
         assertThat(result).isNotNull();
         assertThat(result.getQuestionKey()).isEqualTo("AMBRY053");
         assertThat(result.getAnswerText()).contains("MOTHER");
@@ -120,7 +121,7 @@ class NCCNQuestionMapperTest {
     @DisplayName("Should handle empty answer list in getQuestionSetForMultipleAnswer")
     void testGetQuestionSetForMultipleAnswerWithEmptyList() {
         QuestionSet result = NCCNQuestionMapper.getQuestionSetForMultipleAnswer("relationship", Collections.emptyList());
-        
+
         assertThat(result).isNotNull();
         assertThat(result.getQuestionKey()).isEqualTo("AMBRY053");
         assertThat(result.getAnswerText()).isEmpty();
@@ -152,7 +153,7 @@ class NCCNQuestionMapperTest {
     @DisplayName("Should return QuestionSet for OVARIAN cancer type")
     void testGetQuestionSetForAgeAtDiagnosisOvarian() {
         QuestionSet result = NCCNQuestionMapper.getQuestionSetForAgeAtDiagnosis("OVARIAN", "50");
-        
+
         assertThat(result).isNotNull();
         assertThat(result.getQuestionText()).contains("ovarian cancer");
         assertThat(result.getAnswerText()).isEqualTo("50");
@@ -162,7 +163,7 @@ class NCCNQuestionMapperTest {
     @DisplayName("Should return QuestionSet for PROSTATE cancer type")
     void testGetQuestionSetForAgeAtDiagnosisProstate() {
         QuestionSet result = NCCNQuestionMapper.getQuestionSetForAgeAtDiagnosis("PROSTATE", "65");
-        
+
         assertThat(result).isNotNull();
         assertThat(result.getQuestionText()).contains("prostate cancer");
         assertThat(result.getAnswerText()).isEqualTo("65");
@@ -172,7 +173,7 @@ class NCCNQuestionMapperTest {
     @DisplayName("Should return QuestionSet for COLORECTAL cancer type")
     void testGetQuestionSetForAgeAtDiagnosisColorectal() {
         QuestionSet result = NCCNQuestionMapper.getQuestionSetForAgeAtDiagnosis("COLORECTAL", "55");
-        
+
         assertThat(result).isNotNull();
         assertThat(result.getQuestionText()).contains("colorectal cancer");
         assertThat(result.getAnswerText()).isEqualTo("55");
@@ -182,7 +183,7 @@ class NCCNQuestionMapperTest {
     @DisplayName("Should return QuestionSet for PANCREATIC cancer type")
     void testGetQuestionSetForAgeAtDiagnosisPancreatic() {
         QuestionSet result = NCCNQuestionMapper.getQuestionSetForAgeAtDiagnosis("PANCREATIC", "60");
-        
+
         assertThat(result).isNotNull();
         assertThat(result.getQuestionText()).contains("pancreatic cancer");
         assertThat(result.getAnswerText()).isEqualTo("60");
@@ -192,7 +193,7 @@ class NCCNQuestionMapperTest {
     @DisplayName("Should return QuestionSet for UTERINE cancer type")
     void testGetQuestionSetForAgeAtDiagnosisUterine() {
         QuestionSet result = NCCNQuestionMapper.getQuestionSetForAgeAtDiagnosis("UTERINE", "45");
-        
+
         assertThat(result).isNotNull();
         assertThat(result.getQuestionText()).contains("uterine cancer");
         assertThat(result.getAnswerText()).isEqualTo("45");
@@ -202,7 +203,7 @@ class NCCNQuestionMapperTest {
     @DisplayName("Should return QuestionSet for GASTRIC cancer type")
     void testGetQuestionSetForAgeAtDiagnosisGastric() {
         QuestionSet result = NCCNQuestionMapper.getQuestionSetForAgeAtDiagnosis("GASTRIC", "58");
-        
+
         assertThat(result).isNotNull();
         assertThat(result.getQuestionText()).contains("stomach cancer");
         assertThat(result.getAnswerText()).isEqualTo("58");
@@ -213,7 +214,7 @@ class NCCNQuestionMapperTest {
     void testGetQuestionSetForMultipleAnswerWithNullValues() {
         List<String> answers = Arrays.asList("MOTHER", null, "FATHER");
         QuestionSet result = NCCNQuestionMapper.getQuestionSetForMultipleAnswer("relationship", answers);
-        
+
         assertThat(result).isNotNull();
         assertThat(result.getQuestionKey()).isEqualTo("AMBRY053");
     }
@@ -223,7 +224,7 @@ class NCCNQuestionMapperTest {
     void testGetQuestionSetForMultipleAnswerWithInvalidValues() {
         List<String> answers = Arrays.asList("INVALID_RELATIVE");
         QuestionSet result = NCCNQuestionMapper.getQuestionSetForMultipleAnswer("relationship", answers);
-        
+
         assertThat(result).isNotNull();
         assertThat(result.getQuestionKey()).isEqualTo("AMBRY053");
         assertThat(result.getAnswerText()).isEmpty();
@@ -234,7 +235,7 @@ class NCCNQuestionMapperTest {
     void testGetQuestionSetForMultipleAnswerEthnicity() {
         List<String> answers = Arrays.asList("AFRICANAMERICAN", "CAUCASIAN");
         QuestionSet result = NCCNQuestionMapper.getQuestionSetForMultipleAnswer("ethnicity", answers);
-        
+
         assertThat(result).isNotNull();
         assertThat(result.getQuestionKey()).isEqualTo("AMBRY003");
         assertThat(result.getAnswerText()).contains("AFRICANAMERICAN");
@@ -246,7 +247,7 @@ class NCCNQuestionMapperTest {
     void testGetQuestionSetForMultipleAnswerPathology() {
         List<String> answers = Arrays.asList("DCIS", "IDC");
         QuestionSet result = NCCNQuestionMapper.getQuestionSetForMultipleAnswer("pathology", answers);
-        
+
         assertThat(result).isNotNull();
         assertThat(result.getQuestionKey()).isEqualTo("AMBRY009");
     }
@@ -265,7 +266,7 @@ class NCCNQuestionMapperTest {
     @DisplayName("Should normalize SmallIntestine to Small Intestine (Small Bowel) in getQuestionSetForCancerFeature")
     void testGetQuestionSetForCancerFeatureSmallIntestine() {
         QuestionSet result = NCCNQuestionMapper.getQuestionSetForCancerFeature("cancerFeature", "SmallIntestine");
-        
+
         assertThat(result).isNotNull();
         assertThat(result.getQuestionKey()).isEqualTo("AMBRY005");
     }
@@ -274,7 +275,7 @@ class NCCNQuestionMapperTest {
     @DisplayName("Should normalize Fallopian to Fallopian tube or Peritoneal in getQuestionSetForCancerFeature")
     void testGetQuestionSetForCancerFeatureFallopian() {
         QuestionSet result = NCCNQuestionMapper.getQuestionSetForCancerFeature("cancerFeature", "Fallopian");
-        
+
         assertThat(result).isNotNull();
         assertThat(result.getQuestionKey()).isEqualTo("AMBRY005");
     }
@@ -282,8 +283,8 @@ class NCCNQuestionMapperTest {
     @Test
     @DisplayName("Should normalize Biliary to Biliary Tract in getQuestionSetForCancerFeature")
     void testGetQuestionSetForCancerFeatureBiliary() {
-        QuestionSet result = NCCNQuestionMapper.getQuestionSetForCancerFeature("cancerFeature", "Biliary");
-        
+        QuestionSet result = NCCNQuestionMapper.getQuestionSetForCancerFeature("cancerFeature", Cancer.CancerType.BILIARY_TRACT.name());
+
         assertThat(result).isNotNull();
         assertThat(result.getQuestionKey()).isEqualTo("AMBRY005");
     }
@@ -292,7 +293,7 @@ class NCCNQuestionMapperTest {
     @DisplayName("Should normalize Ureter to Ureter or Renal Pelvis in getQuestionSetForCancerFeature")
     void testGetQuestionSetForCancerFeatureUreter() {
         QuestionSet result = NCCNQuestionMapper.getQuestionSetForCancerFeature("cancerFeature", "Ureter");
-        
+
         assertThat(result).isNotNull();
         assertThat(result.getQuestionKey()).isEqualTo("AMBRY005");
     }
@@ -301,7 +302,7 @@ class NCCNQuestionMapperTest {
     @DisplayName("Should return empty QuestionSet for invalid cancer name in getQuestionSetForAgeAtDiagnosis")
     void testGetQuestionSetForAgeAtDiagnosisWithInvalidCancerName() {
         QuestionSet result = NCCNQuestionMapper.getQuestionSetForAgeAtDiagnosis("INVALID_CANCER", "45");
-        
+
         assertThat(result).isNotNull();
         assertThat(result.getQuestionText()).isNull();
     }
@@ -309,13 +310,13 @@ class NCCNQuestionMapperTest {
     @Test
     @DisplayName("Should return QuestionSet for all cancer types in getQuestionSetForAgeAtDiagnosis")
     void testGetQuestionSetForAgeAtDiagnosisAllCancerTypes() {
-        String[] cancerTypes = {"BREAST", "OVARIAN", "FALLOPIAN", "PROSTATE", "COLORECTAL", 
+        String[] cancerTypes = {"BREAST", "OVARIAN", "FALLOPIAN", "PROSTATE", "COLORECTAL",
                                "PANCREATIC", "UTERINE", "GASTRIC", "SMALLINTESTINE", "BILIARY",
                                "KIDNEY", "URETER", "BRAIN", "SKIN", "MELANOMA", "OTHER",
                                "LEUKEMIA", "LYMPHOMA", "GALLBLADDER", "CERVICAL", "BLADDER",
-                               "THROAT", "THYROID", "ORAL", "LIVER", "TESTICULAR", 
+                               "THROAT", "THYROID", "ORAL", "LIVER", "TESTICULAR",
                                "PARAGANGLIOMA", "PHEOCHROMOCYTOMA", "LUNG", "SARCOMA"};
-        
+
         for (String cancerType : cancerTypes) {
             QuestionSet result = NCCNQuestionMapper.getQuestionSetForAgeAtDiagnosis(cancerType, "50");
             assertThat(result).isNotNull();
@@ -328,7 +329,7 @@ class NCCNQuestionMapperTest {
     void testGetQuestionSetForMultipleAnswerWithSingleAnswer() {
         List<String> answers = Arrays.asList("MOTHER");
         QuestionSet result = NCCNQuestionMapper.getQuestionSetForMultipleAnswer("relationship", answers);
-        
+
         assertThat(result).isNotNull();
         assertThat(result.getQuestionKey()).isEqualTo("AMBRY053");
         assertThat(result.getAnswerText()).contains("MOTHER");
@@ -340,7 +341,7 @@ class NCCNQuestionMapperTest {
     void testGetQuestionSetForMultipleAnswerWithManyAnswers() {
         List<String> answers = Arrays.asList("MOTHER", "FATHER", "SISTER", "BROTHER");
         QuestionSet result = NCCNQuestionMapper.getQuestionSetForMultipleAnswer("relationship", answers);
-        
+
         assertThat(result).isNotNull();
         assertThat(result.getQuestionKey()).isEqualTo("AMBRY053");
         assertThat(result.getAnswerText()).contains("MOTHER");
@@ -354,7 +355,7 @@ class NCCNQuestionMapperTest {
     void testGetQuestionSetForMultipleAnswerWithInvalidQuestionKey() {
         List<String> answers = Arrays.asList("MOTHER");
         QuestionSet result = NCCNQuestionMapper.getQuestionSetForMultipleAnswer("INVALID_KEY", answers);
-        
+
         assertThat(result).isNotNull();
         assertThat(result.getQuestionText()).isNull();
     }
@@ -363,7 +364,7 @@ class NCCNQuestionMapperTest {
     @DisplayName("Should handle getQuestionSet with null answer value")
     void testGetQuestionSetWithNullAnswerValue() {
         QuestionSet result = NCCNQuestionMapper.getQuestionSet("sexAtBirth", null);
-        
+
         assertThat(result).isNotNull();
     }
 
@@ -385,7 +386,7 @@ class NCCNQuestionMapperTest {
     @DisplayName("Should handle getQuestionSetForAgeAtDiagnosis with empty age value")
     void testGetQuestionSetForAgeAtDiagnosisWithEmptyAgeValue() {
         QuestionSet result = NCCNQuestionMapper.getQuestionSetForAgeAtDiagnosis("BREAST", "");
-        
+
         assertThat(result).isNotNull();
         assertThat(result.getAnswerText()).isEmpty();
     }
@@ -394,7 +395,7 @@ class NCCNQuestionMapperTest {
     @DisplayName("Should handle getQuestionSetForAgeAtDiagnosis with zero age")
     void testGetQuestionSetForAgeAtDiagnosisWithZeroAge() {
         QuestionSet result = NCCNQuestionMapper.getQuestionSetForAgeAtDiagnosis("BREAST", "0");
-        
+
         assertThat(result).isNotNull();
         assertThat(result.getAnswerText()).isEqualTo("0");
     }
@@ -403,7 +404,7 @@ class NCCNQuestionMapperTest {
     @DisplayName("Should handle getQuestionSetForAgeAtDiagnosis with negative age")
     void testGetQuestionSetForAgeAtDiagnosisWithNegativeAge() {
         QuestionSet result = NCCNQuestionMapper.getQuestionSetForAgeAtDiagnosis("BREAST", "-10");
-        
+
         assertThat(result).isNotNull();
         assertThat(result.getAnswerText()).isEmpty();
     }
@@ -412,7 +413,7 @@ class NCCNQuestionMapperTest {
     @DisplayName("Should handle getQuestionSetForAgeAtDiagnosis with very large age")
     void testGetQuestionSetForAgeAtDiagnosisWithVeryLargeAge() {
         QuestionSet result = NCCNQuestionMapper.getQuestionSetForAgeAtDiagnosis("BREAST", "150");
-        
+
         assertThat(result).isNotNull();
         assertThat(result.getAnswerText()).isEqualTo("150");
     }
@@ -421,7 +422,7 @@ class NCCNQuestionMapperTest {
     @DisplayName("Should handle getQuestionSetForCancerFeature with case insensitive answer")
     void testGetQuestionSetForCancerFeatureCaseInsensitive() {
         QuestionSet result = NCCNQuestionMapper.getQuestionSetForCancerFeature("cancerFeature", "breast");
-        
+
         assertThat(result).isNotNull();
         assertThat(result.getQuestionKey()).isEqualTo("AMBRY005");
     }
@@ -430,7 +431,7 @@ class NCCNQuestionMapperTest {
     @DisplayName("Should handle getQuestionSetForCancerFeature with Other cancer type not in main list")
     void testGetQuestionSetForCancerFeatureOtherNotInMainList() {
         QuestionSet result = NCCNQuestionMapper.getQuestionSetForCancerFeature("cancerFeature", "UNKNOWN_CANCER");
-        
+
         assertThat(result).isNotNull();
     }
 
