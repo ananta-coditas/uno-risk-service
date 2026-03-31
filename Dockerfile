@@ -67,6 +67,7 @@ RUN dnf install -y epel-release && dnf config-manager --set-enabled crb \
       R-core \
       R-core-devel \
       'java-21-openjdk-headless >= 21.0.10.0.7' \
+  && (rpm -q vim-minimal && dnf remove -y vim-minimal || true) \
   && dnf clean all \
   && rm -rf /var/cache/dnf /tmp/* /var/tmp/* /usr/share/doc /usr/share/man /usr/share/locale
 # Fail build if OpenJDK is not 21.0.10+ (required for CVE-2025-66293 and CVE-2026-25646)
