@@ -141,7 +141,7 @@ public enum NCCNQuestionMapper {
     UTERINE(Arrays.asList("Uterine (Endometrial)", "AMBRY024_001", "How old were you when you were first diagnosed with uterine cancer?", "AMBRY024")),
     GASTRIC(Arrays.asList("Stomach", "AMBRY025_001", "How old were you when you were first diagnosed with stomach cancer?", "AMBRY025")),
     SMALLINTESTINE(Arrays.asList("Small Intestine (Small Bowel)", "AMBRY026_001", "How old were you when you were first diagnosed with cancer of the small intestine?", "AMBRY026")),
-    BILIARY(Arrays.asList("Biliary Tract", "AMBRY027_001", "How old were you when you were first diagnosed with biliary tract cancer?", "AMBRY027")),
+    BILIARY_TRACT(Arrays.asList("Biliary Tract", "AMBRY027_001", "How old were you when you were first diagnosed with biliary tract cancer?", "AMBRY027")),
     KIDNEY(Arrays.asList("Kidney", "AMBRY028_001", "How old were you when you were first diagnosed with kidney cancer?", "AMBRY028")),
     URETER(Arrays.asList("Ureter or Renal Pelvis", "AMBRY029_001", "How old were you when you were first diagnosed with cancer of the ureter or renal pelvis?", "AMBRY029")),
     BRAIN(Arrays.asList("Brain", "AMBRY030_001", "How old were you when you were first diagnosed with brain cancer?", "AMBRY030")),
@@ -236,7 +236,7 @@ public enum NCCNQuestionMapper {
             answerValue = "Small Intestine (Small Bowel)";
         if (answerValue.equalsIgnoreCase("Fallopian"))
             answerValue = "Fallopian tube or Peritoneal";
-        if (answerValue.equalsIgnoreCase("Biliary"))
+        if (answerValue.equalsIgnoreCase("BILIARY_TRACT"))
             answerValue = "Biliary Tract";
         if (answerValue.equalsIgnoreCase("Ureter"))
             answerValue = "Ureter or Renal Pelvis";
