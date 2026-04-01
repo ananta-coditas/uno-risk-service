@@ -43,6 +43,7 @@ uno-risk-service = {
   service_name       = "uno-risk-service"
   desired_task_count = 1
   ecs_launch_type    = "FARGATE"
+  preserve_existing_container_images = false
   task_setting = {
     os_family                 = "LINUX"
     cpu_architecture          = "X86_64"

@@ -1,130 +1,112 @@
-name: "Deploy Container Image to ECS Fargate"
+# ---------------------------------------------------- #
+# GitHub Actions Workflow: Build Infrastructure
+#
+# This workflow manages Terraform infrastructure deployments across multiple environments
+# (int, test, stage, prod) for the service.
+#
+# Triggers:
+# - Pull Request: Triggers on release branches when infrastructure files change
+# - Push: Triggers on release branches when infrastructure files change  
+# - Manual Dispatch: Allows manual execution with environment and action selection
+#
+# Jobs:
+# - terraform-non-prod: Handles deployments to int/test environments via manual dispatch
+# - terraform-stage: Handles stage environment deployments (auto-apply on release push, manual otherwise)
+# - terraform-prod: Handles production deployments after stage completion (auto-apply on release push)
+#
+# The workflow uses reusable Terraform workflows and supports plan, apply, and destroy operations.
+# Stage and prod environments are automatically deployed when pushing to release branches.
+# ---------------------------------------------------- #
+name: "Build & Deploy: Infrastructure"
+# ---------------------------------------------------- #
 permissions:
   id-token: write
   contents: write
   pull-requests: write
   actions: read
   security-events: write
+# ---------------------------------------------------- #
 on:
   pull_request:
     branches:
-      - develop
       - release/**/*
     paths:
       - infrastructure/**/*
       - "!**.md"
+      - "!.github/workflows/**/*"
   push:
     branches:
-      - develop
       - release/**/*
     paths:
       - infrastructure/**/*
       - "!**.md"
+      - "!.github/workflows/**/*"
   workflow_dispatch:
     inputs:
-      terraform_action:
-        description: "Which Terraform action to take"
-        required: true
-        type: choice
-        options:
-          - apply
-          - plan
-          - destroy
       target_environment:
-        description: "Which environment to deploy to"
+        description: 'Target deployment environment'
         required: true
         type: choice
+        default: test
         options:
           #- sandbox
           - test
           - stage
-          - prod
-
+      terraform_action:
+        description: "Terraform operation to execute"
+        required: true
+        type: choice
+        default: plan
+        options:
+          - plan
+          - apply
+          - destroy
+# ---------------------------------------------------- #
 jobs:
-  # Disabled for now as we are not using the sandbox environment and certificate has expired
-  # terraform-dev:
-  #   name: "TF-dev"
-  #   if: github.base_ref == 'develop' || github.ref == 'refs/heads/develop' || github.event.inputs.target_environment == 'sandbox'
-  #   uses: ambrygen/github-reusable-workflows/.github/workflows/terraform-workflow-source.yaml@v2
-  #   with:
-  #     terraform_action: ${{ ( github.event_name == 'push' || github.event.inputs.terraform_action == 'apply' ) && 'apply' || github.event.inputs.terraform_action == 'destroy' && 'destroy' || 'plan' }}
-  #     working_directory: "infrastructure"
-  #     tfvars: "environment/dev.tfvars"
-  #     env_file_name: "infrastructure/.env.dev"
-  #     # post_init_commands: "terraform state list"
-  #   secrets: inherit
-
-  terraform-test-plan:
-    name: "TF-Test-Plan"
-    # Run if: we're targeting a release branch in a PR, or manually running the workflow on test, AND we're not meeting the criteria for an apply
-    if: (startsWith(github.base_ref, 'release/') || github.event.inputs.target_environment == 'test') && !((github.event_name == 'push' && startsWith(github.ref, 'refs/heads/release/')) || github.event.inputs.terraform_action == 'apply' || github.event.inputs.terraform_action == 'destroy')
-    uses: ambrygen/github-reusable-workflows/.github/workflows/terraform-workflow-source.yaml@v2
+  terraform-non-prod:
+    # This job runs only on manual dispatch for non-stage environments (int, test, etc.)
+    name: "TF-Non-Prod"
+    if: (github.event_name == 'workflow_dispatch' &&  inputs.target_environment != 'stage')
+    uses: ambrygen/github-reusable-workflows/.github/workflows/terraform-workflow-source.yaml@v3
     with:
-      terraform_action: 'plan'
+      terraform_action: ${{ github.event.inputs.terraform_action }}
       working_directory: "infrastructure"
-      tfvars: "environment/test.tfvars"
-      env_file_name: "infrastructure/.env.test"
+      tfvars: "environment/${{ inputs.target_environment }}.tfvars"
+      env_file_name: "infrastructure/.env.${{ inputs.target_environment }}"
+      environment: ${{ inputs.target_environment }}
     secrets: inherit
 
-  terraform-test-apply:
-    name: "TF-Test-Apply" # This can also destroy, if specified
-    if: (startsWith(github.ref, 'refs/heads/release/') || github.event.inputs.target_environment != '') && ((github.event_name == 'push' && startsWith(github.ref, 'refs/heads/release/')) || github.event.inputs.terraform_action == 'apply' || github.event.inputs.terraform_action == 'destroy')
-    uses: ambrygen/github-reusable-workflows/.github/workflows/terraform-workflow-source.yaml@v2
+  terraform-stage:
+    # This job runs on PR/push to release branches, or manual dispatch to stage environment on release branches
+    name: "TF-Stage"
+    if: |
+      (github.event_name == 'pull_request' && startsWith(github.base_ref, 'release/')) ||
+      (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/release/')) ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.target_environment == 'stage' && startsWith(github.ref, 'refs/heads/release/'))
+    uses: ambrygen/github-reusable-workflows/.github/workflows/terraform-workflow-source.yaml@v3
     with:
-      terraform_action: ${{ (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/release/')) || github.event.inputs.terraform_action == 'apply' && 'apply' || github.event.inputs.terraform_action == 'destroy' && 'destroy' || 'error' }}
-      working_directory: "infrastructure"
-      tfvars: "environment/test.tfvars"
-      env_file_name: "infrastructure/.env.test"
-      environment: test
-    secrets: inherit
-
-  terraform-stage-plan:
-    name: "TF-Stage-Plan"
-    # Run if: we're targeting a release branch in a PR, or manually running the workflow on stage, AND we're not meeting the criteria for an apply
-    if: (startsWith(github.base_ref, 'release/') || github.event.inputs.target_environment == 'stage') && !((github.event_name == 'push' && startsWith(github.ref, 'refs/heads/release/')) || github.event.inputs.terraform_action == 'apply' || github.event.inputs.terraform_action == 'destroy')
-    uses: ambrygen/github-reusable-workflows/.github/workflows/terraform-workflow-source.yaml@v2
-    with:
-      terraform_action: 'plan'
-      working_directory: "infrastructure"
-      tfvars: "environment/stage.tfvars"
-      env_file_name: "infrastructure/.env.stage"
-    secrets: inherit
-
-  terraform-stage-apply:
-    needs: [terraform-test-apply]
-    name: "TF-Stage-Apply" # This can also destroy, if specified
-    if: ((startsWith(github.ref, 'refs/heads/release/') && github.event.inputs.target_environment == '') || github.event.inputs.target_environment == 'stage' || github.event.inputs.target_environment == 'prod' ) && ((github.event_name == 'push' && startsWith(github.ref, 'refs/heads/release/')) || github.event.inputs.terraform_action == 'apply' || github.event.inputs.terraform_action == 'destroy')
-    uses: ambrygen/github-reusable-workflows/.github/workflows/terraform-workflow-source.yaml@v2
-    with:
-      terraform_action: ${{ (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/release/')) || github.event.inputs.terraform_action == 'apply' && 'apply' || github.event.inputs.terraform_action == 'destroy' && 'destroy' || 'plan' }}
+      terraform_action: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/heads/release/') && 'apply' || github.event.inputs.terraform_action == 'destroy' && 'destroy' || github.event.inputs.terraform_action == 'apply' && 'apply' || 'plan' }}
       working_directory: "infrastructure"
       tfvars: "environment/stage.tfvars"
       env_file_name: "infrastructure/.env.stage"
       environment: stage
     secrets: inherit
 
-  terraform-prod-plan:
-     name: "TF-Prod-Plan"
-     # Run if: we're targeting a release branch in a PR, or manually running the workflow on plan, AND we're not meeting the criteria for an apply
-     if: (startsWith(github.base_ref, 'release/') || github.event.inputs.target_environment == 'prod') && !((github.event_name == 'push' && startsWith(github.ref, 'refs/heads/release/')) || github.event.inputs.terraform_action == 'apply' || github.event.inputs.terraform_action == 'destroy')    
-     uses: ambrygen/github-reusable-workflows/.github/workflows/terraform-workflow-source.yaml@v2
-     with:
-       terraform_action: 'plan'
-       working_directory: "infrastructure"
-       tfvars: "environment/prod.tfvars"
-       env_file_name: "infrastructure/.env.prod"
-     secrets: inherit
-
-  terraform-prod-apply:
-     needs: [terraform-stage-apply]
-     name: "TF-Prod-Apply" # This can also destroy, if specified
-     if: ((startsWith(github.ref, 'refs/heads/release/') && github.event.inputs.target_environment == '') || github.event.inputs.target_environment == 'prod') && ((github.event_name == 'push' && startsWith(github.ref, 'refs/heads/release/')) || github.event.inputs.terraform_action == 'apply' || github.event.inputs.terraform_action == 'destroy')
-     uses: ambrygen/github-reusable-workflows/.github/workflows/terraform-workflow-source.yaml@v2
-     with:
-       terraform_action: ${{ (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/release/')) || github.event.inputs.terraform_action == 'apply' && 'apply' || github.event.inputs.terraform_action == 'destroy' && 'destroy' || 'plan' }}
-       working_directory: "infrastructure"
-       tfvars: "environment/prod.tfvars"
-       env_file_name: "infrastructure/.env.prod"
-       environment: prod
-     secrets: inherit
-
+  terraform-prod:
+    # This job runs on PR/push to release branches, or manual dispatch to stage environment on release branches
+    # It always runs after terraform-stage completes successfully
+    needs: [terraform-stage]
+    name: "TF-Prod"
+    if: |
+      (github.event_name == 'pull_request' && startsWith(github.base_ref, 'release/')) ||
+      (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/release/')) ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.target_environment == 'stage' && startsWith(github.ref, 'refs/heads/release/'))
+    uses: ambrygen/github-reusable-workflows/.github/workflows/terraform-workflow-source.yaml@v3
+    with:
+      terraform_action: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/heads/release/') && 'apply' || github.event.inputs.terraform_action == 'destroy' && 'destroy' || github.event.inputs.terraform_action == 'apply' && 'apply' || 'plan' }}
+      working_directory: "infrastructure"
+      tfvars: "environment/prod.tfvars"
+      env_file_name: "infrastructure/.env.prod"
+      environment: prod
+    secrets: inherit
+# ---------------------------------------------------- #

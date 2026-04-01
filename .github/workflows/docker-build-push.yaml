@@ -1,56 +1,210 @@
 # ---------------------------------------------------- #
-name: Build, Scan, and Push Container Image
+# GitHub Actions Workflow: Build and Deploy Image
+# 
+# This workflow handles building and deploying Docker images for AWS ECS microservice(s)
+# across different environments (dev, test, stage, prod).
+#
+# Triggers:
+# - Pull Request: On release branches when code changes
+# - Push: On release branches when code changes  
+# - Manual Dispatch: Allows manual execution with configurable branch and environment
+#
+# Jobs:
+# - build-docker-image-non-prod: Builds Docker image for non-prod (eg: dev, test) environments
+# - deploy-docker-image-non-prod: Deploys to non-prod (eg: dev, test) environments
+# - build-docker-image-release-ready: Builds image for stage/prod or PR/push events
+# - deploy-docker-image-stage: Deploys docker image to stage environment
+# - deploy-docker-image-prod: Deploys docker image to PROD environment
+#
+# The workflow uses reusable workflows from ambrygen/github-reusable-workflows
+# and builds a docker image to deploy onto service to ECS clusters.
 # ---------------------------------------------------- #
-description: "Builds, scans, and pushes the container image to ECR for the specified environment."
+name: "Build & Deploy: uno-risk-service"
+# ---------------------------------------------------- #
 on:
-  pull_request:
-    branches:
-      - develop
-      - release/**/*
-    paths:
-      - "api/**/*"
-      - "!infrastructure/**/*"
-      - "!README.md"
-      - "!.github/workflows/**/*"
-  push:
-    branches:
-      - develop
-      - release/**/*
-    paths:
-      - "api/**/*"
-      - "!infrastructure/**/*"
-      - "!README.md"
-      - "!.github/workflows/**/*"
-  workflow_dispatch:
-  # ---------------------------------------------------- #
+    pull_request:
+        branches:
+            - release/**/*
+        paths:
+            - "src/**/*"
+            - "pom.xml"
+            - "Dockerfile"
+            - "!infrastructure/**/*"
+            - "!README.md"
+            - "!.github/workflows/**/*"
+    push:
+        branches:
+            - release/**/*
+        paths:
+            - "src/**/*"
+            - "pom.xml"
+            - "Dockerfile"
+            - "!infrastructure/**/*"
+            - "!README.md"
+            - "!.github/workflows/**/*"
+    workflow_dispatch:
+        inputs:
+            target_environment:
+                description: 'Target deployment environment'
+                required: true
+                default: 'dev'
+                type: choice
+                options:
+                    - dev
+                    - test
+                    - stage
+            artifact_tag:
+                description: 'Artifact to be deployed (ECR_IMAGE_URI)'
+                required: false
+                type: string
+                default: ""
+# ---------------------------------------------------- #
 permissions:
-  id-token: write
-  contents: read
-  pull-requests: write
+    id-token: write
+    contents: write
+    pull-requests: write
 # ---------------------------------------------------- #
 jobs:
-  build-docker-image-develop:
-      name: Build-ECR-Image-Develop ${{ matrix.service.name }}
-      uses: ambrygen/github-reusable-workflows/.github/workflows/docker-build-scan-source.yaml@v2
-      with:
-        working_directory: .
-        service_name: uno-risk-service
-        ecr_repository: uno-risk-service
-        env_file_name: "infrastructure/.env.shared_services"
-        environment: shared_services
-        fail_on_severities: CRITICAL
-      secrets: inherit
+    # ===== CONFIGURATION: Update these values to customize the workflow =====
+    set-config:
+        # This job sets configuration values that are shared across all other jobs in the workflow
+        name: "Set Configuration"
+        runs-on: ubuntu-latest
+        env:
+            # Configure your service parameters here
+            # NOTE: These parameters must match the values in your tfvars configuration
+            ORGANIZATION_NAME: "ambry"
+            APPLICATION_NAME: "uno-risk-service"
+            IMAGE_TAG_PREFIX: "uno-risk-service"
+            SERVICE_CONTAINER_MAPPING: '{"uno-risk-service": ["uno-risk-service"]}'
+            ECR_REPOSITORY: "uno-risk-service"
+            RUNS_ON: "ubuntu-latest"
+            WORKING_DIRECTORY: "."
+            DOCKERFILE_NAME: "Dockerfile"
+        outputs:
+            organization_name: ${{ env.ORGANIZATION_NAME }}
+            application_name: ${{ env.APPLICATION_NAME }}
+            image_tag_prefix: ${{ env.IMAGE_TAG_PREFIX }}
+            service_container_mapping: ${{ env.SERVICE_CONTAINER_MAPPING }}
+            ecr_repository: ${{ env.ECR_REPOSITORY }}
+            working_directory: ${{ env.WORKING_DIRECTORY }}
+            runs_on: ${{ env.RUNS_ON }}
+            dockerfile_name: ${{ env.DOCKERFILE_NAME }}
+        steps:
+            - run: echo "Configuration set"
 
-#  build-docker-image-prod:
-#    name: Build-ECR-Image-Prod ${{ matrix.service.name }}
-#    if: startsWith(github.ref, 'refs/heads/release/') || startsWith(github.base_ref, 'release/')
-#    uses: ambrygen/github-reusable-workflows/.github/workflows/docker-build-scan-source.yaml@v2
-#    with:
-#      working_directory: .
-#      service_name: uno-risk-service
-#      ecr_repository: uno-risk-service
-#      env_file_name: "infrastructure/.env.shared_services"
-#      environment: shared_services
-#      fail_on_severities: CRITICAL
-#    secrets: inherit
+    # Non-Prod Environments (Needs Manual Workflow Dispatch) =====>>>
+    build-docker-image-non-prod:
+        # This job builds the docker image for non-prod environments
+        # It runs on manual dispatch for non-prod environments (dev, test) without an artifact_tag
+        needs: [set-config]
+        name: "Build-ECR-Image-Non-Prod"
+        if: |
+            (github.event_name == 'workflow_dispatch') && 
+            (inputs.target_environment != 'stage' && inputs.target_environment != 'prod') && 
+            (inputs.artifact_tag == '')
+        uses: ambrygen/github-reusable-workflows/.github/workflows/ecr-docker-image-build-source.yaml@v3
+        with:
+            working_directory: ${{ needs.set-config.outputs.working_directory }}
+            core_container_name: ${{ needs.set-config.outputs.image_tag_prefix }}
+            ecr_repository: ${{ needs.set-config.outputs.ecr_repository }}
+            service_container_mapping: ${{ needs.set-config.outputs.service_container_mapping }}
+            fail_on_severities: ""
+            fail_on_bandit_severity: "high"
+            env_file_name: ".github/workflows/infrastructure/.env.shared_services"
+            github_environment: shared_services
+            runs_on: ${{ needs.set-config.outputs.runs_on }}
+            dockerfile: ${{ needs.set-config.outputs.dockerfile_name }}
+        secrets: inherit
+
+    deploy-docker-image-non-prod:
+        # This job deploys the docker image in non-prod environments
+        # This job runs on manual dispatch for non-prod environments (dev, test) with either an artifact_tag or successful build output
+        needs: [set-config, build-docker-image-non-prod]
+        name: "Deploy-ECR-Image-Non-Prod"
+        if: |
+            always() && 
+            (github.event_name == 'workflow_dispatch') && 
+            (inputs.target_environment != 'stage' && inputs.target_environment != 'prod') && 
+            (inputs.artifact_tag != '' || needs.build-docker-image-non-prod.result == 'success')
+        uses: ambrygen/github-reusable-workflows/.github/workflows/ecr-docker-image-deploy-source.yaml@v3
+        with:
+            working_directory: ${{ needs.set-config.outputs.working_directory }}
+            core_container_name: ${{ needs.set-config.outputs.image_tag_prefix }}
+            ecr_repository: ${{ needs.set-config.outputs.ecr_repository }}
+            service_container_mapping: ${{ needs.set-config.outputs.service_container_mapping }}
+            cluster_name: "${{ needs.set-config.outputs.organization_name }}-${{ needs.set-config.outputs.application_name }}-${{ inputs.target_environment }}-cluster"
+            env_file_name: ".github/workflows/infrastructure/.env.${{ inputs.target_environment }}"
+            github_environment: ${{ inputs.target_environment }}
+            image_uri: ${{ inputs.artifact_tag != '' && inputs.artifact_tag || needs.build-docker-image-non-prod.outputs.image_uri }}
+        secrets: inherit
+
+    # PROD Environments (Needs Release branch based Trigger) =====>>>
+    build-docker-image-release-ready:
+        # This job builds the 'release-ready' docker image for prod environments
+        # This job runs on PR/push to release branches, or manual dispatch to stage on release branches without an artifact_tag
+        needs: [set-config]
+        name: "Build-ECR-Image-Release-Ready"
+        if: |
+            (github.event_name == 'pull_request' && startsWith(github.base_ref, 'release/')) ||
+            (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/release/')) ||
+            (github.event_name == 'workflow_dispatch' && inputs.target_environment == 'stage' && startsWith(github.ref_name, 'release/') && inputs.artifact_tag == '')
+        uses: ambrygen/github-reusable-workflows/.github/workflows/ecr-docker-image-build-source.yaml@v3
+        with:
+            working_directory: ${{ needs.set-config.outputs.working_directory }}
+            core_container_name: ${{ needs.set-config.outputs.image_tag_prefix }}
+            ecr_repository: ${{ needs.set-config.outputs.ecr_repository }}
+            service_container_mapping: ${{ needs.set-config.outputs.service_container_mapping }}
+            fail_on_severities: ""
+            fail_on_bandit_severity: "high"
+            env_file_name: ".github/workflows/infrastructure/.env.shared_services"
+            github_environment: shared_services
+            runs_on: ${{ needs.set-config.outputs.runs_on }}
+            dockerfile: ${{ needs.set-config.outputs.dockerfile_name }}
+        secrets: inherit
+
+    deploy-docker-image-stage:
+        # This job deploys the docker image in stage environment
+        # This job runs on push to release branches, or manual dispatch to stage on release branches with either an artifact_tag or successful build
+        needs: [set-config, build-docker-image-release-ready]
+        name: "Deploy-ECR-Image-Stage"
+        if: |
+            always() && (
+                (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/release/') && needs.build-docker-image-release-ready.result == 'success') ||
+                (github.event_name == 'workflow_dispatch' && inputs.target_environment == 'stage' && startsWith(github.ref_name, 'release/') && (inputs.artifact_tag != '' || needs.build-docker-image-release-ready.result == 'success'))
+            )
+        uses: ambrygen/github-reusable-workflows/.github/workflows/ecr-docker-image-deploy-source.yaml@v3
+        with:
+            working_directory: ${{ needs.set-config.outputs.working_directory }}
+            core_container_name: ${{ needs.set-config.outputs.image_tag_prefix }}
+            ecr_repository: ${{ needs.set-config.outputs.ecr_repository }}
+            service_container_mapping: ${{ needs.set-config.outputs.service_container_mapping }}
+            env_file_name: ".github/workflows/infrastructure/.env.stage"
+            github_environment: stage
+            cluster_name: "uno-stage-cluster"
+            image_uri: ${{ inputs.artifact_tag != '' && inputs.artifact_tag || needs.build-docker-image-release-ready.outputs.image_uri }}
+        secrets: inherit
+
+    deploy-docker-image-prod:
+        # This job deploys the docker image in PROD environment
+        # This job runs on push to release branches, or manual dispatch to stage on release branches with either an artifact_tag or successful build
+        # It always runs after deploy-docker-image-stage completes successfully
+        needs: [set-config, build-docker-image-release-ready, deploy-docker-image-stage]
+        name: "Deploy-ECR-Image-Prod"
+        if: |
+            always() && needs.deploy-docker-image-stage.result == 'success' && (
+                (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/release/') && needs.build-docker-image-release-ready.result == 'success') ||
+                (github.event_name == 'workflow_dispatch' && inputs.target_environment == 'stage' && startsWith(github.ref_name, 'release/') && (inputs.artifact_tag != '' || needs.build-docker-image-release-ready.result == 'success'))
+            )
+        uses: ambrygen/github-reusable-workflows/.github/workflows/ecr-docker-image-deploy-source.yaml@v3
+        with:
+            working_directory: ${{ needs.set-config.outputs.working_directory }}
+            core_container_name: ${{ needs.set-config.outputs.image_tag_prefix }}
+            ecr_repository: ${{ needs.set-config.outputs.ecr_repository }}
+            service_container_mapping: ${{ needs.set-config.outputs.service_container_mapping }}
+            env_file_name: ".github/workflows/infrastructure/.env.prod"
+            github_environment: prod
+            cluster_name: "uno-prod-cluster"
+            image_uri: ${{ needs.build-docker-image-release-ready.outputs.image_uri }}
+        secrets: inherit
 # ---------------------------------------------------- #

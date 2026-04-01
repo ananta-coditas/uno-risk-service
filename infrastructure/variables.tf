@@ -80,6 +80,7 @@ variable "uno-risk-service" {
     service_name       = string
     desired_task_count = number
     ecs_launch_type    = string
+    preserve_existing_container_images = optional(bool)
     task_setting = optional(object({
       os_family                 = string
       cpu_architecture          = string
