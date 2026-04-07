@@ -4,8 +4,7 @@ import static com.genomebrain.backend.service.util.APIConstants.GRADE_GROUP_4;
 import static com.genomebrain.backend.service.util.APIConstants.GRADE_GROUP_5;
 import static com.genomebrain.backend.service.util.APIConstants.HIGH_RISK_GROUP;
 import static com.genomebrain.backend.service.util.APIConstants.VERY_HIGH_RISK_GROUP;
-import java.io.File;
-import java.io.FileWriter;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -76,38 +75,7 @@ public class CareAPIUtil{
 
     ClinicalHistory probandClinicalHistory = new ClinicalHistory();
     private final String PROBAND = "Proband";
-    public static final String Breast = "BREAST";
-    public static final String Ovarian = "OVARIAN";
-    public static final String FallopianTube = "FALLOPIAN";
-    public static final String Prostate = "PROSTATE";
-    public static final String Colorectal = "COLORECTAL";
-    public static final String Pancreatic = "PANCREATIC";
-    public static final String Uterine = "UTERINE";
-    public static final String Stomach = "STOMACH";
-    public static final String SmallIntestine = "SMALLINTESTINE";
-    public static final String BiliaryTract = "BILIARY";
-    public static final String Kidney = "KIDNEY";
-    public static final String Ureter = "URETER";
-    public static final String Brain = "BRAIN";
-    public static final String SebaceousAdenomas = "SEBACEOUS ADENOMAS";
-    public static final String SebaceousCarcinoma = "SEBACEOUS CARCINOMA";
-    public static final String Melanoma = "MELANOMA";
-    public static final String Skin = "SKIN";
-    public static final String Leukemia = "LEUKEMIA";
-    public static final String Lymphoma = "LYMPHOMA";
-    public static final String Gallbladder = "GALLBLADDER";
-    public static final String Cervical = "CERVICAL";
-    public static final String Bladder = "BLADDER";
-    public static final String Throat = "THROAT";
-    public static final String Thyroid = "THYROID";
-    public static final String Oral = "ORAL";
-    public static final String Liver = "LIVER";
-    public static final String Testicular = "TESTICULAR";
-    public static final String Paraganglioma = "PARAGANGLIOMA";
-    public static final String Pheochromocytoma = "PHEOCHROMOCYTOMA";
-    public static final String Lung = "LUNG";
-    public static final String Sarcoma = "SARCOMA";
-    public static final String Gastric = "GASTRIC";
+
     public static final String NotListed = "NOT LISTED";
     private final String sexAtBirth = "sexAtBirth";
     private final String Ethnicity = "ethnicity";
@@ -168,16 +136,6 @@ public class CareAPIUtil{
     private final String Desmoids = "DESMOIDS";
     private final String Cousin = "Cousin - 1st";
     private final String otherDXAgeValue = "48";
-
-    List<String> cancerTypes = Arrays.asList(
-            Breast, Ovarian, FallopianTube, Prostate, Colorectal,
-            Pancreatic, Uterine, Stomach, SmallIntestine, BiliaryTract,
-            Kidney, Ureter, Brain, SebaceousAdenomas,SebaceousCarcinoma, Melanoma, Skin,
-            Leukemia, Lymphoma, Gallbladder, Cervical, Bladder, Throat,
-            Thyroid, Oral, Liver, Testicular, Paraganglioma, Pheochromocytoma,
-            Lung, Sarcoma, Gastric, NotListed, Desmoids,Fallopian_Tube,Colon_Rectal,Uterine_Endo,
-            Small_intestine,Biliary_Tract,Ureter_or_Renal_Pelvis
-    );
 
     List<String> sideOfFamilyQuestion = Arrays.asList(
             HALF_SISTER, HALF_BROTHER, GRANDMOTHER, GRANDFATHER, AUNT, UNCLE, FIRST_COUSIN_MALE, FIRST_COUSIN_FEMALE,
@@ -338,14 +296,14 @@ public class CareAPIUtil{
             cancerFeatureDetails.setCancerFeature(cancerFeatureDetails.getCancerFeature());
             if(cancerFeatureDetails.getCancerFeature().equalsIgnoreCase("Sebaceous Carcinoma") || cancerFeatureDetails.getCancerFeature().equalsIgnoreCase("Sebaceous adenomas"))
             {
-                cancerFeatureDetails.setCancerFeature(Skin);
+                cancerFeatureDetails.setCancerFeature(CancerType.SKIN.name());
                 cancerFeatureDetails.setBreastCancerTypes(Collections.singletonList(Sebaceous_C));
             }
             QuestionSet questionSet = new QuestionSet();
             String relativeCancerName = "";
             String ageAtDiagnosis = "";
             String cancerName = cancerFeatureDetails.getCancerFeature();
-            Boolean isSkinCancer = cancerName.equalsIgnoreCase(Skin) ? Boolean.TRUE : Boolean.FALSE;
+            Boolean isSkinCancer = cancerName.equalsIgnoreCase(CancerType.SKIN.name()) ? Boolean.TRUE : Boolean.FALSE;
             if (isProband && !isSkinCancer) {
                 if ((!StringUtils.isEmpty(cancerFeatureDetails.getExactDxAge()) || !StringUtils.isEmpty(cancerFeatureDetails.getMaxDxAge()) || !StringUtils.isEmpty(cancerFeatureDetails.getOtherDxAge()) || !StringUtils.isEmpty(cancerFeatureDetails.getMinDxAge())) && (!StringUtils.isEmpty(cancerFeatureDetails.getCancerFeature()))) {
                     if (!StringUtils.isEmpty(cancerFeatureDetails.getExactDxAge()))
@@ -418,7 +376,7 @@ public class CareAPIUtil{
                             personalCancerQuestions.add(questionSet);
                         }
                         if (cancerFeatureDetails.getBreastCancerTypes() != null) {
-                            if (cancerFeatureDetails.getBreastCancerTypes().size() > 0) {
+                            if (!cancerFeatureDetails.getBreastCancerTypes().isEmpty()) {
                                 List<String> pathology = cancerFeatureDetails.getBreastCancerTypes();
                                 if (!StringUtils.isEmpty(cancerFeatureDetails.getPathologyOther())) {
                                     pathology.add(cancerFeatureDetails.getPathologyOther());
@@ -1206,13 +1164,6 @@ public class CareAPIUtil{
         familyHistory.setBasicQuestions(Collections.singletonList(NCCNQuestionMapper.getQuestionSet("relativeCancerOverall", questionSetName)));
 
         return familyClinicalHistoryList;
-    }
-    public List<String> getCancerTypes() {
-        return cancerTypes;
-    }
-
-    public void setCancerTypes(List<String> cancerTypes) {
-        this.cancerTypes = cancerTypes;
     }
 
     public GuideLineUtility getGuideLineUtility() {
