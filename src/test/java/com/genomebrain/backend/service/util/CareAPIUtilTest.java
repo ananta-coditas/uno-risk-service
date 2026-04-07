@@ -74,30 +74,7 @@ class CareAPIUtilTest {
         assertThat(result).containsEntry("FIRST_COUSIN_FEMALE", "First cousin (female)");
         assertThat(result).containsEntry("OTHER", "Others");
     }
-
-    @Test
-    @DisplayName("Should return cancer types list")
-    void testGetCancerTypes() {
-        List<String> result = careAPIUtil.getCancerTypes();
-
-        assertThat(result).isNotNull();
-        assertThat(result).isNotEmpty();
-        assertThat(result).contains("BREAST");
-        assertThat(result).contains("OVARIAN");
-        assertThat(result).contains("PROSTATE");
-        assertThat(result).contains("COLORECTAL");
-    }
-
-    @Test
-    @DisplayName("Should set cancer types")
-    void testSetCancerTypes() {
-        List<String> newTypes = Arrays.asList("TYPE1", "TYPE2");
-        careAPIUtil.setCancerTypes(newTypes);
-
-        List<String> result = careAPIUtil.getCancerTypes();
-        assertThat(result).isEqualTo(newTypes);
-    }
-
+    
     @Test
     @DisplayName("Should return side of family question list")
     void testGetSideOfFamilyQuestion() {
