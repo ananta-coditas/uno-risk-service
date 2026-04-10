@@ -51,7 +51,8 @@ FROM rockylinux/rockylinux:9
 # Single RUN: update repos then install so we always get latest patched RPMs (no stale cache).
 # Explicit packages pull current RPMs: giflib (e.g. CVE-2026-26740, CVE-2026-23868), libarchive (CVE-2026-4424),
 # libnghttp2 (CVE-2026-27135; upstream nghttp2 1.68.1+ — distro EVR may differ with backports),
-# python3/python3-libs (CVE-2026-4519), perl-XML-Parser (CVE-2006-10003 needs XML-Parser 2.48+ when Rocky ships it).
+# python3/python3-libs (CVE-2026-4519), perl-XML-Parser (CVE-2006-10003 needs XML-Parser 2.48+ when Rocky ships it),
+# libcap (CVE-2026-4878: refresh RPM when Rocky ships backport; runtime uses upstream 2.78 from following RUN).
 RUN dnf install -y epel-release && dnf config-manager --set-enabled crb \
   && dnf update -y \
   && dnf install -y \
@@ -64,12 +65,25 @@ RUN dnf install -y epel-release && dnf config-manager --set-enabled crb \
       python3-libs \
       perl-XML-Parser \
       libpng \
+      libcap \
       R-core \
       R-core-devel \
       'java-21-openjdk-headless >= 21.0.10.0.7' \
   && (rpm -q vim-minimal && dnf remove -y vim-minimal || true) \
   && dnf clean all \
   && rm -rf /var/cache/dnf /tmp/* /var/tmp/* /usr/share/doc /usr/share/man /usr/share/locale
+# CVE-2026-4878: cap_set_file() TOCTOU (NVD / GHSA-f78v-p5hx-m7hh); fixed in upstream libcap 2.78. Rocky 9 still ships
+# libcap 2.48-* without that fix in public repos; install 2.78 to /usr/local and register with ldconfig so libcap.so.2
+# resolves to the patched build (same SONAME as distro). Remove this RUN when dnf libcap includes the vendor backport.
+RUN dnf install -y gcc make xz \
+  && curl -fsSL https://cdn.kernel.org/pub/linux/libs/security/linux-privs/libcap2/libcap-2.78.tar.xz | tar -xJ -C /tmp \
+  && cd /tmp/libcap-2.78/libcap && make -j"$(nproc)" && make install prefix=/usr/local lib=lib64 \
+  && printf '%s\n' /usr/local/lib64 > /etc/ld.so.conf.d/00-local-libcap.conf \
+  && ldconfig \
+  && cd / && rm -rf /tmp/libcap-2.78 \
+  && dnf remove -y gcc make && dnf autoremove -y \
+  && dnf clean all && rm -rf /var/cache/dnf /tmp/* /var/tmp/*
+RUN test -f /usr/local/lib64/libcap.so.2.78
 # Fail build if OpenJDK is not 21.0.10+ (required for CVE-2025-66293 and CVE-2026-25646)
 RUN java -version 2>&1 | grep -qE "21\.0\.(1[0-9]|[2-9][0-9])" || (echo "ERROR: OpenJDK 21.0.10+ required for CVE-2025-66293 and CVE-2026-25646" && exit 1)
 # && dnf remove -y R-core-devel \
