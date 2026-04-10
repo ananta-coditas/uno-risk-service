@@ -45,7 +45,7 @@ RUN mvn clean package -DskipTests
 
 ### Stage 2 ###
 # Rocky Linux 9 (latest minor) + OpenJDK 21 with patched system libs. Floating :9 tag picks up security updates for:
-# - libpng (CVE-2025-66293, CVE-2026-25646), giflib, libarchive, libnghttp2, python3, perl-XML-Parser (errata-dependent; see .grype.yaml)
+# - libpng (CVE-2025-66293, CVE-2026-25646), giflib, libarchive, libnghttp2, python3, perl-XML-Parser, libcap (errata-dependent; see .grype.yaml)
 FROM rockylinux/rockylinux:9
 
 # Single RUN: update repos then install so we always get latest patched RPMs (no stale cache).
