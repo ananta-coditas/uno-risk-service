@@ -212,12 +212,10 @@
         </exclusion>
       </exclusions>
     </dependency>
-    <!-- log4j for test only: GailModel's Risks/Helper classes require it to initialize -->
+    <!-- GailModel Helper/Risks use org.apache.log4j; bridge to SLF4J/Logback at runtime (was test-only log4j, breaking prod) -->
     <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>1.2.17</version>
-      <scope>test</scope>
+      <groupId>org.slf4j</groupId>
+      <artifactId>log4j-over-slf4j</artifactId>
     </dependency>
     <dependency>
       <groupId>net.logstash.logback</groupId>
