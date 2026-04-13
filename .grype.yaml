@@ -4,6 +4,7 @@
 # Libarchive is pulled in with base/R tooling; refresh via dnf when Rocky ships fixes.
 # Other entries: distro RPM versions vs upstream CVE ranges (backports), or workload not in the vulnerable code path — see each reason.
 # CVE-2026-4775 (libtiff) / CVE-2026-33412 (vim-minimal): no in-scope exploit path; remove ignores when Rocky ships patched RPMs.
+# CVE-2026-4878 (libcap): mitigated by Dockerfile upstream libcap 2.78 under /usr/local/lib64; ignore covers RPM inventory until vendor backport.
 ignore:
   - vulnerability: CVE-2025-66293
     reason: "Mitigated: java-21-openjdk-headless >= 21.0.10.0.7 (patched libpng); see Dockerfile"
@@ -31,3 +32,5 @@ ignore:
     reason: "glibc/glibc-common/glibc-gconv-extra/glibc-minimal-langpack are OS RPMs from Rocky 9 repos; image build runs dnf update for latest vendor-fixed/backported builds. Keep upgrading base image and remove this ignore once Rocky publishes explicit errata mapping for this CVE."
   - vulnerability: CVE-2026-34714
     reason: "Mitigated in workload: vim-minimal is explicitly removed from runtime image in Dockerfile and not required by service execution."
+  - vulnerability: CVE-2026-4878
+    reason: "Mitigated: Dockerfile installs upstream libcap 2.78 under /usr/local/lib64 with ldconfig (dlopen resolves patched libcap.so.2 first for CVE-2026-4878 / cap_set_file TOCTOU); distro libcap RPM remains for dependencies until Rocky ships a backported RPM — remove this ignore when vendor libcap includes the fix."
