@@ -1,11 +1,6 @@
-
 name: "Nightly Build and send notification to Slack"
 description: "Builds, scans, tests and sends notification to Slack."
 on:
-  # push:
-  #   branches:
-  #     - develop
-
   schedule:
     # 2:00 AM PT: 9:00 UTC = 2 AM PDT (Mar–Nov), 1 AM PST (Nov–Mar). GitHub cron is UTC only.
     - cron: "0 9 * * *"
@@ -96,7 +91,7 @@ jobs:
 
       # Notifications
       enable-email-notifications: false
-      enable-slack-notifications: false
+      enable-slack-notifications: true
       slack-channel-id: ${{ github.event.inputs.slack_channel_id || vars.SLACK_CHANNEL_ID || '' }}
       workflow-name: "Nightly Build & Deploy: ${{ needs.set-config.outputs.application_name }}"
 
