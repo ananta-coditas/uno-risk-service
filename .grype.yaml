@@ -1,8 +1,10 @@
 # Grype ignores: see each `reason`. Dockerfile-listed CVEs (OpenJDK/libpng, giflib, libarchive, libnghttp2, python3,
 # perl-XML-Parser, libcap, Go/SRPM tooling) are accepted when full vendor remediation would impact service or image functionality.
+# CVE-2026-6100: CPython RPMs on Rocky 9 (matched as redhat:distro:redhat:9); scoped by namespace + rpm + package name.
 # See Dockerfile stage 2 for package constraints and build steps.
 # CVE-2026-4111 / CVE-2026-4424: libarchive RAR/RAR5; additional libarchive entries above.
-# CVE-2026-4775 (libtiff) / CVE-2026-33412 (vim-minimal): separate accepted-risk entries; refresh when Rocky ships patched RPMs.
+# CVE-2026-4775 (libtiff) / CVE-2026-33412 / CVE-2026-34982 (vim-minimal): accepted-risk; refresh when Rocky ships patched RPMs.
+# CVE-2026-4786: CPython webbrowser.open (CVE-2026-4519 follow-on) on Rocky 9 python3/python3-libs RPMs only; scoped like CVE-2026-6100.
 ignore:
   - vulnerability: CVE-2025-66293
     reason: "Accepted: full remediation would impact service functionality (OpenJDK/libpng stack); see Dockerfile"
@@ -22,10 +24,28 @@ ignore:
     reason: "Accepted: libnghttp2 remediation would impact service functionality; refresh when distro ships compatible fix"
   - vulnerability: CVE-2026-4519
     reason: "Accepted: python3/python3-libs remediation would impact service functionality; see Dockerfile"
+  - vulnerability: CVE-2026-6100
+    namespace: redhat:distro:redhat:9
+    package:
+      type: rpm
+      name: (python3|python3-libs)
+    reason: "Accepted: CVE-2026-6100 (CPython decompressor UAF after MemoryError on instance reuse) on Rocky 9 OS python3/python3-libs only; Grype maps Rocky 9 RPMs to redhat:distro:redhat:9. Workload is Java+R, not reusing Python decompressors; remove when Rocky ships patched RPMs."
+  - vulnerability: CVE-2026-4786
+    namespace: redhat:distro:redhat:9
+    package:
+      type: rpm
+      name: (python3|python3-libs)
+    reason: "Accepted: CVE-2026-4786 (incomplete mitigation for CVE-2026-4519 — webbrowser.open() shell command injection via crafted URL including %action) on Rocky 9 OS python3/python3-libs only. Workload is Java+R with no Python webbrowser path on attacker-controlled URLs; remove when Rocky ships patched RPMs."
   - vulnerability: CVE-2026-4775
     reason: "Accepted: libtiff crafted TIFF heap write; service does not decode untrusted TIFFs; transitive OS RPM — refresh libtiff when Rocky errata ships"
   - vulnerability: CVE-2026-33412
     reason: "Accepted: vim glob() newline command injection (patched Vim 9.2.0202+); non-interactive runtime, no untrusted vim/automation path — refresh vim-minimal when distro ships fix"
+  - vulnerability: CVE-2026-34982
+    namespace: redhat:distro:redhat:9
+    package:
+      type: rpm
+      name: vim-minimal
+    reason: "Accepted: CVE-2026-34982 (Vim modeline sandbox bypass — arbitrary OS command execution when opening a crafted file; fixed Vim 9.2.0276+) on Rocky 9 vim-minimal RPM only. Headless Java+R runtime — no interactive vim or user opening untrusted files; refresh when Rocky ships patched vim-minimal."
   - vulnerability: CVE-2026-4046
     reason: "glibc/glibc-common/glibc-gconv-extra/glibc-minimal-langpack are OS RPMs from Rocky 9 repos; image build runs dnf update for latest vendor-fixed/backported builds. Keep upgrading base image and remove this ignore once Rocky publishes explicit errata mapping for this CVE."
   - vulnerability: CVE-2026-34714
