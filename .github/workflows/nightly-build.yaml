@@ -1,5 +1,5 @@
 name: "Nightly Build and send notification to Slack"
-description: "Builds, scans, tests and sends notification to Slack."
+# Builds, scans, tests and sends notification to Slack.
 on:
   schedule:
     # 2:00 AM PT: 9:00 UTC = 2 AM PDT (Mar–Nov), 1 AM PST (Nov–Mar). GitHub cron is UTC only.
