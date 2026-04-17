@@ -1,9 +1,9 @@
 name: "Nightly Build and send notification to Slack"
-# Builds, scans, tests and sends notification to Slack.
+description: "Builds, scans, tests and sends notification to Slack."
 on:
   schedule:
-    # 2:00 AM PT: 9:00 UTC = 2 AM PDT (Mar–Nov), 1 AM PST (Nov–Mar). GitHub cron is UTC only.
-    - cron: "0 9 * * *"
+    # 11:30 AM CDT (Chicago): 16:30 UTC (CDT is UTC-5). GitHub cron is UTC only.
+    - cron: "30 16 * * *"
   workflow_dispatch:
     inputs:
       branch:
