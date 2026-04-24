@@ -5,6 +5,7 @@
 # CVE-2026-4111 / CVE-2026-4424: libarchive RAR/RAR5; additional libarchive entries above.
 # CVE-2026-4775 (libtiff) / CVE-2026-33412 / CVE-2026-34982 (vim-minimal): accepted-risk; refresh when Rocky ships patched RPMs.
 # CVE-2026-4786: CPython webbrowser.open (CVE-2026-4519 follow-on) on Rocky 9 python3/python3-libs RPMs only; scoped like CVE-2026-6100.
+# Rocky 9 OS RPMs (glibc/OpenJDK/binutils/libpng): CVE-2026-5358, CVE-2026-34282, CVE-2026-22016, CVE-2026-6846, CVE-2026-22020 — see ignores at end of list.
 ignore:
   - vulnerability: CVE-2025-66293
     reason: "Accepted: full remediation would impact service functionality (OpenJDK/libpng stack); see Dockerfile"
@@ -54,3 +55,13 @@ ignore:
     reason: "Accepted: libcap vendor remediation path would impact service functionality; see Dockerfile (custom libcap build)"
   - vulnerability: CVE-2026-25679
     reason: "Accepted: Go/SRPM-related finding (e.g. go-srpm-macros); removing build tooling or forcing upgrades would impact image build/functionality; see Dockerfile R-core-devel removal notes"
+  - vulnerability: CVE-2026-5358
+    reason: "Rocky 9 OS RPMs (glibc family): NVD rejected CVE-2026-5358 (glibc NIS+ / trust-boundary dispute); Grype may still match distro glibc — remove ignore if policy requires zero matches or when Rocky/errata explicitly addresses feed"
+  - vulnerability: CVE-2026-34282
+    reason: "Rocky 9 OS RPM java-21-openjdk-headless (Oracle CPU Apr 2026 class); remediate via dnf update when Rocky ships patched OpenJDK 21 RPMs — remove this ignore after image rebuild on fixed errata"
+  - vulnerability: CVE-2026-22016
+    reason: "Rocky 9 OS RPM java-21-openjdk-headless (Oracle CPU Apr 2026 / JAXP); remediate via dnf update when Rocky ships patched OpenJDK 21 RPMs — remove this ignore after image rebuild on fixed errata"
+  - vulnerability: CVE-2026-6846
+    reason: "Rocky 9 OS RPMs binutils / binutils-gold (transitive toolchain, e.g. R-core-devel); remediate when Rocky ships patched RPMs via dnf update — remove ignore once scanner clean on updated base"
+  - vulnerability: CVE-2026-22020
+    reason: "Rocky 9 OS RPMs (java-21-openjdk-headless and/or libpng per scanner CPE); remediate via vendor RPM updates when Rocky publishes fixes — remove ignore after dnf update + rebuild clears findings"
