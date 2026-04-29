@@ -6,6 +6,7 @@
 # CVE-2026-4775 (libtiff) / CVE-2026-33412 / CVE-2026-34982 (vim-minimal): accepted-risk; refresh when Rocky ships patched RPMs.
 # CVE-2026-4786: CPython webbrowser.open (CVE-2026-4519 follow-on) on Rocky 9 python3/python3-libs RPMs only; scoped like CVE-2026-6100.
 # Rocky 9 OS RPMs (glibc/OpenJDK/binutils/libpng): CVE-2026-5358, CVE-2026-34282, CVE-2026-22016, CVE-2026-6846, CVE-2026-22020 — see ignores at end of list.
+# CVE-2026-40356 (krb5-libs / krb5-devel): MIT krb5 NegoEx + gss_accept_sec_context DoS (fixed upstream 1.22.3+); Rocky 9 transitive RPM — https://nvd.nist.gov/vuln/detail/CVE-2026-40356
 ignore:
   - vulnerability: CVE-2025-66293
     reason: "Accepted: full remediation would impact service functionality (OpenJDK/libpng stack); see Dockerfile"
@@ -47,6 +48,12 @@ ignore:
       type: rpm
       name: vim-minimal
     reason: "Accepted: CVE-2026-34982 (Vim modeline sandbox bypass — arbitrary OS command execution when opening a crafted file; fixed Vim 9.2.0276+) on Rocky 9 vim-minimal RPM only. Headless Java+R runtime — no interactive vim or user opening untrusted files; refresh when Rocky ships patched vim-minimal."
+  - vulnerability: CVE-2026-40356
+    namespace: redhat:distro:redhat:9
+    package:
+      type: rpm
+      name: (krb5-libs|krb5-devel)
+    reason: "Accepted: CVE-2026-40356 MIT krb5 before 1.22.3 (GSS NegoEx / gss_accept_sec_context — unauthenticated DoS in parse_message; NVD CVSS 3.1 5.9 MEDIUM per https://nvd.nist.gov/vuln/detail/CVE-2026-40356 — scanner tier may show High). Rocky 9 OS RPMs only (Grype: redhat:distro:redhat:9). Transitive from base + R/Java stack; workload does not expose native MIT Kerberos GSS accept with attacker-controlled NegoEx. Remove when Rocky errata ships krb5 >= 1.22.3 or equivalent backport and rebuild clears the finding."
   - vulnerability: CVE-2026-4046
     reason: "glibc/glibc-common/glibc-gconv-extra/glibc-minimal-langpack are OS RPMs from Rocky 9 repos; image build runs dnf update for latest vendor-fixed/backported builds. Keep upgrading base image and remove this ignore once Rocky publishes explicit errata mapping for this CVE."
   - vulnerability: CVE-2026-34714
