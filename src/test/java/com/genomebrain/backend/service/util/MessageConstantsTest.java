@@ -2,11 +2,22 @@ package com.genomebrain.backend.service.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.lang.reflect.Constructor;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 @DisplayName("MessageConstants Unit Tests")
 class MessageConstantsTest {
+
+    @Test
+    @DisplayName("Should allow default constructor for coverage of utility holder class")
+    void testDefaultConstructorViaReflection() throws Exception {
+        Constructor<MessageConstants> ctor = MessageConstants.class.getDeclaredConstructor();
+        ctor.setAccessible(true);
+        MessageConstants instance = ctor.newInstance();
+        assertThat(instance).isNotNull();
+    }
 
     @Test
     @DisplayName("Should have non-null basic status constants")

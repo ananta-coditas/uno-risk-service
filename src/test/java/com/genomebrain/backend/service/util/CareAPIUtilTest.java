@@ -2682,5 +2682,627 @@ class CareAPIUtilTest {
 
         assertThat(result).isNotNull();
     }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Breast proband using otherDxAge mapped value")
+    void testGetCancerObjectBreastProbandOtherDxAge() {
+        List<CancerFeatureDetails> list = new ArrayList<>();
+        CancerFeatureDetails breast = new CancerFeatureDetails();
+        breast.setCancerFeature("BREAST");
+        breast.setOtherDxAge("  childhood ");
+        list.add(breast);
+
+        CancerDetails personalCancer = new CancerDetails();
+        careAPIUtil.getCancerObject(list, personalCancer, true, null);
+
+        assertThat(personalCancer.getBreast()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Breast relative using minDxAge only")
+    void testGetCancerObjectBreastRelativeMinDxAgeOnly() {
+        List<CancerFeatureDetails> list = new ArrayList<>();
+        CancerFeatureDetails breast = new CancerFeatureDetails();
+        breast.setCancerFeature("BREAST");
+        breast.setMinDxAge("42");
+        list.add(breast);
+
+        com.genomebrain.backend.quesstionnaire.relative.Mother mother =
+            new com.genomebrain.backend.quesstionnaire.relative.Mother();
+        careAPIUtil.getCancerObject(list, null, false, mother);
+
+        assertThat(mother.getBreast()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Breast relative using maxDxAge only")
+    void testGetCancerObjectBreastRelativeMaxDxAgeOnly() {
+        List<CancerFeatureDetails> list = new ArrayList<>();
+        CancerFeatureDetails breast = new CancerFeatureDetails();
+        breast.setCancerFeature("BREAST");
+        breast.setMaxDxAge("68");
+        list.add(breast);
+
+        com.genomebrain.backend.quesstionnaire.relative.Sister sister =
+            new com.genomebrain.backend.quesstionnaire.relative.Sister();
+        careAPIUtil.getCancerObject(list, null, false, sister);
+
+        assertThat(sister.getBreast()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Breast relative using otherDxAge mapped value")
+    void testGetCancerObjectBreastRelativeOtherDxAge() {
+        List<CancerFeatureDetails> list = new ArrayList<>();
+        CancerFeatureDetails breast = new CancerFeatureDetails();
+        breast.setCancerFeature("BREAST");
+        breast.setOtherDxAge("PREMENOPAUSAL");
+        list.add(breast);
+
+        com.genomebrain.backend.quesstionnaire.relative.Aunt aunt =
+            new com.genomebrain.backend.quesstionnaire.relative.Aunt();
+        careAPIUtil.getCancerObject(list, null, false, aunt);
+
+        assertThat(aunt.getBreast()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Unknown/Other cancer using otherDxAge only")
+    void testGetCancerObjectUnknownOtherWithOtherDxAgeOnly() {
+        List<CancerFeatureDetails> list = new ArrayList<>();
+        CancerFeatureDetails unknown = new CancerFeatureDetails();
+        unknown.setCancerFeature("Unknown/Other cancer not listed here");
+        unknown.setOtherDxAge("YOUNG");
+        list.add(unknown);
+
+        CancerDetails personalCancer = new CancerDetails();
+        careAPIUtil.getCancerObject(list, personalCancer, true, null);
+
+        assertThat(personalCancer.getBreast()).isNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Skin sebaceous proband using otherDxAge only")
+    void testGetCancerObjectSkinSebaceousProbandOtherDxAgeOnly() {
+        List<CancerFeatureDetails> list = new ArrayList<>();
+        CancerFeatureDetails skin = new CancerFeatureDetails();
+        skin.setCancerFeature("SKIN");
+        skin.setBreastCancerTypes(Arrays.asList("Sebaceous carcinoma"));
+        skin.setOtherDxAge("INFANCY");
+        list.add(skin);
+
+        CancerDetails personalCancer = new CancerDetails();
+        careAPIUtil.getCancerObject(list, personalCancer, true, null);
+
+        assertThat(personalCancer.getSkin()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Skin sebaceous relative using otherDxAge only")
+    void testGetCancerObjectSkinSebaceousRelativeOtherDxAgeOnly() {
+        List<CancerFeatureDetails> list = new ArrayList<>();
+        CancerFeatureDetails skin = new CancerFeatureDetails();
+        skin.setCancerFeature("SKIN");
+        skin.setBreastCancerTypes(Arrays.asList("Sebaceous Carcinoma"));
+        skin.setOtherDxAge("EARLY TEENS");
+        list.add(skin);
+
+        com.genomebrain.backend.quesstionnaire.relative.Uncle uncle =
+            new com.genomebrain.backend.quesstionnaire.relative.Uncle();
+        careAPIUtil.getCancerObject(list, null, false, uncle);
+
+        assertThat(uncle.getSkin()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Sarcoma cancer for relative")
+    void testGetCancerObjectWithSarcomaForRelative() {
+        List<CancerFeatureDetails> cancerFeatureDetailsList = new ArrayList<>();
+        CancerFeatureDetails cancer = new CancerFeatureDetails();
+        cancer.setCancerFeature("SARCOMA");
+        cancer.setExactDxAge("44");
+        cancerFeatureDetailsList.add(cancer);
+
+        com.genomebrain.backend.quesstionnaire.relative.Brother brother =
+            new com.genomebrain.backend.quesstionnaire.relative.Brother();
+        careAPIUtil.getCancerObject(cancerFeatureDetailsList, null, false, brother);
+
+        assertThat(brother.getSarcoma()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Breast proband using minDxAge only")
+    void testGetCancerObjectBreastProbandMinDxAgeOnly() {
+        List<CancerFeatureDetails> list = new ArrayList<>();
+        CancerFeatureDetails breast = new CancerFeatureDetails();
+        breast.setCancerFeature("BREAST");
+        breast.setMinDxAge("39");
+        list.add(breast);
+
+        CancerDetails personalCancer = new CancerDetails();
+        careAPIUtil.getCancerObject(list, personalCancer, true, null);
+
+        assertThat(personalCancer.getBreast()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Colorectal relative and multiple primaries")
+    void testGetCancerObjectColorectalRelativeMultiplePrimaries() {
+        List<CancerFeatureDetails> list = new ArrayList<>();
+        CancerFeatureDetails c = new CancerFeatureDetails();
+        c.setCancerFeature("COLORECTAL");
+        c.setExactDxAge("58");
+        c.setMultiplePrimaries("yes");
+        list.add(c);
+
+        com.genomebrain.backend.quesstionnaire.relative.Father father =
+            new com.genomebrain.backend.quesstionnaire.relative.Father();
+        careAPIUtil.getCancerObject(list, null, false, father);
+
+        assertThat(father.getColorectal()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Brain relative and multiple primaries")
+    void testGetCancerObjectBrainRelativeMultiplePrimaries() {
+        List<CancerFeatureDetails> list = new ArrayList<>();
+        CancerFeatureDetails c = new CancerFeatureDetails();
+        c.setCancerFeature("BRAIN");
+        c.setExactDxAge("62");
+        c.setMultiplePrimaries("YES");
+        list.add(c);
+
+        com.genomebrain.backend.quesstionnaire.relative.Niece niece =
+            new com.genomebrain.backend.quesstionnaire.relative.Niece();
+        careAPIUtil.getCancerObject(list, null, false, niece);
+
+        assertThat(niece.getBrain()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Prostate relative Gleason greater than 7")
+    void testGetCancerObjectProstateRelativeHighGleason() {
+        List<CancerFeatureDetails> list = new ArrayList<>();
+        CancerFeatureDetails c = new CancerFeatureDetails();
+        c.setCancerFeature("PROSTATE");
+        c.setExactDxAge("70");
+        c.setProstateGleasonScore("9");
+        list.add(c);
+
+        com.genomebrain.backend.quesstionnaire.relative.Grandfather grandfather =
+            new com.genomebrain.backend.quesstionnaire.relative.Grandfather();
+        careAPIUtil.getCancerObject(list, null, false, grandfather);
+
+        assertThat(grandfather.getProstate()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Fallopian tube cancer for relative")
+    void testGetCancerObjectFallopianTubeRelative() {
+        List<CancerFeatureDetails> list = new ArrayList<>();
+        CancerFeatureDetails c = new CancerFeatureDetails();
+        c.setCancerFeature(Cancer.CancerType.Fallopian_Tube.name());
+        c.setExactDxAge("51");
+        list.add(c);
+
+        com.genomebrain.backend.quesstionnaire.relative.Aunt aunt =
+            new com.genomebrain.backend.quesstionnaire.relative.Aunt();
+        careAPIUtil.getCancerObject(list, null, false, aunt);
+
+        assertThat(aunt.getFallopianTube()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Pancreatic cancer for relative")
+    void testGetCancerObjectPancreaticRelative() {
+        List<CancerFeatureDetails> list = new ArrayList<>();
+        CancerFeatureDetails c = new CancerFeatureDetails();
+        c.setCancerFeature("PANCREATIC");
+        c.setExactDxAge("65");
+        list.add(c);
+
+        com.genomebrain.backend.quesstionnaire.relative.Son son =
+            new com.genomebrain.backend.quesstionnaire.relative.Son();
+        careAPIUtil.getCancerObject(list, null, false, son);
+
+        assertThat(son.getPancreatic()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Uterine cancer for relative")
+    void testGetCancerObjectUterineRelative() {
+        List<CancerFeatureDetails> list = new ArrayList<>();
+        CancerFeatureDetails c = new CancerFeatureDetails();
+        c.setCancerFeature(Cancer.CancerType.Uterine.name());
+        c.setExactDxAge("54");
+        list.add(c);
+
+        com.genomebrain.backend.quesstionnaire.relative.Sister sister =
+            new com.genomebrain.backend.quesstionnaire.relative.Sister();
+        careAPIUtil.getCancerObject(list, null, false, sister);
+
+        assertThat(sister.getUterine()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Gastric cancer for relative")
+    void testGetCancerObjectGastricRelative() {
+        List<CancerFeatureDetails> list = new ArrayList<>();
+        CancerFeatureDetails c = new CancerFeatureDetails();
+        c.setCancerFeature(Cancer.CancerType.Gastric.name());
+        c.setExactDxAge("60");
+        list.add(c);
+
+        com.genomebrain.backend.quesstionnaire.relative.FirstCousin cousin =
+            new com.genomebrain.backend.quesstionnaire.relative.FirstCousin();
+        careAPIUtil.getCancerObject(list, null, false, cousin);
+
+        assertThat(cousin.getStomach()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Prostate relative and metastatic flag")
+    void testGetCancerObjectProstateRelativeMetastatic() {
+        List<CancerFeatureDetails> list = new ArrayList<>();
+        CancerFeatureDetails c = new CancerFeatureDetails();
+        c.setCancerFeature("PROSTATE");
+        c.setExactDxAge("72");
+        c.setMetastatic("Yes");
+        list.add(c);
+
+        com.genomebrain.backend.quesstionnaire.relative.Uncle uncle =
+            new com.genomebrain.backend.quesstionnaire.relative.Uncle();
+        careAPIUtil.getCancerObject(list, null, false, uncle);
+
+        assertThat(uncle.getProstate()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Leukemia cancer for relative")
+    void testGetCancerObjectLeukemiaRelative() {
+        List<CancerFeatureDetails> list = new ArrayList<>();
+        CancerFeatureDetails c = new CancerFeatureDetails();
+        c.setCancerFeature("LEUKEMIA");
+        c.setExactDxAge("55");
+        list.add(c);
+
+        com.genomebrain.backend.quesstionnaire.relative.Nephew nephew =
+            new com.genomebrain.backend.quesstionnaire.relative.Nephew();
+        careAPIUtil.getCancerObject(list, null, false, nephew);
+
+        assertThat(nephew.getLeukemia()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Lymphoma cancer for relative")
+    void testGetCancerObjectLymphomaRelative() {
+        List<CancerFeatureDetails> list = new ArrayList<>();
+        CancerFeatureDetails c = new CancerFeatureDetails();
+        c.setCancerFeature("LYMPHOMA");
+        c.setExactDxAge("48");
+        list.add(c);
+
+        com.genomebrain.backend.quesstionnaire.relative.Daughters daughter =
+            new com.genomebrain.backend.quesstionnaire.relative.Daughters();
+        careAPIUtil.getCancerObject(list, null, false, daughter);
+
+        assertThat(daughter.getLymphoma()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Kidney cancer for relative")
+    void testGetCancerObjectKidneyRelative() {
+        List<CancerFeatureDetails> list = new ArrayList<>();
+        CancerFeatureDetails c = new CancerFeatureDetails();
+        c.setCancerFeature("KIDNEY");
+        c.setExactDxAge("61");
+        list.add(c);
+
+        com.genomebrain.backend.quesstionnaire.relative.Grandmother grandmother =
+            new com.genomebrain.backend.quesstionnaire.relative.Grandmother();
+        careAPIUtil.getCancerObject(list, null, false, grandmother);
+
+        assertThat(grandmother.getKidney()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Brain relative without multiple primaries")
+    void testGetCancerObjectBrainRelativeNoMultiplePrimaries() {
+        List<CancerFeatureDetails> list = new ArrayList<>();
+        CancerFeatureDetails c = new CancerFeatureDetails();
+        c.setCancerFeature("BRAIN");
+        c.setExactDxAge("40");
+        list.add(c);
+
+        com.genomebrain.backend.quesstionnaire.relative.HalfBrother halfBrother =
+            new com.genomebrain.backend.quesstionnaire.relative.HalfBrother();
+        careAPIUtil.getCancerObject(list, null, false, halfBrother);
+
+        assertThat(halfBrother.getBrain()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Colorectal proband using maxDxAge only")
+    void testGetCancerObjectColorectalProbandMaxDxAgeOnly() {
+        List<CancerFeatureDetails> list = new ArrayList<>();
+        CancerFeatureDetails c = new CancerFeatureDetails();
+        c.setCancerFeature("COLORECTAL");
+        c.setMaxDxAge("70");
+        list.add(c);
+
+        CancerDetails personalCancer = new CancerDetails();
+        careAPIUtil.getCancerObject(list, personalCancer, true, null);
+
+        assertThat(personalCancer.getColorectal()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Ovarian proband using otherDxAge only")
+    void testGetCancerObjectOvarianProbandOtherDxAgeOnly() {
+        List<CancerFeatureDetails> list = new ArrayList<>();
+        CancerFeatureDetails c = new CancerFeatureDetails();
+        c.setCancerFeature("OVARIAN");
+        c.setOtherDxAge("BIRTH");
+        list.add(c);
+
+        CancerDetails personalCancer = new CancerDetails();
+        careAPIUtil.getCancerObject(list, personalCancer, true, null);
+
+        assertThat(personalCancer.getOvarian()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Breast proband using maxDxAge only")
+    void testGetCancerObjectBreastProbandMaxDxAgeOnly() {
+        List<CancerFeatureDetails> list = new ArrayList<>();
+        CancerFeatureDetails breast = new CancerFeatureDetails();
+        breast.setCancerFeature("BREAST");
+        breast.setMaxDxAge("55");
+        list.add(breast);
+
+        CancerDetails personalCancer = new CancerDetails();
+        careAPIUtil.getCancerObject(list, personalCancer, true, null);
+
+        assertThat(personalCancer.getBreast()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Prostate proband using otherDxAge only")
+    void testGetCancerObjectProstateProbandOtherDxAgeOnly() {
+        List<CancerFeatureDetails> list = new ArrayList<>();
+        CancerFeatureDetails c = new CancerFeatureDetails();
+        c.setCancerFeature("PROSTATE");
+        c.setOtherDxAge("TEENS");
+        list.add(c);
+
+        CancerDetails personalCancer = new CancerDetails();
+        careAPIUtil.getCancerObject(list, personalCancer, true, null);
+
+        assertThat(personalCancer.getProstate()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Bladder cancer for relative")
+    void testGetCancerObjectBladderRelative() {
+        List<CancerFeatureDetails> list = new ArrayList<>();
+        CancerFeatureDetails c = new CancerFeatureDetails();
+        c.setCancerFeature("BLADDER");
+        c.setExactDxAge("63");
+        list.add(c);
+
+        com.genomebrain.backend.quesstionnaire.relative.HalfSister halfSister =
+            new com.genomebrain.backend.quesstionnaire.relative.HalfSister();
+        careAPIUtil.getCancerObject(list, null, false, halfSister);
+
+        assertThat(halfSister.getBladder()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Thyroid cancer for relative")
+    void testGetCancerObjectThyroidRelative() {
+        List<CancerFeatureDetails> list = new ArrayList<>();
+        CancerFeatureDetails c = new CancerFeatureDetails();
+        c.setCancerFeature("THYROID");
+        c.setExactDxAge("44");
+        list.add(c);
+
+        com.genomebrain.backend.quesstionnaire.relative.GreatAunt greatAunt =
+            new com.genomebrain.backend.quesstionnaire.relative.GreatAunt();
+        careAPIUtil.getCancerObject(list, null, false, greatAunt);
+
+        assertThat(greatAunt.getThyroid()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Ureter cancer for relative")
+    void testGetCancerObjectUreterRelative() {
+        List<CancerFeatureDetails> list = new ArrayList<>();
+        CancerFeatureDetails c = new CancerFeatureDetails();
+        c.setCancerFeature(Cancer.CancerType.Ureter.name());
+        c.setExactDxAge("59");
+        list.add(c);
+
+        com.genomebrain.backend.quesstionnaire.relative.HalfNiece halfNiece =
+            new com.genomebrain.backend.quesstionnaire.relative.HalfNiece();
+        careAPIUtil.getCancerObject(list, null, false, halfNiece);
+
+        assertThat(halfNiece.getUreter()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Small intestine cancer for relative")
+    void testGetCancerObjectSmallIntestineRelative() {
+        List<CancerFeatureDetails> list = new ArrayList<>();
+        CancerFeatureDetails c = new CancerFeatureDetails();
+        c.setCancerFeature(Cancer.CancerType.SmallIntestine.name());
+        c.setExactDxAge("57");
+        list.add(c);
+
+        com.genomebrain.backend.quesstionnaire.relative.HalfNephew halfNephew =
+            new com.genomebrain.backend.quesstionnaire.relative.HalfNephew();
+        careAPIUtil.getCancerObject(list, null, false, halfNephew);
+
+        assertThat(halfNephew.getSmallIntestine()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Biliary tract cancer for relative")
+    void testGetCancerObjectBiliaryTractRelative() {
+        List<CancerFeatureDetails> list = new ArrayList<>();
+        CancerFeatureDetails c = new CancerFeatureDetails();
+        c.setCancerFeature(Cancer.CancerType.BILIARY_TRACT.name());
+        c.setExactDxAge("64");
+        list.add(c);
+
+        com.genomebrain.backend.quesstionnaire.relative.GreatUncle greatUncle =
+            new com.genomebrain.backend.quesstionnaire.relative.GreatUncle();
+        careAPIUtil.getCancerObject(list, null, false, greatUncle);
+
+        assertThat(greatUncle.getBiliaryTract()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Gallbladder cancer for relative")
+    void testGetCancerObjectGallbladderRelative() {
+        List<CancerFeatureDetails> list = new ArrayList<>();
+        CancerFeatureDetails c = new CancerFeatureDetails();
+        c.setCancerFeature("GALLBLADDER");
+        c.setExactDxAge("66");
+        list.add(c);
+
+        com.genomebrain.backend.quesstionnaire.relative.GreatNiece greatNiece =
+            new com.genomebrain.backend.quesstionnaire.relative.GreatNiece();
+        careAPIUtil.getCancerObject(list, null, false, greatNiece);
+
+        assertThat(greatNiece.getGallbladder()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Cervical cancer for relative")
+    void testGetCancerObjectCervicalRelative() {
+        List<CancerFeatureDetails> list = new ArrayList<>();
+        CancerFeatureDetails c = new CancerFeatureDetails();
+        c.setCancerFeature("CERVICAL");
+        c.setExactDxAge("41");
+        list.add(c);
+
+        com.genomebrain.backend.quesstionnaire.relative.GreatGranddaughter ggd =
+            new com.genomebrain.backend.quesstionnaire.relative.GreatGranddaughter();
+        careAPIUtil.getCancerObject(list, null, false, ggd);
+
+        assertThat(ggd.getCervical()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Throat cancer for relative")
+    void testGetCancerObjectThroatRelative() {
+        List<CancerFeatureDetails> list = new ArrayList<>();
+        CancerFeatureDetails c = new CancerFeatureDetails();
+        c.setCancerFeature("THROAT");
+        c.setExactDxAge("58");
+        list.add(c);
+
+        com.genomebrain.backend.quesstionnaire.relative.GreatGrandson ggs =
+            new com.genomebrain.backend.quesstionnaire.relative.GreatGrandson();
+        careAPIUtil.getCancerObject(list, null, false, ggs);
+
+        assertThat(ggs.getThroat()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Oral cancer for relative")
+    void testGetCancerObjectOralRelative() {
+        List<CancerFeatureDetails> list = new ArrayList<>();
+        CancerFeatureDetails c = new CancerFeatureDetails();
+        c.setCancerFeature("ORAL");
+        c.setExactDxAge("52");
+        list.add(c);
+
+        com.genomebrain.backend.quesstionnaire.relative.GreatGrandmother ggm =
+            new com.genomebrain.backend.quesstionnaire.relative.GreatGrandmother();
+        careAPIUtil.getCancerObject(list, null, false, ggm);
+
+        assertThat(ggm.getOral()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Liver cancer for relative")
+    void testGetCancerObjectLiverRelative() {
+        List<CancerFeatureDetails> list = new ArrayList<>();
+        CancerFeatureDetails c = new CancerFeatureDetails();
+        c.setCancerFeature("LIVER");
+        c.setExactDxAge("67");
+        list.add(c);
+
+        com.genomebrain.backend.quesstionnaire.relative.GreatGrandfather ggf =
+            new com.genomebrain.backend.quesstionnaire.relative.GreatGrandfather();
+        careAPIUtil.getCancerObject(list, null, false, ggf);
+
+        assertThat(ggf.getLiver()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Testicular cancer for relative")
+    void testGetCancerObjectTesticularRelative() {
+        List<CancerFeatureDetails> list = new ArrayList<>();
+        CancerFeatureDetails c = new CancerFeatureDetails();
+        c.setCancerFeature("TESTICULAR");
+        c.setExactDxAge("35");
+        list.add(c);
+
+        com.genomebrain.backend.quesstionnaire.relative.Son son =
+            new com.genomebrain.backend.quesstionnaire.relative.Son();
+        careAPIUtil.getCancerObject(list, null, false, son);
+
+        assertThat(son.getTesticular()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Paraganglioma cancer for relative")
+    void testGetCancerObjectParagangliomaRelative() {
+        List<CancerFeatureDetails> list = new ArrayList<>();
+        CancerFeatureDetails c = new CancerFeatureDetails();
+        c.setCancerFeature("PARAGANGLIOMA");
+        c.setExactDxAge("49");
+        list.add(c);
+
+        com.genomebrain.backend.quesstionnaire.relative.Daughters daughter =
+            new com.genomebrain.backend.quesstionnaire.relative.Daughters();
+        careAPIUtil.getCancerObject(list, null, false, daughter);
+
+        assertThat(daughter.getParaganglioma()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Pheochromocytoma cancer for relative")
+    void testGetCancerObjectPheochromocytomaRelative() {
+        List<CancerFeatureDetails> list = new ArrayList<>();
+        CancerFeatureDetails c = new CancerFeatureDetails();
+        c.setCancerFeature("PHEOCHROMOCYTOMA");
+        c.setExactDxAge("43");
+        list.add(c);
+
+        com.genomebrain.backend.quesstionnaire.relative.HalfAunt halfAunt =
+            new com.genomebrain.backend.quesstionnaire.relative.HalfAunt();
+        careAPIUtil.getCancerObject(list, null, false, halfAunt);
+
+        assertThat(halfAunt.getPheochromocytoma()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should handle getCancerObject with Lung cancer for relative")
+    void testGetCancerObjectLungRelative() {
+        List<CancerFeatureDetails> list = new ArrayList<>();
+        CancerFeatureDetails c = new CancerFeatureDetails();
+        c.setCancerFeature("LUNG");
+        c.setExactDxAge("71");
+        list.add(c);
+
+        com.genomebrain.backend.quesstionnaire.relative.HalfUncle halfUncle =
+            new com.genomebrain.backend.quesstionnaire.relative.HalfUncle();
+        careAPIUtil.getCancerObject(list, null, false, halfUncle);
+
+        assertThat(halfUncle.getLung()).isNotNull();
+    }
 }
 
