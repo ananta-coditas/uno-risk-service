@@ -33,6 +33,7 @@ import com.genomebrain.backend.quesstionnaire.relative.Brother;
 import com.genomebrain.backend.service.dto.FamilyHistory;
 import com.genomebrain.backend.service.dto.CancerDetailsDTO;
 import com.genomebrain.backend.service.dto.ClinicalSummary;
+import com.genomebrain.backend.service.dto.OptionConstants;
 import com.genomebrain.backend.service.dto.FamilyHistoryDetailsTagsDTO;
 import com.genomebrain.backend.service.dto.PersonalHistoryDetails;
 import com.genomebrain.backend.service.dto.PersonalHistoryTagsDTO;
@@ -3134,6 +3135,146 @@ class TagGenerationUtilityTest {
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(3);
+    }
+
+    @Test
+    @DisplayName("Should map extended personal breast question branches including age bands and profile fields")
+    void testGetPersonalCancerTagsBreastExtendedBranches() {
+        CancerDetails cancerDetails = new CancerDetails();
+        QuestionSet q7 = new QuestionSet();
+        q7.setQuestionKey("AMBRY007");
+        q7.setAnswerKey("AMBRY007_002");
+        QuestionSet q9 = new QuestionSet();
+        q9.setQuestionKey("AMBRY009");
+        q9.setAnswerKey("AMBRY009_001,AMBRY009_003");
+        QuestionSet q10 = new QuestionSet();
+        q10.setQuestionKey("AMBRY010");
+        q10.setAnswerKey("AMBRY010_003");
+        QuestionSet q11 = new QuestionSet();
+        q11.setQuestionKey("AMBRY011");
+        q11.setAnswerKey("AMBRY011_001");
+        QuestionSet q124 = new QuestionSet();
+        q124.setQuestionKey("AMBRY124");
+        q124.setAnswerKey("AMBRY124_001");
+        QuestionSet q59 = new QuestionSet();
+        q59.setQuestionKey("AMBRY059");
+        q59.setAnswerKey("AMBRY059_002");
+        QuestionSet q57 = new QuestionSet();
+        q57.setQuestionKey("AMBRY057");
+        q57.setAnswerKey("AMBRY057_002");
+        QuestionSet q8 = new QuestionSet();
+        q8.setQuestionKey("AMBRY008");
+        q8.setAnswerKey("AMBRY008_001");
+        q8.setAnswerText("52");
+        cancerDetails.setBreast(Arrays.asList(q7, q9, q10, q11, q124, q59, q57, q8));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getPersonalCancerTags(cancerDetails, false, null);
+
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getCancerType()).isEqualTo("Breast");
+        assertThat(result.get(0).getAdditionalInformation())
+            .containsKeys("moreThanOnePrimary", "breastCancerType", "location", "tripleNegative", "bilateral");
+        assertThat(result.get(0).getTags())
+            .contains("PrBreast>=51", "PrBreast<=60", "PrBreastBilat");
+    }
+
+    @Test
+    @DisplayName("Should add bilateral family breast tags when relative age is 51 or older")
+    void testGetRelativeCancerTagsBreastFmBilateralAge51Plus() {
+        RelativeHistory relativeHistory = new RelativeHistory();
+        QuestionSet bilateralTag = new QuestionSet();
+        bilateralTag.setQuestionKey("AMBRY001");
+        bilateralTag.setAnswerKey("AMBRY057_002");
+        QuestionSet age = new QuestionSet();
+        age.setQuestionKey("AMBRY058");
+        age.setAnswerKey("AMBRY058_001");
+        age.setAnswerText("55");
+        relativeHistory.setBreast(Arrays.asList(bilateralTag, age));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getRelativeCancerTags(relativeHistory, "Female", "v1");
+
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getTags()).contains("FmBreastBilat>=51", "FmBreast>=51");
+    }
+
+    @Test
+    @DisplayName("Should map personal skin cancer melanoma and sebaceous unknown-age additional details")
+    void testGetPersonalCancerTagsSkinMelanomaAndSebaceousUnknownAgePaths() {
+        CancerDetails cancerDetails = new CancerDetails();
+        QuestionSet types121 = new QuestionSet();
+        types121.setQuestionKey("AMBRY121");
+        types121.setAnswerKey("AMBRY121_001,AMBRY121_002");
+        QuestionSet types123 = new QuestionSet();
+        types123.setQuestionKey("AMBRY123");
+        types123.setAnswerKey("AMBRY123_003");
+        QuestionSet melUnk = new QuestionSet();
+        melUnk.setQuestionKey("AMBRY078");
+        melUnk.setAnswerKey("AMBRY078_002");
+        melUnk.setAnswerText("1");
+        QuestionSet sebUnk = new QuestionSet();
+        sebUnk.setQuestionKey("AMBRY077");
+        sebUnk.setAnswerKey("AMBRY077_002");
+        sebUnk.setAnswerText("1");
+        cancerDetails.setSkin(Arrays.asList(types121, types123, melUnk, sebUnk));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getPersonalCancerTags(cancerDetails, false, null);
+
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getCancerType()).isEqualTo("Skin");
+        assertThat(result.get(0).getAdditionalInformation().get("melanomaAgeOfDiagnosis"))
+            .isEqualTo(OptionConstants.AMBRY003_012.getValue());
+        assertThat(result.get(0).getAdditionalInformation().get("adenomaAgeOfDiagnosis"))
+            .isEqualTo(OptionConstants.AMBRY003_012.getValue());
+    }
+
+    @Test
+    @DisplayName("Should map personal colorectal location and both proband and family age tag branches")
+    void testGetPersonalCancerTagsColorectalExtendedBranches() {
+        CancerDetails cancerDetails = new CancerDetails();
+        QuestionSet q20 = new QuestionSet();
+        q20.setQuestionKey("AMBRY020");
+        q20.setAnswerKey("AMBRY020_002");
+        QuestionSet q22 = new QuestionSet();
+        q22.setQuestionKey("AMBRY022");
+        q22.setAnswerKey("AMBRY022_001,AMBRY022_009");
+        QuestionSet q67 = new QuestionSet();
+        q67.setQuestionKey("AMBRY067");
+        q67.setAnswerKey("AMBRY067_002");
+        QuestionSet q21 = new QuestionSet();
+        q21.setQuestionKey("AMBRY021");
+        q21.setAnswerKey("AMBRY021_001");
+        q21.setAnswerText("49");
+        QuestionSet q68 = new QuestionSet();
+        q68.setQuestionKey("AMBRY068");
+        q68.setAnswerKey("AMBRY068_001");
+        q68.setAnswerText("49");
+        cancerDetails.setColorectal(Arrays.asList(q20, q22, q67, q21, q68));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getPersonalCancerTags(cancerDetails, false, null);
+
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getAdditionalInformation()).containsKeys("moreThanOnePrimary", "location");
+        assertThat(result.get(0).getTags()).contains("PrColon<=49", "PrColon<50", "FmColon<50", "FmColon<=50");
+    }
+
+    @Test
+    @DisplayName("Should map personal sebaceous AMBRY077 and AMBRY032 age branches for coverage")
+    void testGetPersonalCancerTagsSebaceousAdenomaFmAgeBranches() {
+        CancerDetails cancerDetails = new CancerDetails();
+        QuestionSet q77 = new QuestionSet();
+        q77.setQuestionKey("AMBRY077");
+        q77.setAnswerKey("AMBRY077_001");
+        q77.setAnswerText("48");
+        QuestionSet q32 = new QuestionSet();
+        q32.setQuestionKey("AMBRY032");
+        q32.setAnswerKey("AMBRY032_001");
+        q32.setAnswerText("40");
+        cancerDetails.setSebaceousAdenoma(Arrays.asList(q77, q32));
+
+        List<CancerDetailsDTO> result = tagGenerationUtility.getPersonalCancerTags(cancerDetails, false, null);
+
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getTags()).contains("FmSebAdenoCar<=50", "FmSebAdenoCar<50");
     }
 }
 
