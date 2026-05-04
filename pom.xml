@@ -65,8 +65,8 @@
     <sonar-maven-plugin.version>4.0.0.4121</sonar-maven-plugin.version>
     <spotless-maven-plugin.version>2.43.0</spotless-maven-plugin.version>
     <spring-cloud-dependencies.version>2023.0.3</spring-cloud-dependencies.version>
-    <!-- Override Undertow to fix CVE-2025-12543 (GHSA-j382-5jj3-vw4j) - Host header validation -->
-    <undertow.version>2.3.21.Final</undertow.version>
+    <!-- Override Undertow: CVE-2025-12543 (GHSA-j382-5jj3-vw4j); latest 2.3.x. CVE-2026-3260 / GHSA-3x3v-w654-m28m (GET+multipart DoS) has no stable sub-2.4 fix in vendor feeds — see .grype.yaml until 2.3 backport or Spring adopts 2.4+ -->
+    <undertow.version>2.3.22.Final</undertow.version>
     <!-- Override Commons IO to fix CVE-2024-47554 (GHSA-78wr-2p64-hpwj) - XmlStreamReader DoS -->
     <commons-io.version>2.14.0</commons-io.version>
     <!-- Override Jackson core to fix GHSA-72hv-8253-57qq - async parser number length DoS -->
@@ -79,8 +79,8 @@
     <commons-lang3.version>3.18.0</commons-lang3.version>
     <!-- Override Logback to fix CVE-2026-1225 (arbitrary class instantiation via config) -->
     <logback.version>1.5.25</logback.version>
-    <!-- Spring Security 6.5.9+ fixes CVE-2026-22732 / GHSA-mf92-479x-3373 (HTTP headers not written) -->
-    <spring-security.version>6.5.9</spring-security.version>
+    <!-- Spring Security 6.5.10+ fixes GHSA-cvc6-q2cp-2xhw, GHSA-x2wq-9x2f-fhj7, GHSA-vxf7-qj7q-83fh; 6.5.9+ fixes CVE-2026-22732 / GHSA-mf92-479x-3373 -->
+    <spring-security.version>6.5.10</spring-security.version>
     <!-- Spring Framework 6.2.17+ fixes CVE-2026-22737 (script view path limitation); Spring Boot 3.5.7 pins 6.2.12 -->
     <spring-framework.version>6.2.17</spring-framework.version>
   </properties>
@@ -97,7 +97,7 @@
 <!--    </repositories>-->
   <dependencyManagement>
     <dependencies>
-      <!-- Align spring-security-* (CVE-2026-22732) and spring-* Framework (CVE-2026-22737); Spring Boot 3.5.7 pins older patch lines -->
+      <!-- Align spring-security-* (CVE-2026-22732 + advisory patches) and spring-* Framework (CVE-2026-22737); Spring Boot 3.5.7 pins older patch lines -->
       <dependency>
         <groupId>org.springframework.security</groupId>
         <artifactId>spring-security-bom</artifactId>
