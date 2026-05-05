@@ -1,5 +1,6 @@
 # Grype ignores: see each `reason`. Dockerfile-listed CVEs (OpenJDK/libpng, giflib, libarchive, libnghttp2, python3,
 # perl-XML-Parser, libcap, Go/SRPM tooling) are accepted when full vendor remediation would impact service or image functionality.
+# CVE-2026-3260 / GHSA-3x3v-w654-m28m: Java io.undertow:undertow-core (Spring embedded server) — NOT Rocky; ignore scoped to java-archive undertow-core until stable fix beyond 2.3.22.
 # CVE-2026-6100: CPython RPMs on Rocky 9 (matched as redhat:distro:redhat:9); scoped by namespace + rpm + package name.
 # See Dockerfile stage 2 for package constraints and build steps.
 # CVE-2026-4111 / CVE-2026-4424: libarchive RAR/RAR5; additional libarchive entries above.
@@ -7,7 +8,13 @@
 # CVE-2026-4786: CPython webbrowser.open (CVE-2026-4519 follow-on) on Rocky 9 python3/python3-libs RPMs only; scoped like CVE-2026-6100.
 # Rocky 9 OS RPMs (glibc/OpenJDK/binutils/libpng): CVE-2026-5358, CVE-2026-34282, CVE-2026-22016, CVE-2026-6846, CVE-2026-22020 — see ignores at end of list.
 # CVE-2026-40356 (krb5-libs / krb5-devel): MIT krb5 NegoEx + gss_accept_sec_context DoS (fixed upstream 1.22.3+); Rocky 9 transitive RPM — https://nvd.nist.gov/vuln/detail/CVE-2026-40356
+# CVE-2026-33846 / CVE-2026-33845: GnuTLS DTLS handshake (heap OOB write + fragment underflow/OOB read); Rocky 9 gnutls RPMs — RHSA-2026:13274 — https://nvd.nist.gov/vuln/detail/CVE-2026-33846 https://nvd.nist.gov/vuln/detail/CVE-2026-33845
 ignore:
+  - vulnerability: GHSA-3x3v-w654-m28m
+    package:
+      type: java-archive
+      name: undertow-core
+    reason: "Accepted: CVE-2026-3260 / GHSA-3x3v-w654-m28m (Undertow multipart/form-data on HTTP GET → DoS when apps use getParameterMap() etc.); Grype lists fixed only in 2.4.0.Beta1 — Spring Boot 3.x uses Undertow 2.3.x LTS. Not an OS/Rocky RPM. Mitigate with request limits/WAF; remove when io.undertow ships 2.3.x patch or stable 2.4+ is adopted."
   - vulnerability: CVE-2025-66293
     reason: "Accepted: full remediation would impact service functionality (OpenJDK/libpng stack); see Dockerfile"
   - vulnerability: CVE-2026-25646
@@ -54,10 +61,22 @@ ignore:
       type: rpm
       name: (krb5-libs|krb5-devel)
     reason: "Accepted: CVE-2026-40356 MIT krb5 before 1.22.3 (GSS NegoEx / gss_accept_sec_context — unauthenticated DoS in parse_message; NVD CVSS 3.1 5.9 MEDIUM per https://nvd.nist.gov/vuln/detail/CVE-2026-40356 — scanner tier may show High). Rocky 9 OS RPMs only (Grype: redhat:distro:redhat:9). Transitive from base + R/Java stack; workload does not expose native MIT Kerberos GSS accept with attacker-controlled NegoEx. Remove when Rocky errata ships krb5 >= 1.22.3 or equivalent backport and rebuild clears the finding."
+  - vulnerability: CVE-2026-33846
+    namespace: redhat:distro:redhat:9
+    package:
+      type: rpm
+      name: "(gnutls|gnutls-dane|gnutls-utils)"
+    reason: "Accepted: CVE-2026-33846 GnuTLS DTLS merge_handshake_packet heap buffer overflow (unauthenticated remote via DTLS); Rocky 9 gnutls RPMs — https://nvd.nist.gov/vuln/detail/CVE-2026-33846 — vendor advisory RHSA-2026:13274. This service is Java+R over HTTP/TLS; it does not terminate attacker-controlled DTLS. Remove when Rocky mirrors ship patched gnutls and dnf update + rebuild clears Grype."
+  - vulnerability: CVE-2026-33845
+    namespace: redhat:distro:redhat:9
+    package:
+      type: rpm
+      name: "(gnutls|gnutls-dane|gnutls-utils)"
+    reason: "Accepted: CVE-2026-33845 GnuTLS DTLS malformed-fragment integer underflow leading to OOB read / DoS or info disclosure; Rocky 9 gnutls RPMs — https://nvd.nist.gov/vuln/detail/CVE-2026-33845 — same RHSA-2026:13274 as CVE-2026-33846. Same workload exposure (no hostile DTLS peer). Remove when patched RPMs are in the base image and scanner is clean."
   - vulnerability: CVE-2026-4046
     reason: "glibc/glibc-common/glibc-gconv-extra/glibc-minimal-langpack are OS RPMs from Rocky 9 repos; image build runs dnf update for latest vendor-fixed/backported builds. Keep upgrading base image and remove this ignore once Rocky publishes explicit errata mapping for this CVE."
   - vulnerability: CVE-2026-34714
-    reason: "Mitigated in workload: vim-minimal is explicitly removed from runtime image in Dockerfile and not required by service execution."
+    reason: "Accepted: Rocky 9 vim-minimal RPM (transitive from R/tooling); headless Java+R runtime — no interactive vim or user opening untrusted modelines; refresh when Rocky ships patched vim-minimal (see CVE-2026-34982 / CVE-2026-33412 notes)."
   - vulnerability: CVE-2026-4878
     reason: "Accepted: libcap vendor remediation path would impact service functionality; see Dockerfile (custom libcap build)"
   - vulnerability: CVE-2026-25679
