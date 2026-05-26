@@ -8,7 +8,8 @@
 # CVE-2026-4786: CPython webbrowser.open (CVE-2026-4519 follow-on) on Rocky 9 python3/python3-libs RPMs only; scoped like CVE-2026-6100.
 # Rocky 9 OS RPMs (glibc/OpenJDK/binutils/libpng): CVE-2026-5358, CVE-2026-34282, CVE-2026-22016, CVE-2026-6846, CVE-2026-22020 — see ignores at end of list.
 # CVE-2026-40356 (krb5-libs / krb5-devel): MIT krb5 NegoEx + gss_accept_sec_context DoS (fixed upstream 1.22.3+); Rocky 9 transitive RPM — https://nvd.nist.gov/vuln/detail/CVE-2026-40356
-# CVE-2026-33846 / CVE-2026-33845: GnuTLS DTLS handshake (heap OOB write + fragment underflow/OOB read); Rocky 9 gnutls RPMs — RHSA-2026:13274 — https://nvd.nist.gov/vuln/detail/CVE-2026-33846 https://nvd.nist.gov/vuln/detail/CVE-2026-33845
+# CVE-2026-33846 / CVE-2026-33845 / CVE-2026-42009 / CVE-2026-42010: GnuTLS (DTLS + RSA-PSK); Rocky 9 gnutls RPMs — RHSA-2026:13274 — https://nvd.nist.gov/vuln/detail/CVE-2026-33846 https://nvd.nist.gov/vuln/detail/CVE-2026-33845 https://nvd.nist.gov/vuln/detail/CVE-2026-42009 https://nvd.nist.gov/vuln/detail/CVE-2026-42010
+# CVE-2026-45186: libexpat <2.8.1 attribute-collision DoS; Rocky 9 expat RPM (transitive) — https://nvd.nist.gov/vuln/detail/CVE-2026-45186
 ignore:
   - vulnerability: GHSA-3x3v-w654-m28m
     package:
@@ -73,6 +74,24 @@ ignore:
       type: rpm
       name: "(gnutls|gnutls-dane|gnutls-utils)"
     reason: "Accepted: CVE-2026-33845 GnuTLS DTLS malformed-fragment integer underflow leading to OOB read / DoS or info disclosure; Rocky 9 gnutls RPMs — https://nvd.nist.gov/vuln/detail/CVE-2026-33845 — same RHSA-2026:13274 as CVE-2026-33846. Same workload exposure (no hostile DTLS peer). Remove when patched RPMs are in the base image and scanner is clean."
+  - vulnerability: CVE-2026-42009
+    namespace: redhat:distro:redhat:9
+    package:
+      type: rpm
+      name: "(gnutls|gnutls-dane|gnutls-utils)"
+    reason: "Accepted: CVE-2026-42009 GnuTLS DTLS reorder comparator mishandles duplicate sequence numbers (undefined behavior / DoS); Rocky 9 gnutls RPMs — https://nvd.nist.gov/vuln/detail/CVE-2026-42009 — RHSA-2026:13274 (same errata as CVE-2026-33846/33845). Java+R over HTTP/TLS does not expose attacker-controlled DTLS. Remove when Rocky ships patched gnutls and dnf update + rebuild clears Grype."
+  - vulnerability: CVE-2026-42010
+    namespace: redhat:distro:redhat:9
+    package:
+      type: rpm
+      name: "(gnutls|gnutls-dane|gnutls-utils)"
+    reason: "Accepted: CVE-2026-42010 GnuTLS RSA-PSK server NUL-byte username auth bypass; Rocky 9 gnutls RPMs — https://nvd.nist.gov/vuln/detail/CVE-2026-42010 — RHSA-2026:13274. Requires GnuTLS server with RSA-PSK; this service does not terminate RSA-PSK via GnuTLS. Remove when patched RPMs are in the base image and scanner is clean."
+  - vulnerability: CVE-2026-45186
+    namespace: redhat:distro:redhat:9
+    package:
+      type: rpm
+      name: expat
+    reason: "Accepted: CVE-2026-45186 libexpat before 2.8.1 — O(n²) attribute name collision checks allow DoS via moderately sized crafted XML — https://nvd.nist.gov/vuln/detail/CVE-2026-45186. Rocky 9 transitive expat RPM (Grype: redhat:distro:redhat:9). Workload is Java+R; no path parsing attacker-supplied XML through libexpat. Remove when Rocky ships expat >= 2.8.1 (or equivalent backport) and rebuild clears the finding."
   - vulnerability: CVE-2026-4046
     reason: "glibc/glibc-common/glibc-gconv-extra/glibc-minimal-langpack are OS RPMs from Rocky 9 repos; image build runs dnf update for latest vendor-fixed/backported builds. Keep upgrading base image and remove this ignore once Rocky publishes explicit errata mapping for this CVE."
   - vulnerability: CVE-2026-34714
