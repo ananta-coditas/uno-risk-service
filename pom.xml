@@ -193,15 +193,20 @@
 
   <dependencies>
 
+    <!-- Vendored JARs: systemPath so Maven/Snyk resolve on CI without install:install-file (nightlydeploy Snyk job). -->
     <dependency>
       <groupId>com.ambry</groupId>
       <artifactId>uno-spring-boot-framework</artifactId>
       <version>0.0.2-SNAPSHOT</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/dependencies/uno-spring-boot-framework-0.0.2-SNAPSHOT.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>com.progeny</groupId>
       <artifactId>GailModel</artifactId>
       <version>0.0.1-SNAPSHOT</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/dependencies/GailModel-0.0.1-SNAPSHOT.jar</systemPath>
       <exclusions>
         <exclusion>
           <groupId>log4j</groupId>
@@ -223,6 +228,8 @@
       <groupId>com.objex</groupId>
       <artifactId>RiskObjects</artifactId>
       <version>2.1</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/dependencies/RiskObjects-2.1.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -441,11 +448,15 @@
       <groupId>org.rosuda.REngine</groupId>
       <artifactId>REngine</artifactId>
       <version>2.1.0</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/dependencies/REngine.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>org.rosuda.REngine</groupId>
       <artifactId>Rserve</artifactId>
       <version>1.8.1</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/dependencies/Rserve.jar</systemPath>
     </dependency>
     <!-- JAXB dependencies for Java 9+ -->
     <dependency>
@@ -793,6 +804,7 @@
           </executions>
           <configuration>
             <mainClass>${start-class}</mainClass>
+            <includeSystemScope>true</includeSystemScope>
             <!--
                         Enable the line below to have remote debugging of your application on port 5005
             <jvmArguments>-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005</jvmArguments>

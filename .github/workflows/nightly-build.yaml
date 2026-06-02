@@ -25,44 +25,27 @@ permissions:
   actions: read
 
 jobs:
-  # ===== CONFIGURATION: Update these values per app (same style as build_deploy_cos.yml) =====
   set-config:
     name: "Set Configuration"
     runs-on: ubuntu-latest
     env:
-      # NOTE: These parameters must match the values in your tfvars / build_deploy_cos set-config
       ORGANIZATION_NAME: "ambry"
       APPLICATION_NAME: "uno-risk-service"
-      #SERVICE_CONTAINER_MAPPING: '{"clinical-order-service": ["clinical-order-service"]}'
     outputs:
       organization_name: ${{ env.ORGANIZATION_NAME }}
       application_name: ${{ env.APPLICATION_NAME }}
-
     steps:
       - run: echo "Configuration set"
 
-  # Local Snyk workflow: org snyk-scan uses --all-projects → Maven exit -13 on this repo.
-  snyk-scan:
-    name: "Snyk (local Maven deps)"
-    needs: [set-config]
-    uses: ./.github/workflows/snyk-maven-local.yaml
-    with:
-      ref: ${{ github.event.inputs.branch || 'develop' }}
-      fail_on_severities: "critical"
-      block_on_vulnerabilities: "true"
-    secrets: inherit
-
   nightly-deploy:
     name: "Nightly Build & Deploy"
-    needs: [set-config, snyk-scan]
+    needs: [set-config]
     uses: ambrygen/github-reusable-workflows/.github/workflows/nightlydeploy.yaml@main
     with:
-      # Required by reusable workflow
       service-name: ${{ needs.set-config.outputs.application_name }}
       target-branch: ${{ github.event.inputs.branch || 'develop' }}
       build-environment: "nightly"
 
-      # Test coverage (align with build_deploy_cos / your app)
       enable-test-coverage: true
       java-version: "21"
       java-distribution: "temurin"
@@ -71,14 +54,11 @@ jobs:
       build-tool: "maven"
       maven-args: "-Dspring.profiles.active=test"
       working-directory: "."
-      # Single-module repo: reusable workflow defaults to -pl backend. Override so root module is built (artifactId).
       maven-module: "."
       jacoco-report-path: "/target/site/jacoco/jacoco.xml"
       fail-on-coverage: true
-      # Install local BOMs and JARs before tests (same script as snyk-scan job)
       install-dependencies: bash .github/scripts/ci-install-local-maven-deps.sh
 
-      # Docker & Grype
       enable-docker-grype-scan: true
       dockerfile: "Dockerfile"
       env-file-name: "infrastructure/.env.shared_services"
@@ -87,17 +67,16 @@ jobs:
       block-on-vulnerabilities: false
       enable-ecr-inspector-scan: true
 
-      # Security scans (Snyk runs in snyk-scan job above; avoid duplicate scan without local deps)
-      enable-snyk-scan: false
+      enable-snyk-scan: true
+      snyk-fail-on-severities: "critical"
+      snyk-block-on-vulnerabilities: true
       enable-checkov-scan: true
 
-      # Notifications
       enable-email-notifications: false
       enable-slack-notifications: true
       slack-channel-id: ${{ github.event.inputs.slack_channel_id || vars.SLACK_CHANNEL_ID || '' }}
       workflow-name: "Nightly Build & Deploy: ${{ needs.set-config.outputs.application_name }}"
 
-      # Build and push to ECR (reusable runs this then deploy)
       enable-build-and-push: true
       enable-ecs-deploy: true
       deploy-env-file-name: "infrastructure/.env.test"
@@ -110,13 +89,8 @@ jobs:
       build-checkout-ref: ${{ github.event.inputs.branch || 'develop' }}
       build-args: |
         SPRING_PROFILES_ACTIVE=dev
-
-      # ECS deploy to INT (runs only when collect-results AND build-and-push both succeed; if a scan/coverage job failed, deploy is skipped)
-      # enable-ecs-deploy: false
     secrets: inherit
 
-  # After INT ECS deploy succeeds, dispatch RAS BDD tests in uno-regression-test-suite
-  # (same inputs as manual workflow_dispatch: ref master + tags).
   dispatch-ras-regression-after-ecs:
     name: "Dispatch RAS regression (INT)"
     needs: [nightly-deploy]
