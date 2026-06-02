@@ -41,9 +41,23 @@ jobs:
     steps:
       - run: echo "Configuration set"
 
+  # Snyk runs in a separate job so we can pass install_dependencies (nightlydeploy does not forward it).
+  snyk-scan:
+    name: "Snyk (local Maven deps)"
+    needs: [set-config]
+    uses: ambrygen/github-reusable-workflows/.github/workflows/snyk-scan.yaml@main
+    with:
+      project_type: maven
+      working_directory: "."
+      java_version: "21"
+      fail_on_severities: "critical"
+      block_on_vulnerabilities: "true"
+      install_dependencies: bash .github/scripts/ci-install-local-maven-deps.sh
+    secrets: inherit
+
   nightly-deploy:
     name: "Nightly Build & Deploy"
-    needs: [set-config]
+    needs: [set-config, snyk-scan]
     uses: ambrygen/github-reusable-workflows/.github/workflows/nightlydeploy.yaml@main
     with:
       # Required by reusable workflow
@@ -64,15 +78,8 @@ jobs:
       maven-module: "."
       jacoco-report-path: "/target/site/jacoco/jacoco.xml"
       fail-on-coverage: true
-      # Install local BOMs and JARs before tests (same as Dockerfile lines 15-33)
-      install-dependencies: |
-        mvn install:install-file -Dfile=./dependencies/uno-java-foundation-bom-1.0.1-SNAPSHOT.pom -DgroupId=com.ambry -DartifactId=uno-java-foundation-bom -Dversion=1.0.1-SNAPSHOT -Dpackaging=pom
-        mvn install:install-file -Dfile=./dependencies/uno-spring-boot-foundation-bom-1.0.1-SNAPSHOT.pom -DgroupId=com.ambry -DartifactId=uno-spring-boot-foundation-bom -Dversion=1.0.1-SNAPSHOT -Dpackaging=pom
-        mvn install:install-file -Dfile=./dependencies/uno-spring-boot-framework-0.0.2-SNAPSHOT.jar -DgroupId=com.ambry -DartifactId=uno-spring-boot-framework -Dversion=0.0.2-SNAPSHOT -Dpackaging=jar
-        mvn install:install-file -Dfile=./dependencies/GailModel-0.0.1-SNAPSHOT.jar -DgroupId=com.progeny -DartifactId=GailModel -Dversion=0.0.1-SNAPSHOT -Dpackaging=jar
-        mvn install:install-file -Dfile=./dependencies/REngine.jar -DgroupId=org.rosouda -DartifactId=REngine -Dversion=1.8.0_241 -Dpackaging=jar
-        mvn install:install-file -Dfile=./dependencies/Rserve.jar -DgroupId=org.rosouda -DartifactId=Rserve -Dversion=1.8.0_241 -Dpackaging=jar
-        mvn install:install-file -Dfile=./dependencies/RiskObjects-2.1.jar -DgroupId=com.objex -DartifactId=RiskObjects -Dversion=2.1 -Dpackaging=jar
+      # Install local BOMs and JARs before tests (same script as snyk-scan job)
+      install-dependencies: bash .github/scripts/ci-install-local-maven-deps.sh
 
       # Docker & Grype
       enable-docker-grype-scan: true
@@ -83,10 +90,8 @@ jobs:
       block-on-vulnerabilities: false
       enable-ecr-inspector-scan: true
 
-      # Security scans
-      enable-snyk-scan: true
-      snyk-fail-on-severities: "critical"
-      snyk-block-on-vulnerabilities: true
+      # Security scans (Snyk runs in snyk-scan job above; avoid duplicate scan without local deps)
+      enable-snyk-scan: false
       enable-checkov-scan: true
 
       # Notifications
