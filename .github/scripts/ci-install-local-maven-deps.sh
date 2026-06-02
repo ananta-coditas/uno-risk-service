@@ -9,3 +9,6 @@ mvn install:install-file -Dfile=./dependencies/GailModel-0.0.1-SNAPSHOT.jar -Dgr
 mvn install:install-file -Dfile=./dependencies/REngine.jar -DgroupId=org.rosuda.REngine -DartifactId=REngine -Dversion=2.1.0 -Dpackaging=jar
 mvn install:install-file -Dfile=./dependencies/Rserve.jar -DgroupId=org.rosuda.REngine -DartifactId=Rserve -Dversion=1.8.1 -Dpackaging=jar
 mvn install:install-file -Dfile=./dependencies/RiskObjects-2.1.jar -DgroupId=com.objex -DartifactId=RiskObjects -Dversion=2.1 -Dpackaging=jar
+
+# Warm dependency graph the same way Snyk CLI will (without --non-recursive / --all-projects).
+mvn -B -ntp dependency:tree -DoutputType=dot --batch-mode -f pom.xml

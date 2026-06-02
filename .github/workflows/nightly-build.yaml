@@ -41,18 +41,15 @@ jobs:
     steps:
       - run: echo "Configuration set"
 
-  # Snyk runs in a separate job so we can pass install_dependencies (nightlydeploy does not forward it).
+  # Local Snyk workflow: org snyk-scan uses --all-projects → Maven exit -13 on this repo.
   snyk-scan:
     name: "Snyk (local Maven deps)"
     needs: [set-config]
-    uses: ambrygen/github-reusable-workflows/.github/workflows/snyk-scan.yaml@main
+    uses: ./.github/workflows/snyk-maven-local.yaml
     with:
-      project_type: maven
-      working_directory: "."
-      java_version: "21"
+      ref: ${{ github.event.inputs.branch || 'develop' }}
       fail_on_severities: "critical"
       block_on_vulnerabilities: "true"
-      install_dependencies: bash .github/scripts/ci-install-local-maven-deps.sh
     secrets: inherit
 
   nightly-deploy:
