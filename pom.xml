@@ -81,8 +81,13 @@
     <logback.version>1.5.25</logback.version>
     <!-- Spring Security 6.5.10+ fixes GHSA-cvc6-q2cp-2xhw, GHSA-x2wq-9x2f-fhj7, GHSA-vxf7-qj7q-83fh; 6.5.9+ fixes CVE-2026-22732 / GHSA-mf92-479x-3373 -->
     <spring-security.version>6.5.10</spring-security.version>
-    <!-- Spring Framework 6.2.17+ fixes CVE-2026-22737 (script view path limitation); Spring Boot 3.5.7 pins 6.2.12 -->
-    <spring-framework.version>6.2.17</spring-framework.version>
+    <!-- Spring Framework 6.2.18+ fixes CVE-2026-22745 (Windows static resource DoS) and CVE-2026-22737 -->
+    <spring-framework.version>6.2.18</spring-framework.version>
+    <!-- Thymeleaf 3.1.5+ fixes CVE-2026-40477, CVE-2026-40478, CVE-2026-41901 (SSTI/RCE sandbox bypass) -->
+    <thymeleaf.version>3.1.5.RELEASE</thymeleaf.version>
+    <thymeleaf-extras-springsecurity.version>3.1.5.RELEASE</thymeleaf-extras-springsecurity.version>
+    <!-- OpenTelemetry 1.62.0+ fixes CVE-2026-45292 (unbounded W3C baggage propagation) -->
+    <opentelemetry.version>1.62.0</opentelemetry.version>
   </properties>
 <!--    <repositories>-->
 <!--      <repository>-->
@@ -97,7 +102,7 @@
 <!--    </repositories>-->
   <dependencyManagement>
     <dependencies>
-      <!-- Align spring-security-* (CVE-2026-22732 + advisory patches) and spring-* Framework (CVE-2026-22737); Spring Boot 3.5.7 pins older patch lines -->
+      <!-- Align spring-security-*, spring-* Framework, Thymeleaf, OpenTelemetry; Spring Boot 3.5.14 BOM pins older lines for some artifacts -->
       <dependency>
         <groupId>org.springframework.security</groupId>
         <artifactId>spring-security-bom</artifactId>
@@ -187,6 +192,30 @@
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-core</artifactId>
         <version>${logback.version}</version>
+      </dependency>
+      <!-- Override Thymeleaf to fix CVE-2026-40477, CVE-2026-40478, CVE-2026-41901 -->
+      <dependency>
+        <groupId>org.thymeleaf</groupId>
+        <artifactId>thymeleaf</artifactId>
+        <version>${thymeleaf.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.thymeleaf</groupId>
+        <artifactId>thymeleaf-spring6</artifactId>
+        <version>${thymeleaf.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.thymeleaf.extras</groupId>
+        <artifactId>thymeleaf-extras-springsecurity6</artifactId>
+        <version>${thymeleaf-extras-springsecurity.version}</version>
+      </dependency>
+      <!-- Override OpenTelemetry to fix CVE-2026-45292 -->
+      <dependency>
+        <groupId>io.opentelemetry</groupId>
+        <artifactId>opentelemetry-bom</artifactId>
+        <version>${opentelemetry.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
