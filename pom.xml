@@ -73,8 +73,8 @@
     <jackson-bom.version>2.21.1</jackson-bom.version>
     <!-- Override Guava to fix CVE-2023-2976, CVE-2018-10237 -->
     <guava.version>33.3.1-jre</guava.version>
-    <!-- Override Netty: CVE-2025-67735; CVE-2026-33870 / GHSA-pwqr-wmgm-9rr8; CVE-2026-33871 / GHSA-w9fj-cfpg-grvv; GHSA-mj4r-2hfc-f8p6 (Lz4FrameDecoder); GHSA-57rv-r2g8-2cj3 (HttpClientCodec) -->
-    <netty.version>4.1.133.Final</netty.version>
+    <!-- Override Netty: CVE-2025-67735; CVE-2026-33870 / GHSA-pwqr-wmgm-9rr8; CVE-2026-33871 / GHSA-w9fj-cfpg-grvv; GHSA-mj4r-2hfc-f8p6 (Lz4FrameDecoder); GHSA-57rv-r2g8-2cj3 (HttpClientCodec); GHSA-3qp7-7mw8-wx86 / CVE-2026-44249 (IPv6 IpSubnetFilter bypass); GHSA-x4gw-5cx5-pgmh / CVE-2026-45416 (SNI ClientHello memory DoS) -->
+    <netty.version>4.1.135.Final</netty.version>
     <!-- Override Commons Lang3 to fix CVE-2025-48924 (commons-lang/commons-lang3 uncontrolled recursion) -->
     <commons-lang3.version>3.18.0</commons-lang3.version>
     <!-- Override Logback to fix CVE-2026-1225 (arbitrary class instantiation via config) -->
