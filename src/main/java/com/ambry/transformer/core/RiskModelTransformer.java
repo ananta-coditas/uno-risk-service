@@ -10,6 +10,9 @@ import com.objex.risk.beans.uno.Risk;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * THis type does the basic mapping of the core value objects
  */
@@ -31,7 +34,7 @@ public abstract class RiskModelTransformer {
 			mapModelFields(person,basePerson);
 			add(fam,basePerson);
 		}
-		
+
 		return fam;
 	}
     /**
@@ -51,8 +54,8 @@ public abstract class RiskModelTransformer {
 	}
 
 	protected void mapModelRiskInstruction(BaseRisk fam, String name, String value) {
-	    LOG.info("Instruction " + "name:" + name + " value" + value + " may not be mapped correctly");   
-	
+	    LOG.info("Instruction " + "name:" + name + " value" + value + " may not be mapped correctly");
+
 	}
 	protected abstract void add(BaseRisk fam, BasePerson basePerson);
 
@@ -73,7 +76,8 @@ public abstract class RiskModelTransformer {
 		basePerson.setTestOrder(person.getTestOrder());
 		basePerson.setTwin(person.getTwin());
 		basePerson.setVitalStatus(person.getVitalStatus());
-		for (String germLine : person.getGermline().keySet()) {
+        List<String> germlineKeys = new ArrayList<>(person.getGermline().keySet());
+        for (String germLine : germlineKeys) {
 			if (basePerson.getGermline().containsKey(germLine))
 				basePerson.setGermline(germLine, person.getGermline(germLine));
 		}
@@ -88,5 +92,5 @@ public abstract class RiskModelTransformer {
 	 * @return
 	 */
 	protected abstract BasePerson createPersonObject();
-		
+
 }
