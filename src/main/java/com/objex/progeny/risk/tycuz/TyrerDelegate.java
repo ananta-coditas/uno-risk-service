@@ -33,6 +33,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -43,7 +45,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class TyrerDelegate {
-    
+
     final static Logger LOG = LoggerFactory.getLogger(TyrerDelegate.class);
     private static String OS = System.getProperty("os.name").toLowerCase();
     public static final String TYRER_VERSION = "Tyrer-Cuzick Version 8.0b";
@@ -53,28 +55,28 @@ public class TyrerDelegate {
     private String mortalitySwitch = "-m 1 ";
     private File workPath = null;
     public static final String DELIM = "\t";
-    protected static int count = 0;
+    protected static AtomicInteger count = new AtomicInteger(0);
     protected static HashMap<DensityMeasure, String> denstityRangeVal = new HashMap<DensityMeasure, String>() {{
         put(DensityMeasure.VOLPRA,"Volpara Percentage must be between 0 and 100");
         put(DensityMeasure.VAS,"VAS Percentage must be between 0 and 100");
    }};
-    
+
     public TyrerDelegate(String execCommand) {
         this.command = execCommand;
         if (!OS.startsWith("win")) {
             inputSwitch = "";
             outputSwitch = "";
             mortalitySwitch = "-m ";
-        } 
+        }
         workPath = new File(command.substring(0,this.command.lastIndexOf(File.separator)) + "/work");
         LOG.info("Using command :" + command + "  Using path: " + workPath.getAbsolutePath());
         if (!workPath.exists()) {
             workPath.mkdir();
         }
     }
-    
+
     public static void main(String[] args) throws Exception {
-        
+
         String path = "C:\\temp\\tyrer\\tcuzick-wincmd.exe";
         TyrerDelegate del = new TyrerDelegate(path);
         Risk risk = new Risk();
@@ -95,21 +97,21 @@ public class TyrerDelegate {
         proband.setMenostat(Person.MenosType.preMenopausal);
         proband.setEthnic(Ethnic.AJ);
         risk.add(proband);
-        
+
         Person mother = new Person();
         mother.setId(2);
         mother.setMotherId(7);
         mother.setAffectedBreastType(1);
         mother.setDiagnoseBreastAge(35);
         risk.add(mother);
-   
-        
+
+
         Person dad = new Person();
         dad.setId(3);
         dad.setGender(1);
         dad.setMotherId(8);
         risk.add(dad);
-        
+
         Person sister1 = new Person();
         sister1.setId(4);
         sister1.setMotherId(2);
@@ -117,7 +119,7 @@ public class TyrerDelegate {
         sister1.setAffectedBreastType(AffectedType.ONE);
         sister1.setDiagnoseBreastAge(33);
         risk.add(sister1);
-        
+
         Person sister2 = new Person();
         sister2.setId(5);
         sister2.setMotherId(2);
@@ -126,23 +128,23 @@ public class TyrerDelegate {
         sister2.setDiagnoseOvarianAge(29);
         sister2.setAge(34);
         risk.add(sister2);
-        
+
         Person daughter = new Person();
         daughter.setId(6);
         daughter.setMotherId(1);
         daughter.setAge(19);
         risk.add(daughter);
-        
+
         Person matGrand = new Person();
         matGrand.setId(7);
         matGrand.setAge(73);
         risk.add(matGrand);
-        
+
         Person patGrand = new Person();
         patGrand.setId(8);
         patGrand.setAge(76);
         risk.add(patGrand);
-        
+
         //Utils.saveToFile("C:\\temp\\tyrer\\saveOffTyrer.xml", risk);
         del.calculate(risk);
     }
@@ -150,7 +152,7 @@ public class TyrerDelegate {
     private void add(StringBuilder file, String value) {
         file.append(value).append(DELIM);
     }
-    
+
     private void add(StringBuilder file, Number value) {
         file.append(value).append(DELIM);
     }
@@ -158,7 +160,7 @@ public class TyrerDelegate {
     private TyrerResult buildResult(String[] split, int age, int ageTo, int ageBy) {
        TyrerResult result = new TyrerResult();
        result.setVersion(TYRER_VERSION);
-       
+
        /*
        Double five  = parseResult(split[5]);
        Double life  = parseResult(split[21]);
@@ -175,13 +177,13 @@ public class TyrerDelegate {
        pred = result.addPrediction();
        pred.addRisk("breastRisk", life);
        pred.setAge(85);
-       */    
+       */
        Double brca1  = parseResult(split[23]);
        Double brca2  = parseResult(split[24]);
        result.setProbabilityCarrier(brca1 + brca2);
        result.setProbabilityMutationBRCA1(brca1);
        result.setProbabilityMutationBRCA2(brca2);
-       
+
        int predictionAge = age + ageBy;
        int predictionIndex = ageBy;
         //Start with 5 year risk, and loop to honor ageBy
@@ -210,7 +212,7 @@ public class TyrerDelegate {
  * null in this eventuality allows Progeny to interpret the result as Not Available(NA) rather
  * than throwing an Exception.
  * @param value
- * @return 
+ * @return
  */
 private Double parseResult(String value) {
     try {
@@ -219,19 +221,19 @@ private Double parseResult(String value) {
         LOG.warn("tyrer program result not numeric " + value);
         return null;
     }
-}   
+}
 public TyrerResult calculate(Risk risk) throws IOException, InterruptedException {
-       
+
     TyrerResult result = new TyrerResult();
-    validateData(risk.getFamily().get(0), result, risk); 
+    validateData(risk.getFamily().get(0), result, risk);
     if (result.hasErrors()) {
         return result;
     }
     String stamp = stamp() + ".txt";
     String inputFile = workPath.getAbsolutePath() + "/tyInput" + stamp;
     String outputFile = workPath.getAbsolutePath() + "/tyOutput" + stamp;
-    
-    
+
+
     StringBuilder file = new StringBuilder("v8\r\n1\r\n");
     Person proband = risk.getFamily().get(0);
 
@@ -268,7 +270,7 @@ public TyrerResult calculate(Risk risk) throws IOException, InterruptedException
     add(file,proband.getYearsSinceHRT()); //21
     Person mother = null;
     Person father = null;
-    
+
     for (Person parent : Utils.getParents(proband, risk)) {
         if(parent.isMother(proband)) {
             mother = parent;
@@ -276,26 +278,26 @@ public TyrerResult calculate(Risk risk) throws IOException, InterruptedException
             father = parent;
         }
     }
-    
+
     processGermline(proband, file); //22
     processGermline(father, file); //23
-    
+
     processFemale(mother, file); //24-30
     List<Person> sisters = processSisters(proband, risk, file,9);
     List<Person> brothers = Utils.filterSex(Utils.getSiblings(proband, risk),false);
-    
+
     Person paternalGrandma = getGrandmaWithParent(father, risk);
     processFemale(paternalGrandma,file);
     Person maternalGrandma = getGrandmaWithParent(mother, risk);
     processFemale(maternalGrandma,file);
-    
+
     //paternal aunts
     List<Person> paternalAunts = processSisters(father, risk, file,9);
     //maternal aunts
     List<Person> maternalAunts = processSisters(mother, risk, file,9);
-    
+
     processDaughters(proband, risk, file,9);
-     
+
     int neicePositions = sisters.size();
     List<Person> brotherDaughters = Utils.filterSex(Utils.getChildren(brothers, risk),true);
     for (Person neice : brotherDaughters) {
@@ -332,7 +334,7 @@ public TyrerResult calculate(Risk risk) throws IOException, InterruptedException
         patHalfSisters.remove(patHalfSisters.size() - 1);
    } */
    processFemaleList(file, patHalfSisters ,false);
-   
+
    List<Person> matHalfSisters = Utils.filterSex(Utils.getHalfSiblings(proband,mother, risk),true);
    trim(matHalfSisters,9,true);
    /*
@@ -340,22 +342,22 @@ public TyrerResult calculate(Risk risk) throws IOException, InterruptedException
         matHalfSisters.remove(matHalfSisters.size() - 1);
    } */
    processFemaleList(file, matHalfSisters ,false);
-   
+
    add(file,paternalAunts.size()); //paternal aunt positions
    for (Person aunt : paternalAunts) { //second degree pat aunt daughters
        List<Person> daughters = Utils.filterSex(Utils.getChildren(aunt, risk),true);
-        processFemaleList(file, daughters ,false); 
+        processFemaleList(file, daughters ,false);
    }
-   
+
    add(file,maternalAunts.size()); //maternal aunt positions
    for (Person aunt : maternalAunts) { //second degree mat aunt daughters
        List<Person> daughters = Utils.filterSex(Utils.getChildren(aunt, risk),true);
-        processFemaleList(file, daughters ,false); 
+        processFemaleList(file, daughters ,false);
    }
-   
+
    processUncleCousins(father, risk, file, (paternalAunts.size() < 9)); //uncles seem to need an open slot under the maxsize
    processUncleCousins(mother, risk, file,  (maternalAunts.size() < 9)); //uncles seem to need an open slot under the maxsize
-   
+
    addBoolInt(father != null && father.getAffectedBreastType().isAffected(), file);
 
     int affectBroth = 0;
@@ -366,7 +368,7 @@ public TyrerResult calculate(Risk risk) throws IOException, InterruptedException
         }
     }
     add(file, affectBroth);
-    
+
     //version 8 stuff
     add(file,proband.getDensityMeasure().value);
     if (proband.getDensityMeasure().value == 0 || proband.getDensityMeasure().value == 1) {
@@ -382,13 +384,13 @@ public TyrerResult calculate(Risk risk) throws IOException, InterruptedException
     //end 8
 
     createInput(inputFile, file);
-      
+
     Process p =   executeCommand(inputFile, outputFile, risk.isCompetingMortality());
     if (OS.startsWith("win")) {
         go(p);
-    } 
+    }
     p.waitFor();
-    
+
       p.getOutputStream();
       BufferedReader reader = new BufferedReader(new FileReader(outputFile));
       String line = null;
@@ -430,10 +432,10 @@ public TyrerResult calculate(Risk risk) throws IOException, InterruptedException
 
     protected void createInput(String inputFile, StringBuilder file) {
         try {
-            
+
             FileWriter fWriter = new FileWriter(inputFile);
             BufferedWriter bw = new BufferedWriter(fWriter);
-            
+
             bw.write(file.toString());
             bw.flush();
             bw.close();
@@ -441,7 +443,7 @@ public TyrerResult calculate(Risk risk) throws IOException, InterruptedException
             System.out.println(
                     "Exception occured while getting resultset by the query");
             e.printStackTrace();
-        }  
+        }
     }
 
     protected void processUncleCousins(Person parent, Risk risk, StringBuilder file, boolean openSlots) {
@@ -461,7 +463,7 @@ public TyrerResult calculate(Risk risk) throws IOException, InterruptedException
         processFemaleList(file, sisters,false);
         return sisters;
     }
-    
+
     protected void trim(List<Person> people, int maxSize, boolean withAffectedBias) {
         List<Person> removeList = new ArrayList(people);
         while (people.size() > maxSize && !removeList.isEmpty()) {  //TODO tyrer program not handling after nine.  Remove after any updates to check again
@@ -476,7 +478,7 @@ public TyrerResult calculate(Risk risk) throws IOException, InterruptedException
              trim(people,maxSize,false);
         }
     }
-    
+
     protected void processDaughters(Person person, Risk risk, StringBuilder file, int maxSize) {
         List<Person> daughters = Utils.filterSex(Utils.getChildren(person, risk),true);
         trim(daughters,maxSize,true);
@@ -491,15 +493,15 @@ public TyrerResult calculate(Risk risk) throws IOException, InterruptedException
     * This process a list of related females in the way the alg expects
     * @param file
     * @param femaleRelatives daughters, aunts etc... some category of female relatives
-    */    
+    */
     protected void processFemaleList(StringBuilder file, List<Person> femaleRelatives, boolean includeEmpty) {
         add(file,femaleRelatives.size());
         if (femaleRelatives.isEmpty() && includeEmpty) {  //still need once for empty femaleRelatives says the spec
             processFemale(null,file);
-        }   
+        }
         for (Person sister : femaleRelatives) {
             processFemale(sister, file);
-        }   
+        }
     }
 
     protected Person getGrandmaWithParent(Person parent, Risk risk) {
@@ -521,11 +523,11 @@ public TyrerResult calculate(Risk risk) throws IOException, InterruptedException
             add(file,-99);
             add(file,-99);
         } else {
-            
+
             addBoolInt(female.getAffectedBreastType() != AffectedType.NONE, file);
             addBoolInt(female.getAffectedBilateralBreastType() != AffectedType.NONE, file);
             addBoolInt(female.getAffectedOvarianType() != AffectedType.NONE, file);
-            
+
             add(file,female.getDiagnoseBreastAge());
             add(file,female.getDiagnoseBilateralBreastAge());
             add(file,female.getDiagnoseOvarianAge());
@@ -565,10 +567,10 @@ public TyrerResult calculate(Risk risk) throws IOException, InterruptedException
     }
     protected synchronized String stamp() {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
-        String name = ++count + "_" + format.format(new Date());
-        return name;   
+        String name = count.incrementAndGet() + "_" + format.format(new Date());
+        return name;
     }
-    
+
     protected void go(Process p) {
     final InputStream is = p.getInputStream();
     Thread eater = new Thread () {
@@ -579,9 +581,9 @@ public TyrerResult calculate(Risk risk) throws IOException, InterruptedException
                 BufferedReader br = new BufferedReader(isr);
                 String line=null;
                 while ( (line = br.readLine()) != null)
-                    System.out.println(line);    
+                    System.out.println(line);
             } catch (IOException ioe) {
-                ioe.printStackTrace();  
+                ioe.printStackTrace();
             }
         }};
     eater.start();
@@ -590,32 +592,32 @@ public TyrerResult calculate(Risk risk) throws IOException, InterruptedException
      * validate the incoming risk family data
      * @param proband
      * @param result
-     * @param risk 
-     */ 
-    protected void validateData(Person proband, TyrerResult result, Risk risk) {  
+     * @param risk
+     */
+    protected void validateData(Person proband, TyrerResult result, Risk risk) {
             if (proband.getAffectedBreastType().isAffected() || proband.getAffectedBilateralBreastType().isAffected()) {
                  result.addError(new RiskError(proband.getId(),"Unsupported Cancer for member","unsupportedCancerFormember"));
-            }  
+            }
             if (proband.getAge() < 1 || proband.getAge() > 84) {
                  result.addError(new RiskError(proband.getId(),"Age must be between 1 and 84","ageMustBeBetweenOneAndEightyFour"));
             }
-            if ((proband.getDensityMeasure() == DensityMeasure.VAS  || proband.getDensityMeasure() == DensityMeasure.VOLPRA) && 
+            if ((proband.getDensityMeasure() == DensityMeasure.VAS  || proband.getDensityMeasure() == DensityMeasure.VOLPRA) &&
                     (proband.getDensityValue() < 0 || proband.getDensityValue() >= 100)) {
                               result.addError(new RiskError(proband.getId(),denstityRangeVal.get(proband.getDensityMeasure()),"unsupporteDensity"));
             }
             if (proband.getGender() == 1) {
                 result.addError(new RiskError(proband.getId(),"member Cannot be male","memberCannotBeMale"));
-            } 
+            }
            for (Person member : risk.getFamily()) {
                validateMemberData(member, result);
-           }                
+           }
     }
-    
+
     /**
-     * 
+     *
      * @param member
      * @param result
-     * @param risk 
+     * @param risk
      */
     private void validateMemberData(Person member, TyrerResult result) {
         if (member.getGender() == 1 && member.getHasLiveBirth()) {
@@ -646,6 +648,6 @@ public TyrerResult calculate(Risk risk) throws IOException, InterruptedException
         }
         if (member.getAge() < 0) {
             result.addError(new RiskError(member.getId(),"Invalid age","invalidAge"));
-        }    
+        }
     }
 }
