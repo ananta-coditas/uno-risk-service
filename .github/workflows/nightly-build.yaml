@@ -49,7 +49,26 @@ jobs:
     outputs:
       organization_name: ${{ env.ORGANIZATION_NAME }}
       application_name: ${{ env.APPLICATION_NAME }}
+      snyk_unmanaged_jars_json: ${{ steps.snyk-config.outputs.unmanaged_jars_json }}
+      snyk_maven_all_projects_json: ${{ steps.snyk-config.outputs.maven_all_projects_json }}
+      snyk_unmanaged_jars_path: ${{ steps.snyk-config.outputs.unmanaged_jars_path }}
     steps:
+      - id: snyk-config
+        run: |
+          set -euo pipefail
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            UNMANAGED="${{ github.event.inputs.snyk_unmanaged_jars }}"
+            MAVEN_ALL="${{ github.event.inputs.snyk_maven_all_projects }}"
+            JARS_PATH="${{ github.event.inputs.snyk_unmanaged_jars_path }}"
+          else
+            UNMANAGED="true"
+            MAVEN_ALL="false"
+            JARS_PATH="dependencies"
+          fi
+          JARS_PATH="${JARS_PATH:-dependencies}"
+          echo "unmanaged_jars_json=${UNMANAGED}" >> "$GITHUB_OUTPUT"
+          echo "maven_all_projects_json=${MAVEN_ALL}" >> "$GITHUB_OUTPUT"
+          echo "unmanaged_jars_path=${JARS_PATH}" >> "$GITHUB_OUTPUT"
       - run: echo "Configuration set"
 
   nightly-deploy:
@@ -85,9 +104,9 @@ jobs:
       enable-snyk-scan: true
       snyk-fail-on-severities: "critical"
       snyk-block-on-vulnerabilities: true
-      enable-snyk-unmanaged-jars: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.snyk_unmanaged_jars }}
-      snyk-unmanaged-jars-path: ${{ github.event.inputs.snyk_unmanaged_jars_path || 'dependencies' }}
-      snyk-maven-all-projects: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.snyk_maven_all_projects || false }}
+      enable-snyk-unmanaged-jars: ${{ fromJSON(needs.set-config.outputs.snyk_unmanaged_jars_json) }}
+      snyk-unmanaged-jars-path: ${{ needs.set-config.outputs.snyk_unmanaged_jars_path }}
+      snyk-maven-all-projects: ${{ fromJSON(needs.set-config.outputs.snyk_maven_all_projects_json) }}
       enable-checkov-scan: true
 
       enable-email-notifications: false
