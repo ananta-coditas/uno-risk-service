@@ -44,9 +44,29 @@ jobs:
       - name: List vendored JARs
         run: find dependencies -type f -name '*.jar' | sort
 
-      - name: Scan vendored JARs (scan-all-unmanaged)
+      - name: Scan each JAR individually (debug)
+        continue-on-error: true
+        run: |
+          set -uo pipefail
+          for jar in dependencies/*.jar; do
+            echo ""
+            echo "========== $jar =========="
+            snyk test -d --scan-unmanaged --file="$jar" --print-deps || echo "Scan failed or jar not identified: $jar"
+          done
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      - name: Scan all vendored JARs (scan-all-unmanaged, debug)
         continue-on-error: true
         working-directory: dependencies
-        run: snyk test --scan-all-unmanaged
+        run: snyk test -d --scan-all-unmanaged --print-deps
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      - name: Compare with Maven snyk test (full dependency tree)
+        continue-on-error: true
+        run: |
+          bash .github/scripts/ci-install-local-maven-deps.sh
+          snyk test -d --file=pom.xml --print-deps
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}

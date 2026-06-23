@@ -16,6 +16,21 @@ on:
         required: false
         type: string
         default: ""
+      snyk_maven_all_projects:
+        description: "Snyk Maven: use --all-projects (true) or scan root pom.xml only (false). Scheduled runs default to false."
+        required: false
+        type: boolean
+        default: false
+      snyk_unmanaged_jars:
+        description: "Snyk: scan vendored JARs in dependencies/ (--scan-all-unmanaged). Scheduled runs default to true."
+        required: false
+        type: boolean
+        default: true
+      snyk_unmanaged_jars_path:
+        description: "Path to vendored JARs (relative to repo root). Scheduled runs default to dependencies."
+        required: false
+        type: string
+        default: "dependencies"
 
 permissions:
   contents: read
@@ -70,6 +85,9 @@ jobs:
       enable-snyk-scan: true
       snyk-fail-on-severities: "critical"
       snyk-block-on-vulnerabilities: true
+      enable-snyk-unmanaged-jars: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.snyk_unmanaged_jars }}
+      snyk-unmanaged-jars-path: ${{ github.event.inputs.snyk_unmanaged_jars_path || 'dependencies' }}
+      snyk-maven-all-projects: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.snyk_maven_all_projects || false }}
       enable-checkov-scan: true
 
       enable-email-notifications: false
