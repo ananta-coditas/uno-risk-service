@@ -1,0 +1,52 @@
+name: "POC: Snyk Scan Vendored JARs"
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Branch to scan (defaults to the branch you run the workflow from)"
+        required: false
+        type: string
+        default: ""
+  pull_request:
+    paths:
+      - "dependencies/**"
+      - ".github/workflows/snyk-vendored-jars-poc.yaml"
+
+permissions:
+  contents: read
+
+jobs:
+  scan-vendored-jars:
+    name: "Snyk scan-all-unmanaged (dependencies/)"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.branch || github.ref }}
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Install Snyk CLI
+        uses: snyk/actions/setup@master
+        id: snyk
+        with:
+          snyk-version: latest
+
+      - name: Print Snyk CLI version
+        run: snyk --version
+
+      - name: List vendored JARs
+        run: find dependencies -type f -name '*.jar' | sort
+
+      - name: Scan vendored JARs (scan-all-unmanaged)
+        continue-on-error: true
+        working-directory: dependencies
+        run: snyk test --scan-all-unmanaged
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
