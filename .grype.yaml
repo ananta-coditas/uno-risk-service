@@ -12,6 +12,7 @@
 # CVE-2026-45186: libexpat <2.8.1 attribute-collision DoS; Rocky 9 expat RPM (transitive) — https://nvd.nist.gov/vuln/detail/CVE-2026-45186
 # CVE-2026-10118: poppler Splash tilingPatternFill integer overflow (crafted PDF render); Rocky 9 transitive poppler RPMs — https://nvd.nist.gov/vuln/detail/CVE-2026-10118
 # CVE-2026-45447: OpenSSL PKCS7_verify() UAF (crafted PKCS#7/S/MIME); Rocky 9 openssl/openssl-libs/openssl-fips-provider — RHSA-2026:25239 (fixed openssl-1:3.5.5-4.el9_8); remove when Rocky mirrors ship and dnf update + rebuild clears Grype — https://nvd.nist.gov/vuln/detail/CVE-2026-45447
+# CVE-2026-8177: XML::LibXML (perl-XML-LibXML) domParseChar UTF-8 OOB read DoS (≤2.0210); Grype misattributes to Rocky 9 core perl-* RPMs — https://nvd.nist.gov/vuln/detail/CVE-2026-8177
 ignore:
   - vulnerability: GHSA-3x3v-w654-m28m
     package:
@@ -124,3 +125,9 @@ ignore:
     reason: "Rocky 9 OS RPMs binutils / binutils-gold (transitive toolchain, e.g. R-core-devel); remediate when Rocky ships patched RPMs via dnf update — remove ignore once scanner clean on updated base"
   - vulnerability: CVE-2026-22020
     reason: "Rocky 9 OS RPMs (java-21-openjdk-headless and/or libpng per scanner CPE); remediate via vendor RPM updates when Rocky publishes fixes — remove ignore after dnf update + rebuild clears findings"
+  - vulnerability: CVE-2026-8177
+    namespace: redhat:distro:redhat:9
+    package:
+      type: rpm
+      name: "perl-.*"
+    reason: "Accepted: CVE-2026-8177 XML::LibXML ≤2.0210 domParseChar out-of-bounds read on truncated UTF-8 node names (CWE-125 DoS) — https://nvd.nist.gov/vuln/detail/CVE-2026-8177. Upstream fix in perl-XML-LibXML >2.0210 (dom.c validates UTF-8 continuation bytes). Grype incorrectly matches all Rocky 9 perl-* subpackages (perl-base, perl-interpreter, perl-Fcntl, perl-IO, etc.); core Perl RPMs do not contain the vulnerable dom.c code. Headless Java+R workload does not pass attacker-controlled strings to XML::LibXML DOM node-name APIs. Remove when Rocky ships patched perl-XML-LibXML and scanner feed maps CVE only to that package."
