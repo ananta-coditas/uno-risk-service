@@ -4,7 +4,9 @@
 # CVE-2026-6100: CPython RPMs on Rocky 9 (matched as redhat:distro:redhat:9); scoped by namespace + rpm + package name.
 # See Dockerfile stage 2 for package constraints and build steps.
 # CVE-2026-4111 / CVE-2026-4424: libarchive RAR/RAR5; additional libarchive entries above.
-# CVE-2026-4775 (libtiff) / CVE-2026-33412 / CVE-2026-34982 (vim-minimal): accepted-risk; refresh when Rocky ships patched RPMs.
+# CVE-2026-4775 / CVE-2026-12912 (libtiff) / CVE-2026-33412 / CVE-2026-34982 / CVE-2026-47162 (vim-minimal): accepted-risk; refresh when Rocky ships patched RPMs.
+# CVE-2026-8643 (python3-pip-wheel): pip entry-point path traversal; Rocky 9 transitive RPM — https://nvd.nist.gov/vuln/detail/CVE-2026-8643
+# CVE-2026-54369 (libacl) / CVE-2026-54371 (attr/libattr): symlink traversal in ACL/xattr utilities; Rocky 9 transitive RPMs — https://nvd.nist.gov/vuln/detail/CVE-2026-54369 https://nvd.nist.gov/vuln/detail/CVE-2026-54371
 # CVE-2026-4786: CPython webbrowser.open (CVE-2026-4519 follow-on) on Rocky 9 python3/python3-libs RPMs only; scoped like CVE-2026-6100.
 # Rocky 9 OS RPMs (glibc/OpenJDK/binutils/libpng): CVE-2026-5358, CVE-2026-34282, CVE-2026-22016, CVE-2026-6846, CVE-2026-22020 — see ignores at end of list.
 # CVE-2026-40356 (krb5-libs / krb5-devel): MIT krb5 NegoEx + gss_accept_sec_context DoS (fixed upstream 1.22.3+); Rocky 9 transitive RPM — https://nvd.nist.gov/vuln/detail/CVE-2026-40356
@@ -131,3 +133,33 @@ ignore:
       type: rpm
       name: "perl-.*"
     reason: "Accepted: CVE-2026-8177 XML::LibXML ≤2.0210 domParseChar out-of-bounds read on truncated UTF-8 node names (CWE-125 DoS) — https://nvd.nist.gov/vuln/detail/CVE-2026-8177. Upstream fix in perl-XML-LibXML >2.0210 (dom.c validates UTF-8 continuation bytes). Grype incorrectly matches all Rocky 9 perl-* subpackages (perl-base, perl-interpreter, perl-Fcntl, perl-IO, etc.); core Perl RPMs do not contain the vulnerable dom.c code. Headless Java+R workload does not pass attacker-controlled strings to XML::LibXML DOM node-name APIs. Remove when Rocky ships patched perl-XML-LibXML and scanner feed maps CVE only to that package."
+  - vulnerability: CVE-2026-47162
+    namespace: redhat:distro:redhat:9
+    package:
+      type: rpm
+      name: vim-minimal
+    reason: "Accepted: CVE-2026-47162 Vim netrw s:NetrwBookHistSave() Vimscript injection via crafted directory names in ~/.vim/.netrwhist (fixed Vim 9.2.0495+) — https://nvd.nist.gov/vuln/detail/CVE-2026-47162. Rocky 9 vim-minimal RPM only (Grype: redhat:distro:redhat:9). Headless Java+R runtime — no interactive vim, netrw browsing, or sourcing of attacker-controlled .netrwhist; refresh when Rocky ships patched vim-minimal."
+  - vulnerability: CVE-2026-8643
+    namespace: redhat:distro:redhat:9
+    package:
+      type: rpm
+      name: python3-pip-wheel
+    reason: "Accepted: CVE-2026-8643 pip <26.1.2 console_scripts/gui_scripts path traversal can install entry points outside the install directory (CWE-22) — https://nvd.nist.gov/vuln/detail/CVE-2026-8643. Rocky 9 transitive python3-pip-wheel RPM only. Workload is Java+R; no runtime pip install of attacker-controlled packages or entry points. Remove when Rocky ships pip >=26.1.2 (or equivalent backport) in python3-pip-wheel and dnf update + rebuild clears Grype."
+  - vulnerability: CVE-2026-54371
+    namespace: redhat:distro:redhat:9
+    package:
+      type: rpm
+      name: "(attr|libattr)"
+    reason: "Accepted: CVE-2026-54371 attr <2.6.0 symlink traversal in getfattr/setfattr allows local priv esc when a privileged process operates on attacker-controlled path components (CWE-59) — https://nvd.nist.gov/vuln/detail/CVE-2026-54371. Rocky 9 attr/libattr RPMs (Grype: redhat:distro:redhat:9). Transitive OS dependency; container runs as non-root appuser with no getfattr/setfattr on hostile paths. Remove when Rocky errata ships attr >=2.6.0 (or equivalent backport) and rebuild clears the finding."
+  - vulnerability: CVE-2026-54369
+    namespace: redhat:distro:redhat:9
+    package:
+      type: rpm
+      name: "(libacl|acl)"
+    reason: "Accepted: CVE-2026-54369 acl/libacl <2.4.0 symlink traversal in acl_get_file/acl_set_file/acl_extended_file/acl_delete_def_file allows local priv esc via attacker-controlled path components (CWE-59) — https://nvd.nist.gov/vuln/detail/CVE-2026-54369. Rocky 9 libacl RPM (Grype: redhat:distro:redhat:9). Transitive OS dependency; workload does not invoke libacl pathname APIs on attacker-controlled paths as a privileged caller. Remove when Rocky errata ships acl/libacl >=2.4.0 (or equivalent backport) and rebuild clears the finding."
+  - vulnerability: CVE-2026-12912
+    namespace: redhat:distro:redhat:9
+    package:
+      type: rpm
+      name: libtiff
+    reason: "Accepted: CVE-2026-12912 libtiff PixarLog PIXARLOGDATAFMT_8BITABGR heap buffer overflow on crafted TIFF (AV:L/UI:R; Red Hat CVSS 3.1 7.3 HIGH) — https://nvd.nist.gov/vuln/detail/CVE-2026-12912. Rocky 9 transitive libtiff RPM (Grype: redhat:distro:redhat:9). Headless Java+R risk service does not decode untrusted TIFF images via libtiff; no Rocky errata for this CVE yet (RLSA-2026:19363 covers CVE-2026-4775 only). Remove when Rocky ships patched libtiff and dnf update + rebuild clears Grype."
