@@ -38,6 +38,9 @@ COPY sonar-project.properties .
 # Creates JAR file in target directory
 RUN mvn clean package -DskipTests
 
+# Datadog Java tracer (fetched in build stage so Rocky runtime image need not invoke curl)
+RUN curl -fsSL https://dtdg.co/latest-java-tracer -o /app/dd-java-agent.jar
+
 # Copy the JAR file
 
 #RUN cp target/*.jar uno-risk-service.jar
@@ -99,7 +102,7 @@ RUN R -e "install.packages('kinship2', dependencies=TRUE, repos = 'https://cloud
 RUN R -e "install.packages('Rserve', dependencies=TRUE, repos = 'https://cloud.r-project.org')"
 RUN R -e "install.packages('/tmp/BayesMendel_2.1-8.tar.gz',type='source',REPOS= NULL, dependencies=TRUE)"
 
-RUN curl -L https://dtdg.co/latest-java-tracer -o /app/dd-java-agent.jar
+COPY --from=build /app/dd-java-agent.jar /app/dd-java-agent.jar
 
 # Set ownership to the app user
 RUN chown -R appuser:appuser /app
