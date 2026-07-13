@@ -18,6 +18,8 @@
 # CVE-2026-58016 (glib2): GLib D-Bus introspection XML DoS; Rocky 9 transitive OS RPM — https://nvd.nist.gov/vuln/detail/CVE-2026-58016
 # CVE-2026-55895 (vim-minimal): netrw Vimscript injection; remediated by Dockerfile `dnf remove vim-minimal` (no RPM dependency; headless Java+R runtime)
 # CVE-2026-11352 / CVE-2026-8925 / CVE-2026-12064 / CVE-2026-11586 / CVE-2026-8286 / CVE-2026-9547: curl-minimal/libcurl-minimal (curl 8.21.0 upstream advisories); Rocky 9 ships curl 7.76.1 fork — transitive via dnf (protected; cannot remove); Dockerfile dnf update + dd-java-agent fetch moved to build stage
+# CVE-2026-59873 / CVE-2026-59874: isaacs/node-tar (Node.js); Grype CPE/name collision on Rocky 9 GNU tar RPM — not node-tar in this image
+# CVE-2026-15308: CPython html.parser HTMLParser DoS on unterminated markup; Rocky 9 python3/python3-libs transitive RPM — https://nvd.nist.gov/vuln/detail/CVE-2026-15308
 ignore:
   - vulnerability: GHSA-3x3v-w654-m28m
     package:
@@ -208,3 +210,21 @@ ignore:
       type: rpm
       name: "(curl-minimal|libcurl-minimal)"
     reason: "Accepted: CVE-2026-9547 libcurl SCP/SFTP CURLOPT_SSH_KEYFUNCTION host-key type mismatch (libssh backend only; fixed upstream curl 8.21.0) — https://nvd.nist.gov/vuln/detail/CVE-2026-9547. Rocky 9 curl-minimal/libcurl-minimal RPMs (Grype: redhat:distro:redhat:9). No libcurl SCP/SFTP client usage in this workload. Remove when Rocky errata ships backported curl RPMs and dnf update + rebuild clears Grype."
+  - vulnerability: CVE-2026-59873
+    namespace: redhat:distro:redhat:9
+    package:
+      type: rpm
+      name: tar
+    reason: "False positive: CVE-2026-59873 is isaacs/node-tar <7.5.19 (Node.js gzip-bomb / decompression limits in src/extract.ts) — https://nvd.nist.gov/vuln/detail/CVE-2026-59873. Grype maps it to Rocky 9 GNU tar RPM (tar-1.34-11.el9 after dnf update); this image has no Node.js node-tar dependency. Headless Java+R workload does not run node-tar. Remove if Grype feed stops misattributing this CVE to distro tar."
+  - vulnerability: CVE-2026-59874
+    namespace: redhat:distro:redhat:9
+    package:
+      type: rpm
+      name: tar
+    reason: "False positive: CVE-2026-59874 is isaacs/node-tar <7.5.18 (tar.replace infinite loop on negative base-256 entry size) — https://nvd.nist.gov/vuln/detail/CVE-2026-59874. Grype maps it to Rocky 9 GNU tar RPM; this image has no Node.js node-tar dependency. Remove if Grype feed stops misattributing this CVE to distro tar."
+  - vulnerability: CVE-2026-15308
+    namespace: redhat:distro:redhat:9
+    package:
+      type: rpm
+      name: (python3|python3-libs)
+    reason: "Accepted: CVE-2026-15308 CPython html.parser.HTMLParser CPU DoS via repeated unterminated markup declarations on attacker-controlled HTML (fixed upstream <3.15.0; Rocky 9 ships python3 3.9.25-7.el9_8) — https://nvd.nist.gov/vuln/detail/CVE-2026-15308. Rocky 9 transitive python3/python3-libs RPMs only (Grype: redhat:distro:redhat:9). Workload is Java+R with no Python html.parser path on untrusted HTML. Remove when Rocky errata ships patched python3/python3-libs and dnf update + rebuild clears Grype."
