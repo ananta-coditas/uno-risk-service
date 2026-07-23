@@ -1,5 +1,6 @@
-# Use a minimal OpenJDK 21 base image
-# FROM eclipse-temurin:21-jdk-alpine as base
+# Patched JRE for runtime (aligned with jib-maven-plugin.image); avoids Rocky java-21-openjdk-headless RPM scan surface
+FROM eclipse-temurin:21-jre-jammy AS jre
+
 FROM maven:3.9.6-eclipse-temurin-21 AS build
 
 # Set working directory
@@ -57,10 +58,14 @@ RUN dnf install -y \
       libgcc \
       R-core \
       R-core-devel \
-      java-21-openjdk-headless \
   && dnf remove -y vim-minimal \
   && dnf clean all \
   && rm -rf /var/cache/dnf /tmp/* /var/tmp/* /usr/share/doc /usr/share/man /usr/share/locale
+
+# Eclipse Temurin 21 JRE (not Rocky java-21-openjdk-headless); rebuild picks up 21.0.12+ when published (CVE-2026-47063)
+COPY --from=jre /opt/java/openjdk /opt/java/openjdk
+ENV JAVA_HOME=/opt/java/openjdk
+ENV PATH="${JAVA_HOME}/bin:${PATH}"
 # && dnf remove -y R-core-devel \
 #gcc gcc-c++ gcc-fortran make
 
