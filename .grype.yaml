@@ -9,6 +9,7 @@
 # CVE-2026-54369 (libacl) / CVE-2026-54371 (attr/libattr): symlink traversal in ACL/xattr utilities; Rocky 9 transitive RPMs — https://nvd.nist.gov/vuln/detail/CVE-2026-54369 https://nvd.nist.gov/vuln/detail/CVE-2026-54371
 # CVE-2026-4786: CPython webbrowser.open (CVE-2026-4519 follow-on) on Rocky 9 python3/python3-libs RPMs only; scoped like CVE-2026-6100.
 # Rocky 9 OS RPMs (glibc/OpenJDK/binutils/libpng): CVE-2026-5358, CVE-2026-34282, CVE-2026-22016, CVE-2026-6846, CVE-2026-22020 — see ignores at end of list.
+# CVE-2026-47063: Oracle CPU Jul 2026 (Java SE Libraries integrity); runtime uses eclipse-temurin:21-jre-jammy (Dockerfile jre stage), not Rocky java-21-openjdk-headless — remove ignore after Temurin ships 21.0.12+ and rebuild clears Grype.
 # CVE-2026-40356 (krb5-libs / krb5-devel): MIT krb5 NegoEx + gss_accept_sec_context DoS (fixed upstream 1.22.3+); Rocky 9 transitive RPM — https://nvd.nist.gov/vuln/detail/CVE-2026-40356
 # CVE-2026-33846 / CVE-2026-33845 / CVE-2026-42009 / CVE-2026-42010: GnuTLS (DTLS + RSA-PSK); Rocky 9 gnutls RPMs — RHSA-2026:13274 — https://nvd.nist.gov/vuln/detail/CVE-2026-33846 https://nvd.nist.gov/vuln/detail/CVE-2026-33845 https://nvd.nist.gov/vuln/detail/CVE-2026-42009 https://nvd.nist.gov/vuln/detail/CVE-2026-42010
 # CVE-2026-45186: libexpat <2.8.1 attribute-collision DoS; Rocky 9 expat RPM (transitive) — https://nvd.nist.gov/vuln/detail/CVE-2026-45186
@@ -132,6 +133,8 @@ ignore:
     reason: "Rocky 9 OS RPMs binutils / binutils-gold (transitive toolchain, e.g. R-core-devel); remediate when Rocky ships patched RPMs via dnf update — remove ignore once scanner clean on updated base"
   - vulnerability: CVE-2026-22020
     reason: "Rocky 9 OS RPMs (java-21-openjdk-headless and/or libpng per scanner CPE); remediate via vendor RPM updates when Rocky publishes fixes — remove ignore after dnf update + rebuild clears findings"
+  - vulnerability: CVE-2026-47063
+    reason: "Accepted: CVE-2026-47063 Oracle CPU Jul 2026 (Java SE Libraries — unauthenticated network integrity impact on Java 21.0.11 and below) — https://nvd.nist.gov/vuln/detail/CVE-2026-47063. Runtime JRE is eclipse-temurin:21-jre-jammy copied in Dockerfile (not Rocky java-21-openjdk-headless); fixed in Oracle/OpenJDK 21.0.12+. Rebuild on eclipse-temurin:21.0.12+ (or pin 21.0.12_*-jre-jammy) when Adoptium publishes the CPU build; remove this ignore once scanner is clean."
   - vulnerability: CVE-2026-8177
     namespace: redhat:distro:redhat:9
     package:
