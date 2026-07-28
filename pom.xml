@@ -81,8 +81,8 @@
     <logback.version>1.5.25</logback.version>
     <!-- Spring Security 6.5.10+ fixes GHSA-cvc6-q2cp-2xhw, GHSA-x2wq-9x2f-fhj7, GHSA-vxf7-qj7q-83fh; 6.5.9+ fixes CVE-2026-22732 / GHSA-mf92-479x-3373 -->
     <spring-security.version>6.5.10</spring-security.version>
-    <!-- Spring Framework 6.2.18+ fixes CVE-2026-22745 (Windows static resource DoS) and CVE-2026-22737 -->
-    <spring-framework.version>6.2.18</spring-framework.version>
+    <!-- Spring Framework 6.2.19+ fixes CVE-2026-22745/22737, CVE-2026-41853 (multipart smuggling), CVE-2026-41854 (UriComponentsBuilder SSRF), and related spring-web/spring-mvc advisories -->
+    <spring-framework.version>6.2.19</spring-framework.version>
     <!-- Thymeleaf 3.1.5+ fixes CVE-2026-40477, CVE-2026-40478, CVE-2026-41901 (SSTI/RCE sandbox bypass) -->
     <thymeleaf.version>3.1.5.RELEASE</thymeleaf.version>
     <thymeleaf-extras-springsecurity.version>3.1.5.RELEASE</thymeleaf-extras-springsecurity.version>
@@ -102,7 +102,7 @@
 <!--    </repositories>-->
   <dependencyManagement>
     <dependencies>
-      <!-- Align spring-security-*, spring-* Framework, Thymeleaf, OpenTelemetry; Spring Boot 3.5.14 BOM pins older lines for some artifacts -->
+      <!-- Align spring-security-*, spring-* Framework, Thymeleaf, OpenTelemetry; Spring Boot 3.5.15 BOM pins older lines for some artifacts -->
       <dependency>
         <groupId>org.springframework.security</groupId>
         <artifactId>spring-security-bom</artifactId>
