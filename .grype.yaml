@@ -21,6 +21,7 @@
 # CVE-2026-11352 / CVE-2026-8925 / CVE-2026-12064 / CVE-2026-11586 / CVE-2026-8286 / CVE-2026-9547: curl-minimal/libcurl-minimal (curl 8.21.0 upstream advisories); Rocky 9 ships curl 7.76.1 fork — transitive via dnf (protected; cannot remove); Dockerfile dnf update + dd-java-agent fetch moved to build stage
 # CVE-2026-59873 / CVE-2026-59874: isaacs/node-tar (Node.js); Grype CPE/name collision on Rocky 9 GNU tar RPM — not node-tar in this image
 # CVE-2026-15308: CPython html.parser HTMLParser DoS on unterminated markup; Rocky 9 python3/python3-libs transitive RPM — https://nvd.nist.gov/vuln/detail/CVE-2026-15308
+# CVE-2026-51296 / CVE-2026-51297 / CVE-2026-51302 / CVE-2026-51303 / CVE-2026-51304: SQLite 3.41 UAF (expr.c/json.c) on Rocky 9 sqlite-libs RPM; no Rocky errata yet — remediate via dnf update when vendor ships patched sqlite-libs
 ignore:
   - vulnerability: GHSA-3x3v-w654-m28m
     package:
@@ -231,3 +232,33 @@ ignore:
       type: rpm
       name: (python3|python3-libs)
     reason: "Accepted: CVE-2026-15308 CPython html.parser.HTMLParser CPU DoS via repeated unterminated markup declarations on attacker-controlled HTML (fixed upstream <3.15.0; Rocky 9 ships python3 3.9.25-7.el9_8) — https://nvd.nist.gov/vuln/detail/CVE-2026-15308. Rocky 9 transitive python3/python3-libs RPMs only (Grype: redhat:distro:redhat:9). Workload is Java+R with no Python html.parser path on untrusted HTML. Remove when Rocky errata ships patched python3/python3-libs and dnf update + rebuild clears Grype."
+  - vulnerability: CVE-2026-51302
+    namespace: redhat:distro:redhat:9
+    package:
+      type: rpm
+      name: (sqlite-libs|sqlite)
+    reason: "Accepted: CVE-2026-51302 SQLite 3.41 use-after-free in expression evaluation (sqlite3ReleaseTempReg / exprComputeOperands in expr.c) — crafted SQL can cause DoS, info leak, or RCE in SQLite context — https://nvd.nist.gov/vuln/detail/CVE-2026-51302 — CISA-ADP CVSS 3.1 9.8 CRITICAL. Rocky 9 transitive sqlite-libs RPM only (Grype: redhat:distro:redhat:9); no RLSA/errata published yet. Headless Java+R risk service uses MySQL via JPA, not native SQLite; no path for remote attackers to supply SQL to distro libsqlite3. Remove when Rocky ships patched sqlite-libs and dnf update + rebuild clears Grype."
+  - vulnerability: CVE-2026-51303
+    namespace: redhat:distro:redhat:9
+    package:
+      type: rpm
+      name: (sqlite-libs|sqlite)
+    reason: "Accepted: CVE-2026-51303 SQLite 3.41 use-after-free in SQL statement parsing (ExprList freed then dereferenced in expr.c) — https://nvd.nist.gov/vuln/detail/CVE-2026-51303 — CISA-ADP CVSS 3.1 9.8 CRITICAL. Rocky 9 transitive sqlite-libs RPM only; no vendor errata yet. Workload does not expose native SQLite to attacker-controlled queries. Remove when Rocky errata ships patched sqlite-libs and rebuild clears the finding."
+  - vulnerability: CVE-2026-51304
+    namespace: redhat:distro:redhat:9
+    package:
+      type: rpm
+      name: (sqlite-libs|sqlite)
+    reason: "Accepted: CVE-2026-51304 SQLite 3.41 use-after-free in ORDER BY clause parsing (ExprList UAF in expr.c) — malicious ORDER BY SQL can cause DoS, memory leak, or RCE — https://nvd.nist.gov/vuln/detail/CVE-2026-51304 — CISA-ADP CVSS 3.1 7.5 HIGH. Rocky 9 transitive sqlite-libs RPM only; remediate via vendor RPM update when Rocky publishes fix. No native SQLite query surface in this Java+R service. Remove after dnf update + rebuild on patched errata."
+  - vulnerability: CVE-2026-51296
+    namespace: redhat:distro:redhat:9
+    package:
+      type: rpm
+      name: (sqlite-libs|sqlite)
+    reason: "Accepted: CVE-2026-51296 SQLite 3.41 use-after-free in JSON module jsonRemoveFunc (json.c) — remote JSON payload can crash service or leak heap memory — https://nvd.nist.gov/vuln/detail/CVE-2026-51296 — CISA-ADP CVSS 3.1 7.5 HIGH. Rocky 9 transitive sqlite-libs RPM only (Grype: redhat:distro:redhat:9). Workload is Java+R over HTTP with MySQL persistence; no path parsing attacker JSON through distro SQLite JSON APIs. Remove when Rocky ships patched sqlite-libs."
+  - vulnerability: CVE-2026-51297
+    namespace: redhat:distro:redhat:9
+    package:
+      type: rpm
+      name: (sqlite-libs|sqlite)
+    reason: "Accepted: CVE-2026-51297 SQLite 3.41 use-after-free in JSON parsing logic (json.c) — crafted JSON can cause DoS, info leak, or RCE in SQLite context — https://nvd.nist.gov/vuln/detail/CVE-2026-51297 — CISA-ADP CVSS 3.1 8.8 HIGH. Rocky 9 transitive sqlite-libs RPM only; no Rocky errata yet. Headless Java+R risk service does not expose native SQLite JSON functions to untrusted input. Remove when Rocky errata ships patched sqlite-libs and dnf update + rebuild clears Grype."
