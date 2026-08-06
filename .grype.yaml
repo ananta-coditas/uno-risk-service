@@ -18,7 +18,7 @@
 # CVE-2026-8177: XML::LibXML (perl-XML-LibXML) domParseChar UTF-8 OOB read DoS (≤2.0210); Grype misattributes to Rocky 9 core perl-* RPMs — https://nvd.nist.gov/vuln/detail/CVE-2026-8177
 # CVE-2026-58016 (glib2): GLib D-Bus introspection XML DoS; Rocky 9 transitive OS RPM — https://nvd.nist.gov/vuln/detail/CVE-2026-58016
 # CVE-2026-55895 (vim-minimal): netrw Vimscript injection; remediated by Dockerfile `dnf remove vim-minimal` (no RPM dependency; headless Java+R runtime)
-# CVE-2026-11352 / CVE-2026-8925 / CVE-2026-8927 / CVE-2026-12064 / CVE-2026-11586 / CVE-2026-8286 / CVE-2026-9547: curl-minimal/libcurl-minimal (curl 8.21.0 upstream advisories); Rocky 9 ships curl 7.76.1 fork — transitive via dnf (protected; cannot remove); Dockerfile dnf update + dd-java-agent fetch moved to build stage
+# CVE-2026-11352 / CVE-2026-8458 / CVE-2026-8925 / CVE-2026-8927 / CVE-2026-12064 / CVE-2026-11586 / CVE-2026-8286 / CVE-2026-9547: curl-minimal/libcurl-minimal (curl 8.21.0 upstream advisories); Rocky 9 ships curl 7.76.1 fork — transitive via dnf (protected; cannot remove); Dockerfile dnf update + dd-java-agent fetch moved to build stage
 # CVE-2026-59873 / CVE-2026-59874: isaacs/node-tar (Node.js); Grype CPE/name collision on Rocky 9 GNU tar RPM — not node-tar in this image
 # CVE-2026-15308: CPython html.parser HTMLParser DoS on unterminated markup; Rocky 9 python3/python3-libs transitive RPM — https://nvd.nist.gov/vuln/detail/CVE-2026-15308
 # CVE-2026-51296 / CVE-2026-51297 / CVE-2026-51302 / CVE-2026-51303 / CVE-2026-51304: SQLite 3.41 UAF (expr.c/json.c) on Rocky 9 sqlite-libs RPM; no Rocky errata yet — remediate via dnf update when vendor ships patched sqlite-libs
@@ -184,6 +184,12 @@ ignore:
       type: rpm
       name: "(curl-minimal|libcurl-minimal)"
     reason: "Accepted: CVE-2026-11352 curl QUIC UDP receive — malicious HTTP/3 server can stall client via zero-length datagram flood (fixed upstream curl 8.21.0) — https://nvd.nist.gov/vuln/detail/CVE-2026-11352. Rocky 9 curl-minimal/libcurl-minimal 7.76.1 RPMs (Grype: redhat:distro:redhat:9); protected transitive dependency of dnf (cannot remove). Headless Java+R service does not use libcurl HTTP/3/QUIC at runtime. Remove when Rocky errata ships backported curl RPMs and dnf update + rebuild clears Grype."
+  - vulnerability: CVE-2026-8458
+    namespace: redhat:distro:redhat:9
+    package:
+      type: rpm
+      name: "(curl-minimal|libcurl-minimal)"
+    reason: "Accepted: CVE-2026-8458 libcurl Negotiate connection reuse across different CURLOPT_SERVICE_NAME / CURLOPT_PROXY_SERVICE_NAME values — wrong session can reuse an authenticated connection to the same host/port/credentials (fixed upstream curl 8.21.0) — https://nvd.nist.gov/vuln/detail/CVE-2026-8458 — https://curl.se/docs/CVE-2026-8458.html. Rocky 9 curl-minimal/libcurl-minimal 7.76.1 RPMs (Grype: redhat:distro:redhat:9); protected transitive dependency of dnf (cannot remove). Headless Java+R workload does not use libcurl HTTP Negotiate/GSSAPI client paths at runtime. Remove when Rocky errata ships backported curl RPMs and dnf update + rebuild clears Grype."
   - vulnerability: CVE-2026-8925
     namespace: redhat:distro:redhat:9
     package:
