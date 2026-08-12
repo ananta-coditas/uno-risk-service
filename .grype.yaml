@@ -20,7 +20,7 @@
 # CVE-2026-55895 (vim-minimal): netrw Vimscript injection; remediated by Dockerfile `dnf remove vim-minimal` (no RPM dependency; headless Java+R runtime)
 # CVE-2026-11352 / CVE-2026-8458 / CVE-2026-8925 / CVE-2026-8927 / CVE-2026-12064 / CVE-2026-11586 / CVE-2026-8286 / CVE-2026-9547: curl-minimal/libcurl-minimal (curl 8.21.0 upstream advisories); Rocky 9 ships curl 7.76.1 fork — transitive via dnf (protected; cannot remove); Dockerfile dnf update + dd-java-agent fetch moved to build stage
 # CVE-2026-59873 / CVE-2026-59874: isaacs/node-tar (Node.js); Grype CPE/name collision on Rocky 9 GNU tar RPM — not node-tar in this image
-# CVE-2026-15308: CPython html.parser HTMLParser DoS on unterminated markup; Rocky 9 python3/python3-libs transitive RPM — https://nvd.nist.gov/vuln/detail/CVE-2026-15308
+# CVE-2026-11940 / CVE-2026-15308: CPython on Rocky 9 python3/python3-libs transitive RPMs — https://nvd.nist.gov/vuln/detail/CVE-2026-11940 https://nvd.nist.gov/vuln/detail/CVE-2026-15308
 # CVE-2026-51296 / CVE-2026-51297 / CVE-2026-51302 / CVE-2026-51303 / CVE-2026-51304: SQLite 3.41 UAF (expr.c/json.c) on Rocky 9 sqlite-libs RPM; no Rocky errata yet — remediate via dnf update when vendor ships patched sqlite-libs
 ignore:
   - vulnerability: GHSA-3x3v-w654-m28m
@@ -238,6 +238,12 @@ ignore:
       type: rpm
       name: tar
     reason: "False positive: CVE-2026-59874 is isaacs/node-tar <7.5.18 (tar.replace infinite loop on negative base-256 entry size) — https://nvd.nist.gov/vuln/detail/CVE-2026-59874. Grype maps it to Rocky 9 GNU tar RPM; this image has no Node.js node-tar dependency. Remove if Grype feed stops misattributing this CVE to distro tar."
+  - vulnerability: CVE-2026-11940
+    namespace: redhat:distro:redhat:9
+    package:
+      type: rpm
+      name: (python3|python3-libs)
+    reason: "Accepted: CVE-2026-11940 CPython tarfile.extractall() bypass of 'data'/'tar' filter via hardlink→symlink path confusion — crafted archive can create symlink outside destination (incomplete fix of CVE-2025-4330; fixed upstream 3.13.15+ / 3.14.7+ / 3.15.0b4+) — https://nvd.nist.gov/vuln/detail/CVE-2026-11940 — Python CVSS-B 7.8 HIGH. Rocky 9 transitive python3/python3-libs RPMs (Grype: redhat:distro:redhat:9; ships python3 3.9.x). Workload is Java+R; no runtime Python tarfile.extractall() on attacker-controlled archives (R package install at build uses R tooling, not CPython tarfile). Cannot remove python3 without breaking dnf/R stack. Remove when Rocky errata ships backported python3/python3-libs and dnf update + rebuild clears Grype."
   - vulnerability: CVE-2026-15308
     namespace: redhat:distro:redhat:9
     package:
