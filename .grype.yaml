@@ -19,7 +19,9 @@
 # CVE-2026-58016 (glib2): GLib D-Bus introspection XML DoS; Rocky 9 transitive OS RPM — https://nvd.nist.gov/vuln/detail/CVE-2026-58016
 # CVE-2026-55895 (vim-minimal): netrw Vimscript injection; remediated by Dockerfile `dnf remove vim-minimal` (no RPM dependency; headless Java+R runtime)
 # CVE-2026-11352 / CVE-2026-8458 / CVE-2026-8925 / CVE-2026-8927 / CVE-2026-12064 / CVE-2026-11586 / CVE-2026-8286 / CVE-2026-9547: curl-minimal/libcurl-minimal (curl 8.21.0 upstream advisories); Rocky 9 ships curl 7.76.1 fork — transitive via dnf (protected; cannot remove); Dockerfile dnf update + dd-java-agent fetch moved to build stage
-# CVE-2026-59873 / CVE-2026-59874: isaacs/node-tar (Node.js); Grype CPE/name collision on Rocky 9 GNU tar RPM — not node-tar in this image
+# CVE-2026-59873 / CVE-2026-59874 / CVE-2026-73566: isaacs/node-tar (Node.js); Grype CPE/name collision on Rocky 9 GNU tar RPM — not node-tar in this image
+# CVE-2026-25679 / CVE-2026-56860: Go net/url on Rocky 9 go-srpm-macros/go-rpm-macros (SRPM build macros; transitive via R-core-devel) — https://nvd.nist.gov/vuln/detail/CVE-2026-56860
+# CVE-2026-41254: Little CMS (lcms2) in OpenJDK client-libs/2d; runtime eclipse-temurin:21-jre-jammy — fixed Java 21.0.12+ (OpenJDK CPU 2026-07-21) — https://nvd.nist.gov/vuln/detail/CVE-2026-41254
 # CVE-2026-11940 / CVE-2026-15308: CPython on Rocky 9 python3/python3-libs transitive RPMs — https://nvd.nist.gov/vuln/detail/CVE-2026-11940 https://nvd.nist.gov/vuln/detail/CVE-2026-15308
 # CVE-2026-51296 / CVE-2026-51297 / CVE-2026-51302 / CVE-2026-51303 / CVE-2026-51304: SQLite 3.41 UAF (expr.c/json.c) on Rocky 9 sqlite-libs RPM; no Rocky errata yet — remediate via dnf update when vendor ships patched sqlite-libs
 ignore:
@@ -136,6 +138,14 @@ ignore:
     reason: "Rocky 9 OS RPMs (java-21-openjdk-headless and/or libpng per scanner CPE); remediate via vendor RPM updates when Rocky publishes fixes — remove ignore after dnf update + rebuild clears findings"
   - vulnerability: CVE-2026-47063
     reason: "Accepted: CVE-2026-47063 Oracle CPU Jul 2026 (Java SE Libraries — unauthenticated network integrity impact on Java 21.0.11 and below) — https://nvd.nist.gov/vuln/detail/CVE-2026-47063. Runtime JRE is eclipse-temurin:21-jre-jammy copied in Dockerfile (not Rocky java-21-openjdk-headless); fixed in Oracle/OpenJDK 21.0.12+. Rebuild on eclipse-temurin:21.0.12+ (or pin 21.0.12_*-jre-jammy) when Adoptium publishes the CPU build; remove this ignore once scanner is clean."
+  - vulnerability: CVE-2026-41254
+    reason: "Accepted: CVE-2026-41254 Little CMS (lcms2) ≤2.18 CubeSize integer overflow in cmslut.c (bundled in OpenJDK client-libs/2d for ICC color management) — https://nvd.nist.gov/vuln/detail/CVE-2026-41254 — OpenJDK CPU 2026-07-21; fixed in Java 21.0.12+ (NVD CVSS 3.1 7.5 HIGH). Runtime JRE is eclipse-temurin:21-jre-jammy copied in Dockerfile. Headless Java+R API service does not process attacker-supplied ICC/color profiles via Java 2D/lcms2. Rebuild on Temurin 21.0.12+ when Adoptium publishes the CPU build; remove this ignore once scanner is clean."
+  - vulnerability: CVE-2026-56860
+    namespace: redhat:distro:redhat:9
+    package:
+      type: rpm
+      name: (go-srpm-macros|go-rpm-macros)
+    reason: "Accepted: CVE-2026-56860 Go net/url resolvePath quadratic complexity DoS (crafted parent-directory .. segments cause CPU/memory exhaustion) — https://nvd.nist.gov/vuln/detail/CVE-2026-56860 — fixed Go 1.25.13+/1.26.6+. Rocky 9 transitive go-srpm-macros/go-rpm-macros RPMs (SRPM build macros only; pulled in via R-core-devel toolchain). Headless Java+R runtime does not invoke Go net/url; removing macros would break image build. Remove when Rocky errata ships patched go-rpm-macros and dnf update + rebuild clears Grype."
   - vulnerability: CVE-2026-8177
     namespace: redhat:distro:redhat:9
     package:
@@ -238,6 +248,12 @@ ignore:
       type: rpm
       name: tar
     reason: "False positive: CVE-2026-59874 is isaacs/node-tar <7.5.18 (tar.replace infinite loop on negative base-256 entry size) — https://nvd.nist.gov/vuln/detail/CVE-2026-59874. Grype maps it to Rocky 9 GNU tar RPM; this image has no Node.js node-tar dependency. Remove if Grype feed stops misattributing this CVE to distro tar."
+  - vulnerability: CVE-2026-73566
+    namespace: redhat:distro:redhat:9
+    package:
+      type: rpm
+      name: tar
+    reason: "False positive: CVE-2026-73566 is isaacs/node-tar <7.5.21 (RangeError stack overflow via crafted GNU L/PAX long-path header with excessive slash segments in tar.t/tar.x) — https://nvd.nist.gov/vuln/detail/CVE-2026-73566 — GitHub CVSS 3.1 7.5 HIGH. Grype maps it to Rocky 9 GNU tar RPM; this image has no Node.js node-tar dependency. Headless Java+R workload does not run node-tar. Remove if Grype feed stops misattributing this CVE to distro tar."
   - vulnerability: CVE-2026-11940
     namespace: redhat:distro:redhat:9
     package:
