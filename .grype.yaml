@@ -25,6 +25,7 @@
 # CVE-2026-41254: Little CMS (lcms2) in OpenJDK client-libs/2d; runtime eclipse-temurin:21-jre-jammy — fixed Java 21.0.12+ (OpenJDK CPU 2026-07-21) — https://nvd.nist.gov/vuln/detail/CVE-2026-41254
 # CVE-2026-11940 / CVE-2026-15308: CPython on Rocky 9 python3/python3-libs transitive RPMs — https://nvd.nist.gov/vuln/detail/CVE-2026-11940 https://nvd.nist.gov/vuln/detail/CVE-2026-15308
 # CVE-2026-51296 / CVE-2026-51297 / CVE-2026-51302 / CVE-2026-51303 / CVE-2026-51304: SQLite 3.41 UAF (expr.c/json.c) on Rocky 9 sqlite-libs RPM; no Rocky errata yet — remediate via dnf update when vendor ships patched sqlite-libs
+# CVE-2026-53613: util-linux SUID mount(8) TOCTOU target-path redirection LPE; Rocky 9 util-linux/libmount/libblkid/... subpackages — fixed upstream util-linux 2.42.2+ (Red Hat BZ 2519646 NEW; no RHSA/RLSA for el9 yet); remove when Rocky ships backport and dnf update + rebuild clears Grype — https://nvd.nist.gov/vuln/detail/CVE-2026-53613
 ignore:
   - vulnerability: GHSA-3x3v-w654-m28m
     package:
@@ -125,6 +126,12 @@ ignore:
       type: rpm
       name: "(openssl|openssl-libs|openssl-fips-provider)"
     reason: "Accepted: CVE-2026-14456 OpenSSL QUIC server (Listener SSL object) unbounded pending incoming-channel queue — remote peer flooding valid QUIC Initial packets can grow per-channel memory without limit until SSL_accept() drains the queue (CWE-770 DoS) — https://nvd.nist.gov/vuln/detail/CVE-2026-14456 — OpenSSL vendor severity Low (CISA-ADP CVSS 3.1 7.5 HIGH). Fixed upstream OpenSSL 3.5.8+ / 3.6.4+ / 4.0.2+ (not released yet; no RHSA/RLSA for el9). Rocky 9 ships openssl-1:3.5.5-6.el9_8 via Dockerfile dnf update; Grype: redhat:distro:redhat:9. Headless Java+R service terminates HTTP/TLS via Temurin JRE/Spring, not native OpenSSL QUIC server/SSL_accept listener; FIPS module not affected per vendor advisory. Remove when Rocky errata ships backported openssl and dnf update + rebuild clears Grype."
+  - vulnerability: CVE-2026-53613
+    namespace: redhat:distro:redhat:9
+    package:
+      type: rpm
+      name: "(util-linux|util-linux-core|libblkid|libfdisk|libmount|libsmartcols|libuuid)"
+    reason: "Accepted: CVE-2026-53613 util-linux SUID mount(8) TOCTOU — fstab permission check uses mount target path string, then mount()/move_mount() re-resolves pathname; local attacker with user/users fstab entry and writable ancestor directory can redirect mount to arbitrary root-owned path (CWE-367 local priv esc) — https://nvd.nist.gov/vuln/detail/CVE-2026-53613 — GitHub CVSS 3.1 7.0 HIGH (AV:L/AC:H/PR:L). Fixed upstream util-linux 2.42.2+ libmount fd_target (Red Hat BZ 2519646 NEW; no RHSA/RLSA for el9). Rocky 9 ships util-linux-2.37.4-* via Dockerfile dnf update; Grype: redhat:distro:redhat:9. Headless Java+R container runs as non-root appuser; no user/users fstab mounts or attacker-writable mount-target ancestor paths at runtime. Remove when Rocky errata ships backported util-linux and dnf update + rebuild clears Grype."
   - vulnerability: CVE-2026-4046
     reason: "glibc/glibc-common/glibc-gconv-extra/glibc-minimal-langpack are OS RPMs from Rocky 9 repos; image build runs dnf update for latest vendor-fixed/backported builds. Keep upgrading base image and remove this ignore once Rocky publishes explicit errata mapping for this CVE."
   - vulnerability: CVE-2026-34714
