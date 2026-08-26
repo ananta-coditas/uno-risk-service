@@ -1,6 +1,8 @@
 # Grype ignores: see each `reason`. Dockerfile-listed CVEs (OpenJDK/libpng, giflib, libarchive, libnghttp2, python3,
 # perl-XML-Parser, libcap, Go/SRPM tooling) are accepted when full vendor remediation would impact service or image functionality.
 # CVE-2026-3260 / GHSA-3x3v-w654-m28m: Java io.undertow:undertow-core (Spring embedded server) — NOT Rocky; ignore scoped to java-archive undertow-core until stable fix beyond 2.3.22.
+# CVE-2026-47884 / SNYK-JAVA-ORGSPRINGFRAMEWORK-19267098: Java org.springframework:spring-webmvc (XsltView SSRF/RCE) — REST-only workload; no XsltView or catch-all view mapping; OSS fix 7.0.9+ (Boot 4.0.8+).
+# CVE-2026-41707 / SNYK-JAVA-ORGSPRINGFRAMEWORKSECURITY-19268249: Java org.springframework.security:spring-security-oauth2-jose (DPoP proof replay) — bearer JWT only; no DPoP; OSS fix 7.0.7+ (Boot 4.0.7+).
 # CVE-2026-6100: CPython RPMs on Rocky 9 (matched as redhat:distro:redhat:9); scoped by namespace + rpm + package name.
 # See Dockerfile stage 2 for package constraints and build steps.
 # CVE-2026-4111 / CVE-2026-4424: libarchive RAR/RAR5; additional libarchive entries above.
@@ -35,6 +37,16 @@ ignore:
       type: java-archive
       name: undertow-core
     reason: "Accepted: CVE-2026-3260 / GHSA-3x3v-w654-m28m (Undertow multipart/form-data on HTTP GET → DoS when apps use getParameterMap() etc.); Grype lists fixed only in 2.4.0.Beta1 — Spring Boot 3.x uses Undertow 2.3.x LTS. Not an OS/Rocky RPM. Mitigate with request limits/WAF; remove when io.undertow ships 2.3.x patch or stable 2.4+ is adopted."
+  - vulnerability: CVE-2026-47884
+    package:
+      type: java-archive
+      name: spring-webmvc
+    reason: "Accepted: CVE-2026-47884 / SNYK-JAVA-ORGSPRINGFRAMEWORK-19267098 (XsltView SSRF/RCE when a /** mapping triggers view rendering without an explicit view name). OSS fix spring-webmvc 7.0.9+ (Spring Boot 4.0.8+); 6.2.20 is Enterprise-only. uno-risk-service is REST-only (@RestController); no XsltView, XsltViewResolver, or catch-all view mapping — /** patterns are SecurityConfiguration matchers and /resources/** static only. Remove when Spring Boot 4.0.8+ migration ships. https://spring.io/security/cve-2026-47884"
+  - vulnerability: CVE-2026-41707
+    package:
+      type: java-archive
+      name: spring-security-oauth2-jose
+    reason: "Accepted: CVE-2026-41707 / SNYK-JAVA-ORGSPRINGFRAMEWORKSECURITY-19268249 (DPoPProofJwtDecoderFactory jti cache eviction allows DPoP proof replay). OSS fix spring-security-oauth2-jose 7.0.7+ (Spring Boot 4.0.7+); 6.5.12 is Enterprise-only. uno-risk-service uses bearer JWT via NimbusJwtDecoder.withJwkSetUri() in SecurityJwtConfiguration; no DPoP configuration or DPoPProofJwtDecoderFactory usage. Remove when Spring Boot 4.0.8+ migration ships. https://spring.io/security/cve-2026-41707"
   - vulnerability: CVE-2025-66293
     reason: "Accepted: full remediation would impact service functionality (OpenJDK/libpng stack); see Dockerfile"
   - vulnerability: CVE-2026-25646
