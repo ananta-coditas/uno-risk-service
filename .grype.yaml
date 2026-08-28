@@ -28,6 +28,7 @@
 # CVE-2026-41254: Little CMS (lcms2) in OpenJDK client-libs/2d; runtime eclipse-temurin:21-jre-jammy — fixed Java 21.0.12+ (OpenJDK CPU 2026-07-21) — https://nvd.nist.gov/vuln/detail/CVE-2026-41254
 # CVE-2026-11940 / CVE-2026-15308: CPython on Rocky 9 python3/python3-libs transitive RPMs — https://nvd.nist.gov/vuln/detail/CVE-2026-11940 https://nvd.nist.gov/vuln/detail/CVE-2026-15308
 # CVE-2026-51296 / CVE-2026-51297 / CVE-2026-51302 / CVE-2026-51303 / CVE-2026-51304: SQLite 3.41 UAF (expr.c/json.c) on Rocky 9 sqlite-libs RPM; no Rocky errata yet — remediate via dnf update when vendor ships patched sqlite-libs
+# CVE-2026-63383 / CVE-2026-63384 / CVE-2026-63387 / CVE-2026-63388 / CVE-2026-63495 (libevent): tagged RPC / evdns / AF_UNIX bufferevent / WebSocket server; fixed upstream 2.1.13+ / 2.2.2-alpha; Rocky 9 ships libevent 2.1.12 — https://nvd.nist.gov/vuln/detail/CVE-2026-63383 https://nvd.nist.gov/vuln/detail/CVE-2026-63495
 # CVE-2026-53613: util-linux SUID mount(8) TOCTOU target-path redirection LPE; Rocky 9 util-linux/libmount/libblkid/... subpackages — fixed upstream util-linux 2.42.2+ (Red Hat BZ 2519646 NEW; no RHSA/RLSA for el9 yet); remove when Rocky ships backport and dnf update + rebuild clears Grype — https://nvd.nist.gov/vuln/detail/CVE-2026-53613
 ignore:
   - vulnerability: CVE-2025-66293
@@ -350,3 +351,33 @@ ignore:
       type: rpm
       name: (sqlite-libs|sqlite)
     reason: "Accepted: CVE-2026-51297 SQLite 3.41 use-after-free in JSON parsing logic (json.c) — crafted JSON can cause DoS, info leak, or RCE in SQLite context — https://nvd.nist.gov/vuln/detail/CVE-2026-51297 — CISA-ADP CVSS 3.1 8.8 HIGH. Rocky 9 transitive sqlite-libs RPM only; no Rocky errata yet. Headless Java+R risk service does not expose native SQLite JSON functions to untrusted input. Remove when Rocky errata ships patched sqlite-libs and dnf update + rebuild clears Grype."
+  - vulnerability: CVE-2026-63383
+    namespace: redhat:distro:redhat:9
+    package:
+      type: rpm
+      name: libevent
+    reason: "Accepted: CVE-2026-63383 libevent decode_tag_internal OOB read on fragmented evbuffer when decoding attacker-controlled tagged RPC data (fixed upstream 2.1.13+ / 2.2.2-alpha) — https://nvd.nist.gov/vuln/detail/CVE-2026-63383 — GHSA-fj29-64w6-73h6. Rocky 9 transitive libevent 2.1.12 RPM (Grype: redhat:distro:redhat:9). Headless Java+R risk service does not expose libevent evtag/evrpc tagged-RPC decode paths to untrusted peers. Remove when Rocky errata ships libevent >= 2.1.13 and dnf update + rebuild clears Grype."
+  - vulnerability: CVE-2026-63384
+    namespace: redhat:distro:redhat:9
+    package:
+      type: rpm
+      name: libevent
+    reason: "Accepted: CVE-2026-63384 libevent evtag_unmarshal_header uint32→signed int conversion can wrap allocation size in evtag_unmarshal_string (DoS via attacker-controlled tagged RPC payload; fixed upstream 2.1.13+ / 2.2.2-alpha) — https://nvd.nist.gov/vuln/detail/CVE-2026-63384 — GHSA-45c6-qx49-89m8. Rocky 9 transitive libevent RPM only. Workload does not decode untrusted libevent tagged-RPC messages. Remove when Rocky ships patched libevent and rebuild clears the finding."
+  - vulnerability: CVE-2026-63387
+    namespace: redhat:distro:redhat:9
+    package:
+      type: rpm
+      name: libevent
+    reason: "Accepted: CVE-2026-63387 libevent evdns.c dnsname_to_labels off-by-one stack buffer overflow on crafted DNS server PTR/CNAME/MX/NS/SOA responses (fixed upstream 2.1.13+ / 2.2.2-alpha) — https://nvd.nist.gov/vuln/detail/CVE-2026-63387. Rocky 9 transitive libevent RPM (Grype: redhat:distro:redhat:9). Java+R service uses JVM/JNDI and OS resolver stacks, not libevent evdns server/client parsing of hostile DNS records at runtime. Remove when Rocky errata ships libevent >= 2.1.13 and dnf update + rebuild clears Grype."
+  - vulnerability: CVE-2026-63388
+    namespace: redhat:distro:redhat:9
+    package:
+      type: rpm
+      name: libevent
+    reason: "Accepted: CVE-2026-63388 libevent bufferevent_socket_set_conn_address_ heap OOB write when copying oversized AF_UNIX peer address into conn_address (evhttp accept path with NDEBUG; fixed upstream 2.1.13+ / 2.2.2-alpha) — https://nvd.nist.gov/vuln/detail/CVE-2026-63388 — GHSA-cvq5-vrvr-j338. Rocky 9 transitive libevent RPM only. Headless Java+R container does not run libevent evhttp AF_UNIX listeners accepting untrusted local peers. Remove when Rocky ships patched libevent and rebuild clears the finding."
+  - vulnerability: CVE-2026-63495
+    namespace: redhat:distro:redhat:9
+    package:
+      type: rpm
+      name: libevent
+    reason: "Accepted: CVE-2026-63495 libevent WebSocket server (ws.c) unbounded memory accumulation via fragmented frames below WS_MAX_RECV_FRAME_SZ (remote DoS; fixed upstream 2.2.2-alpha) — https://nvd.nist.gov/vuln/detail/CVE-2026-63495 — Red Hat BZ 2520659 NEW. Rocky 9 transitive libevent 2.1.12 RPM (Grype: redhat:distro:redhat:9). Headless Java+R risk service terminates HTTP/TLS via Spring/Tomcat, not libevent WebSocket server. Remove when Rocky errata ships backported libevent and dnf update + rebuild clears Grype."
