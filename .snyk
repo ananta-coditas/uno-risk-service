@@ -1,22 +1,2 @@
 # Snyk policy: https://docs.snyk.io/manage-risk/policies/the-.snyk-file
-# Review expires annually or when Spring Boot 4.0.8+ migration clears these findings.
 version: v1.25.0
-ignore:
-  SNYK-JAVA-ORGSPRINGFRAMEWORK-19267098:
-    - "*":
-        reason: >
-          CVE-2026-47884 (XsltView SSRF/RCE) requires /** view mapping without explicit view name.
-          uno-risk-service is REST-only (@RestController); no XsltView or catch-all view mapping.
-          OSS fix is spring-webmvc 7.0.9+ via Spring Boot 4.0.8+.
-          https://spring.io/security/cve-2026-47884
-        expires: 2027-08-26T00:00:00.000Z
-        created: 2026-08-26T00:00:00.000Z
-  SNYK-JAVA-ORGSPRINGFRAMEWORKSECURITY-19268249:
-    - "*":
-        reason: >
-          CVE-2026-41707 (DPoP proof replay via DPoPProofJwtDecoderFactory) requires DPoP usage.
-          uno-risk-service uses bearer JWT only (NimbusJwtDecoder.withJwkSetUri in SecurityJwtConfiguration).
-          OSS fix is spring-security-oauth2-jose 7.0.7+ via Spring Boot 4.0.7+.
-          https://spring.io/security/cve-2026-41707
-        expires: 2027-08-26T00:00:00.000Z
-        created: 2026-08-26T00:00:00.000Z

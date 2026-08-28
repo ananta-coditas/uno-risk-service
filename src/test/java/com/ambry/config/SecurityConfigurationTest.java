@@ -1,12 +1,10 @@
 package com.ambry.config;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 /**
  * Unit tests for {@link SecurityConfiguration}.
@@ -52,13 +50,6 @@ class SecurityConfigurationTest {
         assertThat(encoded1).isNotEqualTo(encoded2);
         assertThat(passwordEncoder.matches(password1, encoded1)).isTrue();
         assertThat(passwordEncoder.matches(password2, encoded2)).isTrue();
-    }
-
-    @Test
-    void testMvcRequestMatcherBuilderBean() throws Exception {
-        HandlerMappingIntrospector introspector = mock(HandlerMappingIntrospector.class);
-        var builder = securityConfiguration.mvc(introspector);
-        assertThat(builder).isNotNull();
     }
 }
 

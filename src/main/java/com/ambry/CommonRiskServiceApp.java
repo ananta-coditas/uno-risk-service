@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
@@ -33,8 +32,10 @@ import com.ambry.config.UnoFrameworkConstants;
 import jakarta.annotation.PostConstruct;
 ;
 
-@SpringBootApplication
-@EnableConfigurationProperties({UnoFrameworkConfig.class, LiquibaseProperties.class, ApplicationProperties.class })
+@SpringBootApplication(excludeName = {
+    "org.springframework.boot.jackson.autoconfigure.JacksonAutoConfiguration"
+})
+@EnableConfigurationProperties({UnoFrameworkConfig.class, ApplicationProperties.class })
 @ComponentScan(basePackages = {"com.ambry", "com.objex.progeny.risk.services","com.objex.risk.services", "com.genomebrain.backend"})
 public class CommonRiskServiceApp { 
 
