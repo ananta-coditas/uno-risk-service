@@ -555,7 +555,7 @@ class GuideLineUtilityTest {
         familyCancerQs.setQuestionKey("AMBRY052");
         familyCancerQs.setAnswerKey("AMBRY052_001");
         familyHistory.setBasicQuestions(Arrays.asList(familyCancerQs));
-        
+
         FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
         Mother mother = new Mother();
         QuestionSet maternalQs = new QuestionSet();
@@ -565,7 +565,7 @@ class GuideLineUtilityTest {
         familyCancerDetails.setMothers(Arrays.asList(mother));
         familyHistory.setFamilyCancerDetails(familyCancerDetails);
         questionnaire.setFamilyCancer(familyHistory);
-        
+
         QuestionSet demographicQs = new QuestionSet();
         demographicQs.setQuestionKey("AMBRY002");
         demographicQs.setAnswerKey("AMBRY002_001");
@@ -582,10 +582,10 @@ class GuideLineUtilityTest {
         when(tagGenerationUtility.checkFamilyColorectalPolypsHistory(any(), any()))
             .thenReturn(clinicalSummary);
         when(tagGenerationUtility.getTagsForSelectedOptions(any())).thenReturn(new HashSet<>());
-        
-        com.genomebrain.backend.service.dto.FamilyHistoryDetailsTagsDTO familyHistoryDTO = 
+
+        com.genomebrain.backend.service.dto.FamilyHistoryDetailsTagsDTO familyHistoryDTO =
             new com.genomebrain.backend.service.dto.FamilyHistoryDetailsTagsDTO();
-        com.genomebrain.backend.service.dto.FamilyHistoryDetails familyHistoryDetails = 
+        com.genomebrain.backend.service.dto.FamilyHistoryDetails familyHistoryDetails =
             new com.genomebrain.backend.service.dto.FamilyHistoryDetails();
         familyHistoryDetails.setRelativeSide("Mat");
         familyHistoryDetails.setFamilyMember("Mother");
@@ -594,7 +594,7 @@ class GuideLineUtilityTest {
         familyHistoryDTO.setTags(new HashSet<>());
         familyHistoryDTO.setLynchReasoningStatements(new HashSet<>());
         familyHistoryDTO.setHbocReasoningStatements(new HashSet<>());
-        when(tagGenerationUtility.getFamilyCancerTags(any(), anyString()))
+        when(tagGenerationUtility.getFamilyCancerTags(any(), anyString(), any()))
             .thenReturn(Arrays.asList(familyHistoryDTO));
 
         GenomeBrainResponseDTO genomeBrainResponseDTO = new GenomeBrainResponseDTO();
@@ -623,7 +623,7 @@ class GuideLineUtilityTest {
         familyCancerQs.setQuestionKey("AMBRY052");
         familyCancerQs.setAnswerKey("AMBRY052_001");
         familyHistory.setBasicQuestions(Arrays.asList(familyCancerQs));
-        
+
         FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
         Father father = new Father();
         QuestionSet paternalQs = new QuestionSet();
@@ -633,7 +633,7 @@ class GuideLineUtilityTest {
         familyCancerDetails.setFathers(Arrays.asList(father));
         familyHistory.setFamilyCancerDetails(familyCancerDetails);
         questionnaire.setFamilyCancer(familyHistory);
-        
+
         QuestionSet demographicQs = new QuestionSet();
         demographicQs.setQuestionKey("AMBRY002");
         demographicQs.setAnswerKey("AMBRY002_001");
@@ -650,10 +650,10 @@ class GuideLineUtilityTest {
         when(tagGenerationUtility.checkFamilyColorectalPolypsHistory(any(), any()))
             .thenReturn(clinicalSummary);
         when(tagGenerationUtility.getTagsForSelectedOptions(any())).thenReturn(new HashSet<>());
-        
-        com.genomebrain.backend.service.dto.FamilyHistoryDetailsTagsDTO familyHistoryDTO = 
+
+        com.genomebrain.backend.service.dto.FamilyHistoryDetailsTagsDTO familyHistoryDTO =
             new com.genomebrain.backend.service.dto.FamilyHistoryDetailsTagsDTO();
-        com.genomebrain.backend.service.dto.FamilyHistoryDetails familyHistoryDetails = 
+        com.genomebrain.backend.service.dto.FamilyHistoryDetails familyHistoryDetails =
             new com.genomebrain.backend.service.dto.FamilyHistoryDetails();
         familyHistoryDetails.setRelativeSide("Pat");
         familyHistoryDetails.setFamilyMember("Father");
@@ -662,7 +662,7 @@ class GuideLineUtilityTest {
         familyHistoryDTO.setTags(new HashSet<>());
         familyHistoryDTO.setLynchReasoningStatements(new HashSet<>());
         familyHistoryDTO.setHbocReasoningStatements(new HashSet<>());
-        when(tagGenerationUtility.getFamilyCancerTags(any(), anyString()))
+        when(tagGenerationUtility.getFamilyCancerTags(any(), anyString(), any()))
             .thenReturn(Arrays.asList(familyHistoryDTO));
 
         GenomeBrainResponseDTO genomeBrainResponseDTO = new GenomeBrainResponseDTO();
@@ -691,9 +691,9 @@ class GuideLineUtilityTest {
         familyCancerQs.setQuestionKey("AMBRY052");
         familyCancerQs.setAnswerKey("AMBRY052_001");
         familyHistory.setBasicQuestions(Arrays.asList(familyCancerQs));
-        
+
         FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
-        com.genomebrain.backend.quesstionnaire.relative.Grandmother grandmother = 
+        com.genomebrain.backend.quesstionnaire.relative.Grandmother grandmother =
             new com.genomebrain.backend.quesstionnaire.relative.Grandmother();
         QuestionSet maternalQs = new QuestionSet();
         maternalQs.setQuestionKey("AMBRY054");
@@ -702,7 +702,7 @@ class GuideLineUtilityTest {
         familyCancerDetails.setGrandMothers(Arrays.asList(grandmother));
         familyHistory.setFamilyCancerDetails(familyCancerDetails);
         questionnaire.setFamilyCancer(familyHistory);
-        
+
         QuestionSet demographicQs = new QuestionSet();
         demographicQs.setQuestionKey("AMBRY002");
         demographicQs.setAnswerKey("AMBRY002_001");
@@ -719,10 +719,10 @@ class GuideLineUtilityTest {
         when(tagGenerationUtility.checkFamilyColorectalPolypsHistory(any(), any()))
             .thenReturn(clinicalSummary);
         when(tagGenerationUtility.getTagsForSelectedOptions(any())).thenReturn(new HashSet<>());
-        
-        com.genomebrain.backend.service.dto.FamilyHistoryDetailsTagsDTO familyHistoryDTO = 
+
+        com.genomebrain.backend.service.dto.FamilyHistoryDetailsTagsDTO familyHistoryDTO =
             new com.genomebrain.backend.service.dto.FamilyHistoryDetailsTagsDTO();
-        com.genomebrain.backend.service.dto.FamilyHistoryDetails familyHistoryDetails = 
+        com.genomebrain.backend.service.dto.FamilyHistoryDetails familyHistoryDetails =
             new com.genomebrain.backend.service.dto.FamilyHistoryDetails();
         familyHistoryDetails.setRelativeSide("Mat");
         familyHistoryDetails.setFamilyMember("Grandmother");
@@ -731,7 +731,7 @@ class GuideLineUtilityTest {
         familyHistoryDTO.setTags(new HashSet<>());
         familyHistoryDTO.setLynchReasoningStatements(new HashSet<>());
         familyHistoryDTO.setHbocReasoningStatements(new HashSet<>());
-        when(tagGenerationUtility.getFamilyCancerTags(any(), anyString()))
+        when(tagGenerationUtility.getFamilyCancerTags(any(), anyString(), any()))
             .thenReturn(Arrays.asList(familyHistoryDTO));
 
         GenomeBrainResponseDTO genomeBrainResponseDTO = new GenomeBrainResponseDTO();
@@ -760,7 +760,7 @@ class GuideLineUtilityTest {
         familyCancerQs.setQuestionKey("AMBRY052");
         familyCancerQs.setAnswerKey("AMBRY052_001");
         familyHistory.setBasicQuestions(Arrays.asList(familyCancerQs));
-        
+
         FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
         Mother mother1 = new Mother();
         mother1.setBasicQuestions(Collections.emptyList());
@@ -769,7 +769,7 @@ class GuideLineUtilityTest {
         familyCancerDetails.setMothers(Arrays.asList(mother1, mother2));
         familyHistory.setFamilyCancerDetails(familyCancerDetails);
         questionnaire.setFamilyCancer(familyHistory);
-        
+
         QuestionSet demographicQs = new QuestionSet();
         demographicQs.setQuestionKey("AMBRY002");
         demographicQs.setAnswerKey("AMBRY002_001");
@@ -786,14 +786,14 @@ class GuideLineUtilityTest {
         when(tagGenerationUtility.checkFamilyColorectalPolypsHistory(any(), any()))
             .thenReturn(clinicalSummary);
         when(tagGenerationUtility.getTagsForSelectedOptions(any())).thenReturn(new HashSet<>());
-        
-        com.genomebrain.backend.service.dto.FamilyHistoryDetailsTagsDTO familyHistoryDTO1 = 
+
+        com.genomebrain.backend.service.dto.FamilyHistoryDetailsTagsDTO familyHistoryDTO1 =
             new com.genomebrain.backend.service.dto.FamilyHistoryDetailsTagsDTO();
-        com.genomebrain.backend.service.dto.FamilyHistoryDetails familyHistoryDetails1 = 
+        com.genomebrain.backend.service.dto.FamilyHistoryDetails familyHistoryDetails1 =
             new com.genomebrain.backend.service.dto.FamilyHistoryDetails();
         familyHistoryDetails1.setRelativeSide("Mat");
         familyHistoryDetails1.setFamilyMember("Mother");
-        com.genomebrain.backend.service.dto.CancerDetailsObject cancerDetails1 = 
+        com.genomebrain.backend.service.dto.CancerDetailsObject cancerDetails1 =
             new com.genomebrain.backend.service.dto.CancerDetailsObject();
         cancerDetails1.setCancer("Breast");
         familyHistoryDetails1.setCancerDetails(Arrays.asList(cancerDetails1));
@@ -801,14 +801,14 @@ class GuideLineUtilityTest {
         familyHistoryDTO1.setTags(new HashSet<>());
         familyHistoryDTO1.setLynchReasoningStatements(new HashSet<>());
         familyHistoryDTO1.setHbocReasoningStatements(new HashSet<>());
-        
-        com.genomebrain.backend.service.dto.FamilyHistoryDetailsTagsDTO familyHistoryDTO2 = 
+
+        com.genomebrain.backend.service.dto.FamilyHistoryDetailsTagsDTO familyHistoryDTO2 =
             new com.genomebrain.backend.service.dto.FamilyHistoryDetailsTagsDTO();
-        com.genomebrain.backend.service.dto.FamilyHistoryDetails familyHistoryDetails2 = 
+        com.genomebrain.backend.service.dto.FamilyHistoryDetails familyHistoryDetails2 =
             new com.genomebrain.backend.service.dto.FamilyHistoryDetails();
         familyHistoryDetails2.setRelativeSide("Mat");
         familyHistoryDetails2.setFamilyMember("Mother");
-        com.genomebrain.backend.service.dto.CancerDetailsObject cancerDetails2 = 
+        com.genomebrain.backend.service.dto.CancerDetailsObject cancerDetails2 =
             new com.genomebrain.backend.service.dto.CancerDetailsObject();
         cancerDetails2.setCancer("Breast");
         familyHistoryDetails2.setCancerDetails(Arrays.asList(cancerDetails2));
@@ -816,8 +816,8 @@ class GuideLineUtilityTest {
         familyHistoryDTO2.setTags(new HashSet<>());
         familyHistoryDTO2.setLynchReasoningStatements(new HashSet<>());
         familyHistoryDTO2.setHbocReasoningStatements(new HashSet<>());
-        
-        when(tagGenerationUtility.getFamilyCancerTags(any(), anyString()))
+
+        when(tagGenerationUtility.getFamilyCancerTags(any(), anyString(), any()))
             .thenReturn(Arrays.asList(familyHistoryDTO1, familyHistoryDTO2));
 
         GenomeBrainResponseDTO genomeBrainResponseDTO = new GenomeBrainResponseDTO();
@@ -847,7 +847,7 @@ class GuideLineUtilityTest {
         familyCancerQs.setAnswerKey("AMBRY052_002");
         familyHistory.setBasicQuestions(Arrays.asList(familyCancerQs));
         questionnaire.setFamilyCancer(familyHistory);
-        
+
         QuestionSet demographicQs = new QuestionSet();
         demographicQs.setQuestionKey("AMBRY002");
         demographicQs.setAnswerKey("AMBRY002_001");
@@ -1185,10 +1185,10 @@ class GuideLineUtilityTest {
         when(tagGenerationUtility.checkFamilyColorectalPolypsHistory(any(), any()))
             .thenReturn(clinicalSummary);
         when(tagGenerationUtility.getTagsForSelectedOptions(any())).thenReturn(new HashSet<>());
-        
-        com.genomebrain.backend.service.dto.FamilyHistoryDetailsTagsDTO familyHistoryDTO = 
+
+        com.genomebrain.backend.service.dto.FamilyHistoryDetailsTagsDTO familyHistoryDTO =
             new com.genomebrain.backend.service.dto.FamilyHistoryDetailsTagsDTO();
-        com.genomebrain.backend.service.dto.FamilyHistoryDetails familyHistoryDetails = 
+        com.genomebrain.backend.service.dto.FamilyHistoryDetails familyHistoryDetails =
             new com.genomebrain.backend.service.dto.FamilyHistoryDetails();
         familyHistoryDetails.setRelativeSide("Mat");
         familyHistoryDetails.setFamilyMember("Mother");
@@ -1197,7 +1197,7 @@ class GuideLineUtilityTest {
         familyHistoryDTO.setTags(new HashSet<>());
         familyHistoryDTO.setLynchReasoningStatements(new HashSet<>());
         familyHistoryDTO.setHbocReasoningStatements(new HashSet<>());
-        when(tagGenerationUtility.getFamilyCancerTags(any(), anyString()))
+        when(tagGenerationUtility.getFamilyCancerTags(any(), anyString(), any()))
             .thenReturn(Arrays.asList(familyHistoryDTO));
 
         GenomeBrainResponseDTO genomeBrainResponseDTO = new GenomeBrainResponseDTO();
@@ -1348,7 +1348,7 @@ class GuideLineUtilityTest {
         demographicQs.setQuestionKey("AMBRY002");
         demographicQs.setAnswerKey("AMBRY002_001");
         questionnaire.setDemographic(Arrays.asList(demographicQs));
-        
+
         QuestionSet customQs = new QuestionSet();
         customQs.setQuestionKey("AMBRY140");
         customQs.setAnswerKey("AMBRY140_001");
@@ -1652,7 +1652,7 @@ class GuideLineUtilityTest {
         personalHistoryTagsDTO.setPersonalHistoryDetails(personalHistoryDetails);
         when(tagGenerationUtility.getPersonalHistoryDetails(any(), any(), anyBoolean(), anyBoolean(), any(), anyString(), anyBoolean(), anyBoolean()))
             .thenReturn(personalHistoryTagsDTO);
-        
+
         ClinicalSummary clinicalSummary = new ClinicalSummary();
         clinicalSummary.setFamilyHistoryOfColorectalPolyps("Yes");
         clinicalSummary.setPersonalHistoryDetails(personalHistoryDetails);
@@ -1672,6 +1672,174 @@ class GuideLineUtilityTest {
             questionnaire, false, null, "v1", false, false);
 
         assertThat(result).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should add FmPolyp>10 tag when a relative other than 'Other' has a colorectal polyps history")
+    void testGetClinicalSummaryAndTagsAddsFmPolypsGt10TagForQualifyingRelative() throws ConnectException {
+        Questionnaire questionnaire = new Questionnaire();
+        questionnaire.setSource("Default");
+        questionnaire.setPersonalHistory(null);
+        FamilyHistory familyHistory = new FamilyHistory();
+        QuestionSet familyCancerQs = new QuestionSet();
+        familyCancerQs.setQuestionKey("AMBRY052");
+        familyCancerQs.setAnswerKey("AMBRY052_001");
+        familyHistory.setBasicQuestions(Arrays.asList(familyCancerQs));
+        questionnaire.setFamilyCancer(familyHistory);
+        QuestionSet demographicQs = new QuestionSet();
+        demographicQs.setQuestionKey("AMBRY002");
+        demographicQs.setAnswerKey("AMBRY002_001");
+        questionnaire.setDemographic(Arrays.asList(demographicQs));
+
+        PersonalHistoryTagsDTO personalHistoryTagsDTO = new PersonalHistoryTagsDTO();
+        personalHistoryTagsDTO.setTags(new HashSet<>());
+        com.genomebrain.backend.service.dto.PersonalHistoryDetails personalHistoryDetails = new com.genomebrain.backend.service.dto.PersonalHistoryDetails();
+        personalHistoryTagsDTO.setPersonalHistoryDetails(personalHistoryDetails);
+        when(tagGenerationUtility.getPersonalHistoryDetails(any(), any(), anyBoolean(), anyBoolean(), any(), anyString(), anyBoolean(), anyBoolean()))
+            .thenReturn(personalHistoryTagsDTO);
+
+        ClinicalSummary clinicalSummary = new ClinicalSummary();
+        clinicalSummary.setFamilyHistoryOfColorectalPolyps("Yes");
+        clinicalSummary.setRelativeWithPolypsHistory(Arrays.asList("Mother"));
+        clinicalSummary.setPersonalHistoryDetails(personalHistoryDetails);
+        when(tagGenerationUtility.checkFamilyColorectalPolypsHistory(any(), any()))
+            .thenReturn(clinicalSummary);
+        when(tagGenerationUtility.getTagsForSelectedOptions(any())).thenReturn(new HashSet<>());
+
+        GenomeBrainResponseDTO genomeBrainResponseDTO = new GenomeBrainResponseDTO();
+        genomeBrainResponseDTO.setStatus("SUCCESS");
+        genomeBrainResponseDTO.setHBOC(false);
+        genomeBrainResponseDTO.setLYNCH(false);
+        genomeBrainResponseDTO.setAPS(false);
+        genomeBrainResponseDTO.setGastric(false);
+        when(guideLineService.getGuidelinesForTags(anyString())).thenReturn(genomeBrainResponseDTO);
+
+        GuidelineDetailsDTO result = guideLineUtility.getClinicalSummaryAndTags(
+            questionnaire, false, null, "v1", false, false);
+
+        assertThat(result).isNotNull();
+        assertThat(result.getTagList()).contains("FmPolyp>10");
+    }
+
+    @Test
+    @DisplayName("Should not add FmPolyp>10 tag when only excluded 'Other' relatives have a polyps history")
+    void testGetClinicalSummaryAndTagsSkipsFmPolypsGt10TagWhenOnlyOtherRelativeQualifies() throws ConnectException {
+        Questionnaire questionnaire = new Questionnaire();
+        questionnaire.setSource("Default");
+        questionnaire.setPersonalHistory(null);
+        FamilyHistory familyHistory = new FamilyHistory();
+        QuestionSet familyCancerQs = new QuestionSet();
+        familyCancerQs.setQuestionKey("AMBRY052");
+        familyCancerQs.setAnswerKey("AMBRY052_001");
+        familyHistory.setBasicQuestions(Arrays.asList(familyCancerQs));
+        questionnaire.setFamilyCancer(familyHistory);
+        QuestionSet demographicQs = new QuestionSet();
+        demographicQs.setQuestionKey("AMBRY002");
+        demographicQs.setAnswerKey("AMBRY002_001");
+        questionnaire.setDemographic(Arrays.asList(demographicQs));
+
+        PersonalHistoryTagsDTO personalHistoryTagsDTO = new PersonalHistoryTagsDTO();
+        personalHistoryTagsDTO.setTags(new HashSet<>());
+        com.genomebrain.backend.service.dto.PersonalHistoryDetails personalHistoryDetails = new com.genomebrain.backend.service.dto.PersonalHistoryDetails();
+        personalHistoryTagsDTO.setPersonalHistoryDetails(personalHistoryDetails);
+        when(tagGenerationUtility.getPersonalHistoryDetails(any(), any(), anyBoolean(), anyBoolean(), any(), anyString(), anyBoolean(), anyBoolean()))
+            .thenReturn(personalHistoryTagsDTO);
+
+        ClinicalSummary clinicalSummary = new ClinicalSummary();
+        clinicalSummary.setFamilyHistoryOfColorectalPolyps("Yes");
+        clinicalSummary.setRelativeWithPolypsHistory(Arrays.asList(
+            com.genomebrain.backend.service.dto.OptionConstants.AMBRY114_023.getValue(),
+            com.genomebrain.backend.service.dto.OptionConstants.AMBRY114_036.getValue()));
+        clinicalSummary.setPersonalHistoryDetails(personalHistoryDetails);
+        when(tagGenerationUtility.checkFamilyColorectalPolypsHistory(any(), any()))
+            .thenReturn(clinicalSummary);
+        when(tagGenerationUtility.getTagsForSelectedOptions(any())).thenReturn(new HashSet<>());
+
+        GenomeBrainResponseDTO genomeBrainResponseDTO = new GenomeBrainResponseDTO();
+        genomeBrainResponseDTO.setStatus("SUCCESS");
+        genomeBrainResponseDTO.setHBOC(false);
+        genomeBrainResponseDTO.setLYNCH(false);
+        genomeBrainResponseDTO.setAPS(false);
+        genomeBrainResponseDTO.setGastric(false);
+        when(guideLineService.getGuidelinesForTags(anyString())).thenReturn(genomeBrainResponseDTO);
+
+        GuidelineDetailsDTO result = guideLineUtility.getClinicalSummaryAndTags(
+            questionnaire, false, null, "v1", false, false);
+
+        assertThat(result).isNotNull();
+        assertThat(result.getTagList()).doesNotContain("FmPolyp>10");
+    }
+
+    @Test
+    @DisplayName("Should derive family history of genetic testing from AMBRY189 and pass it to getFamilyCancerTags")
+    void testGetClinicalSummaryAndTagsDerivesFamilyHistoryOfGeneticTesting() throws ConnectException {
+        Questionnaire questionnaire = new Questionnaire();
+        questionnaire.setSource("Default");
+        questionnaire.setPersonalHistory(null);
+        FamilyHistory familyHistory = new FamilyHistory();
+        QuestionSet familyCancerQs = new QuestionSet();
+        familyCancerQs.setQuestionKey("AMBRY052");
+        familyCancerQs.setAnswerKey("AMBRY052_001");
+        QuestionSet geneticTestingQs = new QuestionSet();
+        geneticTestingQs.setQuestionKey("AMBRY189");
+        geneticTestingQs.setAnswerKey("AMBRY189_001");
+        familyHistory.setBasicQuestions(Arrays.asList(familyCancerQs, geneticTestingQs));
+
+        FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
+        Mother mother = new Mother();
+        mother.setBasicQuestions(new ArrayList<>());
+        familyCancerDetails.setMother(mother);
+        familyHistory.setFamilyCancerDetails(familyCancerDetails);
+        questionnaire.setFamilyCancer(familyHistory);
+
+        QuestionSet demographicQs = new QuestionSet();
+        demographicQs.setQuestionKey("AMBRY002");
+        demographicQs.setAnswerKey("AMBRY002_001");
+        questionnaire.setDemographic(Arrays.asList(demographicQs));
+
+        PersonalHistoryTagsDTO personalHistoryTagsDTO = new PersonalHistoryTagsDTO();
+        personalHistoryTagsDTO.setTags(new HashSet<>());
+        com.genomebrain.backend.service.dto.PersonalHistoryDetails personalHistoryDetails = new com.genomebrain.backend.service.dto.PersonalHistoryDetails();
+        personalHistoryTagsDTO.setPersonalHistoryDetails(personalHistoryDetails);
+        when(tagGenerationUtility.getPersonalHistoryDetails(any(), any(), anyBoolean(), anyBoolean(), any(), anyString(), anyBoolean(), anyBoolean()))
+            .thenReturn(personalHistoryTagsDTO);
+        ClinicalSummary clinicalSummary = new ClinicalSummary();
+        clinicalSummary.setPersonalHistoryDetails(personalHistoryDetails);
+        when(tagGenerationUtility.checkFamilyColorectalPolypsHistory(any(), any()))
+            .thenReturn(clinicalSummary);
+        when(tagGenerationUtility.getTagsForSelectedOptions(any())).thenReturn(new HashSet<>());
+
+        com.genomebrain.backend.service.dto.FamilyHistoryDetailsTagsDTO familyHistoryDTO =
+            new com.genomebrain.backend.service.dto.FamilyHistoryDetailsTagsDTO();
+        com.genomebrain.backend.service.dto.FamilyHistoryDetails familyHistoryDetails =
+            new com.genomebrain.backend.service.dto.FamilyHistoryDetails();
+        familyHistoryDetails.setRelativeSide("Mat");
+        familyHistoryDetails.setFamilyMember("Mother");
+        familyHistoryDetails.setCancerDetails(new ArrayList<>());
+        familyHistoryDTO.setFamilyHistoryDetails(familyHistoryDetails);
+        familyHistoryDTO.setTags(new HashSet<>());
+        familyHistoryDTO.setLynchReasoningStatements(new HashSet<>());
+        familyHistoryDTO.setHbocReasoningStatements(new HashSet<>());
+        when(tagGenerationUtility.getFamilyCancerTags(any(), anyString(), any()))
+            .thenReturn(Arrays.asList(familyHistoryDTO));
+
+        GenomeBrainResponseDTO genomeBrainResponseDTO = new GenomeBrainResponseDTO();
+        genomeBrainResponseDTO.setStatus("SUCCESS");
+        genomeBrainResponseDTO.setHBOC(false);
+        genomeBrainResponseDTO.setLYNCH(false);
+        genomeBrainResponseDTO.setAPS(false);
+        genomeBrainResponseDTO.setGastric(false);
+        when(guideLineService.getGuidelinesForTags(anyString())).thenReturn(genomeBrainResponseDTO);
+
+        GuidelineDetailsDTO result = guideLineUtility.getClinicalSummaryAndTags(
+            questionnaire, false, null, "v1", false, false);
+
+        assertThat(result).isNotNull();
+        assertThat(result.getClinicalSummary().getFamilyHistoryOfGeneticTesting()).isEqualTo("Yes");
+
+        org.mockito.ArgumentCaptor<String> geneticTestingCaptor = org.mockito.ArgumentCaptor.forClass(String.class);
+        org.mockito.Mockito.verify(tagGenerationUtility).getFamilyCancerTags(any(), anyString(), geneticTestingCaptor.capture());
+        assertThat(geneticTestingCaptor.getValue()).isEqualTo("Yes");
     }
 }
 

@@ -54,6 +54,8 @@ public enum ReasoningStatementConstants {
 
     HBOCRS58("Family history of prostate cancer at any age in a first-degree blood relative and ≥1 close blood relative with male breast cancer at any age on the same side of the family"),
 
+    NCCNRS1("Patient reported blood relative with known pathogenic/likely pathogenic variant in cancer susceptibility gene. Confirmation and clinical correlation are recommended."),
+
     CRCRS1("Personal history of ≥10 adenomatous colorectal polyps"),
 
     CRCRS5("Personal history of a Lynch syndrome-related cancer at any age and another synchronous or metachronous Lynch syndrome-related cancer at any age"),

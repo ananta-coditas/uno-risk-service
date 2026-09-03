@@ -28,6 +28,7 @@ public class RelativeDetail {
     private boolean unaffected;
     private Parent parent;
     private String additionalNotes;
+    private String relativeGeneList;
 
     public String getRelativeType() {
         return relativeType;
@@ -211,6 +212,14 @@ public class RelativeDetail {
 
     public void setAdditionalNotes(String additionalNotes) {
         this.additionalNotes = additionalNotes;
+    }
+
+    public String getRelativeGeneList() {
+        return relativeGeneList;
+    }
+
+    public void setRelativeGeneList(String relativeGeneList) {
+        this.relativeGeneList = relativeGeneList;
     }
 
     @Override

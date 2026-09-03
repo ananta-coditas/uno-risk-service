@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.net.ConnectException;
@@ -22,9 +23,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import com.genomebrain.backend.quesstionnaire.QuestionSet;
+import com.genomebrain.backend.quesstionnaire.Questionnaire;
 import com.genomebrain.backend.quesstionnaire.CancerDetails;
 import com.genomebrain.backend.service.dto.CancerFeatureDetails;
 import com.genomebrain.backend.service.dto.ClinicalHistory;
@@ -74,7 +78,7 @@ class CareAPIUtilTest {
         assertThat(result).containsEntry("FIRST_COUSIN_FEMALE", "First cousin (female)");
         assertThat(result).containsEntry("OTHER", "Others");
     }
-    
+
     @Test
     @DisplayName("Should return side of family question list")
     void testGetSideOfFamilyQuestion() {
@@ -3303,6 +3307,77 @@ class CareAPIUtilTest {
         careAPIUtil.getCancerObject(list, null, false, halfUncle);
 
         assertThat(halfUncle.getLung()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("Should convert abbreviated relative labels to canonical relationship names")
+    void testGetRelationshipConvertsAbbreviatedRelativeNames() {
+        assertThat(CareAPIUtil.getRelationship("Mother")).isEqualTo("Mother");
+        assertThat(CareAPIUtil.getRelationship("half sister")).isEqualTo("Half sister");
+        assertThat(CareAPIUtil.getRelationship("Cousin - 1st")).isEqualTo("First cousin (male)");
+        assertThat(CareAPIUtil.getRelationship("gr grandmother")).isEqualTo("Great grandmother");
+        assertThat(CareAPIUtil.getRelationship("Unrecognized")).isEqualTo("");
+    }
+
+    @Test
+    @DisplayName("Should add relative polyp questions to family history when a relative reports colorectal polyps")
+    void testGetQuestionObjectAddsRelativePolypQuestionsWhenRelativeHasPolyps() throws ConnectException {
+        NCCNCoreRequest request = new NCCNCoreRequest();
+        List<ClinicalHistory> clinicalHistories = new ArrayList<>();
+
+        ClinicalHistory proband = new ClinicalHistory();
+        proband.setRelationship("Proband");
+        proband.setSexAtBirth("male");
+        proband.setEthnicity(Arrays.asList("CAUCASIAN"));
+        proband.setCancerOverall("NO");
+        proband.setCancerFeatureDetails(Collections.emptyList());
+        clinicalHistories.add(proband);
+
+        ClinicalHistory mother = new ClinicalHistory();
+        mother.setRelationship("Mother");
+        mother.setPolypOverall("YES");
+        CancerFeatureDetails motherCancerFeature = new CancerFeatureDetails();
+        motherCancerFeature.setCancerFeature(Cancer.CancerType.BREAST.name());
+        mother.setCancerFeatureDetails(Arrays.asList(motherCancerFeature));
+        clinicalHistories.add(mother);
+
+        request.setClinicalHistory(clinicalHistories);
+
+        GuidelineDetailsDTO guidelineDetailsDTO = new GuidelineDetailsDTO();
+        ClinicalSummary clinicalSummary = new ClinicalSummary();
+        clinicalSummary.setRiskAssessmentNccnForHBOC(Collections.emptySet());
+        guidelineDetailsDTO.setClinicalSummary(clinicalSummary);
+        guidelineDetailsDTO.setReasoningStatementAndTagsSet("{\"reasoningStatements\":[]}");
+        when(guideLineUtility.getClinicalSummaryAndTags(any(), anyBoolean(), any(), any(), anyBoolean(), anyBoolean()))
+            .thenReturn(guidelineDetailsDTO);
+
+        careAPIUtil.getQuestionObject(request);
+
+        ArgumentCaptor<Questionnaire> questionnaireCaptor = ArgumentCaptor.forClass(Questionnaire.class);
+        verify(guideLineUtility).getClinicalSummaryAndTags(questionnaireCaptor.capture(), anyBoolean(), any(), any(), anyBoolean(), anyBoolean());
+        List<QuestionSet> familyBasicQuestions = questionnaireCaptor.getValue().getFamilyCancer().getBasicQuestions();
+
+        assertThat(familyBasicQuestions).isNotNull();
+        assertThat(familyBasicQuestions.stream().anyMatch(q -> "AMBRY111".equals(q.getQuestionKey()))).isTrue();
+        assertThat(familyBasicQuestions.stream().anyMatch(q -> "AMBRY114".equals(q.getQuestionKey()))).isTrue();
+    }
+
+    @Test
+    @DisplayName("Should mark gastric diffuse question Yes when pathology reports the diffuse type")
+    void testGetCancerObjectMarksGastricDiffuseYesWhenPathologyIndicatesDiffuse() {
+        List<CancerFeatureDetails> list = new ArrayList<>();
+        CancerFeatureDetails gastricCancer = new CancerFeatureDetails();
+        gastricCancer.setCancerFeature(Cancer.CancerType.Gastric.name());
+        gastricCancer.setBreastCancerTypes(new ArrayList<>(Arrays.asList("Diffuse")));
+        list.add(gastricCancer);
+
+        CancerDetails personalCancer = new CancerDetails();
+        careAPIUtil.getCancerObject(list, personalCancer, true, null);
+
+        assertThat(personalCancer.getStomach()).isNotNull();
+        assertThat(personalCancer.getStomach().stream()
+            .anyMatch(q -> "AMBRY186".equals(q.getQuestionKey()) && "Yes".equalsIgnoreCase(q.getAnswerText())))
+            .isTrue();
     }
 }
 

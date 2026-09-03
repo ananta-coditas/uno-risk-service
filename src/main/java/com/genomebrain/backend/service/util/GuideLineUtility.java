@@ -48,6 +48,7 @@ import com.genomebrain.backend.service.dto.FamilyHistoryDetails;
 import com.genomebrain.backend.service.dto.FamilyHistoryDetailsTagsDTO;
 import com.genomebrain.backend.service.dto.GenomeBrainResponseDTO;
 import com.genomebrain.backend.service.dto.GuidelineDetailsDTO;
+import com.genomebrain.backend.service.dto.NCCNTagConstants;
 import com.genomebrain.backend.service.dto.OptionConstants;
 import com.genomebrain.backend.service.dto.PersonalHistoryDetails;
 import com.genomebrain.backend.service.dto.PersonalHistoryTagsDTO;
@@ -70,7 +71,7 @@ public class GuideLineUtility {
 
     @Autowired
     GuideLineService guideLineService;
-    
+
     @Autowired
     TagGenerationUtility tagGenerationUtility;
 
@@ -107,7 +108,6 @@ public class GuideLineUtility {
         boolean isPersonalHistory = false;
         boolean isFamilyHistory = false;
         String personalHistoryOfColorectalPolyps = "";
-        String familyHistoryOfColorectalPolyps = "";
         PersonalHistoryDetails personalHistoryDetails = new PersonalHistoryDetails();
 
         List<FamilyHistoryDetailsTagsDTO> familyHistoryDetailsTagsDTOList = new ArrayList<>();
@@ -125,25 +125,33 @@ public class GuideLineUtility {
             clinicalSummary.setPersonalHistory(isPersonalHistory);
 
 
-            if (questionnaire.getFamilyCancer() != null) {
+            if (questionnaire.getFamilyCancer() != null && questionnaire.getFamilyCancer().getBasicQuestions() != null) {
                 isFamilyHistory = checkIfCancerHistory(questionnaire.getFamilyCancer().getBasicQuestions());
                 clinicalSummary = tagGenerationUtility.checkFamilyColorectalPolypsHistory(questionnaire.getFamilyCancer().getBasicQuestions(), clinicalSummary);
-                clinicalSummary.setFamilyHistoryOfColorectalPolyps(familyHistoryOfColorectalPolyps);
-                if ("Yes".equalsIgnoreCase(familyHistoryOfColorectalPolyps)) {
-                    tagsList.add("FmPolyp>10");
+                if ("Yes".equalsIgnoreCase(clinicalSummary.getFamilyHistoryOfColorectalPolyps()) && !CollectionUtils.isEmpty(clinicalSummary.getRelativeWithPolypsHistory())) {
+                    log.info("Family history of colorectal polyps is present as :{}", clinicalSummary.getRelativeWithPolypsHistory());
+                    clinicalSummary.getRelativeWithPolypsHistory().stream()
+                            .filter(relative -> !relative.equals(OptionConstants.AMBRY114_023.getValue())
+                                    && !relative.equals(OptionConstants.AMBRY114_036.getValue()))
+                            .findFirst()
+                            .ifPresent(nonMatching -> tagsList.add(NCCNTagConstants.FM_POLYPS_GT_10.getValue()));
                 }
                 clinicalSummary.setFamilyHistory(isFamilyHistory);
-                clinicalSummary = tagGenerationUtility.checkFamilyColorectalPolypsHistory(questionnaire.getFamilyCancer().getBasicQuestions(), clinicalSummary);
                 tagsList.addAll(tagGenerationUtility.getTagsForSelectedOptions(questionnaire.getFamilyCancer().getBasicQuestions()));
             }
 
             //Getting family Details for clinical summary
             if (isFamilyHistory) {
+                String familyHistoryOfGeneticTesting = getFamilyHistoryOfGeneticTesting(questionnaire);
+                if (familyHistoryOfGeneticTesting.equalsIgnoreCase("AMBRY189_001")) {
+                    familyHistoryOfGeneticTesting = "Yes";
+                }
+                clinicalSummary.setFamilyHistoryOfGeneticTesting(familyHistoryOfGeneticTesting);
                 log.info("Into getClinicalSummaryAndTags method of GuideLineUtility : family details");
 
                 FamilyHistory familyHistory = questionnaire.getFamilyCancer();
                 FamilyCancerDetails familyCancerDetails = familyHistory.getFamilyCancerDetails();
-                List<FamilyHistoryDetailsTagsDTO> unfamilyHistoryDetailsTagsDTOList = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, version);
+                List<FamilyHistoryDetailsTagsDTO> unfamilyHistoryDetailsTagsDTOList = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, version, familyHistoryOfGeneticTesting);
                 familyHistoryDetailsTagsDTOList = getCategroirzedFamilyDetailsWithTags(unfamilyHistoryDetailsTagsDTOList);
                 lynchReasoningStatements = familyHistoryDetailsTagsDTOList.stream().map(FamilyHistoryDetailsTagsDTO::getLynchReasoningStatements).flatMap(Collection::stream).collect(Collectors.toSet());
                 hbocReasoningStatements = familyHistoryDetailsTagsDTOList.stream().map(FamilyHistoryDetailsTagsDTO::getHbocReasoningStatements).flatMap(Collection::stream).collect(Collectors.toSet());
@@ -268,6 +276,14 @@ public class GuideLineUtility {
                 clinicalSummary.setHBOC(true);
                 genomeBrainResponseDTO.setGuideLineMet(true);
             }
+            // Variant outside CancerNext panel: if NCCNRS1 present → false; else if any relative has positive testing → true (gene outside panel).
+            List<FamilyHistoryDetails> allRelatives = getAllFamilyHistoryDetails(clinicalSummary);
+            if (!CollectionUtils.isEmpty(hbocReasoningStatements)
+                    && hbocReasoningStatements.contains(ReasoningStatementConstants.NCCNRS1.getValue())) {
+                clinicalSummary.setRelativeVariantOutsideCancerNextPanel(false);
+            } else if (hasPositiveGeneList(allRelatives)) {
+                clinicalSummary.setRelativeVariantOutsideCancerNextPanel(true);
+            }
 
             // Process Gastric reasoning statements
             if (!CollectionUtils.isEmpty(gastricReasoningStatements)) {
@@ -352,6 +368,85 @@ public class GuideLineUtility {
         log.info("Exit from getClinicalSummaryAndTags method of GuideLineUtility : generate the clinical summary and taglist from questionnaire");
 
         return guidelineDetailsDTO;
+    }
+
+    public static String getFamilyHistoryOfGeneticTesting(Questionnaire questionnaire) {
+
+        if (questionnaire == null
+                || questionnaire.getFamilyCancer() == null
+                || questionnaire.getFamilyCancer().getBasicQuestions() == null) {
+            return "";
+        }
+
+        return questionnaire.getFamilyCancer()
+                .getBasicQuestions()
+                .stream()
+                .filter(q -> "AMBRY189".equals(q.getQuestionKey()))
+                .findFirst()
+                .map(QuestionSet::getAnswerKey)
+                .map(answerKey -> {
+                    switch (answerKey) {
+                        case "AMBRY189_001":
+                            return "Yes";
+                        case "AMBRY189_002":
+                            return "No";
+                        case "AMBRY189_003":
+                            return "I don't know";
+                        default:
+                            return "";
+                    }
+                })
+                .orElse("");
+
+    }
+
+    /**
+     * Collects all family history details from clinical summary (FDR, maternal, paternal, and details list).
+     * Relatives can be in any of these lists depending on structure; all must be checked.
+     *
+     * @param clinicalSummary clinical summary containing family history lists
+     * @return combined list of all family history details (non-null, may be empty)
+     */
+    private List<FamilyHistoryDetails> getAllFamilyHistoryDetails(ClinicalSummary clinicalSummary) {
+        List<FamilyHistoryDetails> all = new ArrayList<>();
+        if (clinicalSummary == null) {
+            return all;
+        }
+        if (!CollectionUtils.isEmpty(clinicalSummary.getFamilyHistoryDetailsList())) {
+            all.addAll(clinicalSummary.getFamilyHistoryDetailsList());
+        }
+        if (!CollectionUtils.isEmpty(clinicalSummary.getFamilyHistoryForFDR())) {
+            all.addAll(clinicalSummary.getFamilyHistoryForFDR());
+        }
+        if (!CollectionUtils.isEmpty(clinicalSummary.getFamilyHistoryForMaternalRelatives())) {
+            all.addAll(clinicalSummary.getFamilyHistoryForMaternalRelatives());
+        }
+        if (!CollectionUtils.isEmpty(clinicalSummary.getFamilyHistoryForPaternalRelatives())) {
+            all.addAll(clinicalSummary.getFamilyHistoryForPaternalRelatives());
+        }
+        return all;
+    }
+
+    /**
+     * Checks if at least one relative in the family history has a positive gene list.
+     *
+     * @param familyHistoryDetailsList List of family history details to check
+     * @return true if at least one relative has a positive gene list, false otherwise
+     */
+    private boolean hasPositiveGeneList(List<FamilyHistoryDetails> familyHistoryDetailsList) {
+        if (CollectionUtils.isEmpty(familyHistoryDetailsList)) {
+            return false;
+        }
+
+        for (FamilyHistoryDetails familyHistoryDetails : familyHistoryDetailsList) {
+            if (familyHistoryDetails != null && familyHistoryDetails.getRelativeDetail() != null) {
+                String relativeGeneList = familyHistoryDetails.getRelativeDetail().getRelativeGeneList();
+                if (relativeGeneList != null && !relativeGeneList.isEmpty() && relativeGeneList.contains("Positive")) {
+                    return true; // Found at least one positive gene list
+                }
+            }
+        }
+        return false;
     }
 
     private List<FamilyHistoryDetailsTagsDTO> getGroupedFamilyHistoryDetails(List<FamilyHistoryDetailsTagsDTO> familyHistoryDetailsList) {

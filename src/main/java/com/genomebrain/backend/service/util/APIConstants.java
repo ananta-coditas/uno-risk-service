@@ -2,6 +2,10 @@ package com.genomebrain.backend.service.util;
 
 public interface APIConstants {
     public static final String POLYP_OVERALL = "polypOverall";
+    public static final String R_POLYP_OVERALL = "relativePolypOverall";
+    public static final String R_TYPE_POLYP_OVERALL = "relativeTypePolypOverall";
+    public static final String GASTRIC_DIFFUSE = "gastricDiffuse";
+    public static final String RELATIVE_GASTRIC_DIFFUSE = "relativeGastricDiffuse";
     public static final String ADENOMA = "Adenoma";
     public static final String POLYP_TYPE = "polypType";
     public static final String EXACT_NUM_OF_POLYPS = "exactNumOfPolyps";

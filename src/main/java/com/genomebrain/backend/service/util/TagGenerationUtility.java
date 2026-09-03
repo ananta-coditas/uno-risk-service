@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -66,108 +67,109 @@ public class TagGenerationUtility {
      * @param familyCancerDetails
      * @return list of FamilyHistoryDetailsTagsDTO
      */
-    public List<FamilyHistoryDetailsTagsDTO> getFamilyCancerTags(FamilyCancerDetails familyCancerDetails, String version) {
+    public List<FamilyHistoryDetailsTagsDTO> getFamilyCancerTags(FamilyCancerDetails familyCancerDetails, String version, String familyHistoryOfGeneticTesting) {
+        boolean isFamilyGeneticTesting = familyHistoryOfGeneticTesting != null && familyHistoryOfGeneticTesting.equalsIgnoreCase("Yes");
         //log.info("Entered into getFamilyCancerTags method of TagGenerationUtility with familyCancerDetails");
         List<FamilyHistoryDetailsTagsDTO> familyHistoryDetailsList = new ArrayList<>();
         if (familyCancerDetails.getMother() != null) {
-            familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.MOTHER.getValue(), "FDR", familyCancerDetails.getMother(), TagConstants.FEMALE.getValue(), 1, version));
+            familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.MOTHER.getValue(), "FDR", familyCancerDetails.getMother(), TagConstants.FEMALE.getValue(), 1, version, isFamilyGeneticTesting));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getMothers())) {
-            familyCancerDetails.getMothers().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.MOTHER.getValue(), "FDR", relative, TagConstants.FEMALE.getValue(), 1, version)));
+            familyCancerDetails.getMothers().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.MOTHER.getValue(), "FDR", relative, TagConstants.FEMALE.getValue(), 1, version, isFamilyGeneticTesting)));
         }
         if (familyCancerDetails.getFather() != null) {
-            familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.FATHER.getValue(), "FDR", familyCancerDetails.getFather(), TagConstants.MALE.getValue(), 2, version));
+            familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.FATHER.getValue(), "FDR", familyCancerDetails.getFather(), TagConstants.MALE.getValue(), 2, version, isFamilyGeneticTesting));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getFathers())) {
-            familyCancerDetails.getFathers().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.FATHER.getValue(), "FDR", relative, TagConstants.MALE.getValue(), 1, version)));
+            familyCancerDetails.getFathers().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.FATHER.getValue(), "FDR", relative, TagConstants.MALE.getValue(), 1, version, isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getSisters())) {
-            familyCancerDetails.getSisters().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.SISTER.getValue(), "FDR", relative, TagConstants.FEMALE.getValue(), 3, version)));
+            familyCancerDetails.getSisters().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.SISTER.getValue(), "FDR", relative, TagConstants.FEMALE.getValue(), 3, version, isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getBrothers())) {
-            familyCancerDetails.getBrothers().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.BROTHER.getValue(), "FDR", relative, TagConstants.MALE.getValue(), 4, version)));
+            familyCancerDetails.getBrothers().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.BROTHER.getValue(), "FDR", relative, TagConstants.MALE.getValue(), 4, version, isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getDaughters())) {
-            familyCancerDetails.getDaughters().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.DAUGHTER.getValue(), "FDR", relative, TagConstants.FEMALE.getValue(), 5, version)));
+            familyCancerDetails.getDaughters().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.DAUGHTER.getValue(), "FDR", relative, TagConstants.FEMALE.getValue(), 5, version, isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getSons())) {
-            familyCancerDetails.getSons().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.SON.getValue(), "FDR", relative, TagConstants.MALE.getValue(), 6, version)));
+            familyCancerDetails.getSons().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.SON.getValue(), "FDR", relative, TagConstants.MALE.getValue(), 6, version, isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getNieces())) {
-            familyCancerDetails.getNieces().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.NIECE.getValue(), "SDR", relative, TagConstants.FEMALE.getValue(), 7, version)));
+            familyCancerDetails.getNieces().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.NIECE.getValue(), "SDR", relative, TagConstants.FEMALE.getValue(), 7, version, isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getNephews())) {
-            familyCancerDetails.getNephews().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.NEPHEW.getValue(), "SDR", relative, TagConstants.MALE.getValue(), 8, version)));
+            familyCancerDetails.getNephews().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.NEPHEW.getValue(), "SDR", relative, TagConstants.MALE.getValue(), 8, version, isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getHalfSisters())) {
-            familyCancerDetails.getHalfSisters().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.HALF_SISTER.getValue(), "SDR", relative, TagConstants.FEMALE.getValue(), 9, version)));
+            familyCancerDetails.getHalfSisters().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.HALF_SISTER.getValue(), "SDR", relative, TagConstants.FEMALE.getValue(), 9, version, isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getHalfBrothers())) {
-            familyCancerDetails.getHalfBrothers().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.HALF_BROTHER.getValue(), "SDR", relative, TagConstants.MALE.getValue(), 10, version)));
+            familyCancerDetails.getHalfBrothers().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.HALF_BROTHER.getValue(), "SDR", relative, TagConstants.MALE.getValue(), 10, version, isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getGrandDaughters())) {
-            familyCancerDetails.getGrandDaughters().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GRANDDAUGHTER.getValue(), "SDR", relative, TagConstants.FEMALE.getValue(), 11, version)));
+            familyCancerDetails.getGrandDaughters().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GRANDDAUGHTER.getValue(), "SDR", relative, TagConstants.FEMALE.getValue(), 11, version, isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getGrandSons())) {
-            familyCancerDetails.getGrandSons().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GRANDSON.getValue(), "SDR", relative, TagConstants.MALE.getValue(), 12, version)));
+            familyCancerDetails.getGrandSons().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GRANDSON.getValue(), "SDR", relative, TagConstants.MALE.getValue(), 12, version, isFamilyGeneticTesting)));
         }
         //Maternal or Paternal relatives
         if (!CollectionUtils.isEmpty(familyCancerDetails.getAunts())) {
-            familyCancerDetails.getAunts().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.AUNT.getValue(), "SDR", relative, TagConstants.FEMALE.getValue(), 1, version)));
+            familyCancerDetails.getAunts().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.AUNT.getValue(), "SDR", relative, TagConstants.FEMALE.getValue(), 1, version, isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getUncles())) {
-            familyCancerDetails.getUncles().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.UNCLE.getValue(), "SDR", relative, TagConstants.MALE.getValue(), 2, version)));
+            familyCancerDetails.getUncles().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.UNCLE.getValue(), "SDR", relative, TagConstants.MALE.getValue(), 2, version, isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getFirstCousinsFemale())) {
-            familyCancerDetails.getFirstCousinsFemale().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.FIRST_COUSIN_FEMALE.getValue(), "TDR", relative, TagConstants.FEMALE.getValue(), 3, version)));
+            familyCancerDetails.getFirstCousinsFemale().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.FIRST_COUSIN_FEMALE.getValue(), "TDR", relative, TagConstants.FEMALE.getValue(), 3, version, isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getFirstCousinsMale())) {
-            familyCancerDetails.getFirstCousinsMale().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.FIRST_COUSIN_MALE.getValue(), "TDR", relative, TagConstants.MALE.getValue(), 4, version)));
+            familyCancerDetails.getFirstCousinsMale().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.FIRST_COUSIN_MALE.getValue(), "TDR", relative, TagConstants.MALE.getValue(), 4, version, isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getGrandMothers())) {
-            familyCancerDetails.getGrandMothers().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GRANDMOTHER.getValue(), "SDR", relative, TagConstants.FEMALE.getValue(), 5, version)));
+            familyCancerDetails.getGrandMothers().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GRANDMOTHER.getValue(), "SDR", relative, TagConstants.FEMALE.getValue(), 5, version, isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getGrandFathers())) {
-            familyCancerDetails.getGrandFathers().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GRANDFATHER.getValue(), "SDR", relative, TagConstants.MALE.getValue(), 6, version)));
+            familyCancerDetails.getGrandFathers().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GRANDFATHER.getValue(), "SDR", relative, TagConstants.MALE.getValue(), 6, version, isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getGreatUncles())) {
-            familyCancerDetails.getGreatUncles().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GREAT_UNCLE.getValue(), "TDR", relative, TagConstants.MALE.getValue(), 7, version)));
+            familyCancerDetails.getGreatUncles().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GREAT_UNCLE.getValue(), "TDR", relative, TagConstants.MALE.getValue(), 7, version, isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getGreatAunts())) {
-            familyCancerDetails.getGreatAunts().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GREAT_AUNT.getValue(), "TDR", relative, TagConstants.FEMALE.getValue(), 8, version)));
+            familyCancerDetails.getGreatAunts().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GREAT_AUNT.getValue(), "TDR", relative, TagConstants.FEMALE.getValue(), 8, version, isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getGreatGrandMothers())) {
-            familyCancerDetails.getGreatGrandMothers().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GREAT_GRANDMOTHER.getValue(), "TDR", relative, TagConstants.FEMALE.getValue(), 9, version)));
+            familyCancerDetails.getGreatGrandMothers().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GREAT_GRANDMOTHER.getValue(), "TDR", relative, TagConstants.FEMALE.getValue(), 9, version, isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getGreatGrandFathers())) {
-            familyCancerDetails.getGreatGrandFathers().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GREAT_GRANDFATHER.getValue(), "TDR", relative, TagConstants.MALE.getValue(), 10, version)));
+            familyCancerDetails.getGreatGrandFathers().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GREAT_GRANDFATHER.getValue(), "TDR", relative, TagConstants.MALE.getValue(), 10, version, isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getGreatNieces())) {
-            familyCancerDetails.getGreatNieces().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GREAT_NIECE.getValue(), "TDR", relative,TagConstants.FEMALE.getValue() , 11, version)));
+            familyCancerDetails.getGreatNieces().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GREAT_NIECE.getValue(), "TDR", relative,TagConstants.FEMALE.getValue() , 11, version, isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getGreatNephews())) {
-            familyCancerDetails.getGreatNephews().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GREAT_NEPHEW.getValue(), "TDR", relative, TagConstants.MALE.getValue(), 12, version)));
+            familyCancerDetails.getGreatNephews().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GREAT_NEPHEW.getValue(), "TDR", relative, TagConstants.MALE.getValue(), 12, version, isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getGreatGrandDaughters())) {
-            familyCancerDetails.getGreatGrandDaughters().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GREAT_GRANDDAUGHTER.getValue(), "TDR", relative, TagConstants.FEMALE.getValue(), 13, version)));
+            familyCancerDetails.getGreatGrandDaughters().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GREAT_GRANDDAUGHTER.getValue(), "TDR", relative, TagConstants.FEMALE.getValue(), 13, version, isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getGreatGrandSons())) {
-            familyCancerDetails.getGreatGrandSons().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GREAT_GRANDSON.getValue(), "TDR", relative, TagConstants.MALE.getValue(), 14, version)));
+            familyCancerDetails.getGreatGrandSons().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GREAT_GRANDSON.getValue(), "TDR", relative, TagConstants.MALE.getValue(), 14, version, isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getHalfAunts())) {
-            familyCancerDetails.getHalfAunts().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.HALF_AUNT.getValue(), "TDR", relative, TagConstants.FEMALE.getValue(), 15, version)));
+            familyCancerDetails.getHalfAunts().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.HALF_AUNT.getValue(), "TDR", relative, TagConstants.FEMALE.getValue(), 15, version, isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getHalfUncles())) {
-            familyCancerDetails.getHalfUncles().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.HALF_UNCLE.getValue(), "TDR", relative, TagConstants.MALE.getValue(), 16, version)));
+            familyCancerDetails.getHalfUncles().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.HALF_UNCLE.getValue(), "TDR", relative, TagConstants.MALE.getValue(), 16, version, isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getHalfNieces())) {
-            familyCancerDetails.getHalfNieces().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.HALF_NIECE.getValue(), "TDR", relative,TagConstants.FEMALE.getValue() , 17, version)));
+            familyCancerDetails.getHalfNieces().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.HALF_NIECE.getValue(), "TDR", relative,TagConstants.FEMALE.getValue() , 17, version, isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getHalfNephews())) {
-            familyCancerDetails.getHalfNephews().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.HALF_NEPHEW.getValue(), "TDR", relative, TagConstants.MALE.getValue(), 18, version)));
+            familyCancerDetails.getHalfNephews().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.HALF_NEPHEW.getValue(), "TDR", relative, TagConstants.MALE.getValue(), 18, version, isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getOthers())) {
-            familyCancerDetails.getOthers().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.OTHER.getValue(), "", relative, "N/A", 19, version)));
+            familyCancerDetails.getOthers().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.OTHER.getValue(), "", relative, "N/A", 19, version, isFamilyGeneticTesting)));
         }
         //log.info("Exit from getFamilyCancerTags method of TagGenerationUtility with familyCancerDetails");
         return familyHistoryDetailsList;
@@ -405,7 +407,7 @@ public class TagGenerationUtility {
      * @param sequence
      * @return FamilyHistoryDetailsTagsDTO
      */
-    private FamilyHistoryDetailsTagsDTO getFamilyHistoryDetails(String relativeType, String relativeDegree, RelativeHistory relativeHistory, String sex, int sequence, String version) {
+    private FamilyHistoryDetailsTagsDTO getFamilyHistoryDetails(String relativeType, String relativeDegree, RelativeHistory relativeHistory, String sex, int sequence, String version, Boolean relativeHistoryOfGeneticTesting) {
         //log.debug("Entered into getFamilyHistoryDetails method of TagGenerationUtility with relativeType: {}, relativeDegree: {} sex: {}, sequence: {}", relativeType, relativeDegree, sex, sequence);
 
         FamilyHistoryDetailsTagsDTO familyHistoryDetailsTagsDTO = new FamilyHistoryDetailsTagsDTO();
@@ -462,12 +464,251 @@ public class TagGenerationUtility {
                 }
             }
         }
+        // Generate genetic testing tags for this specific relative and add to tagsSet
+        Set<String> geneticTestingTags = new HashSet<>();
+        // Check if genetic testing history flag is enabled
+        if (Boolean.TRUE.equals(relativeHistoryOfGeneticTesting)) {
+            processRelativeGeneticTesting(relativeHistory, relativeType, geneticTestingTags);
+        }
+        if (!geneticTestingTags.isEmpty()) {
+            tagsSet.addAll(geneticTestingTags);
+        }
+
         familyHistoryDetailsTagsDTO.setFamilyHistoryDetails(familyHistoryDetails);
         familyHistoryDetailsTagsDTO.setTags(tagsSet);
         familyHistoryDetailsTagsDTO.setHbocReasoningStatements(checkForSameRelativeHbocGuidelineDetails(tagsSet));
         familyHistoryDetailsTagsDTO.setLynchReasoningStatements(checkForSameRelativeLynchGuidelineDetails(tagsSet));
         //log.debug("Exit from getFamilyHistoryDetails method of TagGenerationUtility");
         return familyHistoryDetailsTagsDTO;
+    }
+
+    /**
+     * Process genetic testing data for a single relative and generate tags.
+     * Checks for AMBRY191 and AMBRY192 questions which indicate positive genetic test results with gene information.
+     *
+     * @param relativeHistory    The relative's history containing genetic testing data
+     * @param relativeType       The type of relative (e.g., "Mother", "Father", "Sister")
+     * @param geneticTestingTags The set to add generated tags to
+     */
+    private void processRelativeGeneticTesting(RelativeHistory relativeHistory, String relativeType, Set<String> geneticTestingTags) {
+        if (relativeHistory == null || relativeHistory.getRelativeDetail() == null) {
+            log.debug("Skipping genetic testing tag generation: relativeHistory or relativeDetail is null");
+            return;
+        }
+
+        // Also check relativeDetail.getRelativeType() to be extra safe
+        String relativeDetailType = relativeHistory.getRelativeDetail().getRelativeType();
+        if (relativeDetailType != null && RelativeConstants.OTHER.getValue().equalsIgnoreCase(relativeDetailType)) {
+            log.debug("Skipping genetic testing tag generation for non-blood relative from relativeDetail: {}", relativeDetailType);
+            return;
+        }
+
+        // Check AMBRY191 first - if it exists and answer is not AMBRY191_001 (No/Unknown), use its answerText
+        QuestionSet ambry191Question = findQuestion(relativeHistory, "AMBRY191");
+        if (ambry191Question != null) {
+            String ambry191AnswerKey = ambry191Question.getAnswerKey();
+            // If AMBRY191 exists and answer is not AMBRY191_001 (typically "No" or "Unknown"), use it
+            if (StringUtils.isNotEmpty(ambry191AnswerKey)
+                    && !"AMBRY191_001".equalsIgnoreCase(ambry191AnswerKey)) {
+
+                String answerText = null;
+
+                switch (ambry191AnswerKey.toUpperCase()) {
+                    case "AMBRY191_002":
+                        answerText = "Negative";
+                        break;
+
+                    case "AMBRY191_003":
+                        answerText = "VUS";
+                        break;
+                    case "AMBRY191_004":
+                        answerText = "Unknown";
+                        break;
+
+                    default:
+                        log.debug("Unhandled AMBRY191 answer key: {}", ambry191AnswerKey);
+                }
+
+                if (StringUtils.isNotEmpty(answerText)) {
+                    relativeHistory.getRelativeDetail().setRelativeGeneList(answerText);
+                    log.debug("Using AMBRY191 answerText for relative gene list: {}", answerText);
+                }}
+        }
+
+        // Look for AMBRY192 in basicQuestions
+        // AMBRY192 question indicates the relative has a positive genetic test result
+        QuestionSet ambry192Question = findQuestion(relativeHistory, "AMBRY192");
+        if (ambry192Question == null) {
+            log.debug("AMBRY192 question not found for relative: {}", relativeType);
+            return;
+        }
+
+
+        if (ambry192Question.getAnswerKey().equalsIgnoreCase("AMBRY192_056")) {
+            relativeHistory.getRelativeDetail()
+                    .setRelativeGeneList("Positive - " + "Other");
+        } else if (ambry192Question.getAnswerKey().equalsIgnoreCase("AMBRY192_001")) {
+            relativeHistory.getRelativeDetail()
+                    .setRelativeGeneList("Positive - " + "Unknown");
+        } else {
+            // Extract genes from the question
+            Set<String> genes = extractGenesFromQuestion(ambry192Question);
+
+            // Set gene list as comma-separated string (better format than toString())
+            if (!genes.isEmpty()) {
+                String geneList = String.join(", ", genes);
+                relativeHistory.getRelativeDetail()
+                        .setRelativeGeneList("Positive - " + geneList);
+                log.debug("Extracted genes for relative {}: {}", relativeType, geneList);
+            }
+
+
+            // Generate tags if genes were found
+            if (!genes.isEmpty() && !RelativeConstants.OTHER.getValue().equalsIgnoreCase(relativeType) ) {
+                String baseTag = NCCNTagConstants.FM_POSITIVE_GENE_MUTATION.getValue();
+
+                // Generate specific tags for each gene: FmPositiveGeneMutation-GENE_NAME
+                for (String gene : genes) {
+                    String geneUpper = gene.toUpperCase();
+                    String specificTag = baseTag + "-" + geneUpper;
+                    geneticTestingTags.add(specificTag);
+                    log.debug("Generated genetic testing tag: {} for relative: {}, gene: {}",
+                            specificTag, relativeType, gene);
+                }
+
+                // Add generic tag: FmPositiveGeneMutation (indicates any family member has pathogenic gene)
+                geneticTestingTags.add(baseTag);
+            } else {
+                log.debug("No valid genes found for relative: {}", relativeType);
+            }
+        }
+    }
+
+    /**
+     * Finds a question by QuestionKey from the relative history's basic questions.
+     *
+     * @param relativeHistory the relative history to search
+     * @param questionKeyToFind the QuestionKey (e.g., "AMBRY192", "AMBRY191")
+     * @return the QuestionSet matching the key, or null if not found
+     */
+    private QuestionSet findQuestion(RelativeHistory relativeHistory, String questionKeyToFind) {
+
+        if (relativeHistory == null
+                || CollectionUtils.isEmpty(relativeHistory.getBasicQuestions())
+                || questionKeyToFind == null) {
+            return null;
+        }
+
+        for (QuestionSet questionSet : relativeHistory.getBasicQuestions()) {
+            String key = questionSet.getQuestionKey();
+            if (key != null && key.equalsIgnoreCase(questionKeyToFind)) {
+                return questionSet;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extracts gene names from the AMBRY192 question.
+     * First tries to parse from answerKey using OptionConstants,
+     * then falls back to answerText if needed.
+     *
+     * @param questionSet the AMBRY192 question set
+     * @return a set of unique gene names
+     */
+    public Set<String> extractGenesFromQuestion(QuestionSet questionSet) {
+        Set<String> genes = new LinkedHashSet<>(); // Use LinkedHashSet to preserve order and avoid duplicates
+
+        if (questionSet == null) {
+            log.warn("Cannot extract genes: questionSet is null");
+            return genes;
+        }
+
+        String answerKey = questionSet.getAnswerKey();
+        String answerText = questionSet.getAnswerText();
+
+        // Skip if answerKey is AMBRY192_001 (I don't know/Unknown)
+        if (StringUtils.isEmpty(answerKey) || "AMBRY192_001".equalsIgnoreCase(answerKey)) {
+            // Try answerText as fallback if answerKey is empty or unknown
+            if (StringUtils.isNotEmpty(answerText)) {
+                extractGenesFromText(answerText, genes);
+            }
+            return genes;
+        }
+
+        // Extract genes from answerKey (comma-separated answer keys like "AMBRY192_002,AMBRY192_003")
+        boolean foundAnyGene = extractGenesFromAnswerKey(answerKey, genes);
+
+        // If no genes found from answerKey, try answerText as fallback
+        if (!foundAnyGene && StringUtils.isNotEmpty(answerText)) {
+            extractGenesFromText(answerText, genes);
+        }
+
+        return genes;
+    }
+
+    /**
+     * Extracts gene names from comma-separated answer keys using OptionConstants.
+     *
+     * @param answerKey comma-separated answer keys
+     * @param genes set to add extracted genes to
+     * @return true if at least one gene was successfully extracted
+     */
+    private boolean extractGenesFromAnswerKey(String answerKey, Set<String> genes) {
+        if (StringUtils.isEmpty(answerKey)) {
+            return false;
+        }
+
+        boolean foundAny = false;
+        String[] answerKeyArray = answerKey.split(",");
+
+        for (String key : answerKeyArray) {
+            String trimmedKey = key.trim();
+            if (StringUtils.isEmpty(trimmedKey)) {
+                continue;
+            }
+
+            try {
+                // Use OptionConstants to get gene name from answer key
+                OptionConstants option = OptionConstants.valueOf(trimmedKey.toUpperCase());
+                String geneName = option.getValue();
+
+                // Skip "Unknown" and "Other" values
+                if (StringUtils.isNotEmpty(geneName) &&
+                    !UNKNOWN.equalsIgnoreCase(geneName) ) {
+                    genes.add(geneName);
+                    foundAny = true;
+                }
+            } catch (IllegalArgumentException e) {
+                // OptionConstants doesn't have this key
+                log.debug("OptionConstants not found for key: {}", trimmedKey);
+            }
+        }
+
+        return foundAny;
+    }
+
+    /**
+     * Extracts gene names from comma-separated text.
+     *
+     * @param answerText comma-separated gene names
+     * @param genes set to add extracted genes to
+     */
+    private void extractGenesFromText(String answerText, Set<String> genes) {
+        if (StringUtils.isEmpty(answerText)) {
+            return;
+        }
+
+        String[] geneArray = answerText.split(",");
+        for (String gene : geneArray) {
+            String trimmedGene = gene.trim();
+            if (StringUtils.isNotEmpty(trimmedGene) &&
+                !UNKNOWN.equalsIgnoreCase(trimmedGene)) {
+                genes.add(trimmedGene);
+            }
+        }
     }
 
     /**

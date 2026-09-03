@@ -269,6 +269,33 @@ public class CareAPIUtil{
             }
             if (familyClinicalHistory.size() > 0) {
                 getFamilyCancerDetails(familyClinicalHistory, familyHistory);
+                List<QuestionSet> familyBasicQuestions = new ArrayList<>();
+                familyClinicalHistory.forEach(clinicalHistory -> {
+                    if (!StringUtils.isEmpty(clinicalHistory.getPolypOverall())) {
+                        String polypDetail = clinicalHistory.getPolypOverall();
+                        if (clinicalHistory.getPolypOverall().equalsIgnoreCase(YES)) {
+                            polypDetail = YES;
+                        }
+                        if (clinicalHistory.getPolypOverall().equalsIgnoreCase(NO)) {
+                            polypDetail = NO;
+                        }
+                        if (clinicalHistory.getPolypOverall().equalsIgnoreCase(NOT_PROVIDED)) {
+                            polypDetail = NO;
+                        }
+                        if (clinicalHistory.getPolypOverall().isEmpty())
+                            polypDetail = NO;
+
+                        QuestionSet relativePolypOverallQuestionSet = NCCNQuestionMapper.getQuestionSet(APIConstants.R_POLYP_OVERALL, polypDetail);
+                        familyBasicQuestions.add(relativePolypOverallQuestionSet);
+                        if (polypDetail.equalsIgnoreCase(YES)) {
+                            QuestionSet relativeTypePolypOverallQuestionSet = NCCNQuestionMapper.getQuestionSet(APIConstants.R_TYPE_POLYP_OVERALL, clinicalHistory.getRelationship().equalsIgnoreCase("Other")
+                                    ? "Other"
+                                    : getRelationship(clinicalHistory.getRelationship()));
+                            familyBasicQuestions.add(relativeTypePolypOverallQuestionSet);
+                        }
+                    }
+                });
+                familyHistory.setBasicQuestions(familyBasicQuestions);
             }
             if (!(personalHistory.getBasicQuestions() == null))
                 questionnaire.setPersonalHistory(personalHistory);
@@ -287,6 +314,73 @@ public class CareAPIUtil{
             }
         }
         return careapiResponseDTO;
+    }
+
+    public static String getRelationship(String relative) {
+        switch (relative.toUpperCase()) {
+            case "MOTHER":
+                return "Mother";
+            case "FATHER":
+                return "Father";
+            case "SISTER":
+                return "Sister";
+            case "BROTHER":
+                return "Brother";
+            case "DAUGHTER":
+                return "Daughter";
+            case "SON":
+                return "Son";
+            case "NIECE":
+                return "Niece";
+            case "NEPHEW":
+                return "Nephew";
+            case "HALF SISTER":
+                return "Half sister";
+            case "HALF BROTHER":
+                return "Half brother";
+            case "GRANDMOTHER":
+                return "Grandmother";
+            case "GRANDFATHER":
+                return "Grandfather";
+            case "GRANDDAUGHTER":
+                return "Granddaughter";
+            case "GRANDSON":
+                return "Grandson";
+            case "AUNT":
+                return "Aunt";
+            case "UNCLE":
+                return "Uncle";
+            case "COUSIN - 1ST":
+                return "First cousin (male)";
+            case "GR GRANDMOTHER":
+                return "Great grandmother";
+            case "GR GRANDFATHER":
+                return "Great grandfather";
+            case "G AUNT":
+                return "Great aunt";
+            case "G UNCLE":
+                return "Great uncle";
+            case "G NIECE":
+                return "Great niece";
+            case "G NEPHEW":
+                return "Great nephew";
+            case "G GRANDDAUGHTER":
+                return "Great granddaughter";
+            case "GR GRANDSON":
+                return "Great grandson";
+            case "HALF AUNT":
+                return "Half aunt";
+            case "HALF UNCLE":
+                return "Half uncle";
+            case "HALF NIECE":
+                return "Half niece";
+            case "HALF NEPHEW":
+                return "Half nephew";
+            case "OTHER":
+                return "Others";
+            default:
+                return "";
+        }
     }
 
     public void getCancerObject(List<CancerFeatureDetails> cancerFeatureDetailsList, CancerDetails personalCancer, Boolean isProband, RelativeHistory relativeHistory) {
@@ -552,10 +646,17 @@ public class CareAPIUtil{
                         relativeHistory.setUterine(relativeCancerQuestions);
                     break;
                 case CancerType.Gastric:
-                    if (isProband)
+                    if (isProband) {
+                        List<String> pathology = new ArrayList<>();
+                        pathology = getPathology(cancerFeatureDetails, pathology);
+                        diffuseExtraction(pathology, questionSet, APIConstants.GASTRIC_DIFFUSE, personalCancerQuestions);
                         personalCancer.setStomach(personalCancerQuestions);
-                    else
+                    } else {
+                        List<String> pathology = new ArrayList<>();
+                        pathology = getPathology(cancerFeatureDetails, pathology);
+                        diffuseExtraction(pathology, questionSet, APIConstants.RELATIVE_GASTRIC_DIFFUSE, relativeCancerQuestions);
                         relativeHistory.setStomach(relativeCancerQuestions);
+                    }
                     break;
                 case CancerType.SmallIntestine:
                     if (isProband)
@@ -754,6 +855,47 @@ public class CareAPIUtil{
             }
 
         }
+    }
+
+    private static List<String> getPathology(CancerFeatureDetails cancerFeatureDetails, List<String> pathology) {
+        if (cancerFeatureDetails.getBreastCancerTypes() != null) {
+            if (cancerFeatureDetails.getBreastCancerTypes().size() > 0) {
+                pathology = cancerFeatureDetails.getBreastCancerTypes();
+                if (!StringUtils.isEmpty(cancerFeatureDetails.getPathologyOther())) {
+                    pathology.add(cancerFeatureDetails.getPathologyOther());
+                }
+            }
+        }
+        return pathology;
+    }
+
+    private static void diffuseExtraction(List<String> pathology, QuestionSet questionSet, String gastricDiffuse, List<QuestionSet> personalCancerQuestions) {
+        List<String> diffuse = getDiffuse(pathology);
+        questionSet = NCCNQuestionMapper.getQuestionSetForMultipleAnswer(gastricDiffuse, diffuse);
+        personalCancerQuestions.add(questionSet);
+    }
+
+    private static List<String> getDiffuse(List<String> pathology) {
+        if (pathology == null || pathology.isEmpty()) {
+            pathology.add("No");
+            return pathology;
+        }
+        boolean containsDiffuse = pathology.stream().anyMatch(value -> value != null && value.toLowerCase().contains("diffuse"));
+
+        if (containsDiffuse) {
+            pathology = pathology.stream()
+                    .filter(java.util.Objects::nonNull)
+                    .map(value -> value.toLowerCase().contains("diffuse") ? "Yes" : value)
+                    .distinct()
+                    .collect(Collectors.toList());
+        } else {
+            pathology.add("No");
+            pathology = pathology.stream()
+                    .filter(java.util.Objects::nonNull)
+                    .distinct()
+                    .collect(Collectors.toList());
+        }
+        return pathology;
     }
 
 

@@ -8,6 +8,10 @@ public class ClinicalSummary {
 
     private String clinicalSummaryVersion;
 
+    private Boolean relativeVariantOutsideCancerNextPanel;
+
+    private String familyHistoryOfGeneticTesting;
+
     private String program = "hc";
 
     private boolean isOldVersion;
@@ -190,6 +194,22 @@ public class ClinicalSummary {
 
     public void setClinicalSummaryVersion(String clinicalSummaryVersion) {
         this.clinicalSummaryVersion = clinicalSummaryVersion;
+    }
+
+    public Boolean isRelativeVariantOutsideCancerNextPanel() {
+        return relativeVariantOutsideCancerNextPanel;
+    }
+
+    public void setRelativeVariantOutsideCancerNextPanel(Boolean relativeVariantOutsideCancerNextPanel) {
+        this.relativeVariantOutsideCancerNextPanel = relativeVariantOutsideCancerNextPanel;
+    }
+
+    public String getFamilyHistoryOfGeneticTesting() {
+        return familyHistoryOfGeneticTesting;
+    }
+
+    public void setFamilyHistoryOfGeneticTesting(String familyHistoryOfGeneticTesting) {
+        this.familyHistoryOfGeneticTesting = familyHistoryOfGeneticTesting;
     }
 
     public boolean isOldVersion() {

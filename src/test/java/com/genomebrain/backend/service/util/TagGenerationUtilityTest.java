@@ -219,7 +219,7 @@ class TagGenerationUtilityTest {
     void testGetFamilyCancerTagsNull() {
         FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
 
-        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
 
         assertThat(result).isNotNull();
         assertThat(result).isEmpty();
@@ -233,11 +233,52 @@ class TagGenerationUtilityTest {
         mother.setBasicQuestions(Collections.emptyList());
         familyCancerDetails.setMother(mother);
 
-        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
         assertThat(result.get(0).getFamilyHistoryDetails().getFamilyMember()).isEqualTo("Mother");
+    }
+
+    @Test
+    @DisplayName("Should generate FmPositiveGeneMutation tags when relative has a positive gene test and family genetic testing history is Yes")
+    void testGetFamilyCancerTagsGeneratesGeneticTestingTagsWhenFamilyHistoryOfGeneticTestingIsYes() {
+        FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
+        RelativeHistory mother = new RelativeHistory();
+        QuestionSet ambry192 = new QuestionSet();
+        ambry192.setQuestionKey("AMBRY192");
+        ambry192.setAnswerKey("AMBRY192_002");
+        mother.setBasicQuestions(Arrays.asList(ambry192));
+        com.genomebrain.backend.quesstionnaire.RelativeDetail relativeDetail = new com.genomebrain.backend.quesstionnaire.RelativeDetail();
+        relativeDetail.setRelativeType("Mother");
+        mother.setRelativeDetail(relativeDetail);
+        familyCancerDetails.setMother(mother);
+
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "Yes");
+
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getTags()).contains("FmPositiveGeneMutation", "FmPositiveGeneMutation-BRCA1");
+        assertThat(result.get(0).getFamilyHistoryDetails().getRelativeDetail().getRelativeGeneList()).isEqualTo("Positive - BRCA1");
+    }
+
+    @Test
+    @DisplayName("Should not generate FmPositiveGeneMutation tags when family genetic testing history is not Yes")
+    void testGetFamilyCancerTagsSkipsGeneticTestingTagsWhenFamilyHistoryOfGeneticTestingIsNotYes() {
+        FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
+        RelativeHistory mother = new RelativeHistory();
+        QuestionSet ambry192 = new QuestionSet();
+        ambry192.setQuestionKey("AMBRY192");
+        ambry192.setAnswerKey("AMBRY192_002");
+        mother.setBasicQuestions(Arrays.asList(ambry192));
+        com.genomebrain.backend.quesstionnaire.RelativeDetail relativeDetail = new com.genomebrain.backend.quesstionnaire.RelativeDetail();
+        relativeDetail.setRelativeType("Mother");
+        mother.setRelativeDetail(relativeDetail);
+        familyCancerDetails.setMother(mother);
+
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "No");
+
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getTags()).doesNotContain("FmPositiveGeneMutation", "FmPositiveGeneMutation-BRCA1");
     }
 
     @Test
@@ -248,7 +289,7 @@ class TagGenerationUtilityTest {
         father.setBasicQuestions(Collections.emptyList());
         familyCancerDetails.setFather(father);
 
-        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
@@ -265,7 +306,7 @@ class TagGenerationUtilityTest {
         mother2.setBasicQuestions(Collections.emptyList());
         familyCancerDetails.setMothers(Arrays.asList(mother1, mother2));
 
-        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(2);
@@ -567,7 +608,7 @@ class TagGenerationUtilityTest {
         familyCancerDetails.setMothers(Collections.emptyList());
         familyCancerDetails.setFathers(Collections.emptyList());
 
-        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
 
         assertThat(result).isNotNull();
         assertThat(result).isEmpty();
@@ -581,7 +622,7 @@ class TagGenerationUtilityTest {
         sister.setBasicQuestions(Collections.emptyList());
         familyCancerDetails.setSisters(Arrays.asList(sister));
 
-        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
@@ -596,7 +637,7 @@ class TagGenerationUtilityTest {
         brother.setBasicQuestions(Collections.emptyList());
         familyCancerDetails.setBrothers(Arrays.asList(brother));
 
-        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
@@ -607,12 +648,12 @@ class TagGenerationUtilityTest {
     @DisplayName("Should process daughters in getFamilyCancerTags")
     void testGetFamilyCancerTagsWithDaughters() {
         FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
-        com.genomebrain.backend.quesstionnaire.relative.Daughters daughter = 
+        com.genomebrain.backend.quesstionnaire.relative.Daughters daughter =
             new com.genomebrain.backend.quesstionnaire.relative.Daughters();
         daughter.setBasicQuestions(Collections.emptyList());
         familyCancerDetails.setDaughters(Arrays.asList(daughter));
 
-        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
@@ -623,12 +664,12 @@ class TagGenerationUtilityTest {
     @DisplayName("Should process sons in getFamilyCancerTags")
     void testGetFamilyCancerTagsWithSons() {
         FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
-        com.genomebrain.backend.quesstionnaire.relative.Son son = 
+        com.genomebrain.backend.quesstionnaire.relative.Son son =
             new com.genomebrain.backend.quesstionnaire.relative.Son();
         son.setBasicQuestions(Collections.emptyList());
         familyCancerDetails.setSons(Arrays.asList(son));
 
-        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
@@ -639,12 +680,12 @@ class TagGenerationUtilityTest {
     @DisplayName("Should process nieces in getFamilyCancerTags")
     void testGetFamilyCancerTagsWithNieces() {
         FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
-        com.genomebrain.backend.quesstionnaire.relative.Niece niece = 
+        com.genomebrain.backend.quesstionnaire.relative.Niece niece =
             new com.genomebrain.backend.quesstionnaire.relative.Niece();
         niece.setBasicQuestions(Collections.emptyList());
         familyCancerDetails.setNieces(Arrays.asList(niece));
 
-        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
@@ -655,12 +696,12 @@ class TagGenerationUtilityTest {
     @DisplayName("Should process nephews in getFamilyCancerTags")
     void testGetFamilyCancerTagsWithNephews() {
         FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
-        com.genomebrain.backend.quesstionnaire.relative.Nephew nephew = 
+        com.genomebrain.backend.quesstionnaire.relative.Nephew nephew =
             new com.genomebrain.backend.quesstionnaire.relative.Nephew();
         nephew.setBasicQuestions(Collections.emptyList());
         familyCancerDetails.setNephews(Arrays.asList(nephew));
 
-        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
@@ -671,12 +712,12 @@ class TagGenerationUtilityTest {
     @DisplayName("Should process aunts in getFamilyCancerTags")
     void testGetFamilyCancerTagsWithAunts() {
         FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
-        com.genomebrain.backend.quesstionnaire.relative.Aunt aunt = 
+        com.genomebrain.backend.quesstionnaire.relative.Aunt aunt =
             new com.genomebrain.backend.quesstionnaire.relative.Aunt();
         aunt.setBasicQuestions(Collections.emptyList());
         familyCancerDetails.setAunts(Arrays.asList(aunt));
 
-        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
@@ -687,12 +728,12 @@ class TagGenerationUtilityTest {
     @DisplayName("Should process uncles in getFamilyCancerTags")
     void testGetFamilyCancerTagsWithUncles() {
         FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
-        com.genomebrain.backend.quesstionnaire.relative.Uncle uncle = 
+        com.genomebrain.backend.quesstionnaire.relative.Uncle uncle =
             new com.genomebrain.backend.quesstionnaire.relative.Uncle();
         uncle.setBasicQuestions(Collections.emptyList());
         familyCancerDetails.setUncles(Arrays.asList(uncle));
 
-        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
@@ -703,12 +744,12 @@ class TagGenerationUtilityTest {
     @DisplayName("Should process grandmothers in getFamilyCancerTags")
     void testGetFamilyCancerTagsWithGrandmothers() {
         FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
-        com.genomebrain.backend.quesstionnaire.relative.Grandmother grandmother = 
+        com.genomebrain.backend.quesstionnaire.relative.Grandmother grandmother =
             new com.genomebrain.backend.quesstionnaire.relative.Grandmother();
         grandmother.setBasicQuestions(Collections.emptyList());
         familyCancerDetails.setGrandMothers(Arrays.asList(grandmother));
 
-        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
@@ -719,12 +760,12 @@ class TagGenerationUtilityTest {
     @DisplayName("Should process grandfathers in getFamilyCancerTags")
     void testGetFamilyCancerTagsWithGrandfathers() {
         FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
-        com.genomebrain.backend.quesstionnaire.relative.Grandfather grandfather = 
+        com.genomebrain.backend.quesstionnaire.relative.Grandfather grandfather =
             new com.genomebrain.backend.quesstionnaire.relative.Grandfather();
         grandfather.setBasicQuestions(Collections.emptyList());
         familyCancerDetails.setGrandFathers(Arrays.asList(grandfather));
 
-        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
@@ -800,19 +841,19 @@ class TagGenerationUtilityTest {
         Questionnaire questionnaire = new Questionnaire();
         PersonalHistory personalHistory = new PersonalHistory();
         CancerDetails cancerDetails = new CancerDetails();
-        
+
         QuestionSet breastQs = new QuestionSet();
         breastQs.setQuestionKey("AMBRY008");
         breastQs.setAnswerKey("AMBRY008_001");
         breastQs.setAnswerText("45");
         cancerDetails.setBreast(Arrays.asList(breastQs));
-        
+
         QuestionSet ovarianQs = new QuestionSet();
         ovarianQs.setQuestionKey("AMBRY013");
         ovarianQs.setAnswerKey("AMBRY013_001");
         ovarianQs.setAnswerText("50");
         cancerDetails.setOvarian(Arrays.asList(ovarianQs));
-        
+
         personalHistory.setPersonalCancerDetails(cancerDetails);
         personalHistory.setBasicQuestions(Collections.emptyList());
         questionnaire.setPersonalHistory(personalHistory);
@@ -833,13 +874,13 @@ class TagGenerationUtilityTest {
         Questionnaire questionnaire = new Questionnaire();
         PersonalHistory personalHistory = new PersonalHistory();
         CancerDetails cancerDetails = new CancerDetails();
-        
+
         QuestionSet prostateQs = new QuestionSet();
         prostateQs.setQuestionKey("AMBRY016");
         prostateQs.setAnswerKey("AMBRY016_001");
         prostateQs.setAnswerText("60");
         cancerDetails.setProstate(Arrays.asList(prostateQs));
-        
+
         personalHistory.setPersonalCancerDetails(cancerDetails);
         personalHistory.setBasicQuestions(Collections.emptyList());
         questionnaire.setPersonalHistory(personalHistory);
@@ -942,12 +983,12 @@ class TagGenerationUtilityTest {
     @DisplayName("Should process half sisters in getFamilyCancerTags")
     void testGetFamilyCancerTagsWithHalfSisters() {
         FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
-        com.genomebrain.backend.quesstionnaire.relative.HalfSister halfSister = 
+        com.genomebrain.backend.quesstionnaire.relative.HalfSister halfSister =
             new com.genomebrain.backend.quesstionnaire.relative.HalfSister();
         halfSister.setBasicQuestions(Collections.emptyList());
         familyCancerDetails.setHalfSisters(Arrays.asList(halfSister));
 
-        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
@@ -958,12 +999,12 @@ class TagGenerationUtilityTest {
     @DisplayName("Should process half brothers in getFamilyCancerTags")
     void testGetFamilyCancerTagsWithHalfBrothers() {
         FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
-        com.genomebrain.backend.quesstionnaire.relative.HalfBrother halfBrother = 
+        com.genomebrain.backend.quesstionnaire.relative.HalfBrother halfBrother =
             new com.genomebrain.backend.quesstionnaire.relative.HalfBrother();
         halfBrother.setBasicQuestions(Collections.emptyList());
         familyCancerDetails.setHalfBrothers(Arrays.asList(halfBrother));
 
-        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
@@ -974,12 +1015,12 @@ class TagGenerationUtilityTest {
     @DisplayName("Should process granddaughters in getFamilyCancerTags")
     void testGetFamilyCancerTagsWithGrandDaughters() {
         FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
-        com.genomebrain.backend.quesstionnaire.relative.Granddaughter granddaughter = 
+        com.genomebrain.backend.quesstionnaire.relative.Granddaughter granddaughter =
             new com.genomebrain.backend.quesstionnaire.relative.Granddaughter();
         granddaughter.setBasicQuestions(Collections.emptyList());
         familyCancerDetails.setGrandDaughters(Arrays.asList(granddaughter));
 
-        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
@@ -990,12 +1031,12 @@ class TagGenerationUtilityTest {
     @DisplayName("Should process grandsons in getFamilyCancerTags")
     void testGetFamilyCancerTagsWithGrandSons() {
         FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
-        com.genomebrain.backend.quesstionnaire.relative.Grandson grandson = 
+        com.genomebrain.backend.quesstionnaire.relative.Grandson grandson =
             new com.genomebrain.backend.quesstionnaire.relative.Grandson();
         grandson.setBasicQuestions(Collections.emptyList());
         familyCancerDetails.setGrandSons(Arrays.asList(grandson));
 
-        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
@@ -1006,12 +1047,12 @@ class TagGenerationUtilityTest {
     @DisplayName("Should process first cousins female in getFamilyCancerTags")
     void testGetFamilyCancerTagsWithFirstCousinsFemale() {
         FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
-        com.genomebrain.backend.quesstionnaire.relative.FirstCousin firstCousinFemale = 
+        com.genomebrain.backend.quesstionnaire.relative.FirstCousin firstCousinFemale =
             new com.genomebrain.backend.quesstionnaire.relative.FirstCousin();
         firstCousinFemale.setBasicQuestions(Collections.emptyList());
         familyCancerDetails.setFirstCousinsFemale(Arrays.asList(firstCousinFemale));
 
-        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
@@ -1022,12 +1063,12 @@ class TagGenerationUtilityTest {
     @DisplayName("Should process first cousins male in getFamilyCancerTags")
     void testGetFamilyCancerTagsWithFirstCousinsMale() {
         FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
-        com.genomebrain.backend.quesstionnaire.relative.FirstCousin firstCousinMale = 
+        com.genomebrain.backend.quesstionnaire.relative.FirstCousin firstCousinMale =
             new com.genomebrain.backend.quesstionnaire.relative.FirstCousin();
         firstCousinMale.setBasicQuestions(Collections.emptyList());
         familyCancerDetails.setFirstCousinsMale(Arrays.asList(firstCousinMale));
 
-        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
@@ -1038,12 +1079,12 @@ class TagGenerationUtilityTest {
     @DisplayName("Should process great uncles in getFamilyCancerTags")
     void testGetFamilyCancerTagsWithGreatUncles() {
         FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
-        com.genomebrain.backend.quesstionnaire.relative.GreatUncle greatUncle = 
+        com.genomebrain.backend.quesstionnaire.relative.GreatUncle greatUncle =
             new com.genomebrain.backend.quesstionnaire.relative.GreatUncle();
         greatUncle.setBasicQuestions(Collections.emptyList());
         familyCancerDetails.setGreatUncles(Arrays.asList(greatUncle));
 
-        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
@@ -1054,12 +1095,12 @@ class TagGenerationUtilityTest {
     @DisplayName("Should process great aunts in getFamilyCancerTags")
     void testGetFamilyCancerTagsWithGreatAunts() {
         FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
-        com.genomebrain.backend.quesstionnaire.relative.GreatAunt greatAunt = 
+        com.genomebrain.backend.quesstionnaire.relative.GreatAunt greatAunt =
             new com.genomebrain.backend.quesstionnaire.relative.GreatAunt();
         greatAunt.setBasicQuestions(Collections.emptyList());
         familyCancerDetails.setGreatAunts(Arrays.asList(greatAunt));
 
-        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
@@ -1070,12 +1111,12 @@ class TagGenerationUtilityTest {
     @DisplayName("Should process great grandmothers in getFamilyCancerTags")
     void testGetFamilyCancerTagsWithGreatGrandMothers() {
         FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
-        com.genomebrain.backend.quesstionnaire.relative.GreatGrandmother greatGrandmother = 
+        com.genomebrain.backend.quesstionnaire.relative.GreatGrandmother greatGrandmother =
             new com.genomebrain.backend.quesstionnaire.relative.GreatGrandmother();
         greatGrandmother.setBasicQuestions(Collections.emptyList());
         familyCancerDetails.setGreatGrandMothers(Arrays.asList(greatGrandmother));
 
-        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
@@ -1086,12 +1127,12 @@ class TagGenerationUtilityTest {
     @DisplayName("Should process great grandfathers in getFamilyCancerTags")
     void testGetFamilyCancerTagsWithGreatGrandFathers() {
         FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
-        com.genomebrain.backend.quesstionnaire.relative.GreatGrandfather greatGrandfather = 
+        com.genomebrain.backend.quesstionnaire.relative.GreatGrandfather greatGrandfather =
             new com.genomebrain.backend.quesstionnaire.relative.GreatGrandfather();
         greatGrandfather.setBasicQuestions(Collections.emptyList());
         familyCancerDetails.setGreatGrandFathers(Arrays.asList(greatGrandfather));
 
-        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
@@ -1102,12 +1143,12 @@ class TagGenerationUtilityTest {
     @DisplayName("Should process others in getFamilyCancerTags")
     void testGetFamilyCancerTagsWithOthers() {
         FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
-        com.genomebrain.backend.quesstionnaire.Others other = 
+        com.genomebrain.backend.quesstionnaire.Others other =
             new com.genomebrain.backend.quesstionnaire.Others();
         other.setBasicQuestions(Collections.emptyList());
         familyCancerDetails.setOthers(Arrays.asList(other));
 
-        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
@@ -1592,11 +1633,11 @@ class TagGenerationUtilityTest {
         QuestionSet qs1 = new QuestionSet();
         qs1.setQuestionKey("AMBRY001");
         qs1.setAnswerKey("AMBRY057_001");
-        
+
         QuestionSet qs2 = new QuestionSet();
         qs2.setQuestionKey("AMBRY002");
         qs2.setAnswerKey("AMBRY057_002");
-        
+
         questionSetList.add(qs1);
         questionSetList.add(qs2);
 
@@ -1611,11 +1652,11 @@ class TagGenerationUtilityTest {
         QuestionSet qs1 = new QuestionSet();
         qs1.setQuestionKey("AMBRY054");
         qs1.setAnswerKey("AMBRY054_001");
-        
+
         QuestionSet qs2 = new QuestionSet();
         qs2.setQuestionKey("AMBRY055");
         qs2.setAnswerKey("AMBRY055_001");
-        
+
         List<QuestionSet> basicQuestions = Arrays.asList(qs1, qs2);
 
         String result = tagGenerationUtility.getRelativeSide(basicQuestions);
@@ -1913,7 +1954,7 @@ class TagGenerationUtilityTest {
     @Test
     @DisplayName("Should throw NullPointerException when family cancer details is null")
     void testGetFamilyCancerTagsWithNullFamilyCancerDetails() {
-        assertThatThrownBy(() -> tagGenerationUtility.getFamilyCancerTags(null, "v1"))
+        assertThatThrownBy(() -> tagGenerationUtility.getFamilyCancerTags(null, "v1", ""))
             .isInstanceOf(NullPointerException.class);
     }
 
@@ -1951,13 +1992,13 @@ class TagGenerationUtilityTest {
         Questionnaire questionnaire = new Questionnaire();
         PersonalHistory personalHistory = new PersonalHistory();
         CancerDetails cancerDetails = new CancerDetails();
-        
+
         QuestionSet breastQs = new QuestionSet();
         breastQs.setQuestionKey("AMBRY008");
         breastQs.setAnswerKey("AMBRY008_001");
         breastQs.setAnswerText("0");
         cancerDetails.setBreast(Arrays.asList(breastQs));
-        
+
         personalHistory.setPersonalCancerDetails(cancerDetails);
         personalHistory.setBasicQuestions(Collections.emptyList());
         questionnaire.setPersonalHistory(personalHistory);
@@ -1977,13 +2018,13 @@ class TagGenerationUtilityTest {
         Questionnaire questionnaire = new Questionnaire();
         PersonalHistory personalHistory = new PersonalHistory();
         CancerDetails cancerDetails = new CancerDetails();
-        
+
         QuestionSet breastQs = new QuestionSet();
         breastQs.setQuestionKey("AMBRY008");
         breastQs.setAnswerKey("AMBRY008_001");
         breastQs.setAnswerText(null);
         cancerDetails.setBreast(Arrays.asList(breastQs));
-        
+
         personalHistory.setPersonalCancerDetails(cancerDetails);
         personalHistory.setBasicQuestions(Collections.emptyList());
         questionnaire.setPersonalHistory(personalHistory);
@@ -2570,12 +2611,12 @@ class TagGenerationUtilityTest {
     @DisplayName("Should process great nieces in getFamilyCancerTags")
     void testGetFamilyCancerTagsWithGreatNieces() {
         FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
-        com.genomebrain.backend.quesstionnaire.relative.GreatNiece greatNiece = 
+        com.genomebrain.backend.quesstionnaire.relative.GreatNiece greatNiece =
             new com.genomebrain.backend.quesstionnaire.relative.GreatNiece();
         greatNiece.setBasicQuestions(Collections.emptyList());
         familyCancerDetails.setGreatNieces(Arrays.asList(greatNiece));
 
-        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
@@ -2586,12 +2627,12 @@ class TagGenerationUtilityTest {
     @DisplayName("Should process great nephews in getFamilyCancerTags")
     void testGetFamilyCancerTagsWithGreatNephews() {
         FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
-        com.genomebrain.backend.quesstionnaire.relative.GreatNephew greatNephew = 
+        com.genomebrain.backend.quesstionnaire.relative.GreatNephew greatNephew =
             new com.genomebrain.backend.quesstionnaire.relative.GreatNephew();
         greatNephew.setBasicQuestions(Collections.emptyList());
         familyCancerDetails.setGreatNephews(Arrays.asList(greatNephew));
 
-        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
@@ -2602,12 +2643,12 @@ class TagGenerationUtilityTest {
     @DisplayName("Should process great granddaughters in getFamilyCancerTags")
     void testGetFamilyCancerTagsWithGreatGrandDaughters() {
         FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
-        com.genomebrain.backend.quesstionnaire.relative.GreatGranddaughter greatGranddaughter = 
+        com.genomebrain.backend.quesstionnaire.relative.GreatGranddaughter greatGranddaughter =
             new com.genomebrain.backend.quesstionnaire.relative.GreatGranddaughter();
         greatGranddaughter.setBasicQuestions(Collections.emptyList());
         familyCancerDetails.setGreatGrandDaughters(Arrays.asList(greatGranddaughter));
 
-        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
@@ -2618,12 +2659,12 @@ class TagGenerationUtilityTest {
     @DisplayName("Should process great grandsons in getFamilyCancerTags")
     void testGetFamilyCancerTagsWithGreatGrandSons() {
         FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
-        com.genomebrain.backend.quesstionnaire.relative.GreatGrandson greatGrandson = 
+        com.genomebrain.backend.quesstionnaire.relative.GreatGrandson greatGrandson =
             new com.genomebrain.backend.quesstionnaire.relative.GreatGrandson();
         greatGrandson.setBasicQuestions(Collections.emptyList());
         familyCancerDetails.setGreatGrandSons(Arrays.asList(greatGrandson));
 
-        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
@@ -2634,12 +2675,12 @@ class TagGenerationUtilityTest {
     @DisplayName("Should process half aunts in getFamilyCancerTags")
     void testGetFamilyCancerTagsWithHalfAunts() {
         FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
-        com.genomebrain.backend.quesstionnaire.relative.HalfAunt halfAunt = 
+        com.genomebrain.backend.quesstionnaire.relative.HalfAunt halfAunt =
             new com.genomebrain.backend.quesstionnaire.relative.HalfAunt();
         halfAunt.setBasicQuestions(Collections.emptyList());
         familyCancerDetails.setHalfAunts(Arrays.asList(halfAunt));
 
-        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
@@ -2650,12 +2691,12 @@ class TagGenerationUtilityTest {
     @DisplayName("Should process half uncles in getFamilyCancerTags")
     void testGetFamilyCancerTagsWithHalfUncles() {
         FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
-        com.genomebrain.backend.quesstionnaire.relative.HalfUncle halfUncle = 
+        com.genomebrain.backend.quesstionnaire.relative.HalfUncle halfUncle =
             new com.genomebrain.backend.quesstionnaire.relative.HalfUncle();
         halfUncle.setBasicQuestions(Collections.emptyList());
         familyCancerDetails.setHalfUncles(Arrays.asList(halfUncle));
 
-        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
@@ -2666,12 +2707,12 @@ class TagGenerationUtilityTest {
     @DisplayName("Should process half nieces in getFamilyCancerTags")
     void testGetFamilyCancerTagsWithHalfNieces() {
         FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
-        com.genomebrain.backend.quesstionnaire.relative.HalfNiece halfNiece = 
+        com.genomebrain.backend.quesstionnaire.relative.HalfNiece halfNiece =
             new com.genomebrain.backend.quesstionnaire.relative.HalfNiece();
         halfNiece.setBasicQuestions(Collections.emptyList());
         familyCancerDetails.setHalfNieces(Arrays.asList(halfNiece));
 
-        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
@@ -2682,12 +2723,12 @@ class TagGenerationUtilityTest {
     @DisplayName("Should process half nephews in getFamilyCancerTags")
     void testGetFamilyCancerTagsWithHalfNephews() {
         FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
-        com.genomebrain.backend.quesstionnaire.relative.HalfNephew halfNephew = 
+        com.genomebrain.backend.quesstionnaire.relative.HalfNephew halfNephew =
             new com.genomebrain.backend.quesstionnaire.relative.HalfNephew();
         halfNephew.setBasicQuestions(Collections.emptyList());
         familyCancerDetails.setHalfNephews(Arrays.asList(halfNephew));
 
-        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
@@ -2854,12 +2895,12 @@ class TagGenerationUtilityTest {
     @DisplayName("Should handle getFamilyHistoryDetails with Other relative type")
     void testGetFamilyHistoryDetailsWithOtherRelativeType() {
         FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
-        com.genomebrain.backend.quesstionnaire.Others other = 
+        com.genomebrain.backend.quesstionnaire.Others other =
             new com.genomebrain.backend.quesstionnaire.Others();
         other.setBasicQuestions(Collections.emptyList());
         familyCancerDetails.setOthers(Arrays.asList(other));
 
-        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
@@ -2882,7 +2923,7 @@ class TagGenerationUtilityTest {
         sister.setBreast(Arrays.asList(breastQs));
         familyCancerDetails.setSisters(Arrays.asList(sister));
 
-        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
@@ -2905,7 +2946,7 @@ class TagGenerationUtilityTest {
         brother.setProstate(Arrays.asList(prostateQs));
         familyCancerDetails.setBrothers(Arrays.asList(brother));
 
-        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
@@ -2925,7 +2966,7 @@ class TagGenerationUtilityTest {
         mother.setBreast(Arrays.asList(breastQs));
         familyCancerDetails.setMother(mother);
 
-        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
@@ -2946,7 +2987,7 @@ class TagGenerationUtilityTest {
         father.setProstate(Arrays.asList(prostateQs));
         familyCancerDetails.setFather(father);
 
-        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
@@ -2967,7 +3008,7 @@ class TagGenerationUtilityTest {
         sister.setBreast(Arrays.asList(breastQs));
         familyCancerDetails.setSisters(Arrays.asList(sister));
 
-        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
@@ -2988,7 +3029,7 @@ class TagGenerationUtilityTest {
         sister.setBreast(Arrays.asList(breastQs));
         familyCancerDetails.setSisters(Arrays.asList(sister));
 
-        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
@@ -3008,7 +3049,7 @@ class TagGenerationUtilityTest {
         sister.setBreast(Arrays.asList(breastQs));
         familyCancerDetails.setSisters(Arrays.asList(sister));
 
-        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
@@ -3031,7 +3072,7 @@ class TagGenerationUtilityTest {
         sister.setProstate(Arrays.asList(prostateQs, gleasonQs));
         familyCancerDetails.setSisters(Arrays.asList(sister));
 
-        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1");
+        List<FamilyHistoryDetailsTagsDTO> result = tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
 
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
@@ -3088,13 +3129,13 @@ class TagGenerationUtilityTest {
         breastQs.setAnswerKey("AMBRY008_001");
         breastQs.setAnswerText("45");
         relativeHistory.setBreast(Arrays.asList(breastQs));
-        
+
         QuestionSet ovarianQs = new QuestionSet();
         ovarianQs.setQuestionKey("AMBRY013");
         ovarianQs.setAnswerKey("AMBRY013_001");
         ovarianQs.setAnswerText("50");
         relativeHistory.setOvarian(Arrays.asList(ovarianQs));
-        
+
         QuestionSet colorectalQs = new QuestionSet();
         colorectalQs.setQuestionKey("AMBRY021");
         colorectalQs.setAnswerKey("AMBRY021_001");
@@ -3118,13 +3159,13 @@ class TagGenerationUtilityTest {
         breastQs.setAnswerKey("AMBRY008_001");
         breastQs.setAnswerText("45");
         cancerDetails.setBreast(Arrays.asList(breastQs));
-        
+
         QuestionSet ovarianQs = new QuestionSet();
         ovarianQs.setQuestionKey("AMBRY013");
         ovarianQs.setAnswerKey("AMBRY013_001");
         ovarianQs.setAnswerText("50");
         cancerDetails.setOvarian(Arrays.asList(ovarianQs));
-        
+
         QuestionSet colorectalQs = new QuestionSet();
         colorectalQs.setQuestionKey("AMBRY021");
         colorectalQs.setAnswerKey("AMBRY021_001");

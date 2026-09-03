@@ -10,6 +10,7 @@ public enum NCCNTagConstants {
     PR_AD_POLYPS("PrAdPolyps"),
     PR_POLYPS_GT_20_DX("PrPolyp>20Dx"),
     PR_POLYPS_GT_10_DX("PrPolyp>10Dx"),
+    FM_POLYPS_GT_10("FmPolyp>10"),
 
     PR_COLON("PrColon"),
     PR_BLADDER("PrBladder"),
@@ -277,7 +278,9 @@ public enum NCCNTagConstants {
 
     FM_BREAST_46_50_PAT_FDR("FmBreast46-50PatFDR"),
     FM_BREAST_46_50_PAT_SDR("FmBreast46-50PatSDR"),
-    FM_BREAST_46_50_PAT_TDR("FmBreast46-50PatTDR");
+    FM_BREAST_46_50_PAT_TDR("FmBreast46-50PatTDR"),
+
+    FM_POSITIVE_GENE_MUTATION("FmPositiveGeneMutation");
 
 
     private String value;

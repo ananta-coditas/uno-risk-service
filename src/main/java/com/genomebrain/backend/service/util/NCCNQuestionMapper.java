@@ -104,7 +104,7 @@ public enum NCCNQuestionMapper {
     ProstateRiskGroupAnswer(Arrays.asList()),  // Need to check
     prostateGradeGroupAnswer(Arrays.asList()),  // Need to check
     polypOverallAnswer(Arrays.asList("YES", "AMBRY051_001", "NO", "AMBRY051_002", "NOT_PROVIDED", "AMBRY051_003")),
-    relativePolypOverallAnswer(Arrays.asList("Yes","AMBRY111_001","No", "AMBRY111_002", "I don't know", "AMBRY111_003")),
+    relativePolypOverallAnswer(Arrays.asList("YES","AMBRY111_001","NO", "AMBRY111_002", "NOT_PROVIDED", "AMBRY111_003")),
     relativeTypePolypOverallAnswer(Arrays.asList("Mother","AMBRY114_001","Father", "AMBRY114_002", "Sister", "AMBRY114_003", "Brother", "AMBRY114_004", "Daughter",
             "AMBRY114_005", "Son", "AMBRY114_006", "Niece", "AMBRY114_007", "Nephew", "AMBRY114_008", "Granddaughter", "AMBRY114_009", "Grandson", "AMBRY114_010",
             "Half sister", "AMBRY114_011", "Half brother", "AMBRY114_012", "Grandmother", "AMBRY114_013", "Grandfather", "AMBRY114_014", "Aunt", "AMBRY114_015",
