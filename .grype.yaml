@@ -9,6 +9,7 @@
 # CVE-2026-19582 (binutils/binutils-gold): binutils PE parsing; NVD removed CVSS 2026-08-25 — treat as disputed until Rocky errata.
 # CVE-2026-77219 / CVE-2026-79992 (emacs-filesystem): Emacs image loader / TRAMP; headless Java+R — cannot dnf remove (pulls R-core); grype ignore only.
 # CVE-2026-8643 (python3-pip-wheel): pip entry-point path traversal; Rocky 9 transitive RPM — https://nvd.nist.gov/vuln/detail/CVE-2026-8643
+# CVE-2026-19913 (python3-pip-wheel): Grype false positive — CVE is Kaltura html5lib/mwEmbed, not pip; Rocky 9 transitive RPM — https://nvd.nist.gov/vuln/detail/CVE-2026-19913
 # CVE-2026-54369 (libacl) / CVE-2026-54371 (attr/libattr): symlink traversal in ACL/xattr utilities; Rocky 9 transitive RPMs — https://nvd.nist.gov/vuln/detail/CVE-2026-54369 https://nvd.nist.gov/vuln/detail/CVE-2026-54371
 # CVE-2026-4786: CPython webbrowser.open (CVE-2026-4519 follow-on) on Rocky 9 python3/python3-libs RPMs only; scoped like CVE-2026-6100.
 # Rocky 9 OS RPMs (glibc/OpenJDK/binutils/libpng): CVE-2026-5358, CVE-2026-34282, CVE-2026-22016, CVE-2026-6846, CVE-2026-22020 — see ignores at end of list.
@@ -219,6 +220,12 @@ ignore:
       type: rpm
       name: python3-pip-wheel
     reason: "Accepted: CVE-2026-8643 pip <26.1.2 console_scripts/gui_scripts path traversal can install entry points outside the install directory (CWE-22) — https://nvd.nist.gov/vuln/detail/CVE-2026-8643. Rocky 9 transitive python3-pip-wheel RPM only. Workload is Java+R; no runtime pip install of attacker-controlled packages or entry points. Remove when Rocky ships pip >=26.1.2 (or equivalent backport) in python3-pip-wheel and dnf update + rebuild clears Grype."
+  - vulnerability: CVE-2026-19913
+    namespace: redhat:distro:redhat:9
+    package:
+      type: rpm
+      name: python3-pip-wheel
+    reason: "False positive: CVE-2026-19913 is Kaltura HTML5 player (mwEmbed/html5lib) arbitrary file read via mwEmbedLoader.php ServiceUrl file:// scheme (CWE-20/CWE-73; fixed by validating ServiceUrl to http/https only) — https://nvd.nist.gov/vuln/detail/CVE-2026-19913 — https://kb.cert.org/vuls/id/308749. Grype maps it to Rocky 9 python3-pip-wheel RPM (redhat:distro:redhat:9); this image has no Kaltura/html5lib runtime. Headless Java+R workload does not expose mwEmbedLoader.php or pip install paths. Not remediable via Rocky pip upgrade; remove if Grype feed stops misattributing this CVE to python3-pip-wheel."
   - vulnerability: CVE-2026-54371
     namespace: redhat:distro:redhat:9
     package:

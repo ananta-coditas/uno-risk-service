@@ -79,6 +79,8 @@
     <opentelemetry.version>1.62.0</opentelemetry.version>
     <!-- springdoc 3.1.0: Spring Boot 4.x line; fixes CVE-2026-47884 via spring-webmvc 7.0.9+ from Boot 4.0.8 BOM -->
     <springdoc.version>3.1.0</springdoc.version>
+    <!-- Override Tomcat embed (Boot 4.0.8 BOM ships 11.0.24): CVE-2026-65905 / GHSA-9xv2-5v5q-p794 (DIGEST replay), CVE-2026-68525 / GHSA-h3x4-894j-xpx5 (FORM redirect bypass), CVE-2026-65182 / GHSA-gcx9-497g-6cp6 (security constraint bypass) -->
+    <tomcat.version>11.0.25</tomcat.version>
   </properties>
 <!--    <repositories>-->
 <!--      <repository>-->
@@ -139,6 +141,21 @@
         <version>${opentelemetry.version}</version>
         <type>pom</type>
         <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.tomcat.embed</groupId>
+        <artifactId>tomcat-embed-core</artifactId>
+        <version>${tomcat.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.tomcat.embed</groupId>
+        <artifactId>tomcat-embed-el</artifactId>
+        <version>${tomcat.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.tomcat.embed</groupId>
+        <artifactId>tomcat-embed-websocket</artifactId>
+        <version>${tomcat.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

@@ -1,5 +1,9 @@
 # Patched JRE for runtime (aligned with jib-maven-plugin.image); avoids Rocky java-21-openjdk-headless RPM scan surface
 FROM eclipse-temurin:21-jre-jammy AS jre
+# CVE-2026-16742: libsystemd0 >= 249.11-0ubuntu3.22 (systemd-homed home-record signature verification)
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends libsystemd0 \
+  && rm -rf /var/lib/apt/lists/*
 
 FROM maven:3.9.6-eclipse-temurin-21 AS build
 
