@@ -56,10 +56,12 @@ RUN curl -fsSL https://dtdg.co/latest-java-tracer -o /app/dd-java-agent.jar
 FROM rockylinux/rockylinux:9.5
 
 #for R
+# CVE-2026-86140 / CVE-2026-74860: libxml2 — dnf update pulls latest Rocky 9 RPM (2.9.13-14.el9_8.4); no el9 backport yet for these CVEs (.grype.yaml accepted-risk)
 RUN dnf install -y epel-release && dnf config-manager --set-enabled crb && dnf update -y
 RUN dnf install -y \
       glibc \
       libgcc \
+      libxml2 \
       R-core \
       R-core-devel \
   && dnf remove -y vim-minimal \
