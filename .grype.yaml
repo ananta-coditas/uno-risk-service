@@ -32,6 +32,8 @@
 # CVE-2026-63382 / CVE-2026-63383 / CVE-2026-63384 / CVE-2026-63385 / CVE-2026-63387 / CVE-2026-63388 / CVE-2026-63495 (libevent): evhttp HTTP smuggling / tagged RPC / evdns / AF_UNIX bufferevent / WebSocket server; fixed upstream 2.1.13+ / 2.2.2-alpha; Rocky 9 ships libevent 2.1.12 — https://nvd.nist.gov/vuln/detail/CVE-2026-63382 https://nvd.nist.gov/vuln/detail/CVE-2026-63385
 # CVE-2026-16742 (systemd-libs): systemd-homed home-record signature verification LPE; Rocky 9 transitive systemd-libs RPM — jre stage pins libsystemd0 >= 249.11-0ubuntu3.22 (Dockerfile) — https://nvd.nist.gov/vuln/detail/CVE-2026-16742
 # CVE-2026-53613: util-linux SUID mount(8) TOCTOU target-path redirection LPE; Rocky 9 util-linux/libmount/libblkid/... subpackages — fixed upstream util-linux 2.42.2+ (Red Hat BZ 2519646 NEW; no RHSA/RLSA for el9 yet); remove when Rocky ships backport and dnf update + rebuild clears Grype — https://nvd.nist.gov/vuln/detail/CVE-2026-53613
+# CVE-2026-86140 (libxml2): xmlSnprintfElements strcat stack overflow in valid.c (DTD validation); fixed upstream libxml2 2.15.4 — Rocky 9 libxml2 2.9.13-14.el9_8.4 via Dockerfile dnf update; no RHSA/RLSA for el9 yet — https://nvd.nist.gov/vuln/detail/CVE-2026-86140
+# CVE-2026-74860 (libxml2/python3-libxml2): double-free in Python SAX attributeDecl callback; requires python3-libxml2 SAX bindings — image is Java+R, not Python libxml2 SAX — https://nvd.nist.gov/vuln/detail/CVE-2026-74860
 ignore:
   - vulnerability: CVE-2025-66293
     reason: "Accepted: full remediation would impact service functionality (OpenJDK/libpng stack); see Dockerfile"
@@ -407,3 +409,15 @@ ignore:
       type: rpm
       name: "(systemd-libs|systemd)"
     reason: "Accepted: CVE-2026-16742 systemd-homed missing home-record signature verification on authenticate path — local logged-in homed user can add arbitrary system groups (CWE-269/CWE-347; CVSS 3.1 6.7 MEDIUM AV:L/AC:H/PR:L/UI:R) — https://nvd.nist.gov/vuln/detail/CVE-2026-16742 — GHSA-jm29-p7hh-vjhv. Rocky 9 transitive systemd-libs RPM (Grype: redhat:distro:redhat:9); no RHSA/RLSA for el9 yet. Headless Java+R container runs as non-root appuser and does not run systemd-homed or homed-managed user sessions. JRE stage pins Ubuntu libsystemd0 >= 249.11-0ubuntu3.22 (Dockerfile). Remove when Rocky errata ships patched systemd-libs and dnf update + rebuild clears Grype."
+  - vulnerability: CVE-2026-86140
+    namespace: redhat:distro:redhat:9
+    package:
+      type: rpm
+      name: libxml2
+    reason: "Accepted: CVE-2026-86140 libxml2 before 2.15.4 — xmlSnprintfElements strcat stack-based buffer overflow in valid.c during DTD validation (CWE-121; Red Hat CVSS 3.1 7.4 HIGH AV:L/AC:H) — https://nvd.nist.gov/vuln/detail/CVE-2026-86140 — fixed upstream libxml2 2.15.4 (GNOME commit d1686f91). Rocky 9 ships libxml2-2.9.13-14.el9_8.4 via Dockerfile dnf update + explicit libxml2 install; no RHSA/RLSA backport for el9 yet. Headless Java+R risk service parses XML via JAXB/Jackson/MOXy, not native libxml2 DTD validation (xmlValidateDocument/xmlSnprintfElements) on attacker-controlled documents. Remove when Rocky errata ships patched libxml2 and dnf update + rebuild clears Grype."
+  - vulnerability: CVE-2026-74860
+    namespace: redhat:distro:redhat:9
+    package:
+      type: rpm
+      name: "(libxml2|python3-libxml2)"
+    reason: "Accepted: CVE-2026-74860 libxml2 Python SAX bindings — double-free in attributeDecl callback when parsing crafted XML with DTD enumerated attribute values (CWE-763; Red Hat CVSS 3.1 8.5 HIGH AV:N/AC:H/PR:L) — https://nvd.nist.gov/vuln/detail/CVE-2026-74860 — Red Hat BZ 2529697 NEW; no RHSA/RLSA for el9 yet. Exploitation requires Python libxml2 SAX bindings (python3-libxml2); image does not install python3-libxml2 and workload is Java+R with no Python SAX XML parse path. Remove when Rocky errata ships patched libxml2/python3-libxml2 and dnf update + rebuild clears Grype."
