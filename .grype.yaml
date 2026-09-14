@@ -34,6 +34,8 @@
 # CVE-2026-53613: util-linux SUID mount(8) TOCTOU target-path redirection LPE; Rocky 9 util-linux/libmount/libblkid/... subpackages — fixed upstream util-linux 2.42.2+ (Red Hat BZ 2519646 NEW; no RHSA/RLSA for el9 yet); remove when Rocky ships backport and dnf update + rebuild clears Grype — https://nvd.nist.gov/vuln/detail/CVE-2026-53613
 # CVE-2026-86140 (libxml2): xmlSnprintfElements strcat stack overflow in valid.c (DTD validation); fixed upstream libxml2 2.15.4 — Rocky 9 libxml2 2.9.13-14.el9_8.4 via Dockerfile dnf update; no RHSA/RLSA for el9 yet — https://nvd.nist.gov/vuln/detail/CVE-2026-86140
 # CVE-2026-74860 (libxml2/python3-libxml2): double-free in Python SAX attributeDecl callback; requires python3-libxml2 SAX bindings — image is Java+R, not Python libxml2 SAX — https://nvd.nist.gov/vuln/detail/CVE-2026-74860
+# CVE-2026-86145 (pcre2): pcre2_dfa_match OOB write reusing undersized cached workspace; fixed upstream PCRE2 10.48 — Rocky 9 pcre2* RPMs via R-core/R-core-devel; no RHSA/RLSA for el9 yet — https://nvd.nist.gov/vuln/detail/CVE-2026-86145
+# CVE-2026-89161 (pcre2): pcre2_jit_match incorrect free after PCRE2_COPY_MATCHED_SUBJECT; fixed upstream PCRE2 10.48 — Red Hat BZ 2531747 NEW; no RHSA/RLSA for el9 yet — https://nvd.nist.gov/vuln/detail/CVE-2026-89161
 ignore:
   - vulnerability: CVE-2025-66293
     reason: "Accepted: full remediation would impact service functionality (OpenJDK/libpng stack); see Dockerfile"
@@ -421,3 +423,15 @@ ignore:
       type: rpm
       name: "(libxml2|python3-libxml2)"
     reason: "Accepted: CVE-2026-74860 libxml2 Python SAX bindings — double-free in attributeDecl callback when parsing crafted XML with DTD enumerated attribute values (CWE-763; Red Hat CVSS 3.1 8.5 HIGH AV:N/AC:H/PR:L) — https://nvd.nist.gov/vuln/detail/CVE-2026-74860 — Red Hat BZ 2529697 NEW; no RHSA/RLSA for el9 yet. Exploitation requires Python libxml2 SAX bindings (python3-libxml2); image does not install python3-libxml2 and workload is Java+R with no Python SAX XML parse path. Remove when Rocky errata ships patched libxml2/python3-libxml2 and dnf update + rebuild clears Grype."
+  - vulnerability: CVE-2026-86145
+    namespace: redhat:distro:redhat:9
+    package:
+      type: rpm
+      name: "(pcre2|pcre2-devel|pcre2-syntax|pcre2-utf16|pcre2-utf32)"
+    reason: "Accepted: CVE-2026-86145 PCRE2 before 10.48 — pcre2_dfa_match out-of-bounds write when reusing undersized cached workspace block in recursive DFA matching without size check (CWE-424; CVSS 3.1 8.2 HIGH AV:N/AC:L) — https://nvd.nist.gov/vuln/detail/CVE-2026-86145 — GHSA-3r4p-g7gg-ppmf; fixed upstream PCRE2 10.48. Rocky 9 transitive pcre2* RPMs (Grype: redhat:distro:redhat:9) via R-core/R-core-devel; Dockerfile dnf update + explicit pcre2 install; no RHSA/RLSA backport for el9 yet. Requires attacker-controlled regex via native pcre2_dfa_match API and/or recursive pattern with small heap limit — headless Java+R risk service uses JVM java.util.regex and R internal regex, not native pcre2_dfa_match on untrusted patterns with heap limits. Remove when Rocky errata ships pcre2 >= 10.48 and dnf update + rebuild clears Grype."
+  - vulnerability: CVE-2026-89161
+    namespace: redhat:distro:redhat:9
+    package:
+      type: rpm
+      name: "(pcre2|pcre2-devel|pcre2-syntax|pcre2-utf16|pcre2-utf32)"
+    reason: "Accepted: CVE-2026-89161 PCRE2 before 10.48 — pcre2_jit_match incorrect free when match data previously used with pcre2_match and PCRE2_COPY_MATCHED_SUBJECT is reused (CWE-590/CWE-1341; Red Hat CVSS 3.1 7.4 HIGH AV:L/AC:H) — https://nvd.nist.gov/vuln/detail/CVE-2026-89161 — Red Hat BZ 2531747 NEW; fixed upstream PCRE2 10.48 (PR #937). Rocky 9 transitive pcre2* RPMs via R-core/R-core-devel; no RHSA/RLSA for el9 yet. Exploitation requires very specific native PCRE2 JIT API usage (pcre2_jit_match after PCRE2_COPY_MATCHED_SUBJECT); headless Java+R workload does not invoke this path. Remove when Rocky errata ships pcre2 >= 10.48 and dnf update + rebuild clears Grype."
