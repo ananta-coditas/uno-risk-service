@@ -57,11 +57,13 @@ FROM rockylinux/rockylinux:9.5
 
 #for R
 # CVE-2026-86140 / CVE-2026-74860: libxml2 — dnf update pulls latest Rocky 9 RPM (2.9.13-14.el9_8.4); no el9 backport yet for these CVEs (.grype.yaml accepted-risk)
+# CVE-2026-86145 / CVE-2026-89161: pcre2 — fixed upstream PCRE2 10.48; Rocky 9 <10.48 via dnf update; no el9 backport yet (.grype.yaml accepted-risk)
 RUN dnf install -y epel-release && dnf config-manager --set-enabled crb && dnf update -y
 RUN dnf install -y \
       glibc \
       libgcc \
       libxml2 \
+      pcre2 \
       R-core \
       R-core-devel \
   && dnf remove -y vim-minimal \
