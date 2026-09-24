@@ -7,7 +7,8 @@
 # CVE-2026-4775 / CVE-2026-12912 / CVE-2026-52492 / CVE-2026-52490 / CVE-2026-52491 (libtiff) / CVE-2026-33412 / CVE-2026-34982 / CVE-2026-47162 (vim-minimal): accepted-risk; refresh when Rocky ships patched RPMs.
 # CVE-2026-9499 (qt5-srpm-macros): Qt QTextCodec OOB read; SRPM build macros only (no Qt runtime in image).
 # CVE-2026-19582 (binutils/binutils-gold): binutils PE parsing; NVD removed CVSS 2026-08-25 — treat as disputed until Rocky errata.
-# CVE-2026-77219 / CVE-2026-79992 (emacs-filesystem): Emacs image loader / TRAMP; headless Java+R — cannot dnf remove (pulls R-core); grype ignore only.
+# CVE-2026-77219 / CVE-2026-79992 / CVE-2026-96442 (emacs-filesystem): Emacs image loader / TRAMP / Flymake; headless Java+R — cannot dnf remove (pulls R-core); grype ignore only.
+# CVE-2026-88806 (libX11*) / CVE-2026-88807 (libXrender): malicious-X-server client heap overflows; Rocky 9 transitive via R graphics stack; headless Java+R — no DISPLAY/X client path.
 # CVE-2026-8643 (python3-pip-wheel): pip entry-point path traversal; Rocky 9 transitive RPM — https://nvd.nist.gov/vuln/detail/CVE-2026-8643
 # CVE-2026-9375 (python3-pip-wheel): CVE rejected by huntr.ai CNA 2026-08-13; Grype maps bundled urllib3 to python3-pip-wheel — https://www.cve.org/CVERecord?id=CVE-2026-9375
 # CVE-2026-19913 (python3-pip-wheel): Grype false positive — CVE is Kaltura html5lib/mwEmbed, not pip; Rocky 9 transitive RPM — https://nvd.nist.gov/vuln/detail/CVE-2026-19913
@@ -113,6 +114,24 @@ ignore:
       type: rpm
       name: emacs-filesystem
     reason: "Accepted: CVE-2026-79992 Emacs TRAMP local OS command injection via maliciously crafted filenames (Red Hat CVSS 3.1 7.8 HIGH, AV:L/AC:L/PR:L) — https://nvd.nist.gov/vuln/detail/CVE-2026-79992. Rocky 9 emacs-filesystem RPM (transitive via R-core; cannot remove without uninstalling R). Headless Java+R container runs as non-root appuser with no Emacs TRAMP remote-file path. Remove when Rocky errata ships patched emacs and rebuild clears the finding."
+  - vulnerability: CVE-2026-96442
+    namespace: redhat:distro:redhat:9
+    package:
+      type: rpm
+      name: emacs-filesystem
+    reason: "Accepted: CVE-2026-96442 GNU Emacs <31.2 — incomplete CVE-2024-53920 fix; Flymake non-Lisp backends execute arbitrary code from edited file during syntax check when viewing/editing untrusted text (Red Hat CVSS 3.1 7.8 HIGH, AV:L/AC:L/PR:N/UI:R) — https://nvd.nist.gov/vuln/detail/CVE-2026-96442 — Red Hat BZ 2537347; fixed upstream Emacs 31.2 (no backport expected). Rocky 9 emacs-filesystem RPM (transitive via R-core/texlive; dnf remove would erase R-core). Headless Java+R runtime — no interactive Emacs, Flymake, or user opening untrusted files. Remove when Rocky ships patched emacs RPMs and rebuild clears Grype."
+  - vulnerability: CVE-2026-88806
+    namespace: redhat:distro:redhat:9
+    package:
+      type: rpm
+      name: "(libX11|libX11-common|libX11-devel|libX11-xcb)"
+    reason: "Accepted: CVE-2026-88806 libX11 before 1.8.14 — XkbGetMap reply heap buffer overflow (key_sym_map) exploitable by malicious X server against attached X clients (CVSS 3.1 7.5 HIGH, AV:N/AC:H/UI:R) — https://nvd.nist.gov/vuln/detail/CVE-2026-88806 — fixed upstream libX11 1.8.14. Rocky 9 transitive libX11* RPMs (Grype: redhat:distro:redhat:9; via R-core/R-core-devel graphics stack). Headless Java+R container has no DISPLAY or X client session; cannot be exploited without connecting to a hostile X server. Remove when Rocky errata ships libX11 >= 1.8.14 and dnf update + rebuild clears Grype."
+  - vulnerability: CVE-2026-88807
+    namespace: redhat:distro:redhat:9
+    package:
+      type: rpm
+      name: libXrender
+    reason: "Accepted: CVE-2026-88807 libXrender before 0.9.13 — RenderQueryPictFormats heap overflow allowing malicious X server to inject code into attached X clients (CVSS 4.0 8.9 HIGH, AV:N/AC:H/UI:A) — https://nvd.nist.gov/vuln/detail/CVE-2026-88807 — fixed upstream libXrender 0.9.13. Rocky 9 transitive libXrender RPM (Grype: redhat:distro:redhat:9; via R-core graphics stack). Headless Java+R container has no DISPLAY, no X client connection to hostile X servers, and does not invoke RenderQueryPictFormats at runtime. Remove when Rocky errata ships libXrender >= 0.9.13 and dnf update + rebuild clears Grype."
   - vulnerability: CVE-2026-33412
     reason: "Accepted: vim glob() newline command injection (patched Vim 9.2.0202+); non-interactive runtime, no untrusted vim/automation path — refresh vim-minimal when distro ships fix"
   - vulnerability: CVE-2026-34982
