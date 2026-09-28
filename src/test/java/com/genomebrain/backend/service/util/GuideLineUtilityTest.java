@@ -41,6 +41,7 @@ import com.genomebrain.backend.service.dto.GenomeBrainResponseDTO;
 import com.genomebrain.backend.service.dto.GuidelineDetailsDTO;
 import com.genomebrain.backend.service.dto.PersonalHistoryTagsDTO;
 import com.genomebrain.backend.service.dto.ReasoningStatementObject;
+import com.genomebrain.backend.service.dto.ValueLabelDTO;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
@@ -518,9 +519,14 @@ class GuideLineUtilityTest {
         when(messageSource.getMessage(eq("AMBRY147_001.answerText"), any(), eq(Locale.ENGLISH)))
             .thenReturn("Text with {ClinicName} placeholder");
 
-        // The code calls text.replace("{ClinicName}", null) which throws NPE
-        assertThatThrownBy(() -> guideLineUtility.getCustomQuestions(mammogramCategory))
-            .isInstanceOf(NullPointerException.class);
+        // No clinic is known in this service, so the placeholder is stripped
+        List<CustomQuestions> result = guideLineUtility.getCustomQuestions(mammogramCategory);
+
+        assertThat(result)
+            .flatExtracting(CustomQuestions::getQuestionAnswers)
+            .extracting(ValueLabelDTO::getValue)
+            .contains("Text with  placeholder")
+            .noneMatch(value -> value != null && value.contains("{ClinicName}"));
     }
 
     @Test

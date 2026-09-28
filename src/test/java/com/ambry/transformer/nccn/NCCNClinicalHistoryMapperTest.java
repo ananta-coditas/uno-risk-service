@@ -170,7 +170,8 @@ class NCCNClinicalHistoryMapperTest {
         ClinicalHistory result = mapper.transform(person, relationshipDetails);
 
         assertThat(result).isNotNull();
-        assertThat(result.getRelationship()).isEqualTo("OTHER");
+        // "OTHERS" is the unclassified-relative code NCCNValidator accepts ("OTHER" would fail validation)
+        assertThat(result.getRelationship()).isEqualTo("OTHERS");
         assertThat(result.getSideOfFam()).isEqualTo("OTHER");
     }
 
@@ -393,13 +394,13 @@ class NCCNClinicalHistoryMapperTest {
     }
 
     @Test
-    @DisplayName("Should set clinical feature overall to Not Provided")
+    @DisplayName("Should set clinical feature overall to No when there are no clinical features")
     void testTransformSetsClinicalFeatureOverall() {
         person.setFamilyRace(createFamilyRace("CAUCASIAN"));
 
         ClinicalHistory result = mapper.transform(person, relationshipDetails);
 
-        assertThat(result.getClinicalFeatureOverall()).isEqualTo("Not Provided");
+        assertThat(result.getClinicalFeatureOverall()).isEqualTo("No");
     }
 
     @Test
@@ -479,5 +480,37 @@ class NCCNClinicalHistoryMapperTest {
         // The enum might return "Asian" or "ASIAN" depending on its implementation
         assertThat(result.getEthnicityOther()).isIn("ASIAN", "Asian");
     }
-}
 
+    @Test
+    @DisplayName("should_reportUnknownSex_when_genderCodeIsNeitherFemaleNorMale")
+    void should_reportUnknownSex_when_genderCodeIsNeitherFemaleNorMale() {
+        person.setGender(2);
+
+        ClinicalHistory result = mapper.transform(person, relationshipDetails);
+
+        assertThat(result.getSexAtBirth()).isEqualTo("unknown");
+    }
+
+    @Test
+    @DisplayName("should_reportClinicalFeature_when_personHasDesmoidTumour")
+    void should_reportClinicalFeature_when_personHasDesmoidTumour() {
+        Cancer desmoid = new Cancer();
+        desmoid.setCancerType(CancerType.DESMOIDS);
+        person.setCancers(new ArrayList<>(List.of(desmoid)));
+
+        ClinicalHistory result = mapper.transform(person, relationshipDetails);
+
+        assertThat(result.getClinicalFeatureOverall()).isEqualTo("Yes");
+    }
+
+    @Test
+    @DisplayName("should_treatPolypsAsNotProvided_when_polypOverallIsNull")
+    void should_treatPolypsAsNotProvided_when_polypOverallIsNull() {
+        person.setPolypOverall(null);
+
+        ClinicalHistory result = mapper.transform(person, relationshipDetails);
+
+        assertThat(result.getPolypOverall()).isEqualTo("NOT_PROVIDED");
+        assertThat(result.getPolypDetails()).isNullOrEmpty();
+    }
+}

@@ -212,3 +212,9 @@ uno:
 # ===================================================================
 
 # application:
+
+nccn:
+  guidelines:
+    # Spring resource location of the NCCN guideline dataset (classpath:, file:, ...).
+    # Override with NCCN_GUIDELINES_DATA_PATH to point at an externally managed copy.
+    data-path: ${NCCN_GUIDELINES_DATA_PATH:classpath:risk_model_data/nccn_guide_lines_details.json}

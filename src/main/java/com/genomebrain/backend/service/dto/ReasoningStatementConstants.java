@@ -22,15 +22,15 @@ public enum ReasoningStatementConstants {
 
     HBOCRS34("Family history of breast cancer diagnosed at any age in a first- or second- degree blood relative with ≥3 total diagnoses of breast cancer on the same side of the family"),
 
-    HBOCRS40("Family history of prostate cancer at any age in a first-degree blood relative and ≥1 close blood relative with breast cancer ≤50y on the same side of the family"),
+    HBOCRS40("Family history of prostate cancer at any age in a first-degree or second-degree blood relative and ≥1 close blood relative with breast cancer ≤50y on the same side of the family"),
 
-    HBOCRS41("Family history of prostate cancer at any age in a first-degree blood relative and ≥1 close blood relative with ovarian cancer (including fallopian tube or peritoneal cancer) at any age on the same side of the family"),
+    HBOCRS41("Family history of prostate cancer at any age in a first-degree or second-degree blood relative and ≥1 close blood relative with ovarian cancer (including fallopian tube or peritoneal cancer) at any age on the same side of the family"),
 
-    HBOCRS43("Family history of prostate cancer in a first-degree blood relative and ≥2 close blood relatives with breast and/or prostate cancer at any age on the same side of the family"),
+    HBOCRS43("Family history of prostate cancer in a first-degree or second-degree blood relative and ≥2 close blood relatives with breast and/or prostate cancer at any age on the same side of the family"),
 
-    HBOCRS44("Family history of prostate cancer at any age in a first-degree blood relative and ≥1 close blood relative with metastatic or high-risk prostate cancer at any age on the same side of the family"),
+    HBOCRS44("Family history of prostate cancer at any age in a first-degree or second-degree blood relative and ≥1 close blood relative with metastatic or high-risk prostate cancer at any age on the same side of the family"),
 
-    HBOCRS42("Family history of prostate cancer at any age in a first-degree blood relative and ≥1 close blood relative with pancreatic cancer at any age on the same side of the family"),
+    HBOCRS42("Family history of prostate cancer at any age in a first-degree or second-degree blood relative and ≥1 close blood relative with pancreatic cancer at any age on the same side of the family"),
 
     HBOCRS48("Family history of prostate cancer in a first- or second- degree blood relative and ≥2 close blood relatives (including proband) with breast and/or prostate cancer at any age on the same side of the family"),
 
@@ -50,9 +50,9 @@ public enum ReasoningStatementConstants {
 
     HBOCRS56("Personal history of prostate cancer and ≥1 close blood relative with male breast cancer at any age"),
 
-    HBOCRS57("Family history of prostate cancer at any age in a first-degree blood relative and ≥1 close blood relative with triple negative breast cancer at any age on the same side of the family"),
+    HBOCRS57("Family history of prostate cancer at any age in a first-degree or second-degree blood relative and ≥1 close blood relative with triple negative breast cancer at any age on the same side of the family"),
 
-    HBOCRS58("Family history of prostate cancer at any age in a first-degree blood relative and ≥1 close blood relative with male breast cancer at any age on the same side of the family"),
+    HBOCRS58("Family history of prostate cancer at any age in a first-degree or second-degree blood relative and ≥1 close blood relative with male breast cancer at any age on the same side of the family"),
 
     NCCNRS1("Patient reported blood relative with known pathogenic/likely pathogenic variant in cancer susceptibility gene. Confirmation and clinical correlation are recommended."),
 
@@ -64,7 +64,7 @@ public enum ReasoningStatementConstants {
 
     CRCRS7("Personal history of a Lynch syndrome-related cancer at any age and ≥2 first- or second- degree blood relatives with Lynch syndrome-related cancers at any age on the same side of the family"),
 
-    CRCRS9("Family history of ≥1 first-degree blood relative with colorectal or endometrial cancer and another synchronous or metachronous Lynch syndrome-related cancer at any age"),
+    CRCRS9("Family history of ≥1 first-degree or second-degree blood relative with colorectal or endometrial cancer and another synchronous or metachronous Lynch syndrome-related cancer at any age"),
 
     CRCRS10("Family history of ≥2 first- or second- degree blood relatives with Lynch syndrome-related cancers on the same side of the family, with at least 1 diagnosed <50y"),
 

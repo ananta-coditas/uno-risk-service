@@ -54,6 +54,10 @@ public class TagGenerationUtility {
 
     public final static String UNKNOWN = "Unknown";
 
+    public final static List<String> ABNORMAL_BREAST_BIOPSY_ANSWER_KEY = Arrays.asList("AMBRY106_001", "AMBRY106_002", "AMBRY106_003", "AMBRY106_004");
+
+    public final static String ABNORMAL = "Abnormal";
+
     private final Logger log = LoggerFactory.getLogger(TagGenerationUtility.class);
 
     @Autowired
@@ -64,7 +68,6 @@ public class TagGenerationUtility {
      * list of FamilyHistoryDetailsTagsDTO from
      * FamilyCancerDetails
      *
-     * @param familyCancerDetails
      * @return list of FamilyHistoryDetailsTagsDTO
      */
     public List<FamilyHistoryDetailsTagsDTO> getFamilyCancerTags(FamilyCancerDetails familyCancerDetails, String version, String familyHistoryOfGeneticTesting) {
@@ -72,107 +75,340 @@ public class TagGenerationUtility {
         //log.info("Entered into getFamilyCancerTags method of TagGenerationUtility with familyCancerDetails");
         List<FamilyHistoryDetailsTagsDTO> familyHistoryDetailsList = new ArrayList<>();
         if (familyCancerDetails.getMother() != null) {
-            familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.MOTHER.getValue(), "FDR", familyCancerDetails.getMother(), TagConstants.FEMALE.getValue(), 1, version, isFamilyGeneticTesting));
+            familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.MOTHER.getValue(), "FDR", familyCancerDetails.getMother(), TagConstants.FEMALE.getValue(), 1, version,isFamilyGeneticTesting));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getMothers())) {
-            familyCancerDetails.getMothers().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.MOTHER.getValue(), "FDR", relative, TagConstants.FEMALE.getValue(), 1, version, isFamilyGeneticTesting)));
+            familyCancerDetails.getMothers().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.MOTHER.getValue(), "FDR", relative, TagConstants.FEMALE.getValue(), 1, version,isFamilyGeneticTesting)));
         }
         if (familyCancerDetails.getFather() != null) {
-            familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.FATHER.getValue(), "FDR", familyCancerDetails.getFather(), TagConstants.MALE.getValue(), 2, version, isFamilyGeneticTesting));
+            familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.FATHER.getValue(), "FDR", familyCancerDetails.getFather(), TagConstants.MALE.getValue(), 2, version,isFamilyGeneticTesting));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getFathers())) {
-            familyCancerDetails.getFathers().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.FATHER.getValue(), "FDR", relative, TagConstants.MALE.getValue(), 1, version, isFamilyGeneticTesting)));
+            familyCancerDetails.getFathers().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.FATHER.getValue(), "FDR", relative, TagConstants.MALE.getValue(), 1, version,isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getSisters())) {
-            familyCancerDetails.getSisters().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.SISTER.getValue(), "FDR", relative, TagConstants.FEMALE.getValue(), 3, version, isFamilyGeneticTesting)));
+            familyCancerDetails.getSisters().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.SISTER.getValue(), "FDR", relative, TagConstants.FEMALE.getValue(), 3, version,isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getBrothers())) {
-            familyCancerDetails.getBrothers().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.BROTHER.getValue(), "FDR", relative, TagConstants.MALE.getValue(), 4, version, isFamilyGeneticTesting)));
+            familyCancerDetails.getBrothers().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.BROTHER.getValue(), "FDR", relative, TagConstants.MALE.getValue(), 4, version,isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getDaughters())) {
-            familyCancerDetails.getDaughters().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.DAUGHTER.getValue(), "FDR", relative, TagConstants.FEMALE.getValue(), 5, version, isFamilyGeneticTesting)));
+            familyCancerDetails.getDaughters().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.DAUGHTER.getValue(), "FDR", relative, TagConstants.FEMALE.getValue(), 5, version,isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getSons())) {
-            familyCancerDetails.getSons().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.SON.getValue(), "FDR", relative, TagConstants.MALE.getValue(), 6, version, isFamilyGeneticTesting)));
+            familyCancerDetails.getSons().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.SON.getValue(), "FDR", relative, TagConstants.MALE.getValue(), 6, version,isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getNieces())) {
-            familyCancerDetails.getNieces().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.NIECE.getValue(), "SDR", relative, TagConstants.FEMALE.getValue(), 7, version, isFamilyGeneticTesting)));
+            familyCancerDetails.getNieces().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.NIECE.getValue(), "SDR", relative, TagConstants.FEMALE.getValue(), 7, version,isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getNephews())) {
-            familyCancerDetails.getNephews().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.NEPHEW.getValue(), "SDR", relative, TagConstants.MALE.getValue(), 8, version, isFamilyGeneticTesting)));
+            familyCancerDetails.getNephews().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.NEPHEW.getValue(), "SDR", relative, TagConstants.MALE.getValue(), 8, version,isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getHalfSisters())) {
-            familyCancerDetails.getHalfSisters().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.HALF_SISTER.getValue(), "SDR", relative, TagConstants.FEMALE.getValue(), 9, version, isFamilyGeneticTesting)));
+            familyCancerDetails.getHalfSisters().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.HALF_SISTER.getValue(), "SDR", relative, TagConstants.FEMALE.getValue(), 9, version,isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getHalfBrothers())) {
-            familyCancerDetails.getHalfBrothers().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.HALF_BROTHER.getValue(), "SDR", relative, TagConstants.MALE.getValue(), 10, version, isFamilyGeneticTesting)));
+            familyCancerDetails.getHalfBrothers().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.HALF_BROTHER.getValue(), "SDR", relative, TagConstants.MALE.getValue(), 10, version,isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getGrandDaughters())) {
-            familyCancerDetails.getGrandDaughters().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GRANDDAUGHTER.getValue(), "SDR", relative, TagConstants.FEMALE.getValue(), 11, version, isFamilyGeneticTesting)));
+            familyCancerDetails.getGrandDaughters().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GRANDDAUGHTER.getValue(), "SDR", relative, TagConstants.FEMALE.getValue(), 11, version,isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getGrandSons())) {
-            familyCancerDetails.getGrandSons().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GRANDSON.getValue(), "SDR", relative, TagConstants.MALE.getValue(), 12, version, isFamilyGeneticTesting)));
+            familyCancerDetails.getGrandSons().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GRANDSON.getValue(), "SDR", relative, TagConstants.MALE.getValue(), 12, version,isFamilyGeneticTesting)));
         }
         //Maternal or Paternal relatives
         if (!CollectionUtils.isEmpty(familyCancerDetails.getAunts())) {
-            familyCancerDetails.getAunts().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.AUNT.getValue(), "SDR", relative, TagConstants.FEMALE.getValue(), 1, version, isFamilyGeneticTesting)));
+            familyCancerDetails.getAunts().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.AUNT.getValue(), "SDR", relative, TagConstants.FEMALE.getValue(), 1, version,isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getUncles())) {
-            familyCancerDetails.getUncles().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.UNCLE.getValue(), "SDR", relative, TagConstants.MALE.getValue(), 2, version, isFamilyGeneticTesting)));
+            familyCancerDetails.getUncles().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.UNCLE.getValue(), "SDR", relative, TagConstants.MALE.getValue(), 2, version,isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getFirstCousinsFemale())) {
-            familyCancerDetails.getFirstCousinsFemale().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.FIRST_COUSIN_FEMALE.getValue(), "TDR", relative, TagConstants.FEMALE.getValue(), 3, version, isFamilyGeneticTesting)));
+            familyCancerDetails.getFirstCousinsFemale().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.FIRST_COUSIN_FEMALE.getValue(), "TDR", relative, TagConstants.FEMALE.getValue(), 3, version,isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getFirstCousinsMale())) {
-            familyCancerDetails.getFirstCousinsMale().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.FIRST_COUSIN_MALE.getValue(), "TDR", relative, TagConstants.MALE.getValue(), 4, version, isFamilyGeneticTesting)));
+            familyCancerDetails.getFirstCousinsMale().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.FIRST_COUSIN_MALE.getValue(), "TDR", relative, TagConstants.MALE.getValue(), 4, version,isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getGrandMothers())) {
-            familyCancerDetails.getGrandMothers().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GRANDMOTHER.getValue(), "SDR", relative, TagConstants.FEMALE.getValue(), 5, version, isFamilyGeneticTesting)));
+            familyCancerDetails.getGrandMothers().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GRANDMOTHER.getValue(), "SDR", relative, TagConstants.FEMALE.getValue(), 5, version,isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getGrandFathers())) {
-            familyCancerDetails.getGrandFathers().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GRANDFATHER.getValue(), "SDR", relative, TagConstants.MALE.getValue(), 6, version, isFamilyGeneticTesting)));
+            familyCancerDetails.getGrandFathers().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GRANDFATHER.getValue(), "SDR", relative, TagConstants.MALE.getValue(), 6, version,isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getGreatUncles())) {
-            familyCancerDetails.getGreatUncles().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GREAT_UNCLE.getValue(), "TDR", relative, TagConstants.MALE.getValue(), 7, version, isFamilyGeneticTesting)));
+            familyCancerDetails.getGreatUncles().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GREAT_UNCLE.getValue(), "TDR", relative, TagConstants.MALE.getValue(), 7, version,isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getGreatAunts())) {
-            familyCancerDetails.getGreatAunts().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GREAT_AUNT.getValue(), "TDR", relative, TagConstants.FEMALE.getValue(), 8, version, isFamilyGeneticTesting)));
+            familyCancerDetails.getGreatAunts().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GREAT_AUNT.getValue(), "TDR", relative, TagConstants.FEMALE.getValue(), 8, version,isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getGreatGrandMothers())) {
-            familyCancerDetails.getGreatGrandMothers().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GREAT_GRANDMOTHER.getValue(), "TDR", relative, TagConstants.FEMALE.getValue(), 9, version, isFamilyGeneticTesting)));
+            familyCancerDetails.getGreatGrandMothers().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GREAT_GRANDMOTHER.getValue(), "TDR", relative, TagConstants.FEMALE.getValue(), 9, version,isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getGreatGrandFathers())) {
-            familyCancerDetails.getGreatGrandFathers().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GREAT_GRANDFATHER.getValue(), "TDR", relative, TagConstants.MALE.getValue(), 10, version, isFamilyGeneticTesting)));
+            familyCancerDetails.getGreatGrandFathers().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GREAT_GRANDFATHER.getValue(), "TDR", relative, TagConstants.MALE.getValue(), 10, version,isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getGreatNieces())) {
-            familyCancerDetails.getGreatNieces().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GREAT_NIECE.getValue(), "TDR", relative,TagConstants.FEMALE.getValue() , 11, version, isFamilyGeneticTesting)));
+            familyCancerDetails.getGreatNieces().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GREAT_NIECE.getValue(), "TDR", relative,TagConstants.FEMALE.getValue() , 11, version,isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getGreatNephews())) {
-            familyCancerDetails.getGreatNephews().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GREAT_NEPHEW.getValue(), "TDR", relative, TagConstants.MALE.getValue(), 12, version, isFamilyGeneticTesting)));
+            familyCancerDetails.getGreatNephews().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GREAT_NEPHEW.getValue(), "TDR", relative, TagConstants.MALE.getValue(), 12, version,isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getGreatGrandDaughters())) {
-            familyCancerDetails.getGreatGrandDaughters().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GREAT_GRANDDAUGHTER.getValue(), "TDR", relative, TagConstants.FEMALE.getValue(), 13, version, isFamilyGeneticTesting)));
+            familyCancerDetails.getGreatGrandDaughters().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GREAT_GRANDDAUGHTER.getValue(), "TDR", relative, TagConstants.FEMALE.getValue(), 13, version,isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getGreatGrandSons())) {
-            familyCancerDetails.getGreatGrandSons().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GREAT_GRANDSON.getValue(), "TDR", relative, TagConstants.MALE.getValue(), 14, version, isFamilyGeneticTesting)));
+            familyCancerDetails.getGreatGrandSons().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.GREAT_GRANDSON.getValue(), "TDR", relative, TagConstants.MALE.getValue(), 14, version,isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getHalfAunts())) {
-            familyCancerDetails.getHalfAunts().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.HALF_AUNT.getValue(), "TDR", relative, TagConstants.FEMALE.getValue(), 15, version, isFamilyGeneticTesting)));
+            familyCancerDetails.getHalfAunts().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.HALF_AUNT.getValue(), "TDR", relative, TagConstants.FEMALE.getValue(), 15, version,isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getHalfUncles())) {
-            familyCancerDetails.getHalfUncles().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.HALF_UNCLE.getValue(), "TDR", relative, TagConstants.MALE.getValue(), 16, version, isFamilyGeneticTesting)));
+            familyCancerDetails.getHalfUncles().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.HALF_UNCLE.getValue(), "TDR", relative, TagConstants.MALE.getValue(), 16, version,isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getHalfNieces())) {
-            familyCancerDetails.getHalfNieces().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.HALF_NIECE.getValue(), "TDR", relative,TagConstants.FEMALE.getValue() , 17, version, isFamilyGeneticTesting)));
+            familyCancerDetails.getHalfNieces().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.HALF_NIECE.getValue(), "TDR", relative,TagConstants.FEMALE.getValue() , 17, version,isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getHalfNephews())) {
-            familyCancerDetails.getHalfNephews().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.HALF_NEPHEW.getValue(), "TDR", relative, TagConstants.MALE.getValue(), 18, version, isFamilyGeneticTesting)));
+            familyCancerDetails.getHalfNephews().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.HALF_NEPHEW.getValue(), "TDR", relative, TagConstants.MALE.getValue(), 18, version,isFamilyGeneticTesting)));
         }
         if (!CollectionUtils.isEmpty(familyCancerDetails.getOthers())) {
-            familyCancerDetails.getOthers().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.OTHER.getValue(), "", relative, "N/A", 19, version, isFamilyGeneticTesting)));
+            familyCancerDetails.getOthers().forEach(relative -> familyHistoryDetailsList.add(getFamilyHistoryDetails(RelativeConstants.OTHER.getValue(), "", relative, "N/A", 19, version,isFamilyGeneticTesting)));
         }
+
         //log.info("Exit from getFamilyCancerTags method of TagGenerationUtility with familyCancerDetails");
         return familyHistoryDetailsList;
+    }
+
+    // Note: getDistinctGenesByProductCode method removed - not needed for now
+    // Will be added back when gene filtering logic is implemented
+
+    /**
+     * Process genetic testing data for a single relative and generate tags.
+     * Checks for AMBRY191 and AMBRY192 questions which indicate positive genetic test results with gene information.
+     *
+     * @param relativeHistory    The relative's history containing genetic testing data
+     * @param relativeType       The type of relative (e.g., "Mother", "Father", "Sister")
+     * @param geneticTestingTags The set to add generated tags to
+     */
+    private void processRelativeGeneticTesting(RelativeHistory relativeHistory, String relativeType, Set<String> geneticTestingTags) {
+        if (relativeHistory == null || relativeHistory.getRelativeDetail() == null) {
+            log.debug("Skipping genetic testing tag generation: relativeHistory or relativeDetail is null");
+            return;
+        }
+
+        // Also check relativeDetail.getRelativeType() to be extra safe
+        String relativeDetailType = relativeHistory.getRelativeDetail().getRelativeType();
+        if (relativeDetailType != null && RelativeConstants.OTHER.getValue().equalsIgnoreCase(relativeDetailType)) {
+            log.debug("Skipping genetic testing tag generation for non-blood relative from relativeDetail: {}", relativeDetailType);
+            return;
+        }
+
+        // Check AMBRY191 first - if it exists and answer is not AMBRY191_001 (No/Unknown), use its answerText
+        QuestionSet ambry191Question = findQuestion(relativeHistory, "AMBRY191");
+        if (ambry191Question != null) {
+            String ambry191AnswerKey = ambry191Question.getAnswerKey();
+            // If AMBRY191 exists and answer is not AMBRY191_001 (typically "No" or "Unknown"), use it
+            if (StringUtils.isNotEmpty(ambry191AnswerKey)
+                    && !"AMBRY191_001".equalsIgnoreCase(ambry191AnswerKey)) {
+
+                String answerText = null;
+
+                switch (ambry191AnswerKey.toUpperCase()) {
+                    case "AMBRY191_002":
+                        answerText = "Negative";
+                        break;
+
+                    case "AMBRY191_003":
+                        answerText = "VUS";
+                        break;
+                    case "AMBRY191_004":
+                        answerText = "Unknown";
+                        break;
+
+                    default:
+                        log.debug("Unhandled AMBRY191 answer key: {}", ambry191AnswerKey);
+                }
+
+                if (StringUtils.isNotEmpty(answerText)) {
+                    relativeHistory.getRelativeDetail().setRelativeGeneList(answerText);
+                    log.debug("Using AMBRY191 answerText for relative gene list: {}", answerText);
+                }}
+        }
+
+        // Look for AMBRY192 in basicQuestions
+        // AMBRY192 question indicates the relative has a positive genetic test result
+        QuestionSet ambry192Question = findQuestion(relativeHistory, "AMBRY192");
+        if (ambry192Question == null) {
+            log.debug("AMBRY192 question not found for relative: {}", relativeType);
+            return;
+        }
+
+
+        if (ambry192Question.getAnswerKey().equalsIgnoreCase("AMBRY192_056")) {
+            relativeHistory.getRelativeDetail()
+                    .setRelativeGeneList("Positive - " + "Other");
+        } else if (ambry192Question.getAnswerKey().equalsIgnoreCase("AMBRY192_001")) {
+            relativeHistory.getRelativeDetail()
+                    .setRelativeGeneList("Positive - " + "Unknown");
+        } else {
+            // Extract genes from the question
+            Set<String> genes = extractGenesFromQuestion(ambry192Question);
+
+            // Set gene list as comma-separated string (better format than toString())
+            if (!genes.isEmpty()) {
+                String geneList = String.join(", ", genes);
+                relativeHistory.getRelativeDetail()
+                        .setRelativeGeneList("Positive - " + geneList);
+                log.debug("Extracted genes for relative {}: {}", relativeType, geneList);
+            }
+
+
+            // Generate tags if genes were found
+            if (!genes.isEmpty() && !RelativeConstants.OTHER.getValue().equalsIgnoreCase(relativeType) ) {
+                String baseTag = NCCNTagConstants.FM_POSITIVE_GENE_MUTATION.getValue();
+
+                // Generate specific tags for each gene: FmPositiveGeneMutation-GENE_NAME
+                for (String gene : genes) {
+                    String geneUpper = gene.toUpperCase();
+                    String specificTag = baseTag + "-" + geneUpper;
+                    geneticTestingTags.add(specificTag);
+                    log.debug("Generated genetic testing tag: {} for relative: {}, gene: {}",
+                            specificTag, relativeType, gene);
+                }
+
+                // Add generic tag: FmPositiveGeneMutation (indicates any family member has pathogenic gene)
+                geneticTestingTags.add(baseTag);
+            } else {
+                log.debug("No valid genes found for relative: {}", relativeType);
+            }
+        }
+    }
+
+    /**
+     * Finds a question by QuestionKey from the relative history's basic questions.
+     *
+     * @param relativeHistory the relative history to search
+     * @param questionKeyToFind the QuestionKey (e.g., "AMBRY192", "AMBRY191")
+     * @return the QuestionSet matching the key, or null if not found
+     */
+    private QuestionSet findQuestion(RelativeHistory relativeHistory, String questionKeyToFind) {
+
+        if (relativeHistory == null
+                || CollectionUtils.isEmpty(relativeHistory.getBasicQuestions())
+                || questionKeyToFind == null) {
+            return null;
+        }
+
+        for (QuestionSet questionSet : relativeHistory.getBasicQuestions()) {
+            String key = questionSet.getQuestionKey();
+            if (key != null && key.equalsIgnoreCase(questionKeyToFind)) {
+                return questionSet;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extracts gene names from the AMBRY192 question.
+     * First tries to parse from answerKey using OptionConstants,
+     * then falls back to answerText if needed.
+     *
+     * @param questionSet the AMBRY192 question set
+     * @return a set of unique gene names
+     */
+    public Set<String> extractGenesFromQuestion(QuestionSet questionSet) {
+        Set<String> genes = new LinkedHashSet<>(); // Use LinkedHashSet to preserve order and avoid duplicates
+
+        if (questionSet == null) {
+            log.warn("Cannot extract genes: questionSet is null");
+            return genes;
+        }
+
+        String answerKey = questionSet.getAnswerKey();
+        String answerText = questionSet.getAnswerText();
+
+        // Skip if answerKey is AMBRY192_001 (I don't know/Unknown)
+        if (StringUtils.isEmpty(answerKey) || "AMBRY192_001".equalsIgnoreCase(answerKey)) {
+            // Try answerText as fallback if answerKey is empty or unknown
+            if (StringUtils.isNotEmpty(answerText)) {
+                extractGenesFromText(answerText, genes);
+            }
+            return genes;
+        }
+
+        // Extract genes from answerKey (comma-separated answer keys like "AMBRY192_002,AMBRY192_003")
+        boolean foundAnyGene = extractGenesFromAnswerKey(answerKey, genes);
+
+        // If no genes found from answerKey, try answerText as fallback
+        if (!foundAnyGene && StringUtils.isNotEmpty(answerText)) {
+            extractGenesFromText(answerText, genes);
+        }
+
+        return genes;
+    }
+
+    /**
+     * Extracts gene names from comma-separated answer keys using OptionConstants.
+     *
+     * @param answerKey comma-separated answer keys
+     * @param genes set to add extracted genes to
+     * @return true if at least one gene was successfully extracted
+     */
+    private boolean extractGenesFromAnswerKey(String answerKey, Set<String> genes) {
+        if (StringUtils.isEmpty(answerKey)) {
+            return false;
+        }
+
+        boolean foundAny = false;
+        String[] answerKeyArray = answerKey.split(",");
+
+        for (String key : answerKeyArray) {
+            String trimmedKey = key.trim();
+            if (StringUtils.isEmpty(trimmedKey)) {
+                continue;
+            }
+
+            try {
+                // Use OptionConstants to get gene name from answer key
+                OptionConstants option = OptionConstants.valueOf(trimmedKey.toUpperCase());
+                String geneName = option.getValue();
+
+                // Skip "Unknown" and "Other" values
+                if (StringUtils.isNotEmpty(geneName) &&
+                    !UNKNOWN.equalsIgnoreCase(geneName) ) {
+                    genes.add(geneName);
+                    foundAny = true;
+                }
+            } catch (IllegalArgumentException e) {
+                // OptionConstants doesn't have this key
+                log.debug("OptionConstants not found for key: {}", trimmedKey);
+            }
+        }
+
+        return foundAny;
+    }
+
+    /**
+     * Extracts gene names from comma-separated text.
+     *
+     * @param answerText comma-separated gene names
+     * @param genes set to add extracted genes to
+     */
+    private void extractGenesFromText(String answerText, Set<String> genes) {
+        if (StringUtils.isEmpty(answerText)) {
+            return;
+        }
+
+        String[] geneArray = answerText.split(",");
+        for (String gene : geneArray) {
+            String trimmedGene = gene.trim();
+            if (StringUtils.isNotEmpty(trimmedGene) &&
+                !UNKNOWN.equalsIgnoreCase(trimmedGene)) {
+                genes.add(trimmedGene);
+            }
+        }
     }
 
     /**
@@ -429,15 +665,19 @@ public class TagGenerationUtility {
         List<CancerDetailsObject> cancerDetailsList = new ArrayList<>();
         familyCancerDetailsDTOList.forEach(cancerDetailsDTO -> {
             CancerDetailsObject cancerDetails = new CancerDetailsObject();
+            String ageRange = null;
             if (cancerDetailsDTO.getAdditionalInformation() != null && !cancerDetailsDTO.getAdditionalInformation().isEmpty()) {
+                ageRange = cancerDetailsDTO.getAdditionalInformation().get("ageRange");
+                cancerDetailsDTO.getAdditionalInformation().remove("ageRange");
                 cancerDetails.setAdditionalInformation(cancerDetailsDTO.getAdditionalInformation());
             }
             cancerDetails.setCancer(cancerDetailsDTO.getCancerType());
-
             if (cancerDetailsDTO.getAgeOnSet() == null) {
                 cancerDetails.setAge("-");
             } else if (cancerDetailsDTO.getAgeOnSet() == 0) {
                 cancerDetails.setAge("Unknown");
+            } else if(ageRange!=null) {
+                cancerDetails.setAge(ageRange);
             } else {
                 cancerDetails.setAge(cancerDetailsDTO.getAgeOnSet().toString());
             }
@@ -480,235 +720,6 @@ public class TagGenerationUtility {
         familyHistoryDetailsTagsDTO.setLynchReasoningStatements(checkForSameRelativeLynchGuidelineDetails(tagsSet));
         //log.debug("Exit from getFamilyHistoryDetails method of TagGenerationUtility");
         return familyHistoryDetailsTagsDTO;
-    }
-
-    /**
-     * Process genetic testing data for a single relative and generate tags.
-     * Checks for AMBRY191 and AMBRY192 questions which indicate positive genetic test results with gene information.
-     *
-     * @param relativeHistory    The relative's history containing genetic testing data
-     * @param relativeType       The type of relative (e.g., "Mother", "Father", "Sister")
-     * @param geneticTestingTags The set to add generated tags to
-     */
-    private void processRelativeGeneticTesting(RelativeHistory relativeHistory, String relativeType, Set<String> geneticTestingTags) {
-        if (relativeHistory == null || relativeHistory.getRelativeDetail() == null) {
-            log.debug("Skipping genetic testing tag generation: relativeHistory or relativeDetail is null");
-            return;
-        }
-
-        // Also check relativeDetail.getRelativeType() to be extra safe
-        String relativeDetailType = relativeHistory.getRelativeDetail().getRelativeType();
-        if (relativeDetailType != null && RelativeConstants.OTHER.getValue().equalsIgnoreCase(relativeDetailType)) {
-            log.debug("Skipping genetic testing tag generation for non-blood relative from relativeDetail: {}", relativeDetailType);
-            return;
-        }
-
-        // Check AMBRY191 first - if it exists and answer is not AMBRY191_001 (No/Unknown), use its answerText
-        QuestionSet ambry191Question = findQuestion(relativeHistory, "AMBRY191");
-        if (ambry191Question != null) {
-            String ambry191AnswerKey = ambry191Question.getAnswerKey();
-            // If AMBRY191 exists and answer is not AMBRY191_001 (typically "No" or "Unknown"), use it
-            if (StringUtils.isNotEmpty(ambry191AnswerKey)
-                    && !"AMBRY191_001".equalsIgnoreCase(ambry191AnswerKey)) {
-
-                String answerText = null;
-
-                switch (ambry191AnswerKey.toUpperCase()) {
-                    case "AMBRY191_002":
-                        answerText = "Negative";
-                        break;
-
-                    case "AMBRY191_003":
-                        answerText = "VUS";
-                        break;
-                    case "AMBRY191_004":
-                        answerText = "Unknown";
-                        break;
-
-                    default:
-                        log.debug("Unhandled AMBRY191 answer key: {}", ambry191AnswerKey);
-                }
-
-                if (StringUtils.isNotEmpty(answerText)) {
-                    relativeHistory.getRelativeDetail().setRelativeGeneList(answerText);
-                    log.debug("Using AMBRY191 answerText for relative gene list: {}", answerText);
-                }}
-        }
-
-        // Look for AMBRY192 in basicQuestions
-        // AMBRY192 question indicates the relative has a positive genetic test result
-        QuestionSet ambry192Question = findQuestion(relativeHistory, "AMBRY192");
-        if (ambry192Question == null) {
-            log.debug("AMBRY192 question not found for relative: {}", relativeType);
-            return;
-        }
-
-
-        if (ambry192Question.getAnswerKey().equalsIgnoreCase("AMBRY192_056")) {
-            relativeHistory.getRelativeDetail()
-                    .setRelativeGeneList("Positive - " + "Other");
-        } else if (ambry192Question.getAnswerKey().equalsIgnoreCase("AMBRY192_001")) {
-            relativeHistory.getRelativeDetail()
-                    .setRelativeGeneList("Positive - " + "Unknown");
-        } else {
-            // Extract genes from the question
-            Set<String> genes = extractGenesFromQuestion(ambry192Question);
-
-            // Set gene list as comma-separated string (better format than toString())
-            if (!genes.isEmpty()) {
-                String geneList = String.join(", ", genes);
-                relativeHistory.getRelativeDetail()
-                        .setRelativeGeneList("Positive - " + geneList);
-                log.debug("Extracted genes for relative {}: {}", relativeType, geneList);
-            }
-
-
-            // Generate tags if genes were found
-            if (!genes.isEmpty() && !RelativeConstants.OTHER.getValue().equalsIgnoreCase(relativeType) ) {
-                String baseTag = NCCNTagConstants.FM_POSITIVE_GENE_MUTATION.getValue();
-
-                // Generate specific tags for each gene: FmPositiveGeneMutation-GENE_NAME
-                for (String gene : genes) {
-                    String geneUpper = gene.toUpperCase();
-                    String specificTag = baseTag + "-" + geneUpper;
-                    geneticTestingTags.add(specificTag);
-                    log.debug("Generated genetic testing tag: {} for relative: {}, gene: {}",
-                            specificTag, relativeType, gene);
-                }
-
-                // Add generic tag: FmPositiveGeneMutation (indicates any family member has pathogenic gene)
-                geneticTestingTags.add(baseTag);
-            } else {
-                log.debug("No valid genes found for relative: {}", relativeType);
-            }
-        }
-    }
-
-    /**
-     * Finds a question by QuestionKey from the relative history's basic questions.
-     *
-     * @param relativeHistory the relative history to search
-     * @param questionKeyToFind the QuestionKey (e.g., "AMBRY192", "AMBRY191")
-     * @return the QuestionSet matching the key, or null if not found
-     */
-    private QuestionSet findQuestion(RelativeHistory relativeHistory, String questionKeyToFind) {
-
-        if (relativeHistory == null
-                || CollectionUtils.isEmpty(relativeHistory.getBasicQuestions())
-                || questionKeyToFind == null) {
-            return null;
-        }
-
-        for (QuestionSet questionSet : relativeHistory.getBasicQuestions()) {
-            String key = questionSet.getQuestionKey();
-            if (key != null && key.equalsIgnoreCase(questionKeyToFind)) {
-                return questionSet;
-            }
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Extracts gene names from the AMBRY192 question.
-     * First tries to parse from answerKey using OptionConstants,
-     * then falls back to answerText if needed.
-     *
-     * @param questionSet the AMBRY192 question set
-     * @return a set of unique gene names
-     */
-    public Set<String> extractGenesFromQuestion(QuestionSet questionSet) {
-        Set<String> genes = new LinkedHashSet<>(); // Use LinkedHashSet to preserve order and avoid duplicates
-
-        if (questionSet == null) {
-            log.warn("Cannot extract genes: questionSet is null");
-            return genes;
-        }
-
-        String answerKey = questionSet.getAnswerKey();
-        String answerText = questionSet.getAnswerText();
-
-        // Skip if answerKey is AMBRY192_001 (I don't know/Unknown)
-        if (StringUtils.isEmpty(answerKey) || "AMBRY192_001".equalsIgnoreCase(answerKey)) {
-            // Try answerText as fallback if answerKey is empty or unknown
-            if (StringUtils.isNotEmpty(answerText)) {
-                extractGenesFromText(answerText, genes);
-            }
-            return genes;
-        }
-
-        // Extract genes from answerKey (comma-separated answer keys like "AMBRY192_002,AMBRY192_003")
-        boolean foundAnyGene = extractGenesFromAnswerKey(answerKey, genes);
-
-        // If no genes found from answerKey, try answerText as fallback
-        if (!foundAnyGene && StringUtils.isNotEmpty(answerText)) {
-            extractGenesFromText(answerText, genes);
-        }
-
-        return genes;
-    }
-
-    /**
-     * Extracts gene names from comma-separated answer keys using OptionConstants.
-     *
-     * @param answerKey comma-separated answer keys
-     * @param genes set to add extracted genes to
-     * @return true if at least one gene was successfully extracted
-     */
-    private boolean extractGenesFromAnswerKey(String answerKey, Set<String> genes) {
-        if (StringUtils.isEmpty(answerKey)) {
-            return false;
-        }
-
-        boolean foundAny = false;
-        String[] answerKeyArray = answerKey.split(",");
-
-        for (String key : answerKeyArray) {
-            String trimmedKey = key.trim();
-            if (StringUtils.isEmpty(trimmedKey)) {
-                continue;
-            }
-
-            try {
-                // Use OptionConstants to get gene name from answer key
-                OptionConstants option = OptionConstants.valueOf(trimmedKey.toUpperCase());
-                String geneName = option.getValue();
-
-                // Skip "Unknown" and "Other" values
-                if (StringUtils.isNotEmpty(geneName) &&
-                    !UNKNOWN.equalsIgnoreCase(geneName) ) {
-                    genes.add(geneName);
-                    foundAny = true;
-                }
-            } catch (IllegalArgumentException e) {
-                // OptionConstants doesn't have this key
-                log.debug("OptionConstants not found for key: {}", trimmedKey);
-            }
-        }
-
-        return foundAny;
-    }
-
-    /**
-     * Extracts gene names from comma-separated text.
-     *
-     * @param answerText comma-separated gene names
-     * @param genes set to add extracted genes to
-     */
-    private void extractGenesFromText(String answerText, Set<String> genes) {
-        if (StringUtils.isEmpty(answerText)) {
-            return;
-        }
-
-        String[] geneArray = answerText.split(",");
-        for (String gene : geneArray) {
-            String trimmedGene = gene.trim();
-            if (StringUtils.isNotEmpty(trimmedGene) &&
-                !UNKNOWN.equalsIgnoreCase(trimmedGene)) {
-                genes.add(trimmedGene);
-            }
-        }
     }
 
     /**
@@ -805,6 +816,7 @@ public class TagGenerationUtility {
         Set<String> tagsSet = new HashSet<>();
         tagsSet.add(cancerType + "OtherUnspec");
         Integer ageOfDiagnosis = 0;
+        Map<String, String> additionalDetails = new HashMap<>();
         for (QuestionSet questionSet : other) {
             if (questionSet.getAnswerKey().equalsIgnoreCase("AMBRY050_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = Integer.valueOf(questionSet.getAnswerText());
@@ -816,9 +828,14 @@ public class TagGenerationUtility {
             } else if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY093") && StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = null;
             }
+            if("AMBRY093_003".equalsIgnoreCase(questionSet.getAnswerKey()) && !StringUtils.isEmpty(questionSet.getAnswerText())) {
+                additionalDetails.put("ageRange", questionSet.getAnswerText());
+                ageOfDiagnosis = getAgeFromAgeRange(questionSet.getAnswerText());
+            }
         }
         cancerDetailsDTO.setAgeOnSet(ageOfDiagnosis);
         cancerDetailsDTO.setTags(tagsSet);
+        cancerDetailsDTO.setAdditionalInformation(additionalDetails);
         //log.debug("Exit from getOtherCancerTag method of TagGenerationUtility cancerDetailsDTO:");
         return cancerDetailsDTO;
     }
@@ -837,6 +854,7 @@ public class TagGenerationUtility {
         Set<String> tagsSet = new HashSet<>();
         tagsSet.add(cancerType + "Sarcoma");
         Integer ageOfDiagnosis = 0;
+        Map<String, String> additionalDetails = new HashMap<>();
         for (QuestionSet questionSet : sarcoma) {
             if (questionSet.getAnswerKey().equalsIgnoreCase("AMBRY049_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = Integer.valueOf(questionSet.getAnswerText());
@@ -848,9 +866,13 @@ public class TagGenerationUtility {
             } else if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY092") && StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = null;
             }
+            if("AMBRY092_003".equalsIgnoreCase(questionSet.getAnswerKey()) && !StringUtils.isEmpty(questionSet.getAnswerText())) {
+                additionalDetails.put("ageRange", questionSet.getAnswerText());
+                ageOfDiagnosis = getAgeFromAgeRange(questionSet.getAnswerText());
+            }
         }
         cancerDetailsDTO.setAgeOnSet(ageOfDiagnosis);
-
+        cancerDetailsDTO.setAdditionalInformation(additionalDetails);
         cancerDetailsDTO.setTags(tagsSet);
         //log.debug("Exit from getSarcomaCancerTag method of TagGenerationUtility cancerDetailsDTO: {}", cancerDetailsDTO);
         return cancerDetailsDTO;
@@ -870,6 +892,7 @@ public class TagGenerationUtility {
         Set<String> tagsSet = new HashSet<>();
         tagsSet.add(cancerType + "Lung");
         Integer ageOfDiagnosis = 0;
+        Map<String, String> additionalDetails = new HashMap<>();
         for (QuestionSet questionSet : lung) {
             if (questionSet.getAnswerKey().equalsIgnoreCase("AMBRY048_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = Integer.valueOf(questionSet.getAnswerText());
@@ -881,9 +904,14 @@ public class TagGenerationUtility {
             } else if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY091") && StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = null;
             }
+            if("AMBRY091_003".equalsIgnoreCase(questionSet.getAnswerKey()) && !StringUtils.isEmpty(questionSet.getAnswerText())) {
+                additionalDetails.put("ageRange", questionSet.getAnswerText());
+                ageOfDiagnosis = getAgeFromAgeRange(questionSet.getAnswerText());
+            }
         }
         cancerDetailsDTO.setAgeOnSet(ageOfDiagnosis);
         cancerDetailsDTO.setTags(tagsSet);
+        cancerDetailsDTO.setAdditionalInformation(additionalDetails);
         //log.debug("Exit from getLungCancerTag method of TagGenerationUtility with cancerDetailsDTO: {}", cancerDetailsDTO);
         return cancerDetailsDTO;
     }
@@ -902,6 +930,7 @@ public class TagGenerationUtility {
         Set<String> tagsSet = new HashSet<>();
         tagsSet.add(cancerType + "Pheochromocytoma");
         Integer ageOfDiagnosis = 0;
+        Map<String, String> additionalDetails = new HashMap<>();
         for (QuestionSet questionSet : pheochromocytoma) {
             if (questionSet.getAnswerKey().equalsIgnoreCase("AMBRY047_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = Integer.valueOf(questionSet.getAnswerText());
@@ -913,9 +942,14 @@ public class TagGenerationUtility {
             } else if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY090") && StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = null;
             }
+            if("AMBRY090_003".equalsIgnoreCase(questionSet.getAnswerKey()) && !StringUtils.isEmpty(questionSet.getAnswerText())) {
+                additionalDetails.put("ageRange", questionSet.getAnswerText());
+                ageOfDiagnosis = getAgeFromAgeRange(questionSet.getAnswerText());
+            }
         }
         cancerDetailsDTO.setAgeOnSet(ageOfDiagnosis);
         cancerDetailsDTO.setTags(tagsSet);
+        cancerDetailsDTO.setAdditionalInformation(additionalDetails);
         //log.debug("Exit from getPheochromocytomaCancerTag method of TagGenerationUtility with cancerDetailsDTO: {}", cancerDetailsDTO);
         return cancerDetailsDTO;
     }
@@ -935,6 +969,7 @@ public class TagGenerationUtility {
         Set<String> tagsSet = new HashSet<>();
         tagsSet.add(cancerType + "Paraganglioma");
         Integer ageOfDiagnosis = 0;
+        Map<String, String> additionalDetails = new HashMap<>();
         for (QuestionSet questionSet : paraganglioma) {
             if (questionSet.getAnswerKey().equalsIgnoreCase("AMBRY046_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = Integer.valueOf(questionSet.getAnswerText());
@@ -946,9 +981,13 @@ public class TagGenerationUtility {
             } else if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY089") && StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = null;
             }
+            if("AMBRY089_003".equalsIgnoreCase(questionSet.getAnswerKey()) && !StringUtils.isEmpty(questionSet.getAnswerText())) {
+                additionalDetails.put("ageRange", questionSet.getAnswerText());
+                ageOfDiagnosis = getAgeFromAgeRange(questionSet.getAnswerText());
+            }
         }
         cancerDetailsDTO.setAgeOnSet(ageOfDiagnosis);
-
+        cancerDetailsDTO.setAdditionalInformation(additionalDetails);
         cancerDetailsDTO.setTags(tagsSet);
         //log.debug("Exit from getParagangliomaCancerTag method of TagGenerationUtility with cancerDetailsDTO: {}", cancerDetailsDTO);
         return cancerDetailsDTO;
@@ -969,6 +1008,7 @@ public class TagGenerationUtility {
         Set<String> tagsSet = new HashSet<>();
         tagsSet.add(cancerType + "Testicular");
         Integer ageOfDiagnosis = 0;
+        Map<String, String> additionalDetails = new HashMap<>();
         for (QuestionSet questionSet : testicular) {
             if (questionSet.getAnswerKey().equalsIgnoreCase("AMBRY045_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = Integer.valueOf(questionSet.getAnswerText());
@@ -980,9 +1020,13 @@ public class TagGenerationUtility {
             } else if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY088") && StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = null;
             }
+            if("AMBRY088_003".equalsIgnoreCase(questionSet.getAnswerKey()) && !StringUtils.isEmpty(questionSet.getAnswerText())) {
+                additionalDetails.put("ageRange", questionSet.getAnswerText());
+                ageOfDiagnosis = getAgeFromAgeRange(questionSet.getAnswerText());
+            }
         }
         cancerDetailsDTO.setAgeOnSet(ageOfDiagnosis);
-
+        cancerDetailsDTO.setAdditionalInformation(additionalDetails);
         cancerDetailsDTO.setTags(tagsSet);
         //log.debug("Exit from getTesticularCancerTag method of TagGenerationUtility with cancerDetailsDTO: {}", cancerDetailsDTO);
         return cancerDetailsDTO;
@@ -1003,6 +1047,7 @@ public class TagGenerationUtility {
         Set<String> tagsSet = new HashSet<>();
         tagsSet.add(cancerType + "Liver");
         Integer ageOfDiagnosis = 0;
+        Map<String, String> additionalDetails = new HashMap<>();
         for (QuestionSet questionSet : liver) {
             if (questionSet.getAnswerKey().equalsIgnoreCase("AMBRY044_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = Integer.valueOf(questionSet.getAnswerText());
@@ -1014,9 +1059,13 @@ public class TagGenerationUtility {
             } else if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY087") && StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = null;
             }
+            if("AMBRY087_003".equalsIgnoreCase(questionSet.getAnswerKey()) && !StringUtils.isEmpty(questionSet.getAnswerText())) {
+                additionalDetails.put("ageRange", questionSet.getAnswerText());
+                ageOfDiagnosis = getAgeFromAgeRange(questionSet.getAnswerText());
+            }
         }
         cancerDetailsDTO.setAgeOnSet(ageOfDiagnosis);
-
+        cancerDetailsDTO.setAdditionalInformation(additionalDetails);
         cancerDetailsDTO.setTags(tagsSet);
         //log.debug("Exit from getLiverCancerTag method of TagGenerationUtility with cancerDetailsDTO: {}", cancerDetailsDTO);
         return cancerDetailsDTO;
@@ -1036,6 +1085,7 @@ public class TagGenerationUtility {
         cancerDetailsDTO.setCancerType("Oral");
         tagsSet.add(cancerType + "Oral");
         Integer ageOfDiagnosis = 0;
+        Map<String, String> additionalDetails = new HashMap<>();
         for (QuestionSet questionSet : oral) {
             if (questionSet.getAnswerKey().equalsIgnoreCase("AMBRY043_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = Integer.valueOf(questionSet.getAnswerText());
@@ -1047,9 +1097,13 @@ public class TagGenerationUtility {
             } else if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY086") && StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = null;
             }
+            if("AMBRY086_003".equalsIgnoreCase(questionSet.getAnswerKey()) && !StringUtils.isEmpty(questionSet.getAnswerText())) {
+                additionalDetails.put("ageRange", questionSet.getAnswerText());
+                ageOfDiagnosis = getAgeFromAgeRange(questionSet.getAnswerText());
+            }
         }
         cancerDetailsDTO.setAgeOnSet(ageOfDiagnosis);
-
+        cancerDetailsDTO.setAdditionalInformation(additionalDetails);
         cancerDetailsDTO.setTags(tagsSet);
         //log.debug("Exit from getOralCancerTag method of TagGenerationUtility with cancerDetailsDTO: {}", cancerDetailsDTO);
         return cancerDetailsDTO;
@@ -1070,6 +1124,7 @@ public class TagGenerationUtility {
         Set<String> tagsSet = new HashSet<>();
         tagsSet.add(cancerType + "Thyroid");
         Integer ageOfDiagnosis = 0;
+        Map<String, String> additionalDetails = new HashMap<>();
         for (QuestionSet questionSet : thryoid) {
             if (questionSet.getAnswerKey().equalsIgnoreCase("AMBRY042_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = Integer.valueOf(questionSet.getAnswerText());
@@ -1081,9 +1136,13 @@ public class TagGenerationUtility {
             } else if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY085") && StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = null;
             }
+            if("AMBRY085_003".equalsIgnoreCase(questionSet.getAnswerKey()) && !StringUtils.isEmpty(questionSet.getAnswerText())) {
+                additionalDetails.put("ageRange", questionSet.getAnswerText());
+                ageOfDiagnosis = getAgeFromAgeRange(questionSet.getAnswerText());
+            }
         }
         cancerDetailsDTO.setAgeOnSet(ageOfDiagnosis);
-
+        cancerDetailsDTO.setAdditionalInformation(additionalDetails);
         cancerDetailsDTO.setTags(tagsSet);
         //log.debug("Exit from getThyroidCancerTag method of TagGenerationUtility with cancerDetailsDTO: {}", cancerDetailsDTO);
         return cancerDetailsDTO;
@@ -1103,7 +1162,7 @@ public class TagGenerationUtility {
         cancerDetailsDTO.setCancerType("Throat");
         Set<String> tagsSet = new HashSet<>();
         tagsSet.add(cancerType + "Throat");
-
+        Map<String, String> additionalDetails = new HashMap<>();
         Integer ageOfDiagnosis = 0;
         for (QuestionSet questionSet : throat) {
             if (questionSet.getAnswerKey().equalsIgnoreCase("AMBRY041_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) {
@@ -1116,9 +1175,14 @@ public class TagGenerationUtility {
             } else if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY084") && StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = null;
             }
+            if("AMBRY084_003".equalsIgnoreCase(questionSet.getAnswerKey()) && !StringUtils.isEmpty(questionSet.getAnswerText())) {
+                additionalDetails.put("ageRange", questionSet.getAnswerText());
+                ageOfDiagnosis = getAgeFromAgeRange(questionSet.getAnswerText());
+            }
         }
         cancerDetailsDTO.setAgeOnSet(ageOfDiagnosis);
         cancerDetailsDTO.setTags(tagsSet);
+        cancerDetailsDTO.setAdditionalInformation(additionalDetails);
         //log.debug("Exit from getThroatCancerTag method of TagGenerationUtility with cancerDetailsDTO: {}", cancerDetailsDTO);
         return cancerDetailsDTO;
     }
@@ -1139,6 +1203,7 @@ public class TagGenerationUtility {
         tagsSet.add(cancerType + "Bladder");
 
         Integer ageOfDiagnosis = 0;
+        Map<String, String> additionalDetails = new HashMap<>();
         for (QuestionSet questionSet : bladder) {
             if (questionSet.getAnswerKey().equalsIgnoreCase("AMBRY040_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = Integer.valueOf(questionSet.getAnswerText());
@@ -1148,8 +1213,12 @@ public class TagGenerationUtility {
             } else if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY040") && StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = null;
             }
-            if (questionSet.getAnswerKey().equalsIgnoreCase("AMBRY083_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) {
-                ageOfDiagnosis = Integer.valueOf(questionSet.getAnswerText());
+            if("AMBRY083_003".equalsIgnoreCase(questionSet.getAnswerKey()) && !StringUtils.isEmpty(questionSet.getAnswerText())) {
+                additionalDetails.put("ageRange", questionSet.getAnswerText());
+                ageOfDiagnosis = getAgeFromAgeRange(questionSet.getAnswerText());
+            }
+            if ((questionSet.getAnswerKey().equalsIgnoreCase("AMBRY083_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) || isKnownAge(ageOfDiagnosis)) {
+                ageOfDiagnosis = isKnownAge(ageOfDiagnosis)?ageOfDiagnosis:Integer.valueOf(questionSet.getAnswerText());
                 if (ageOfDiagnosis <= 50) {
                     tagsSet.add("FmBladder<=50");
                 }
@@ -1161,6 +1230,7 @@ public class TagGenerationUtility {
             }
         }
         cancerDetailsDTO.setAgeOnSet(ageOfDiagnosis);
+        cancerDetailsDTO.setAdditionalInformation(additionalDetails);
         cancerDetailsDTO.setTags(tagsSet);
         //log.debug("Exit from getBladderCancerTag method of TagGenerationUtility with cancerDetailsDTO: {}", cancerDetailsDTO);
         return cancerDetailsDTO;
@@ -1180,7 +1250,7 @@ public class TagGenerationUtility {
         cancerDetailsDTO.setCancerType("Cervical");
         Set<String> tagsSet = new HashSet<>();
         tagsSet.add(cancerType + "Cervical");
-
+        Map<String, String> additionalDetails = new HashMap<>();
         Integer ageOfDiagnosis = 0;
         for (QuestionSet questionSet : cervical) {
             if (questionSet.getAnswerKey().equalsIgnoreCase("AMBRY039_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) {
@@ -1193,9 +1263,14 @@ public class TagGenerationUtility {
             } else if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY082") && StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = null;
             }
+            if("AMBRY082_003".equalsIgnoreCase(questionSet.getAnswerKey()) && !StringUtils.isEmpty(questionSet.getAnswerText())) {
+                additionalDetails.put("ageRange", questionSet.getAnswerText());
+                ageOfDiagnosis = getAgeFromAgeRange(questionSet.getAnswerText());
+            }
         }
         cancerDetailsDTO.setAgeOnSet(ageOfDiagnosis);
         cancerDetailsDTO.setTags(tagsSet);
+        cancerDetailsDTO.setAdditionalInformation(additionalDetails);
         //log.debug("Exit from getCervicalCancerTag method of TagGenerationUtility with cancerDetailsDTO: {}", cancerDetailsDTO);
         return cancerDetailsDTO;
     }
@@ -1214,24 +1289,37 @@ public class TagGenerationUtility {
         cancerDetailsDTO.setCancerType("Gallbladder");
         Set<String> tagsSet = new HashSet<>();
         tagsSet.add(cancerType + "Gallbladder");
-
+        Map<String, String> additionalDetails = new HashMap<>();
         Integer ageOfDiagnosis = 0;
         for (QuestionSet questionSet : gallbladder) {
             if (questionSet.getAnswerKey().equalsIgnoreCase("AMBRY038_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = Integer.valueOf(questionSet.getAnswerText());
+                if (ageOfDiagnosis < 50) {
+                    tagsSet.add(NCCNTagConstants.PR_GALLBLADDER_LT_50.getValue());
+                }
             } else if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY038") && StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = null;
             }
-            if (questionSet.getAnswerKey().equalsIgnoreCase("AMBRY081_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) {
-                ageOfDiagnosis = Integer.valueOf(questionSet.getAnswerText());
+            if("AMBRY081_003".equalsIgnoreCase(questionSet.getAnswerKey()) && !StringUtils.isEmpty(questionSet.getAnswerText())) {
+                additionalDetails.put("ageRange", questionSet.getAnswerText());
+                ageOfDiagnosis = getAgeFromAgeRange(questionSet.getAnswerText());
+            }
+            if ((questionSet.getAnswerKey().equalsIgnoreCase("AMBRY081_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) || isKnownAge(ageOfDiagnosis)) {
+                ageOfDiagnosis = isKnownAge(ageOfDiagnosis)?ageOfDiagnosis:Integer.valueOf(questionSet.getAnswerText());
+                if (ageOfDiagnosis <= 50) {
+                    tagsSet.add(NCCNTagConstants.FM_GALLBLADDER_LTE_50.getValue());
+                }
+                if (ageOfDiagnosis < 50) {
+                    tagsSet.add(NCCNTagConstants.FM_GALLBLADDER_LT_50.getValue());
+                }
             } else if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY081") && StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = null;
             }
         }
         cancerDetailsDTO.setAgeOnSet(ageOfDiagnosis);
-
         cancerDetailsDTO.setTags(tagsSet);
-        //log.debug("Exit from getCervicalCancerTag method of TagGenerationUtility with cancerDetailsDTO: {}", cancerDetailsDTO);
+        cancerDetailsDTO.setAdditionalInformation(additionalDetails);
+        //log.debug("Exit from getGallbladderTag method of TagGenerationUtility with cancerDetailsDTO: {}", cancerDetailsDTO);
         return cancerDetailsDTO;
     }
 
@@ -1273,6 +1361,10 @@ public class TagGenerationUtility {
                 ageOfDiagnosis = Integer.valueOf(questionSet.getAnswerText());
             } else if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY079") && StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = null;
+            }
+            if("AMBRY079_003".equalsIgnoreCase(questionSet.getAnswerKey()) && !StringUtils.isEmpty(questionSet.getAnswerText())) {
+                additionalDetails.put("ageRange", questionSet.getAnswerText());
+                ageOfDiagnosis = getAgeFromAgeRange(questionSet.getAnswerText());
             }
         }
         cancerDetailsDTO.setAdditionalInformation(additionalDetails);
@@ -1317,6 +1409,10 @@ public class TagGenerationUtility {
             } else if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY080") && StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = null;
             }
+            if("AMBRY080_003".equalsIgnoreCase(questionSet.getAnswerKey()) && !StringUtils.isEmpty(questionSet.getAnswerText())) {
+                additionalDetails.put("ageRange", questionSet.getAnswerText());
+                ageOfDiagnosis = getAgeFromAgeRange(questionSet.getAnswerText());
+            }
         }
         cancerDetailsDTO.setAgeOnSet(ageOfDiagnosis);
         cancerDetailsDTO.setAdditionalInformation(additionalDetails);
@@ -1341,6 +1437,7 @@ public class TagGenerationUtility {
         tagsSet.add(cancerType + "SebAdenoCar");
 
         Integer ageOfDiagnosis = 0;
+        Map<String, String> additionalDetails = new HashMap<>();
         for (QuestionSet questionSet : sebaceousAdenomaOrCarcinoma) {
             if (questionSet.getAnswerKey().equalsIgnoreCase("AMBRY032_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = Integer.valueOf(questionSet.getAnswerText());
@@ -1350,8 +1447,12 @@ public class TagGenerationUtility {
             } else if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY032") && StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = null;
             }
-            if (questionSet.getAnswerKey().equalsIgnoreCase("AMBRY077_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) {
-                ageOfDiagnosis = Integer.valueOf(questionSet.getAnswerText());
+            if("AMBRY077_003".equalsIgnoreCase(questionSet.getAnswerKey()) && !StringUtils.isEmpty(questionSet.getAnswerText())) {
+                additionalDetails.put("ageRange", questionSet.getAnswerText());
+                ageOfDiagnosis = getAgeFromAgeRange(questionSet.getAnswerText());
+            }
+            if ((questionSet.getAnswerKey().equalsIgnoreCase("AMBRY077_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) || isKnownAge(ageOfDiagnosis)) {
+                ageOfDiagnosis = isKnownAge(ageOfDiagnosis)?ageOfDiagnosis:Integer.valueOf(questionSet.getAnswerText());
                 if (ageOfDiagnosis <= 50) {
                     tagsSet.add("FmSebAdenoCar<=50");
                 }
@@ -1363,7 +1464,7 @@ public class TagGenerationUtility {
             }
         }
         cancerDetailsDTO.setAgeOnSet(ageOfDiagnosis);
-
+        cancerDetailsDTO.setAdditionalInformation(additionalDetails);
         cancerDetailsDTO.setTags(tagsSet);
         //log.debug("Exit from getSebaceousAdenomaOrCarcinomaCancerTag method of TagGenerationUtility with cancerDetailsDTO: {}", cancerDetailsDTO);
         return cancerDetailsDTO;
@@ -1400,9 +1501,13 @@ public class TagGenerationUtility {
                 String answerText = answerKey.stream().map(x -> getSelectedOption(x)).collect(Collectors.joining(", "));
                 additionalDetails.put("typeOfSkinCancer", answerText);
             }
-
-            if (questionSet.getAnswerKey().equalsIgnoreCase("AMBRY078_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) {
-                melanomaAgeOfDiagnosis = Integer.valueOf(questionSet.getAnswerText());
+            if("AMBRY078_003".equalsIgnoreCase(questionSet.getAnswerKey()) && !org.apache.commons.lang3.StringUtils.isEmpty(questionSet.getAnswerText())) {
+                additionalDetails.put("melanomaAgeOfDiagnosis", questionSet.getAnswerText());
+                melanomaAgeOfDiagnosis = getAgeFromAgeRange(questionSet.getAnswerText());
+            }
+            if ((questionSet.getAnswerKey().equalsIgnoreCase("AMBRY078_001") && !org.springframework.util.StringUtils.isEmpty(questionSet.getAnswerText()))
+                    || (melanomaAgeOfDiagnosis != null && melanomaAgeOfDiagnosis != 0)) {
+                melanomaAgeOfDiagnosis = (melanomaAgeOfDiagnosis != null && melanomaAgeOfDiagnosis != 0) ? melanomaAgeOfDiagnosis : Integer.valueOf(questionSet.getAnswerText());
             }else if (questionSet.getAnswerKey().equalsIgnoreCase("AMBRY078_002") && !StringUtils.isEmpty(questionSet.getAnswerText())) {
                 melanomaAgeOfDiagnosis = 0;
             } else if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY078") && StringUtils.isEmpty(questionSet.getAnswerText())) {
@@ -1421,8 +1526,13 @@ public class TagGenerationUtility {
             } else if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY032") && StringUtils.isEmpty(questionSet.getAnswerText())) {
                 adenomaAgeOfDiagnosis = null;
             }
-            if (questionSet.getAnswerKey().equalsIgnoreCase("AMBRY077_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) {
-                adenomaAgeOfDiagnosis = Integer.valueOf(questionSet.getAnswerText());
+            if("AMBRY077_003".equalsIgnoreCase(questionSet.getAnswerKey()) && !StringUtils.isEmpty(questionSet.getAnswerText())) {
+                additionalDetails.put("adenomaAgeOfDiagnosis", questionSet.getAnswerText());
+                adenomaAgeOfDiagnosis = getAgeFromAgeRange(questionSet.getAnswerText());
+            }
+            if ((questionSet.getAnswerKey().equalsIgnoreCase("AMBRY077_001") && !StringUtils.isEmpty(questionSet.getAnswerText()))
+                    || (adenomaAgeOfDiagnosis!=null && adenomaAgeOfDiagnosis!=0)) {
+                adenomaAgeOfDiagnosis = (adenomaAgeOfDiagnosis!=null && adenomaAgeOfDiagnosis!=0)?adenomaAgeOfDiagnosis:Integer.valueOf(questionSet.getAnswerText());
                 if (adenomaAgeOfDiagnosis <= 50) {
                     tagsSet.add("FmSebAdenoCar<=50");
                 }
@@ -1435,14 +1545,14 @@ public class TagGenerationUtility {
                 adenomaAgeOfDiagnosis = null;
             }
         }
-        if( melanomaAgeOfDiagnosis!=null && melanomaAgeOfDiagnosis == 0) {
+        if (melanomaAgeOfDiagnosis != null && melanomaAgeOfDiagnosis == 0) {
             additionalDetails.put("melanomaAgeOfDiagnosis", OptionConstants.AMBRY003_012.getValue());
-        }else if( melanomaAgeOfDiagnosis!=null){
+        } else if (melanomaAgeOfDiagnosis != null && !additionalDetails.containsKey("melanomaAgeOfDiagnosis")) {
             additionalDetails.put("melanomaAgeOfDiagnosis", String.valueOf(melanomaAgeOfDiagnosis));
         }
-        if(adenomaAgeOfDiagnosis!=null && adenomaAgeOfDiagnosis == 0){
-            additionalDetails.put("adenomaAgeOfDiagnosis", OptionConstants.AMBRY003_012.getValue() );
-        }else if(adenomaAgeOfDiagnosis!=null){
+        if (adenomaAgeOfDiagnosis != null && adenomaAgeOfDiagnosis == 0) {
+            additionalDetails.put("adenomaAgeOfDiagnosis", OptionConstants.AMBRY003_012.getValue());
+        } else if (adenomaAgeOfDiagnosis != null && !additionalDetails.containsKey("adenomaAgeOfDiagnosis")) {
             additionalDetails.put("adenomaAgeOfDiagnosis", String.valueOf(adenomaAgeOfDiagnosis));
         }
         cancerDetailsDTO.setAdditionalInformation(additionalDetails);
@@ -1465,7 +1575,7 @@ public class TagGenerationUtility {
         cancerDetailsDTO.setCancerType("Melanoma");
         Set<String> tagsSet = new HashSet<>();
         tagsSet.add(cancerType + "Melanoma");
-
+        Map<String, String> additionalDetails = new HashMap<>();
         Integer ageOfDiagnosis = 0;
         for (QuestionSet questionSet : melanoma) {
             if (questionSet.getAnswerKey().equalsIgnoreCase("AMBRY033_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) {
@@ -1478,9 +1588,13 @@ public class TagGenerationUtility {
             } else if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY078") && StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = null;
             }
+            if("AMBRY078_003".equalsIgnoreCase(questionSet.getAnswerKey()) && !StringUtils.isEmpty(questionSet.getAnswerText())) {
+                additionalDetails.put("ageRange", questionSet.getAnswerText());
+                ageOfDiagnosis = getAgeFromAgeRange(questionSet.getAnswerText());
+            }
         }
         cancerDetailsDTO.setAgeOnSet(ageOfDiagnosis);
-
+        cancerDetailsDTO.setAdditionalInformation(additionalDetails);
         cancerDetailsDTO.setTags(tagsSet);
         //log.debug("Exit from getMelanomaCancerTag method of TagGenerationUtility with cancerDetailsDTO: {}", cancerDetailsDTO);
         return cancerDetailsDTO;
@@ -1517,8 +1631,12 @@ public class TagGenerationUtility {
             } else if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY030") && StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = null;
             }
-            if (questionSet.getAnswerKey().equalsIgnoreCase("AMBRY076_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) {
-                ageOfDiagnosis = Integer.valueOf(questionSet.getAnswerText());
+            if("AMBRY076_003".equalsIgnoreCase(questionSet.getAnswerKey()) && !StringUtils.isEmpty(questionSet.getAnswerText())) {
+                additionalDetails.put("ageRange", questionSet.getAnswerText());
+                ageOfDiagnosis = getAgeFromAgeRange(questionSet.getAnswerText());
+            }
+            if ((questionSet.getAnswerKey().equalsIgnoreCase("AMBRY076_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) || isKnownAge(ageOfDiagnosis)) {
+                ageOfDiagnosis = isKnownAge(ageOfDiagnosis)?ageOfDiagnosis:Integer.valueOf(questionSet.getAnswerText());
                 if (ageOfDiagnosis <= 50) {
                     tagsSet.add("FmBrain<=50");
                 }
@@ -1551,6 +1669,7 @@ public class TagGenerationUtility {
         Set<String> tagsSet = new HashSet<>();
         tagsSet.add(cancerType + "Ureter");
         Integer ageOfDiagnosis = 0;
+        Map<String, String> additionalDetails = new HashMap<>();
         for (QuestionSet questionSet : ureterRenalPelvis) {
             if (questionSet.getAnswerKey().equalsIgnoreCase("AMBRY029_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = Integer.valueOf(questionSet.getAnswerText());
@@ -1560,8 +1679,12 @@ public class TagGenerationUtility {
             } else if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY029") && StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = null;
             }
-            if (questionSet.getAnswerKey().equalsIgnoreCase("AMBRY075_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) {
-                ageOfDiagnosis = Integer.valueOf(questionSet.getAnswerText());
+            if("AMBRY075_003".equalsIgnoreCase(questionSet.getAnswerKey()) && !StringUtils.isEmpty(questionSet.getAnswerText())) {
+                additionalDetails.put("ageRange", questionSet.getAnswerText());
+                ageOfDiagnosis = getAgeFromAgeRange(questionSet.getAnswerText());
+            }
+            if ((questionSet.getAnswerKey().equalsIgnoreCase("AMBRY075_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) || isKnownAge(ageOfDiagnosis)) {
+                ageOfDiagnosis = isKnownAge(ageOfDiagnosis)?ageOfDiagnosis:Integer.valueOf(questionSet.getAnswerText());
                 if (ageOfDiagnosis <= 50) {
                     tagsSet.add("FmUreter<=50");
                 }
@@ -1573,6 +1696,7 @@ public class TagGenerationUtility {
             }
         }
         cancerDetailsDTO.setAgeOnSet(ageOfDiagnosis);
+        cancerDetailsDTO.setAdditionalInformation(additionalDetails);
         cancerDetailsDTO.setTags(tagsSet);
         //log.debug("Exit from getUreterCancerTag method of TagGenerationUtility with cancerDetailsDTO: {}", cancerDetailsDTO);
         return cancerDetailsDTO;
@@ -1593,6 +1717,7 @@ public class TagGenerationUtility {
         Set<String> tagsSet = new HashSet<>();
         tagsSet.add(cancerType + "Kidney");
         Integer ageOfDiagnosis = 0;
+        Map<String, String> additionalDetails = new HashMap<>();
         for (QuestionSet questionSet : kidney) {
             if (questionSet.getAnswerKey().equalsIgnoreCase("AMBRY028_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = Integer.valueOf(questionSet.getAnswerText());
@@ -1604,9 +1729,13 @@ public class TagGenerationUtility {
             } else if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY074") && StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = null;
             }
+            if("AMBRY074_003".equalsIgnoreCase(questionSet.getAnswerKey()) && !StringUtils.isEmpty(questionSet.getAnswerText())) {
+                additionalDetails.put("ageRange", questionSet.getAnswerText());
+                ageOfDiagnosis = getAgeFromAgeRange(questionSet.getAnswerText());
+            }
         }
         cancerDetailsDTO.setAgeOnSet(ageOfDiagnosis);
-
+        cancerDetailsDTO.setAdditionalInformation(additionalDetails);
         cancerDetailsDTO.setTags(tagsSet);
         //log.debug("Exit from getKidneyCancerTag method of TagGenerationUtility with cancerDetailsDTO: {}", cancerDetailsDTO);
         return cancerDetailsDTO;
@@ -1626,6 +1755,7 @@ public class TagGenerationUtility {
         Set<String> tagsSet = new HashSet<>();
         tagsSet.add(cancerType + "Biliary");
         Integer ageOfDiagnosis = 0;
+        Map<String, String> additionalDetails = new HashMap<>();
         for (QuestionSet questionSet : biliaryTract) {
             if (questionSet.getAnswerKey().equalsIgnoreCase("AMBRY027_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = Integer.valueOf(questionSet.getAnswerText());
@@ -1635,8 +1765,12 @@ public class TagGenerationUtility {
             } else if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY027") && StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = null;
             }
-            if (questionSet.getAnswerKey().equalsIgnoreCase("AMBRY073_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) {
-                ageOfDiagnosis = Integer.valueOf(questionSet.getAnswerText());
+            if("AMBRY073_003".equalsIgnoreCase(questionSet.getAnswerKey()) && !StringUtils.isEmpty(questionSet.getAnswerText())) {
+                additionalDetails.put("ageRange", questionSet.getAnswerText());
+                ageOfDiagnosis = getAgeFromAgeRange(questionSet.getAnswerText());
+            }
+            if ((questionSet.getAnswerKey().equalsIgnoreCase("AMBRY073_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) || isKnownAge(ageOfDiagnosis)) {
+                ageOfDiagnosis = isKnownAge(ageOfDiagnosis)?ageOfDiagnosis:Integer.valueOf(questionSet.getAnswerText());
                 if (ageOfDiagnosis <= 50) {
                     tagsSet.add("FmBiliary<=50");
                 }
@@ -1648,7 +1782,7 @@ public class TagGenerationUtility {
             }
         }
         cancerDetailsDTO.setAgeOnSet(ageOfDiagnosis);
-
+        cancerDetailsDTO.setAdditionalInformation(additionalDetails);
         cancerDetailsDTO.setTags(tagsSet);
         //log.debug("Exit from getBiliaryTractCancerTags method of TagGenerationUtility with cancerDetailsDTO: {}", cancerDetailsDTO);
         return cancerDetailsDTO;
@@ -1670,6 +1804,7 @@ public class TagGenerationUtility {
         Set<String> tagsSet = new HashSet<>();
         tagsSet.add(cancerType + "SmBowel");
         Integer ageOfDiagnosis = 0;
+        Map<String, String> additionalDetails = new HashMap<>();
         for (QuestionSet questionSet : smallIntestineOrSmallBowel) {
             if (questionSet.getAnswerKey().equalsIgnoreCase("AMBRY026_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = Integer.valueOf(questionSet.getAnswerText());
@@ -1679,8 +1814,12 @@ public class TagGenerationUtility {
             } else if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY026") && StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = null;
             }
-            if (questionSet.getAnswerKey().equalsIgnoreCase("AMBRY072_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) {
-                ageOfDiagnosis = Integer.valueOf(questionSet.getAnswerText());
+            if("AMBRY072_003".equalsIgnoreCase(questionSet.getAnswerKey()) && !StringUtils.isEmpty(questionSet.getAnswerText())) {
+                additionalDetails.put("ageRange", questionSet.getAnswerText());
+                ageOfDiagnosis = getAgeFromAgeRange(questionSet.getAnswerText());
+            }
+            if ((questionSet.getAnswerKey().equalsIgnoreCase("AMBRY072_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) || isKnownAge(ageOfDiagnosis)) {
+                ageOfDiagnosis = isKnownAge(ageOfDiagnosis)?ageOfDiagnosis:Integer.valueOf(questionSet.getAnswerText());
                 if (ageOfDiagnosis <= 50) {
                     tagsSet.add("FmSmBowel<=50");
                 }
@@ -1693,6 +1832,7 @@ public class TagGenerationUtility {
         }
         cancerDetailsDTO.setAgeOnSet(ageOfDiagnosis);
         cancerDetailsDTO.setTags(tagsSet);
+        cancerDetailsDTO.setAdditionalInformation(additionalDetails);
         //log.debug("Exit from getSmallIntestineCancerTags method of TagGenerationUtility with cancerDetailsDTO: {}", cancerDetailsDTO);
         return cancerDetailsDTO;
     }
@@ -1721,8 +1861,12 @@ public class TagGenerationUtility {
             } else if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY025") && StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = null;
             }
-            if (questionSet.getAnswerKey().equalsIgnoreCase("AMBRY071_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) {
-                ageOfDiagnosis = Integer.valueOf(questionSet.getAnswerText());
+            if("AMBRY071_003".equalsIgnoreCase(questionSet.getAnswerKey()) && !StringUtils.isEmpty(questionSet.getAnswerText())) {
+                additionalDetails.put("ageRange", questionSet.getAnswerText());
+                ageOfDiagnosis = getAgeFromAgeRange(questionSet.getAnswerText());
+            }
+            if ((questionSet.getAnswerKey().equalsIgnoreCase("AMBRY071_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) || isKnownAge(ageOfDiagnosis)) {
+                ageOfDiagnosis = isKnownAge(ageOfDiagnosis)?ageOfDiagnosis:Integer.valueOf(questionSet.getAnswerText());
                 if (ageOfDiagnosis <= 50) {
                     tagsSet.add(NCCNTagConstants.FM_GASTRIC_LTE_50.getValue());
                 }
@@ -1773,6 +1917,7 @@ public class TagGenerationUtility {
         Set<String> tagsSet = new HashSet<>();
         tagsSet.add(cancerType + "Endometrial");
         Integer ageOfDiagnosis = 0;
+        Map<String, String> additionalDetails = new HashMap<>();
         for (QuestionSet questionSet : uterineOrEndometrial) {
             if (questionSet.getAnswerKey().equalsIgnoreCase("AMBRY024_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = Integer.valueOf(questionSet.getAnswerText());
@@ -1785,8 +1930,12 @@ public class TagGenerationUtility {
             } else if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY024") && StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = null;
             }
-            if (questionSet.getAnswerKey().equalsIgnoreCase("AMBRY070_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) {
-                ageOfDiagnosis = Integer.valueOf(questionSet.getAnswerText());
+            if("AMBRY070_003".equalsIgnoreCase(questionSet.getAnswerKey()) && !StringUtils.isEmpty(questionSet.getAnswerText())) {
+                additionalDetails.put("ageRange", questionSet.getAnswerText());
+                ageOfDiagnosis = getAgeFromAgeRange(questionSet.getAnswerText());
+            }
+            if ((questionSet.getAnswerKey().equalsIgnoreCase("AMBRY070_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) || isKnownAge(ageOfDiagnosis)) {
+                ageOfDiagnosis = isKnownAge(ageOfDiagnosis)?ageOfDiagnosis:Integer.valueOf(questionSet.getAnswerText());
                 if (ageOfDiagnosis <= 50) {
                     tagsSet.add("FmEndometrial<=50");
                 }
@@ -1798,7 +1947,7 @@ public class TagGenerationUtility {
             }
         }
         cancerDetailsDTO.setAgeOnSet(ageOfDiagnosis);
-
+        cancerDetailsDTO.setAdditionalInformation(additionalDetails);
         cancerDetailsDTO.setTags(tagsSet);
         //log.debug("Exit from getUterineOrEndometrialCancerTags method of TagGenerationUtility with cancerDetailsDTO: {}", cancerDetailsDTO);
         return cancerDetailsDTO;
@@ -1819,6 +1968,7 @@ public class TagGenerationUtility {
         Set<String> tagsSet = new HashSet<>();
         tagsSet.add(cancerType + TagConstants.PANCREATIC.getValue());
         Integer ageOfDiagnosis = 0;
+        Map<String, String> additionalDetails = new HashMap<>();
         for (QuestionSet questionSet : pancreatic) {
             if (questionSet.getAnswerKey().equalsIgnoreCase("AMBRY023_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = Integer.valueOf(questionSet.getAnswerText());
@@ -1828,8 +1978,12 @@ public class TagGenerationUtility {
             } else if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY023") && StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = null;
             }
-            if (questionSet.getAnswerKey().equalsIgnoreCase("AMBRY069_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) {
-                ageOfDiagnosis = Integer.valueOf(questionSet.getAnswerText());
+            if("AMBRY069_003".equalsIgnoreCase(questionSet.getAnswerKey()) && !StringUtils.isEmpty(questionSet.getAnswerText())) {
+                additionalDetails.put("ageRange", questionSet.getAnswerText());
+                ageOfDiagnosis = getAgeFromAgeRange(questionSet.getAnswerText());
+            }
+            if ((questionSet.getAnswerKey().equalsIgnoreCase("AMBRY069_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) || isKnownAge(ageOfDiagnosis)) {
+                ageOfDiagnosis = isKnownAge(ageOfDiagnosis)?ageOfDiagnosis:Integer.valueOf(questionSet.getAnswerText());
                 if (ageOfDiagnosis <= 50) {
                     tagsSet.add("FmPancreatic<=50");
                 }
@@ -1842,6 +1996,7 @@ public class TagGenerationUtility {
         }
         cancerDetailsDTO.setAgeOnSet(ageOfDiagnosis);
         cancerDetailsDTO.setTags(tagsSet);
+        cancerDetailsDTO.setAdditionalInformation(additionalDetails);
         //log.debug("Exit from getPancreaticCancerTags method of TagGenerationUtility with cancerDetailsDTO: {}", cancerDetailsDTO);
         return cancerDetailsDTO;
     }
@@ -1886,8 +2041,13 @@ public class TagGenerationUtility {
             } else if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY021") && StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = null;
             }
-            if (questionSet.getAnswerKey().equalsIgnoreCase("AMBRY068_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) {
-                ageOfDiagnosis = Integer.valueOf(questionSet.getAnswerText());
+            if("AMBRY068_003".equalsIgnoreCase(questionSet.getAnswerKey()) && !StringUtils.isEmpty(questionSet.getAnswerText())) {
+                additionalDetails.put("ageRange", questionSet.getAnswerText());
+                ageOfDiagnosis = getAgeFromAgeRange(questionSet.getAnswerText());
+            }
+            if ((questionSet.getAnswerKey().equalsIgnoreCase("AMBRY068_001") && !StringUtils.isEmpty(questionSet.getAnswerText()))
+                    || isKnownAge(ageOfDiagnosis)) {
+                ageOfDiagnosis = isKnownAge(ageOfDiagnosis)?ageOfDiagnosis:Integer.valueOf(questionSet.getAnswerText());
                 if (ageOfDiagnosis <= 50) {
                     tagsSet.add("FmColon<=50");
                 }
@@ -1970,8 +2130,13 @@ public class TagGenerationUtility {
             } else if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY008") && StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = null;
             }
-            if (questionSet.getAnswerKey().equalsIgnoreCase("AMBRY058_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) {
-                ageOfDiagnosis = Integer.valueOf(questionSet.getAnswerText());
+            if("AMBRY058_003".equalsIgnoreCase(questionSet.getAnswerKey()) && !StringUtils.isEmpty(questionSet.getAnswerText())) {
+                additionalDetails.put("ageRange", questionSet.getAnswerText());
+                ageOfDiagnosis = getAgeFromAgeRange(questionSet.getAnswerText());
+            }
+            if ((questionSet.getAnswerKey().equalsIgnoreCase("AMBRY058_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) ||
+                    isKnownAge(ageOfDiagnosis)) {
+                ageOfDiagnosis = isKnownAge(ageOfDiagnosis)?ageOfDiagnosis:Integer.valueOf(questionSet.getAnswerText());
                 if (ageOfDiagnosis <= 50) {
                     tagsSet.add("FmBreast<=50");
                 }
@@ -2054,8 +2219,13 @@ public class TagGenerationUtility {
             } else if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY013") && StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = null;
             }
-            if (questionSet.getAnswerKey().equalsIgnoreCase("AMBRY061_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) {
-                ageOfDiagnosis = Integer.valueOf(questionSet.getAnswerText());
+            if("AMBRY061_003".equalsIgnoreCase(questionSet.getAnswerKey()) && !StringUtils.isEmpty(questionSet.getAnswerText())) {
+                additionalDetails.put("ageRange", questionSet.getAnswerText());
+                ageOfDiagnosis = getAgeFromAgeRange(questionSet.getAnswerText());
+            }
+            if ((questionSet.getAnswerKey().equalsIgnoreCase("AMBRY061_001") && !StringUtils.isEmpty(questionSet.getAnswerText()))
+                    || isKnownAge(ageOfDiagnosis)) {
+                ageOfDiagnosis = isKnownAge(ageOfDiagnosis)?ageOfDiagnosis:Integer.valueOf(questionSet.getAnswerText());
                 if (ageOfDiagnosis <= 50) {
                     tagsSet.add("FmOvarian<=50");
                 }
@@ -2088,6 +2258,7 @@ public class TagGenerationUtility {
         CancerDetailsDTO cancerDetailsDTO = new CancerDetailsDTO();
         cancerDetailsDTO.setCancerType(TagConstants.FALLOPIAN.getValue());
         Integer ageOfDiagnosis = 0;
+        Map<String, String> additionalDetails = new HashMap<>();
         for (QuestionSet questionSet : fallopianTubeOrPeritoneal) {
             if (questionSet.getAnswerKey().equalsIgnoreCase("AMBRY015_001") && !StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = Integer.valueOf(questionSet.getAnswerText());
@@ -2099,9 +2270,14 @@ public class TagGenerationUtility {
             } else if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY063") && StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = null;
             }
+            if("AMBRY063_003".equalsIgnoreCase(questionSet.getAnswerKey()) && !StringUtils.isEmpty(questionSet.getAnswerText())) {
+                additionalDetails.put("ageRange", questionSet.getAnswerText());
+                ageOfDiagnosis = getAgeFromAgeRange(questionSet.getAnswerText());
+            }
         }
         cancerDetailsDTO.setAgeOnSet(ageOfDiagnosis);
         cancerDetailsDTO.setTags(tagsSet);
+        cancerDetailsDTO.setAdditionalInformation(additionalDetails);
         //log.debug("Exit from getFallopianTubeTags method of TagGenerationUtility with cancerDetailsDTO: {}", cancerDetailsDTO);
         return cancerDetailsDTO;
     }
@@ -2158,6 +2334,10 @@ public class TagGenerationUtility {
             } else if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY064") && StringUtils.isEmpty(questionSet.getAnswerText())) {
                 ageOfDiagnosis = null;
             }
+            if("AMBRY064_003".equalsIgnoreCase(questionSet.getAnswerKey()) && !StringUtils.isEmpty(questionSet.getAnswerText())) {
+                additionalDetails.put("ageRange", questionSet.getAnswerText());
+                ageOfDiagnosis = getAgeFromAgeRange(questionSet.getAnswerText());
+            }
         }
         tagsSet.addAll(getTagsForSelectedOptions(prostate));
         cancerDetailsDTO.setAdditionalInformation(additionalDetails);
@@ -2200,39 +2380,53 @@ public class TagGenerationUtility {
         //log.info("Entered into checkColorectalPolypsHistory method of TagGenerationUtility with basicQuestions(QuestionSet)");
         PersonalHistoryDetails personalHistoryDetails = personalHistoryTagsDTO.getPersonalHistoryDetails();
         Set<String> tagSet = personalHistoryTagsDTO.getTags();
-        tagSet.addAll(getTagsForSelectedOptions(basicQuestions));
+        if (basicQuestions != null)
+            tagSet.addAll(getTagsForSelectedOptions(basicQuestions));
         personalHistoryTagsDTO.setTags(tagSet);
-        for (QuestionSet questionSet : basicQuestions) {
-            if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY051")) {
-                personalHistoryDetails.setNewColorectalPolypHx(OptionConstants.valueOf(questionSet.getAnswerKey().toUpperCase()).getValue());
-            }
-            if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY125")) {
-                personalHistoryDetails.setColonoscopy(OptionConstants.valueOf(questionSet.getAnswerKey().toUpperCase()).getValue());
-            }
-            if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY116")) {
-                personalHistoryDetails.setIsPolypAdenomas(OptionConstants.valueOf(questionSet.getAnswerKey().toUpperCase()).getValue());
-            }
-            if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY117")) {
-                if (isOldVersion) {
-                    personalHistoryDetails.setCountOfPolyps(OptionConstants.valueOf(questionSet.getAnswerKey().toUpperCase() + "_OLD").getValue());
-                } else {
-                    personalHistoryDetails.setCountOfPolyps(OptionConstants.valueOf(questionSet.getAnswerKey().toUpperCase()).getValue());
+        String hasGeneticTesting = null;
+        if (basicQuestions != null) {
+            for (QuestionSet questionSet : basicQuestions) {
+                if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY051")) {
+                    personalHistoryDetails.setNewColorectalPolypHx(OptionConstants.valueOf(questionSet.getAnswerKey().toUpperCase()).getValue());
                 }
-            }
-            if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY118")) {
-                personalHistoryDetails.setIsDesmoidTumor(OptionConstants.valueOf(questionSet.getAnswerKey().toUpperCase()).getValue());
-            }
-            if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY119")) {
-                personalHistoryDetails.setHadGeneticTesting(OptionConstants.valueOf(questionSet.getAnswerKey().toUpperCase()).getValue());
-            }
-            if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY120")) {
-                personalHistoryDetails.setResultOfGeneticTesting(OptionConstants.valueOf(questionSet.getAnswerKey().toUpperCase()).getValue());
-            }
-            if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY126")) {
-                if (questionSet.getAnswerKey().equalsIgnoreCase("AMBRY126_002")) {
-                    personalHistoryDetails.setYearOfGeneticTesting(OptionConstants.valueOf(questionSet.getAnswerKey().toUpperCase()).getValue());
-                } else {
-                    personalHistoryDetails.setYearOfGeneticTesting(questionSet.getAnswerText());
+                if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY125")) {
+                    personalHistoryDetails.setColonoscopy(OptionConstants.valueOf(questionSet.getAnswerKey().toUpperCase()).getValue());
+                }
+                if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY116")) {
+                    personalHistoryDetails.setIsPolypAdenomas(OptionConstants.valueOf(questionSet.getAnswerKey().toUpperCase()).getValue());
+                }
+                if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY117")) {
+                    if (isOldVersion) {
+                        personalHistoryDetails.setCountOfPolyps(OptionConstants.valueOf(questionSet.getAnswerKey().toUpperCase() + "_OLD").getValue());
+                    } else {
+                        personalHistoryDetails.setCountOfPolyps(OptionConstants.valueOf(questionSet.getAnswerKey().toUpperCase()).getValue());
+                    }
+                }
+                if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY118")) {
+                    personalHistoryDetails.setIsDesmoidTumor(OptionConstants.valueOf(questionSet.getAnswerKey().toUpperCase()).getValue());
+                }
+                if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY119")) {
+                    personalHistoryDetails.setHadGeneticTesting(OptionConstants.valueOf(questionSet.getAnswerKey().toUpperCase()).getValue());
+                }
+                if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY120")) {
+                    hasGeneticTesting = questionSet.getAnswerKey();
+                }
+                if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY120") && !questionSet.getAnswerKey().equalsIgnoreCase("AMBRY120_006")) {
+                    if (questionSet.getAnswerKey().equalsIgnoreCase("AMBRY120_001")) {
+                        personalHistoryDetails.setResultOfGeneticTesting("Negative");
+                    } else if (questionSet.getAnswerKey().equalsIgnoreCase("AMBRY120_007")) {
+                        personalHistoryDetails.setResultOfGeneticTesting("VUS");
+                    } else {
+                        personalHistoryDetails.setResultOfGeneticTesting(OptionConstants.valueOf(questionSet.getAnswerKey().toUpperCase()).getValue());
+                    }
+                } else
+                    fetchGeneticTesting(questionSet, personalHistoryDetails, hasGeneticTesting);
+                if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY126")) {
+                    if (questionSet.getAnswerKey().equalsIgnoreCase("AMBRY126_002")) {
+                        personalHistoryDetails.setYearOfGeneticTesting(OptionConstants.valueOf(questionSet.getAnswerKey().toUpperCase()).getValue());
+                    } else {
+                        personalHistoryDetails.setYearOfGeneticTesting(questionSet.getAnswerText());
+                    }
                 }
             }
         }
@@ -2271,7 +2465,7 @@ public class TagGenerationUtility {
             PersonalHistory personalHistory = questionnaire.getPersonalHistory();
             List<CancerDetailsObject> cancerDetailsList = new ArrayList<>();
             List<CancerDetailsDTO> personalCancerDetailsDTOList = new ArrayList<>();
-            if (isPersonalHistory) {
+            if (isPersonalHistory && personalHistory.getPersonalCancerDetails() != null) {
                 CancerDetails personalCancerDetails = personalHistory.getPersonalCancerDetails();
                 personalCancerDetailsDTOList = getPersonalCancerTags(personalCancerDetails, considerGleasonScore, gleasonScoreValue);
                 personalCancerDetailsDTOList.forEach(cancerDetailsDTO -> {
@@ -2294,7 +2488,7 @@ public class TagGenerationUtility {
             personalHistoryDetails.setCancerDetails(cancerDetailsList);
             tagsSet.addAll(personalCancerDetailsDTOList.stream().map(CancerDetailsDTO::getTags).flatMap(Collection::stream).collect(Collectors.toSet()));
         }
-        if (questionnaire.getFamilyCancer() != null) {
+        if (questionnaire.getFamilyCancer() != null && questionnaire.getFamilyCancer().getBasicQuestions() != null) {
             personalHistoryDetails.setAdopted(checkIfAdopted(questionnaire.getFamilyCancer().getBasicQuestions()));
         }
         if (isPersonalHistory) {
@@ -2330,6 +2524,9 @@ public class TagGenerationUtility {
                 // we need to nullify the abnormal biopsy hx (old question) to hide it on CS
                 if (OptionConstants.valueOf(filteredQuestion.get(BIOPSY_RESULT)).getValue().equalsIgnoreCase(I_DONT_KNOW)) {
                     personalHistoryDetails.setBreastBiopsyResult(UNKNOWN);
+                } else if (filteredQuestion.values().stream().anyMatch(ABNORMAL_BREAST_BIOPSY_ANSWER_KEY::contains)) {
+                    personalHistoryDetails.setBreastBiopsyResult(ABNORMAL);
+                    personalHistoryDetails.setAbnormalBreastBiopsyResult(OptionConstants.valueOf(filteredQuestion.get(BIOPSY_RESULT)).getValue());
                 } else {
                     personalHistoryDetails.setBreastBiopsyResult(OptionConstants.valueOf(filteredQuestion.get(BIOPSY_RESULT)).getValue());
                 }
@@ -2425,6 +2622,9 @@ public class TagGenerationUtility {
             lynchSameRelativeTagsForMatA.add("FmColonMatFDR");
             lynchSameRelativeTagsForMatA.add("FmEndometrialMatFDR");
 
+            lynchSameRelativeTagsForMatA.add("FmColonMatSDR");
+            lynchSameRelativeTagsForMatA.add("FmEndometrialMatSDR");
+
             List<String> lynchSameRelativeTagsForMatB = new ArrayList<>();
             lynchSameRelativeTagsForMatB.add("FmBiliaryMatFDR");
             lynchSameRelativeTagsForMatB.add("FmBrainMatFDR");
@@ -2435,8 +2635,24 @@ public class TagGenerationUtility {
             lynchSameRelativeTagsForMatB.add("FmSmBowelMatFDR");
             lynchSameRelativeTagsForMatB.add("FmUreterMatFDR");
             lynchSameRelativeTagsForMatB.add("FmBladderMatFDR");
+            lynchSameRelativeTagsForMatB.add("FmGallbladderMatFDR");
+            lynchSameRelativeTagsForMatB.add("FmEndometrialMatFDR");
 
-            if (tags.contains("FmColon>=2DxMatFDR") || (!Collections.disjoint(tags, lynchSameRelativeTagsForMatA) && !Collections.disjoint(tags, lynchSameRelativeTagsForMatB)) || tags.containsAll(lynchSameRelativeTagsForMatA)) {
+            lynchSameRelativeTagsForMatB.add("FmBiliaryMatSDR");
+            lynchSameRelativeTagsForMatB.add("FmBrainMatSDR");
+            lynchSameRelativeTagsForMatB.add("FmGastricMatSDR");
+            lynchSameRelativeTagsForMatB.add("FmOvarianMatSDR");
+            lynchSameRelativeTagsForMatB.add("FmPancreaticMatSDR");
+            lynchSameRelativeTagsForMatB.add("FmSebAdenoCarMatSDR");
+            lynchSameRelativeTagsForMatB.add("FmSmBowelMatSDR");
+            lynchSameRelativeTagsForMatB.add("FmUreterMatSDR");
+            lynchSameRelativeTagsForMatB.add("FmBladderMatSDR");
+            lynchSameRelativeTagsForMatB.add("FmGallbladderMatSDR");
+            lynchSameRelativeTagsForMatB.add("FmEndometrialMatSDR");
+
+            if (tags.contains("FmColon>=2DxMatFDR") || tags.contains("FmColon>=2DxMatSDR") ||
+                    hasDistinctAandBMatch(lynchSameRelativeTagsForMatA, lynchSameRelativeTagsForMatB, tags) ||
+                    tags.containsAll(lynchSameRelativeTagsForMatA)) {
                 lynchReasoningStatements.add(ReasoningStatementConstants.CRCRS9.getValue());
             }
 
@@ -2444,6 +2660,9 @@ public class TagGenerationUtility {
             List<String> lynchSameRelativeTagsForPatA = new ArrayList<>();
             lynchSameRelativeTagsForPatA.add("FmColonPatFDR");
             lynchSameRelativeTagsForPatA.add("FmEndometrialPatFDR");
+
+            lynchSameRelativeTagsForPatA.add("FmColonPatSDR");
+            lynchSameRelativeTagsForPatA.add("FmEndometrialPatSDR");
 
             List<String> lynchSameRelativeTagsForPatB = new ArrayList<>();
             lynchSameRelativeTagsForPatB.add("FmBiliaryPatFDR");
@@ -2455,8 +2674,25 @@ public class TagGenerationUtility {
             lynchSameRelativeTagsForPatB.add("FmSmBowelPatFDR");
             lynchSameRelativeTagsForPatB.add("FmUreterPatFDR");
             lynchSameRelativeTagsForPatB.add("FmBladderPatFDR");
+            lynchSameRelativeTagsForPatB.add("FmGallbladderPatFDR");
+            lynchSameRelativeTagsForPatB.add("FmEndometrialPatFDR");
 
-            if (tags.contains("FmColon>=2DxPatFDR") || (!Collections.disjoint(tags, lynchSameRelativeTagsForPatA) && !Collections.disjoint(tags, lynchSameRelativeTagsForPatB)) || tags.containsAll(lynchSameRelativeTagsForPatA)) {
+            lynchSameRelativeTagsForPatB.add("FmBiliaryPatSDR");
+            lynchSameRelativeTagsForPatB.add("FmBrainPatSDR");
+            lynchSameRelativeTagsForPatB.add("FmGastricPatSDR");
+            lynchSameRelativeTagsForPatB.add("FmOvarianPatSDR");
+            lynchSameRelativeTagsForPatB.add("FmPancreaticPatSDR");
+            lynchSameRelativeTagsForPatB.add("FmSebAdenoCarPatSDR");
+            lynchSameRelativeTagsForPatB.add("FmSmBowelPatSDR");
+            lynchSameRelativeTagsForPatB.add("FmUreterPatSDR");
+            lynchSameRelativeTagsForPatB.add("FmBladderPatSDR");
+            lynchSameRelativeTagsForPatB.add("FmGallbladderPatSDR");
+            lynchSameRelativeTagsForPatB.add("FmEndometrialPatSDR");
+
+
+            if (tags.contains("FmColon>=2DxPatFDR") || tags.contains("FmColon>=2DxPatSDR") ||
+                    hasDistinctAandBMatch(lynchSameRelativeTagsForPatA, lynchSameRelativeTagsForPatB, tags) ||
+                    tags.containsAll(lynchSameRelativeTagsForPatA)) {
                 lynchReasoningStatements.add(ReasoningStatementConstants.CRCRS9.getValue());
             }
         }
@@ -2525,5 +2761,86 @@ public class TagGenerationUtility {
 
         }
         return gleasonScoreObject;
+    }
+
+    /**
+     * Whether an age of diagnosis has been resolved; a blank age answer leaves it null and 0 means not yet set.
+     */
+    private static boolean isKnownAge(Integer ageOfDiagnosis) {
+        return ageOfDiagnosis != null && ageOfDiagnosis != 0;
+    }
+
+    private boolean hasDistinctAandBMatch(List<String> aList, List<String> bList, Collection<String> tags) {
+        Map<String, Integer> tagCounts = new HashMap<>();
+        for (String tag : tags) {
+            tagCounts.put(tag, tagCounts.getOrDefault(tag, 0) + 1);
+        }
+
+        boolean foundA = false;
+
+        for (String a : aList) {
+            if (tagCounts.getOrDefault(a, 0) > 0) {
+                foundA = true;
+                tagCounts.put(a, tagCounts.get(a) - 1);
+                break;
+            }
+        }
+
+        if (!foundA) return false;
+
+        for (String b : bList) {
+            if (tagCounts.getOrDefault(b, 0) > 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Fetch and update the genetic testing information
+     */
+    public void fetchGeneticTesting(QuestionSet questionSet, PersonalHistoryDetails personalHistoryDetails, String hasGeneticTesting) {
+        log.info("Entered into fetchGeneticTesting()");
+        if (!StringUtils.isEmpty(hasGeneticTesting) && hasGeneticTesting.equalsIgnoreCase("AMBRY120_006")) {
+                if (questionSet.getQuestionKey().equalsIgnoreCase("AMBRY188")) {
+                    String result = "Positive - ";
+                    if (questionSet.getAnswerKey().equalsIgnoreCase("AMBRY188_001")) {
+                        personalHistoryDetails.setResultOfGeneticTesting(result.concat(OptionConstants.valueOf(questionSet.getAnswerKey().toUpperCase()).getValue()));
+                    } else {
+                        String genes = questionSet.getAnswerKey();
+                        String geneValue = "";
+                        if (!StringUtils.isEmpty(genes)) {
+                            geneValue = Arrays.stream(genes.split(","))
+                                    .map(String::trim)
+                                    .filter(g -> !StringUtils.isEmpty(g))
+                                    .map(g -> OptionConstants.valueOf(g.toUpperCase()).getValue())
+                                    .collect(Collectors.joining(", "));
+                            personalHistoryDetails.setResultOfGeneticTesting(result.concat(geneValue));
+                        }
+                    }
+                }
+        }
+        log.info("Exit from fetchGeneticTesting()");
+    }
+
+    public Integer getAgeFromAgeRange(String ageRange) {
+        switch(ageRange) {
+            case "1-9": return 5;
+            case "10-19": return 15;
+            case "<19": return 18;
+            case "20-29": return 25;
+            case "30-39": return 35;
+            case "40-45": return 43;
+            case "40-49": return 45;
+            case "46-50": return 48;
+            case "50-59":
+            case "51-59":
+                return 55;
+            case "60-69": return 65;
+            case "70-79": return 75;
+            case "80-89": return 85;
+            case ">90": return 91;
+            default: return 0;
+        }
     }
 }

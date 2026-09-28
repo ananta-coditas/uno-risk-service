@@ -31,7 +31,7 @@ RUN mvn install:install-file -Dfile=./dependencies/GailModel-0.0.1-SNAPSHOT.jar 
 RUN mvn install:install-file -Dfile=./dependencies/REngine.jar -DgroupId=org.rosouda -DartifactId=REngine -Dversion=1.8.0_241 -Dpackaging=jar
 RUN mvn install:install-file -Dfile=./dependencies/Rserve.jar -DgroupId=org.rosouda -DartifactId=Rserve -Dversion=1.8.0_241 -Dpackaging=jar
 
-RUN mvn install:install-file -Dfile=./dependencies/RiskObjects-2.1.jar -DgroupId=com.objex -DartifactId=RiskObjects -Dversion=2.1 -Dpackaging=jar
+RUN mvn install:install-file -Dfile=./dependencies/RiskObjects-2.2.jar -DgroupId=com.objex -DartifactId=RiskObjects -Dversion=2.2 -Dpackaging=jar
 
 COPY pom.xml .
 COPY src/ src/

@@ -23,9 +23,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import com.genomebrain.backend.quesstionnaire.QuestionSet;
 import com.genomebrain.backend.quesstionnaire.Questionnaire;
@@ -45,6 +48,9 @@ class CareAPIUtilTest {
 
     @Mock
     private GuideLineUtility guideLineUtility;
+
+    @Spy
+    private DateConversionUtil dateConversionUtil = new DateConversionUtil();
 
     @InjectMocks
     private CareAPIUtil careAPIUtil;
@@ -3379,5 +3385,117 @@ class CareAPIUtilTest {
             .anyMatch(q -> "AMBRY186".equals(q.getQuestionKey()) && "Yes".equalsIgnoreCase(q.getAnswerText())))
             .isTrue();
     }
-}
 
+    // ========== Gastric criteria, date assessed and polyp count ==========
+
+    private static GuidelineDetailsDTO guidelineDetails(ClinicalSummary clinicalSummary, String... reasoningStatementIds) {
+        GuidelineDetailsDTO guidelineDetailsDTO = new GuidelineDetailsDTO();
+        guidelineDetailsDTO.setClinicalSummary(clinicalSummary);
+        StringBuilder json = new StringBuilder("{\"reasoningStatements\":[");
+        for (int i = 0; i < reasoningStatementIds.length; i++) {
+            json.append(i == 0 ? "" : ",").append("{\"reasoningStatementId\":\"").append(reasoningStatementIds[i]).append("\"}");
+        }
+        guidelineDetailsDTO.setReasoningStatementAndTagsSet(json.append("]}").toString());
+        return guidelineDetailsDTO;
+    }
+
+    @Test
+    @DisplayName("should_mapGastricCriteriaAndIds_when_gastricCriteriaAreMet")
+    void should_mapGastricCriteriaAndIds_when_gastricCriteriaAreMet() throws Exception {
+        ClinicalSummary clinicalSummary = new ClinicalSummary();
+        clinicalSummary.setRiskAssessmentNccnForGastric(new HashSet<>(Set.of("gastric statement")));
+
+        NCCNCoreResponse result = careAPIUtil.CAREAPIResponseMapper(
+            guidelineDetails(clinicalSummary, "CRCRS14", "CRCRS10"), new NCCNCoreRequest());
+
+        assertThat(result.getGastricCriteriaMet()).containsExactly("gastric statement");
+        assertThat(result.getGastricCriteriaMetIds()).containsExactly("CRCRS14");
+    }
+
+    @Test
+    @DisplayName("should_leaveGastricFieldsNull_when_noGastricCriteriaAreMet")
+    void should_leaveGastricFieldsNull_when_noGastricCriteriaAreMet() throws Exception {
+        NCCNCoreResponse result = careAPIUtil.CAREAPIResponseMapper(
+            guidelineDetails(new ClinicalSummary(), "CRCRS10"), new NCCNCoreRequest());
+
+        assertThat(result.getGastricCriteriaMet()).isNull();
+        assertThat(result.getGastricCriteriaMetIds()).isNull();
+    }
+
+    @Test
+    @DisplayName("should_stampTodaysDate_when_mappingTheResponse")
+    void should_stampTodaysDate_when_mappingTheResponse() throws Exception {
+        NCCNCoreResponse result = careAPIUtil.CAREAPIResponseMapper(
+            guidelineDetails(new ClinicalSummary()), new NCCNCoreRequest());
+
+        assertThat(result.getDateAssessed()).isEqualTo(java.time.LocalDate.now().toString());
+    }
+
+    @ParameterizedTest(name = "exact={0}, min={1}, other={2} -> {3}")
+    @CsvSource(nullValues = "null", value = {
+        "10, null, null, true",
+        "9, null, null, false",
+        "null, 12, null, true",
+        "null, null, Numerous, true",
+        "null, null, a few, false",
+        "null, null, null, false"
+    })
+    @DisplayName("should_detectTenOrMorePolyps_when_anyCountFieldExceedsNine")
+    void should_detectTenOrMorePolyps_when_anyCountFieldExceedsNine(String exact, String min, String other, boolean expected) {
+        PolypDetails polypDetails = new PolypDetails();
+        polypDetails.setExactNumOfPolyps(exact);
+        polypDetails.setMinNumOfPolyps(min);
+        polypDetails.setOtherNumOfPolyps(other);
+
+        assertThat(careAPIUtil.isPolypGreaterThanNine(polypDetails)).isEqualTo(expected);
+    }
+
+    @Test
+    @DisplayName("should_keepRelativeCancerOverallQuestion_when_relativesAlsoReportPolyps")
+    void should_keepRelativeCancerOverallQuestion_when_relativesAlsoReportPolyps() throws ConnectException {
+        ClinicalHistory proband = new ClinicalHistory();
+        proband.setRelationship("Proband");
+        proband.setEthnicity(Collections.emptyList());
+        proband.setCancerOverall("NO");
+        proband.setCancerFeatureDetails(new ArrayList<>());
+        ClinicalHistory mother = new ClinicalHistory();
+        mother.setRelationship("Mother");
+        mother.setPolypOverall("YES");
+        CancerFeatureDetails breast = new CancerFeatureDetails();
+        breast.setCancerFeature("BREAST");
+        mother.setCancerFeatureDetails(new ArrayList<>(List.of(breast)));
+        NCCNCoreRequest request = new NCCNCoreRequest();
+        request.setClinicalHistory(new ArrayList<>(List.of(proband, mother)));
+        ArgumentCaptor<Questionnaire> questionnaire = ArgumentCaptor.forClass(Questionnaire.class);
+        when(guideLineUtility.getClinicalSummaryAndTags(questionnaire.capture(), anyBoolean(), any(), any(), anyBoolean(), anyBoolean()))
+            .thenReturn(null);
+
+        careAPIUtil.getQuestionObject(request);
+
+        String relativeCancerOverallKey = NCCNQuestionMapper.getQuestionSet("relativeCancerOverall", "YES").getQuestionKey();
+        assertThat(questionnaire.getValue().getFamilyCancer().getBasicQuestions())
+            .extracting(QuestionSet::getQuestionKey)
+            .contains(relativeCancerOverallKey)
+            .hasSizeGreaterThan(1);
+    }
+
+    @Test
+    @DisplayName("should_leaveSexQuestionUnanswered_when_probandSexIsUnknown")
+    void should_leaveSexQuestionUnanswered_when_probandSexIsUnknown() throws ConnectException {
+        ClinicalHistory proband = new ClinicalHistory();
+        proband.setRelationship("Proband");
+        proband.setSexAtBirth("unknown");
+        proband.setEthnicity(Collections.emptyList());
+        proband.setCancerOverall("NO");
+        proband.setCancerFeatureDetails(new ArrayList<>());
+        NCCNCoreRequest request = new NCCNCoreRequest();
+        request.setClinicalHistory(new ArrayList<>(List.of(proband)));
+        ArgumentCaptor<Questionnaire> questionnaire = ArgumentCaptor.forClass(Questionnaire.class);
+        when(guideLineUtility.getClinicalSummaryAndTags(questionnaire.capture(), anyBoolean(), any(), any(), anyBoolean(), anyBoolean()))
+            .thenReturn(null);
+
+        careAPIUtil.getQuestionObject(request);
+
+        assertThat(questionnaire.getValue().getDemographic()).extracting(QuestionSet::getAnswerKey).doesNotContainNull();
+    }
+}

@@ -74,4 +74,22 @@ public class QuestionSet {
     public void setPreviewLabel_ES(String previewLabel_ES) {
         this.previewLabel_ES = previewLabel_ES;
     }
+
+    public QuestionSet(String questionText, String questionKey, String answerText, String answerKey) {
+        QuestionText = questionText;
+        QuestionKey = questionKey;
+        AnswerText = answerText;
+        AnswerKey = answerKey;
+    }
+
+    public QuestionSet() {
+    }
+
+    public QuestionSet(String questionText, String questionKey, String answerText, String answerKey, String category) {
+        QuestionText = questionText;
+        QuestionKey = questionKey;
+        AnswerText = answerText;
+        AnswerKey = answerKey;
+        this.category = category;
+    }
 }

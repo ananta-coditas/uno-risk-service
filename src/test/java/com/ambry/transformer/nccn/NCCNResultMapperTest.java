@@ -232,5 +232,28 @@ class NCCNResultMapperTest {
         assertThat(result.getLynchOverall()).isTrue();
         assertThat(result.getApsApcOverall()).isTrue();
     }
-}
 
+    @Test
+    @DisplayName("should_mapGastricBlock_when_gastricCriteriaAreMet")
+    void should_mapGastricBlock_when_gastricCriteriaAreMet() {
+        NCCNCoreResponse source = new NCCNCoreResponse();
+        source.setGastricCriteriaMet(new HashSet<>(Set.of("gastric statement")));
+        source.setGastricCriteriaMetIds(new HashSet<>(Set.of("CRCRS14")));
+
+        NCCNResult result = NCCNResultMapper.convertTo(source);
+
+        assertThat(result.getGastricOverall()).isTrue();
+        assertThat(result.getNccnCriteriaMet()).isTrue();
+        assertThat(result.getGastricCriteriaMet()).containsExactly("gastric statement");
+        assertThat(result.getGastricCriteriaMetIds()).containsExactly("CRCRS14");
+    }
+
+    @Test
+    @DisplayName("should_leaveGastricOverallFalse_when_noGastricCriteriaAreMet")
+    void should_leaveGastricOverallFalse_when_noGastricCriteriaAreMet() {
+        NCCNResult result = NCCNResultMapper.convertTo(new NCCNCoreResponse());
+
+        assertThat(result.getGastricOverall()).isFalse();
+        assertThat(result.getGastricCriteriaMet()).isNull();
+    }
+}

@@ -1,6 +1,5 @@
 package com.genomebrain.backend.service;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -8,15 +7,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 
+import com.ambry.transformer.nccn.NCCNValidator;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.genomebrain.backend.service.dto.NCCNCoreResponse;
-import com.genomebrain.backend.service.dto.ClinicalHistory;
 import com.genomebrain.backend.service.dto.CustomResponseDTO;
 import com.genomebrain.backend.service.dto.NCCNCoreRequest;
-import com.genomebrain.backend.service.util.APIConstants;
 import com.genomebrain.backend.service.util.CareAPIUtil;
 import com.genomebrain.backend.service.util.MessageConstants;
 import com.genomebrain.backend.web.rest.util.StatusCode;
@@ -27,16 +24,12 @@ public class NCCNExecuter{
     @Autowired
     CareAPIUtil careAPIUtil;
 
+    @Autowired
+    NCCNValidator nccnValidator;
+
     private final Logger log = LoggerFactory.getLogger(NCCNExecuter.class);
 
     private final String VERSION = "V1";
-
-    List <String> relationShip = Arrays.asList("PROBAND","MOTHER","FATHER","SISTER","BROTHER","DAUGHTER","SON","NIECE","NEPHEW","HALF_SISTER","HALF_BROTHER","GRANDMOTHER","GRANDFATHER","GRANDDAUGHTER","GRANDSON","AUNT","UNCLE","FIRST_COUSIN_MALE","FIRST_COUSIN_FEMALE","GREAT_GRANDMOTHER","GREAT_GRANDFATHER","GREAT_AUNT","GREAT_UNCLE","GREAT_NEPHEW","GREAT_NIECE","GREAT_GRANDDAUGHTER","GREAT_GRANDSON","HALF_AUNT","HALF_UNCLE","HALF_NIECE","HALF_NEPHEW","OTHERS");
-    List <String> sideOfFamily = Arrays.asList("MATERNAL", "PATERNAL", "OTHER");
-    List <String> sexATBirth = Arrays.asList("MALE", "FEMALE", "UNKNOWN");
-    List <String> inputOptions = Arrays.asList("YES", "NO", "NOT_PROVIDED");
-    public final  String cousin ="FIRST_COUSIN";
-    public final  String PROBAND ="PROBAND";
 
     /**
      * Method to parse given request json to Non CARE Questionnaire DTO
@@ -97,51 +90,17 @@ public class NCCNExecuter{
         return careAPIUtil;
     }
 
-    public List<String> getRelationShip() {
-        return relationShip;
-    }
-
-    public List<String> getSideOfFamily() {
-        return sideOfFamily;
-    }
-
-    public List<String> getSexATBirth() {
-        return sexATBirth;
-    }
-
-    public String getPROBAND() {
-        return PROBAND;
-    }
-
+    /**
+     * Validates the clinical histories of the request; the checks themselves live in {@link NCCNValidator}.
+     *
+     * @param nonCareQuestionnaireDTO the request to validate
+     * @return a success response, or a failure response carrying the first validation message
+     */
     public CustomResponseDTO getDataValidation(NCCNCoreRequest nonCareQuestionnaireDTO) {
-        log.info("Entered NonCareQuestionnaireImpl in getDataValidation : validate the data for care api nccn and tc score generation ");
-
-        CustomResponseDTO customResponseDTO = new CustomResponseDTO();
-        customResponseDTO = new CustomResponseDTO(MessageConstants.SUCCESS, StatusCode.SUCCESS.getstatusCode(), "", null);
-
-        List<ClinicalHistory> clinicalHistories = nonCareQuestionnaireDTO.getClinicalHistory();
-        for (ClinicalHistory clinicalHistory : clinicalHistories) {
-            if (clinicalHistory.getRelationship() == null || clinicalHistory.getRelationship().isEmpty() || !relationShip.contains(clinicalHistory.getRelationship().toUpperCase()) ) {
-                return customResponseDTO = new CustomResponseDTO(MessageConstants.FAILURE, StatusCode.FAILURE.getstatusCode(), APIConstants.VALID_RELATIONSHIP, null);
-            }
-            if(clinicalHistory.getRelationship().contains(cousin) && (clinicalHistory.getSexAtBirth()==null || StringUtils.isEmpty(clinicalHistory.getSexAtBirth()) || !sexATBirth.contains(clinicalHistory.getSexAtBirth().toUpperCase())))
-            {
-                return customResponseDTO = new CustomResponseDTO(MessageConstants.FAILURE, StatusCode.FAILURE.getstatusCode(), APIConstants.VALID_SEX_AT_BIRTH_COUSIN_1ST, null);
-            }
-            if (clinicalHistory.getSideOfFam() == null || clinicalHistory.getSideOfFam().isEmpty() || !sideOfFamily.contains(clinicalHistory.getSideOfFam().toUpperCase()) ) {
-                return customResponseDTO = new CustomResponseDTO(MessageConstants.FAILURE, StatusCode.FAILURE.getstatusCode(), APIConstants.VALID_SIDE_OF_FAM, null);
-            }
-            if (!(clinicalHistory.getSexAtBirth() == null) && !clinicalHistory.getSexAtBirth().isEmpty() && !sexATBirth.contains(clinicalHistory.getSexAtBirth().toUpperCase()) ) {
-                return customResponseDTO = new CustomResponseDTO(MessageConstants.FAILURE, StatusCode.FAILURE.getstatusCode(), APIConstants.VALID_SEX_AT_BIRTH, null);
-            }
-            if (clinicalHistory.getCancerOverall() == null || clinicalHistory.getCancerOverall().isEmpty() || !inputOptions.contains(clinicalHistory.getCancerOverall().toUpperCase())) {
-                return customResponseDTO = new CustomResponseDTO(MessageConstants.FAILURE, StatusCode.FAILURE.getstatusCode(), APIConstants.VALID_CANCER_OVERALL, null);
-            }
-            if (clinicalHistory.getRelationship().equalsIgnoreCase(PROBAND) && (!(clinicalHistory.getPolypOverall() == null) && !clinicalHistory.getPolypOverall().isEmpty() && !inputOptions.contains(clinicalHistory.getPolypOverall().toUpperCase()))) {
-                return customResponseDTO = new CustomResponseDTO(MessageConstants.FAILURE, StatusCode.FAILURE.getstatusCode(), APIConstants.VALID_POLYP_OVERALL_PROBAND, null);
-            }
+        List<String> violations = nccnValidator.findViolations(nonCareQuestionnaireDTO);
+        if (!violations.isEmpty()) {
+            return new CustomResponseDTO(MessageConstants.FAILURE, StatusCode.FAILURE.getstatusCode(), violations.get(0), null);
         }
-        log.info("Entered NonCareQuestionnaireImpl in getDataValidation : validate the data for care api nccn and tc score generation ");
-        return customResponseDTO;
+        return new CustomResponseDTO(MessageConstants.SUCCESS, StatusCode.SUCCESS.getstatusCode(), "", null);
     }
 }

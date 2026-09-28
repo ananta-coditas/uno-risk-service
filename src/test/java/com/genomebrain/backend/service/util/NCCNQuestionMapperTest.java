@@ -10,6 +10,8 @@ import java.util.List;
 import com.objex.risk.beans.uno.Cancer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import com.genomebrain.backend.quesstionnaire.QuestionSet;
 
@@ -466,5 +468,14 @@ class NCCNQuestionMapperTest {
         assertThat(parameters).isNotNull();
         assertThat(parameters).isNotEmpty();
     }
-}
 
+    @ParameterizedTest(name = "{0} -> {1}")
+    @CsvSource({"Gastric, AMBRY025_001", "RELATIVE_Gastric, AMBRY071_001", "SmallIntestine, AMBRY026_001", "Uterine, AMBRY024_001"})
+    @DisplayName("should_resolveAgeQuestion_when_cancerTypeNameIsMixedCase")
+    void should_resolveAgeQuestion_when_cancerTypeNameIsMixedCase(String cancerName, String expectedAnswerKey) {
+        QuestionSet questionSet = NCCNQuestionMapper.getQuestionSetForAgeAtDiagnosis(cancerName, "45");
+
+        assertThat(questionSet.getAnswerKey()).isEqualTo(expectedAnswerKey);
+        assertThat(questionSet.getAnswerText()).isEqualTo("45");
+    }
+}

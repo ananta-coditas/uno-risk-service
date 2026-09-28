@@ -58,6 +58,7 @@ public enum TagIdConstant {
     HBOCTAG110("HBOCTag110"),
     HBOCTAG111("HBOCTAG111"),
     HBOCTAG112("HBOCTAG112"),
+    NCCNTag1("NCCNTag1"),
     CRCTAG1("CRCTag1"),
     CRCTAG5("CRCTag5"),
     CRCTAG8("CRCTag8"),

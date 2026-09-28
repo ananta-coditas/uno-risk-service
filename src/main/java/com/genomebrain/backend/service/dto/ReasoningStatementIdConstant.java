@@ -26,6 +26,7 @@ public enum ReasoningStatementIdConstant {
     HBOCRS56("HBOCRS56"),
     HBOCRS57("HBOCRS57"),
     HBOCRS58("HBOCRS58"),
+    NCCNCRS1("NCCNRS1"),
     CRCRS1("CRCRS1"),
     CRCRS5("CRCRS5"),
     CRCRS6("CRCRS6"),

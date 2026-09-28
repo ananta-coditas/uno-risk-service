@@ -15,8 +15,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.ambry.transformer.nccn.NCCNValidator;
 import com.genomebrain.backend.service.dto.ClinicalHistory;
 import com.genomebrain.backend.service.dto.CustomResponseDTO;
 import com.genomebrain.backend.service.dto.NCCNCoreRequest;
@@ -32,6 +34,9 @@ class NCCNExecuterTest {
 
     @Mock
     private CareAPIUtil careAPIUtil;
+
+    @Spy
+    private NCCNValidator nccnValidator = new NCCNValidator();
 
     @InjectMocks
     private NCCNExecuter nccnExecuter;
@@ -634,44 +639,4 @@ class NCCNExecuterTest {
         assertThat(result).isNotNull();
         assertThat(result).isEqualTo(careAPIUtil);
     }
-
-    @Test
-    @DisplayName("Should return relationship list")
-    void testGetRelationShip() {
-        List<String> result = nccnExecuter.getRelationShip();
-
-        assertThat(result).isNotNull();
-        assertThat(result).isNotEmpty();
-        assertThat(result).contains("PROBAND", "MOTHER", "FATHER");
-    }
-
-    @Test
-    @DisplayName("Should return side of family list")
-    void testGetSideOfFamily() {
-        List<String> result = nccnExecuter.getSideOfFamily();
-
-        assertThat(result).isNotNull();
-        assertThat(result).hasSize(3);
-        assertThat(result).contains("MATERNAL", "PATERNAL", "OTHER");
-    }
-
-    @Test
-    @DisplayName("Should return sex at birth list")
-    void testGetSexATBirth() {
-        List<String> result = nccnExecuter.getSexATBirth();
-
-        assertThat(result).isNotNull();
-        assertThat(result).hasSize(3);
-        assertThat(result).contains("MALE", "FEMALE", "UNKNOWN");
-    }
-
-    @Test
-    @DisplayName("Should return PROBAND constant")
-    void testGetPROBAND() {
-        String result = nccnExecuter.getPROBAND();
-
-        assertThat(result).isNotNull();
-        assertThat(result).isEqualTo("PROBAND");
-    }
 }
-

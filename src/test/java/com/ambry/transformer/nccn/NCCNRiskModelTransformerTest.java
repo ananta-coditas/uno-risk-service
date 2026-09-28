@@ -103,10 +103,9 @@ class NCCNRiskModelTransformerTest {
     @DisplayName("Should transform request with empty family")
     void testTransformRequestWithEmptyFamily() {
         risk.setFamily(new LinkedList<>());
-        // The transformer calls NCCNRiskModelUtils.calculateRelationShipForAllFamilyMemeber()
-        // which uses getFirst() and will throw NoSuchElementException for empty list
-        assertThatThrownBy(() -> transformer.transformRequest(risk, model))
-            .isInstanceOf(java.util.NoSuchElementException.class);
+        NCCNCoreRequest result = transformer.transformRequest(risk, model);
+
+        assertThat(result.getClinicalHistory()).isEmpty();
     }
 
     @Test

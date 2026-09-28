@@ -45,6 +45,15 @@ public class NCCNResultMapper {
                 target.setApsApcCriteriaMetIds(new HashSet<>(source.getApsApcCriteriaMetIds()));
             }
         }
+        // CARE reports gastric only through its criteria lists (there is no gastric "overall" flag upstream)
+        if (!CollectionUtils.isEmpty(source.getGastricCriteriaMet())) {
+            target.setGastricOverall(Boolean.TRUE);
+            target.setNccnCriteriaMet(Boolean.TRUE);
+            target.setGastricCriteriaMet(new HashSet<>(source.getGastricCriteriaMet()));
+            if (!CollectionUtils.isEmpty(source.getGastricCriteriaMetIds())) {
+                target.setGastricCriteriaMetIds(new HashSet<>(source.getGastricCriteriaMetIds()));
+            }
+        }
         target.setDateAssessed(source.getDateAssessed());
         return target;
     }

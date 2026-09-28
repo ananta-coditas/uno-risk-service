@@ -23,7 +23,7 @@ public enum NCCNTagConstants {
     PR_SEB_ADENO_CAR("PrSebAdenoCar"),
     PR_ENDOMETRIAL("PrEndometrial"),
     PR_OVARIAN("PrOvarian"),
-
+    PR_GALLBLADDER("PrGallbladder"),
 
 
     PR_COLON_LT_50("PrColon<50"),
@@ -32,6 +32,9 @@ public enum NCCNTagConstants {
     PR_OVARIAN_LT_50("PrOvarian<50"),
     PR_PANCREATIC_LT_50("PrPancreatic<50"),
     PR_BLADDER_LT_50("PrBladder<50"),
+    PR_GALLBLADDER_LT_50("PrGallbladder<50"),
+    FM_GALLBLADDER_LTE_50("FmGallbladder<=50"),
+    FM_GALLBLADDER_LT_50("FmGallbladder<50"),
     PR_URETER_LT_50("PrUreter<50"),
     PR_BRAIN_LT_50("PrBrain<50"),
     PR_BILIARY_LT_50("PrBiliary<50"),
@@ -106,6 +109,12 @@ public enum NCCNTagConstants {
     FM_BILIARY_MAT_SDR("FmBiliaryMatSDR"),
     FM_URETER_MAT_FDR("FmUreterMatFDR"),
     FM_URETER_MAT_SDR("FmUreterMatSDR"),
+    FM_GALLBLADDER_MAT_FDR("FmGallbladderMatFDR"),
+    FM_GALLBLADDER_MAT_SDR("FmGallbladderMatSDR"),
+    FM_GALLBLADDER_MAT_TDR("FmGallbladderMatTDR"),
+    FM_GALLBLADDER_PAT_FDR("FmGallbladderPatFDR"),
+    FM_GALLBLADDER_PAT_SDR("FmGallbladderPatSDR"),
+    FM_GALLBLADDER_PAT_TDR("FmGallbladderPatTDR"),
 
 
     FM_COLON_LT_50_MAT_FDR("FmColon<50MatFDR"),
@@ -116,6 +125,7 @@ public enum NCCNTagConstants {
     FM_SM_BOWEL_LT_50_MAT_FDR("FmSmBowel<50MatFDR"),
     FM_BILITARY_LT_50_MAT_FDR("FmBiliary<50MatFDR"),
     FM_URETER_LT_50_MAT_FDR("FmUreter<50MatFDR"),
+    FM_GALLBLADDER_LT_50_MAT_FDR("FmGallbladder<50MatFDR"),
     FM_ENDOMETRIAL_LT_50_MAT_FDR("FmEndometrial<50MatFDR"),
     FM_OVARIAN_LT_50_MAT_FDR("FmOvarian<50MatFDR"),
     FM_SEB_ADENO_CAR_LT_50_MAT_FDR("FmSebAdenoCar<50MatFDR"),
@@ -127,6 +137,7 @@ public enum NCCNTagConstants {
     FM_SM_BOWEL_LT_50_MAT_SDR("FmSmBowel<50MatSDR"),
     FM_BILITARY_LT_50_MAT_SDR("FmBiliary<50MatSDR"),
     FM_URETER_LT_50_MAT_SDR("FmUreter<50MatSDR"),
+    FM_GALLBLADDER_LT_50_MAT_SDR("FmGallbladder<50MatSDR"),
     FM_ENDOMETRIAL_LT_50_MAT_SDR("FmEndometrial<50MatSDR"),
     FM_OVARIAN_LT_50_MAT_SDR("FmOvarian<50MatSDR"),
     FM_SEB_ADENO_CAR_LT_50_MAT_SDR("FmSebAdenoCar<50MatSDR"),
@@ -140,6 +151,7 @@ public enum NCCNTagConstants {
     FM_SM_BOWEL_LT_50_PAT_FDR("FmSmBowel<50PatFDR"),
     FM_BILITARY_LT_50_PAT_FDR("FmBiliary<50PatFDR"),
     FM_URETER_LT_50_PAT_FDR("FmUreter<50PatFDR"),
+    FM_GALLBLADDER_LT_50_PAT_FDR("FmGallbladder<50PatFDR"),
     FM_ENDOMETRIAL_LT_50_PAT_FDR("FmEndometrial<50PatFDR"),
     FM_OVARIAN_LT_50_PAT_FDR("FmOvarian<50PatFDR"),
     FM_SEB_ADENO_CAR_LT_50_PAT_FDR("FmSebAdenoCar<50PatFDR"),
@@ -151,6 +163,7 @@ public enum NCCNTagConstants {
     FM_SM_BOWEL_LT_50_PAT_SDR("FmSmBowel<50PatSDR"),
     FM_BILITARY_LT_50_PAT_SDR("FmBiliary<50PatSDR"),
     FM_URETER_LT_50_PAT_SDR("FmUreter<50PatSDR"),
+    FM_GALLBLADDER_LT_50_PAT_SDR("FmGallbladder<50PatSDR"),
     FM_ENDOMETRIAL_LT_50_PAT_SDR("FmEndometrial<50PatSDR"),
     FM_OVARIAN_LT_50_PAT_SDR("FmOvarian<50PatSDR"),
     FM_SEB_ADENO_CAR_LT_50_PAT_SDR("FmSebAdenoCar<50PatSDR"),

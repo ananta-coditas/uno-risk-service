@@ -659,6 +659,7 @@ public class GuideLineUtility {
         relativeCancer.put("Ureter", Collections.frequency(nonUniqueCancerList, TagConstants.URETER.getValue().toLowerCase()));
         relativeCancer.put("SebAdenoCar", Collections.frequency(nonUniqueCancerList, TagConstants.SEBACEOUS_ADENOMA.getValue().toLowerCase()));
         relativeCancer.put("Bladder", Collections.frequency(nonUniqueCancerList, TagConstants.BLADDER.getValue().toLowerCase()));
+        relativeCancer.put("Gallbladder", Collections.frequency(nonUniqueCancerList, TagConstants.GALLBLADDER.getValue().toLowerCase()));
 
         for (Map.Entry<String, Integer> relativeMap : relativeCancer.entrySet()) {
             if (relativeMap.getValue() >= 1) {
@@ -796,7 +797,7 @@ public class GuideLineUtility {
                 //Changes to handle format of custom questions for HCA.
                 else if (x.getAnswerKey().equalsIgnoreCase("AMBRY147_001")) {
                     String text = messageSource.getMessage(x.getAnswerKey() + ".answerText", null, locale);
-                    valueLabelDTO.setValue(text.replace("{ClinicName}", null));
+                    valueLabelDTO.setValue(text.replace("{ClinicName}", ""));
                 }
                 else if (x.getAnswerKey().equalsIgnoreCase("AMBRY141_001")|| x.getAnswerKey().equalsIgnoreCase("AMBRY147_002")){
                     Locale patientLang = getLocaleFromPatientLanguage();

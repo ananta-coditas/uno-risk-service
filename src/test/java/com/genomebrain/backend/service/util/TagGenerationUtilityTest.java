@@ -16,6 +16,8 @@ import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -30,6 +32,7 @@ import com.genomebrain.backend.quesstionnaire.RelativeHistory;
 import com.genomebrain.backend.quesstionnaire.relative.Mother;
 import com.genomebrain.backend.quesstionnaire.relative.Sister;
 import com.genomebrain.backend.quesstionnaire.relative.Brother;
+import com.genomebrain.backend.service.dto.NCCNTagConstants;
 import com.genomebrain.backend.service.dto.FamilyHistory;
 import com.genomebrain.backend.service.dto.CancerDetailsDTO;
 import com.genomebrain.backend.service.dto.ClinicalSummary;
@@ -1924,16 +1927,18 @@ class TagGenerationUtilityTest {
     }
 
     @Test
-    @DisplayName("Should throw NullPointerException when basic questions is null")
+    @DisplayName("Should leave the DTO untouched when basic questions is null")
     void testCheckPersonalColorectalPolypsHistoryNullQuestions() {
         PersonalHistoryTagsDTO personalHistoryTagsDTO = new PersonalHistoryTagsDTO();
         PersonalHistoryDetails personalHistoryDetails = new PersonalHistoryDetails();
         personalHistoryTagsDTO.setPersonalHistoryDetails(personalHistoryDetails);
         personalHistoryTagsDTO.setTags(new HashSet<>());
 
-        assertThatThrownBy(() -> tagGenerationUtility.checkPersonalColorectalPolypsHistory(
-            null, personalHistoryTagsDTO, false))
-            .isInstanceOf(NullPointerException.class);
+        PersonalHistoryTagsDTO result = tagGenerationUtility.checkPersonalColorectalPolypsHistory(
+            null, personalHistoryTagsDTO, false);
+
+        assertThat(result).isSameAs(personalHistoryTagsDTO);
+        assertThat(result.getTags()).isEmpty();
     }
 
     @Test
@@ -3113,9 +3118,10 @@ class TagGenerationUtilityTest {
 
         PersonalHistoryDetails personalHistoryDetails = new PersonalHistoryDetails();
 
-        assertThatThrownBy(() -> tagGenerationUtility.getPersonalHistoryDetails(
-            questionnaire, personalHistoryDetails, true, false, null, "v1", false, true))
-            .isInstanceOf(NullPointerException.class);
+        PersonalHistoryTagsDTO result = tagGenerationUtility.getPersonalHistoryDetails(
+            questionnaire, personalHistoryDetails, true, false, null, "v1", false, true);
+
+        assertThat(result).isNotNull();
     }
 
     // Additional test cases for getRelativeCancerTags with multiple cancer types
@@ -3317,5 +3323,59 @@ class TagGenerationUtilityTest {
         assertThat(result).hasSize(1);
         assertThat(result.get(0).getTags()).contains("FmSebAdenoCar<=50", "FmSebAdenoCar<50");
     }
-}
 
+    // ========== Gallbladder (Lynch-associated) tags ==========
+
+    private List<FamilyHistoryDetailsTagsDTO> sisterWithGallbladder(String answerKey, String answerText) {
+        FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
+        Sister sister = new Sister();
+        sister.setBasicQuestions(Collections.emptyList());
+        QuestionSet gallbladderQs = new QuestionSet();
+        gallbladderQs.setQuestionKey("AMBRY081");
+        gallbladderQs.setAnswerKey(answerKey);
+        gallbladderQs.setAnswerText(answerText);
+        sister.setGallbladder(Arrays.asList(gallbladderQs));
+        familyCancerDetails.setSisters(Arrays.asList(sister));
+        return tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "");
+    }
+
+    @Test
+    @DisplayName("should_emitGallbladderUnder50Tags_when_relativeWasDiagnosedAt45")
+    void should_emitGallbladderUnder50Tags_when_relativeWasDiagnosedAt45() {
+        List<FamilyHistoryDetailsTagsDTO> result = sisterWithGallbladder("AMBRY081_001", "45");
+
+        assertThat(result).singleElement().satisfies(relative ->
+            assertThat(relative.getTags()).contains(
+                NCCNTagConstants.FM_GALLBLADDER_LT_50_MAT_FDR.getValue(), NCCNTagConstants.FM_GALLBLADDER_LT_50_PAT_FDR.getValue(),
+                "FmGallbladder<=50MatFDR", "FmGallbladder<=50PatFDR"));
+    }
+
+    @Test
+    @DisplayName("should_emitOnlyAtMost50Tag_when_relativeWasDiagnosedAt50")
+    void should_emitOnlyAtMost50Tag_when_relativeWasDiagnosedAt50() {
+        List<FamilyHistoryDetailsTagsDTO> result = sisterWithGallbladder("AMBRY081_001", "50");
+
+        assertThat(result).singleElement().satisfies(relative -> {
+            assertThat(relative.getTags()).contains("FmGallbladder<=50MatFDR");
+            assertThat(relative.getTags()).doesNotContain(NCCNTagConstants.FM_GALLBLADDER_LT_50_MAT_FDR.getValue());
+        });
+    }
+
+    @Test
+    @DisplayName("should_useAgeRangeMidpoint_when_onlyAnAgeRangeIsGiven")
+    void should_useAgeRangeMidpoint_when_onlyAnAgeRangeIsGiven() {
+        List<FamilyHistoryDetailsTagsDTO> result = sisterWithGallbladder("AMBRY081_003", "40-49");
+
+        assertThat(result).singleElement().satisfies(relative -> {
+            assertThat(relative.getTags()).contains(NCCNTagConstants.FM_GALLBLADDER_LT_50_MAT_FDR.getValue());
+            assertThat(relative.getFamilyHistoryDetails().getCancerDetails().get(0).getAge()).isEqualTo("40-49");
+        });
+    }
+
+    @ParameterizedTest(name = "{0} -> {1}")
+    @CsvSource({"1-9, 5", "40-49, 45", "46-50, 48", "51-59, 55", ">90, 91", "unknown, 0"})
+    @DisplayName("should_mapAgeRangeToRepresentativeAge_when_rangeIsKnown")
+    void should_mapAgeRangeToRepresentativeAge_when_rangeIsKnown(String ageRange, int expectedAge) {
+        assertThat(tagGenerationUtility.getAgeFromAgeRange(ageRange)).isEqualTo(expectedAge);
+    }
+}

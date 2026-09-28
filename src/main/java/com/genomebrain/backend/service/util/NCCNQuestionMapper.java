@@ -275,6 +275,8 @@ public enum NCCNQuestionMapper {
 
     public static QuestionSet getQuestionSetForAgeAtDiagnosis(String cancerName, String ageValue) {
         QuestionSet questionSet = new QuestionSet();
+        // Cancer names arrive as CancerType names, some of which are mixed case (e.g. "Gastric", "RELATIVE_Uterine")
+        cancerName = cancerName == null ? null : cancerName.toUpperCase();
         if (isPresent(cancerName)) {
             List<String> diagnosisResult = NCCNQuestionMapper.valueOf(cancerName).parameters;
             questionSet.setQuestionText(diagnosisResult.get(2));

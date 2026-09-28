@@ -18,6 +18,8 @@ public class NCCNCoreResponse {
     private Set<String> apsApcCriteriaMet;
     private Set<String> apsApcCriteriaMetIds;
     private String dateAssessed;
+    private Set<String> gastricCriteriaMet;
+    private Set<String> gastricCriteriaMetIds;
 
     public String getPortalOrderId() {
         return portalOrderId;
@@ -139,6 +141,22 @@ public class NCCNCoreResponse {
         this.apsApcCriteriaMetIds = apsApcCriteriaMetIds;
     }
 
+    public Set<String> getGastricCriteriaMet() {
+        return gastricCriteriaMet;
+    }
+
+    public void setGastricCriteriaMet(Set<String> gastricCriteriaMet) {
+        this.gastricCriteriaMet = gastricCriteriaMet;
+    }
+
+    public Set<String> getGastricCriteriaMetIds() {
+        return gastricCriteriaMetIds;
+    }
+
+    public void setGastricCriteriaMetIds(Set<String> gastricCriteriaMetIds) {
+        this.gastricCriteriaMetIds = gastricCriteriaMetIds;
+    }
+
     @Override
     public String toString() {
         return "CAREAPIResponseDTO{" +
@@ -157,6 +175,8 @@ public class NCCNCoreResponse {
                 ", apsApcCriteriaMet=" + apsApcCriteriaMet +
                 ", apsApcCriteriaMetIds=" + apsApcCriteriaMetIds +
                 ", dateAssessed='" + dateAssessed + '\'' +
+                ", gastricCriteriaMet=" + gastricCriteriaMet +
+                ", gastricCriteriaMetIds=" + gastricCriteriaMetIds +
                 '}';
     }
 }

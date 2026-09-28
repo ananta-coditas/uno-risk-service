@@ -219,11 +219,7 @@ class NCCNRiskModelUtilsTest {
     void testCalculateRelationShipWithEmptyFamily() {
         risk.setFamily(new LinkedList<>());
         
-        // The implementation uses getFirst() which throws NoSuchElementException for empty list
-        // We expect this to throw an exception, so we test for that
-        assertThatThrownBy(() -> 
-            NCCNRiskModelUtils.calculateRelationShipForAllFamilyMemeber(risk))
-            .isInstanceOf(java.util.NoSuchElementException.class);
+        assertThat(NCCNRiskModelUtils.calculateRelationShipForAllFamilyMemeber(risk)).isEmpty();
     }
 
     @Test
@@ -280,7 +276,7 @@ class NCCNRiskModelUtilsTest {
         NCCNPersonRelationShipDetails grandfatherDetails = result.get(grandfather.getId());
         assertThat(grandfatherDetails).isNotNull();
         assertThat(grandfatherDetails.getRelationShip()).isEqualTo("GRANDFATHER");
-        assertThat(grandfatherDetails.getFamilySide()).isEqualTo("MATERNAL");
+        assertThat(grandfatherDetails.getFamilySide()).isEqualTo("PATERNAL");
     }
 
     @Test
@@ -352,5 +348,144 @@ class NCCNRiskModelUtilsTest {
         assertThat(result.get(proband.getId())).isNotNull();
         assertThat(result.get(proband.getId()).getRelationShip()).isEqualTo("PROBAND");
     }
-}
 
+    // ========== Extended pedigree ==========
+
+    private Person addPerson(int id, int gender, int motherId, int fatherId) {
+        Person person = new Person();
+        person.setId(id);
+        person.setProband(false);
+        person.setGender(gender);
+        person.setMotherId(motherId);
+        person.setFatherId(fatherId);
+        risk.getFamily().add(person);
+        return person;
+    }
+
+    private void assertRelationship(Person person, String relationship, String side) {
+        NCCNPersonRelationShipDetails details =
+            NCCNRiskModelUtils.calculateRelationShipForAllFamilyMemeber(risk).get(person.getId());
+        assertThat(details.getRelationShip()).isEqualTo(relationship);
+        assertThat(details.getFamilySide()).isEqualTo(side);
+    }
+
+    @Test
+    @DisplayName("should_labelBothSidesCorrectly_when_familyHasMaternalAndPaternalGrandparents")
+    void should_labelBothSidesCorrectly_when_familyHasMaternalAndPaternalGrandparents() {
+        Person maternalGrandmother = addPerson(20, 0, 0, 0);
+        Person paternalGrandmother = addPerson(21, 0, 0, 0);
+        mother.setMotherId(20);
+        father.setMotherId(21);
+
+        Map<Integer, NCCNPersonRelationShipDetails> result = NCCNRiskModelUtils.calculateRelationShipForAllFamilyMemeber(risk);
+
+        assertThat(result.get(maternalGrandmother.getId()).getFamilySide()).isEqualTo("MATERNAL");
+        assertThat(result.get(paternalGrandmother.getId()).getFamilySide()).isEqualTo("PATERNAL");
+    }
+
+    @Test
+    @DisplayName("should_labelPaternalUncle_when_relativeIsFullSiblingOfFather")
+    void should_labelPaternalUncle_when_relativeIsFullSiblingOfFather() {
+        addPerson(30, 1, 0, 0);
+        addPerson(31, 0, 0, 0);
+        father.setFatherId(30);
+        father.setMotherId(31);
+        Person uncle = addPerson(32, 1, 31, 30);
+
+        assertRelationship(uncle, "UNCLE", "PATERNAL");
+    }
+
+    @Test
+    @DisplayName("should_labelFirstCousinBySex_when_relativeIsChildOfAuntOrUncle")
+    void should_labelFirstCousinBySex_when_relativeIsChildOfAuntOrUncle() {
+        addPerson(40, 1, 0, 0);
+        addPerson(41, 0, 0, 0);
+        mother.setFatherId(40);
+        mother.setMotherId(41);
+        addPerson(42, 0, 41, 40);
+        Person cousin = addPerson(43, 1, 42, 0);
+
+        assertRelationship(cousin, "FIRST_COUSIN_MALE", "MATERNAL");
+    }
+
+    @Test
+    @DisplayName("should_labelGreatGrandparentAndGreatAunt_when_relativesAreAboveGrandparents")
+    void should_labelGreatGrandparentAndGreatAunt_when_relativesAreAboveGrandparents() {
+        addPerson(50, 1, 0, 0);
+        addPerson(51, 0, 0, 0);
+        Person paternalGrandfather = addPerson(52, 1, 51, 50);
+        father.setFatherId(paternalGrandfather.getId());
+        Person greatAunt = addPerson(53, 0, 51, 50);
+
+        assertRelationship(risk.getFamily().stream().filter(p -> p.getId() == 51).findFirst().orElseThrow(),
+            "GREAT_GRANDMOTHER", "PATERNAL");
+        assertRelationship(greatAunt, "GREAT_AUNT", "PATERNAL");
+    }
+
+    @Test
+    @DisplayName("should_labelHalfSiblingOnSharedParentSide_when_onlyFatherIsShared")
+    void should_labelHalfSiblingOnSharedParentSide_when_onlyFatherIsShared() {
+        addPerson(60, 0, 0, 0);
+        Person halfBrother = addPerson(61, 1, 60, 3);
+
+        assertRelationship(halfBrother, "HALF_BROTHER", "PATERNAL");
+    }
+
+    @Test
+    @DisplayName("should_labelHalfAunt_when_relativeSharesOneParentWithProbandsMother")
+    void should_labelHalfAunt_when_relativeSharesOneParentWithProbandsMother() {
+        addPerson(70, 0, 0, 0);
+        addPerson(71, 1, 0, 0);
+        addPerson(72, 0, 0, 0);
+        mother.setMotherId(70);
+        mother.setFatherId(71);
+        Person halfAunt = addPerson(73, 0, 72, 71);
+
+        assertRelationship(halfAunt, "HALF_AUNT", "MATERNAL");
+    }
+
+    @Test
+    @DisplayName("should_labelDescendantsWithoutSide_when_relativesDescendFromSiblingsOrChildren")
+    void should_labelDescendantsWithoutSide_when_relativesDescendFromSiblingsOrChildren() {
+        Person niece = addPerson(80, 0, 5, 0);
+        Person greatNephew = addPerson(81, 1, 80, 0);
+        Person grandson = addPerson(82, 1, 7, 0);
+        Person greatGranddaughter = addPerson(83, 0, 0, 82);
+
+        assertRelationship(niece, "NIECE", "OTHER");
+        assertRelationship(greatNephew, "GREAT_NEPHEW", "OTHER");
+        assertRelationship(grandson, "GRANDSON", "OTHER");
+        assertRelationship(greatGranddaughter, "GREAT_GRANDDAUGHTER", "OTHER");
+    }
+
+    @Test
+    @DisplayName("should_labelHalfNiece_when_relativeIsChildOfHalfSibling")
+    void should_labelHalfNiece_when_relativeIsChildOfHalfSibling() {
+        addPerson(90, 1, 0, 0);
+        addPerson(91, 0, 2, 90);
+        Person halfNiece = addPerson(92, 0, 91, 0);
+
+        assertRelationship(halfNiece, "HALF_NIECE", "MATERNAL");
+    }
+
+    @Test
+    @DisplayName("should_fallBackToOthers_when_relativeCannotBePlaced")
+    void should_fallBackToOthers_when_relativeCannotBePlaced() {
+        Person unrelated = addPerson(99, 0, 0, 0);
+
+        assertRelationship(unrelated, "OTHERS", "OTHER");
+    }
+
+    @Test
+    @DisplayName("should_recogniseSiblings_when_parentIdsAreAbove127")
+    void should_recogniseSiblings_when_parentIdsAreAbove127() {
+        mother.setId(1002);
+        father.setId(1003);
+        proband.setMotherId(1002);
+        proband.setFatherId(1003);
+        sister.setMotherId(1002);
+        sister.setFatherId(1003);
+
+        assertRelationship(sister, "SISTER", "OTHER");
+    }
+}

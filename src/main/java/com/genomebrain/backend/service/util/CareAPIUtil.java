@@ -5,6 +5,7 @@ import static com.genomebrain.backend.service.util.APIConstants.GRADE_GROUP_5;
 import static com.genomebrain.backend.service.util.APIConstants.HIGH_RISK_GROUP;
 import static com.genomebrain.backend.service.util.APIConstants.VERY_HIGH_RISK_GROUP;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
@@ -70,8 +72,19 @@ import com.objex.risk.beans.uno.Cancer.CancerType;
 @Component
 public class CareAPIUtil{
 
+    private static final String DATE_ASSESSED_FORMAT = "yyyy-MM-dd";
+
+    private static final int MAX_POLYPS_BELOW_THRESHOLD = 9;
+
+    private static final Set<String> DESCRIPTIVE_POLYP_COUNTS_OVER_NINE = Set.of(
+        APIConstants.NUMEROUS, APIConstants.DOZENS, APIConstants.CARPETED, APIConstants.INNUMERABLE,
+        APIConstants.LOTS, APIConstants.MANY, APIConstants.TOO_MANY_TO_COUNT);
+
     @Autowired
     GuideLineUtility guideLineUtility;
+
+    @Autowired
+    DateConversionUtil dateConversionUtil;
 
     ClinicalHistory probandClinicalHistory = new ClinicalHistory();
     private final String PROBAND = "Proband";
@@ -143,6 +156,7 @@ public class CareAPIUtil{
 
     List<String> otherDXAge = Arrays.asList("PRENATAL", "BIRTH", "NEWBORN", "INFANCY", "CHILDHOOD", "TEENS", "EARLY TEENS", "MID TEENS", "LATE TEENS", "EARLY", "YOUNG", "PREMENOPAUSAL");
     List<String> apsRSIds = Arrays.asList("CRCRS1","CRCRS2","CRCRS12");
+    List<String> gastricRSIds = Arrays.asList("CRCRS14","CRCRS15");
     List<String> lynchRSIds = Arrays.asList("CRCRS3", "CRCRS4", "CRCRS5", "CRCRS6", "CRCRS7", "CRCRS8", "CRCRS9", "CRCRS10", "CRCRS11","CRCRS13");
     public NCCNCoreResponse getQuestionObject(NCCNCoreRequest nonCareQuestionnaireDTO) {
         NCCNCoreResponse careapiResponseDTO = new NCCNCoreResponse();
@@ -161,7 +175,10 @@ public class CareAPIUtil{
             if (!(probandClinicalHistory.getRelationship() == null)) {
                 if (probandClinicalHistory.getSexAtBirth() != null) {
                     questionSet = NCCNQuestionMapper.getQuestionSet(sexAtBirth, probandClinicalHistory.getSexAtBirth().toUpperCase());
-                    demographic.add(questionSet);
+                    // Only male/female map to an answer; an unknown sex leaves the question unanswered
+                    if (questionSet.getAnswerKey() != null) {
+                        demographic.add(questionSet);
+                    }
                 }
                 if (probandClinicalHistory.getEthnicity().size() > 0) {
                     List<String> ethnicity = probandClinicalHistory.getEthnicity();
@@ -171,16 +188,18 @@ public class CareAPIUtil{
                     questionSet = NCCNQuestionMapper.getQuestionSetForMultipleAnswer(Ethnicity, ethnicity);
                     demographic.add(questionSet);
                 }
-                if (!StringUtils.isEmpty(probandClinicalHistory.getCancerOverall())) {
-                    if (probandClinicalHistory.getCancerOverall().equalsIgnoreCase(YES)) {
+                String probandCancerOverall = probandClinicalHistory.getCancerOverall();
+                if (!StringUtils.isEmpty(probandCancerOverall) || !StringUtils.isEmpty(probandClinicalHistory.getClinicalFeatureOverall())) {
+                    if (YES.equalsIgnoreCase(probandCancerOverall)) {
                         questionSet = NCCNQuestionMapper.getQuestionSet(cancerOverall, YES);
                         basicQuestions.add(questionSet);
-                    }
-                    if (probandClinicalHistory.getCancerOverall().equalsIgnoreCase(NO)) {
-                        questionSet = NCCNQuestionMapper.getQuestionSet(cancerOverall, NO);
-                        basicQuestions.add(questionSet);
-                    }
-                    if (probandClinicalHistory.getCancerOverall().equalsIgnoreCase(NOT_PROVIDED)) {
+                    } else if (YES.equalsIgnoreCase(probandClinicalHistory.getClinicalFeatureOverall())) {
+                        // A sebaceous adenoma is reported as a clinical feature but counts as a personal cancer for NCCN
+                        if (probandClinicalHistory.getCancerFeatureDetails().stream().anyMatch(a -> "Sebaceous adenomas".equalsIgnoreCase(a.getCancerFeature()))) {
+                            questionSet = NCCNQuestionMapper.getQuestionSet(cancerOverall, YES);
+                            basicQuestions.add(questionSet);
+                        }
+                    } else if (NO.equalsIgnoreCase(probandCancerOverall) || NOT_PROVIDED.equalsIgnoreCase(probandCancerOverall)) {
                         questionSet = NCCNQuestionMapper.getQuestionSet(cancerOverall, NO);
                         basicQuestions.add(questionSet);
                     }
@@ -214,49 +233,16 @@ public class CareAPIUtil{
 
                     if (polypDetail.equalsIgnoreCase(YES)) {
                         List<PolypDetails> polypDetails = probandClinicalHistory.getPolypDetails();
-                        int polypNumber;
                         for (PolypDetails polypData : polypDetails) {
-                            if (!StringUtils.isEmpty(polypData.getPolypType()) && polypData.getPolypType().contains(APIConstants.ADENOMA)) {
+                            if (!StringUtils.isEmpty(polypData.getPolypType()) && polypData.getPolypType().contains(APIConstants.ADENOMA) && isPolypGreaterThanNine(polypData)) {
                                 questionSet = NCCNQuestionMapper.getQuestionSet(APIConstants.POLYP_TYPE, YES);
                                 basicQuestions.add(questionSet);
                             } else if (!StringUtils.isEmpty(polypData.getPolypType())) {
                                 questionSet = NCCNQuestionMapper.getQuestionSet(APIConstants.POLYP_TYPE, NO);
                                 basicQuestions.add(questionSet);
                             }
-
-                            if (!StringUtils.isEmpty(polypData.getExactNumOfPolyps())) {
-                                polypNumber = Integer.parseInt(polypData.getExactNumOfPolyps());
-                                if (polypNumber > 9) {
-                                    questionSet = NCCNQuestionMapper.getQuestionSet(APIConstants.EXACT_NUM_OF_POLYPS, APIConstants.POLYPS_10_TO_19);
-                                    basicQuestions.add(questionSet);
-                                    break;
-                                }
-
-                            } else if (!StringUtils.isEmpty(polypData.getMinNumOfPolyps())) {
-                                polypNumber = Integer.parseInt(polypData.getMinNumOfPolyps());
-                                if (polypNumber > 9) {
-                                    questionSet = NCCNQuestionMapper.getQuestionSet(APIConstants.EXACT_NUM_OF_POLYPS, APIConstants.POLYPS_10_TO_19);
-                                    basicQuestions.add(questionSet);
-                                    break;
-                                }
-
-                            } else if (!StringUtils.isEmpty(polypData.getOtherNumOfPolyps())) {
-                                List otherNumberOfPolyps = new ArrayList();
-                                otherNumberOfPolyps.add(APIConstants.NUMEROUS);
-                                otherNumberOfPolyps.add(APIConstants.DOZENS);
-                                otherNumberOfPolyps.add(APIConstants.CARPETED);
-                                otherNumberOfPolyps.add(APIConstants.INNUMERABLE);
-                                otherNumberOfPolyps.add(APIConstants.LOTS);
-                                otherNumberOfPolyps.add(APIConstants.MANY);
-                                otherNumberOfPolyps.add(APIConstants.TOO_MANY_TO_COUNT);
-                                if (otherNumberOfPolyps.contains(polypData.getOtherNumOfPolyps().trim())) {
-                                    questionSet = NCCNQuestionMapper.getQuestionSet(APIConstants.EXACT_NUM_OF_POLYPS, APIConstants.POLYPS_10_TO_19);
-                                    basicQuestions.add(questionSet);
-                                    break;
-                                }
-                            }
-
-
+                            questionSet = NCCNQuestionMapper.getQuestionSet(APIConstants.EXACT_NUM_OF_POLYPS, APIConstants.POLYPS_10_TO_19);
+                            basicQuestions.add(questionSet);
                         }
                     }
 
@@ -269,7 +255,8 @@ public class CareAPIUtil{
             }
             if (familyClinicalHistory.size() > 0) {
                 getFamilyCancerDetails(familyClinicalHistory, familyHistory);
-                List<QuestionSet> familyBasicQuestions = new ArrayList<>();
+                // Append to the relativeCancerOverall question added by getFamilyCancerStatus rather than replacing it
+                List<QuestionSet> familyBasicQuestions = new ArrayList<>(familyHistory.getBasicQuestions());
                 familyClinicalHistory.forEach(clinicalHistory -> {
                     if (!StringUtils.isEmpty(clinicalHistory.getPolypOverall())) {
                         String polypDetail = clinicalHistory.getPolypOverall();
@@ -923,6 +910,11 @@ public class CareAPIUtil{
             careapiResponseDTO.setApsApcOverall(APSNCCN);
             careapiResponseDTO.setApsApcCriteriaMetIds(findAvailableRSId(apsRSIds, filterByPrefix(inputList, "CRC")));
         }
+        careapiResponseDTO.setDateAssessed(dateConversionUtil.getStringDateFormat(Instant.now(), DATE_ASSESSED_FORMAT));
+        Set<String> gastricCriteriaMet = clinicalSummary.getRiskAssessmentNccnForGastric();
+        careapiResponseDTO.setGastricCriteriaMet(!CollectionUtils.isEmpty(gastricCriteriaMet) ? gastricCriteriaMet : null);
+        Set<String> gastricTagId = findAvailableRSId(gastricRSIds, filterByPrefix(inputList, "CRC"));
+        careapiResponseDTO.setGastricCriteriaMetIds(!gastricTagId.isEmpty() ? gastricTagId : null);
         return careapiResponseDTO;
     }
     public void getFamilyCancerDetails(List<ClinicalHistory> clinicalHistoryList, FamilyHistory familyHistory) {
@@ -1333,6 +1325,29 @@ public class CareAPIUtil{
         return allMatchingIds.stream()
                 .filter(patientRSIds::contains)
                 .collect(Collectors.toSet());
+    }
+
+    /**
+     * Whether a polyp entry reports ten or more polyps, via an exact count, a minimum count,
+     * or a descriptive "other" count such as "numerous" or "too many to count".
+     *
+     * @param polypData the polyp details of the proband; may be null
+     * @return true when the reported number of polyps is greater than nine
+     */
+    public boolean isPolypGreaterThanNine(PolypDetails polypData) {
+        if (polypData == null) {
+            return false;
+        }
+        if (!StringUtils.isEmpty(polypData.getExactNumOfPolyps())
+            && Integer.parseInt(polypData.getExactNumOfPolyps().trim()) > MAX_POLYPS_BELOW_THRESHOLD) {
+            return true;
+        }
+        if (!StringUtils.isEmpty(polypData.getMinNumOfPolyps())
+            && Integer.parseInt(polypData.getMinNumOfPolyps().trim()) > MAX_POLYPS_BELOW_THRESHOLD) {
+            return true;
+        }
+        return !StringUtils.isEmpty(polypData.getOtherNumOfPolyps())
+            && DESCRIPTIVE_POLYP_COUNTS_OVER_NINE.contains(polypData.getOtherNumOfPolyps().trim());
     }
 
 }

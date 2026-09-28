@@ -3,8 +3,11 @@ package com.genomebrain.backend.service.util;
 import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -27,6 +30,25 @@ import com.genomebrain.backend.service.dto.TagIdConstant;
 public class HbocReasoningStatementUtility {
 
     private final Logger log = LoggerFactory.getLogger(HbocReasoningStatementUtility.class);
+
+    static final String CANCER_NEXT_EXPANDED_PRODUCT_CODE = "8875";
+
+    /**
+     * CancerNext-Expanded® (8875) gene panel, taken from the {@code GenesList} of the product's
+     * {@code genetic_tests_master_details} template in CARE (patientportal liquibase CARE-59611).
+     * Add-on groups (limited-evidence and pancreatitis genes) are not part of {@code GenesList} and are excluded.
+     */
+    static final Set<String> CANCER_NEXT_EXPANDED_GENES = Set.of(
+        "AIP", "ALK", "APC", "ATM", "AXIN2", "BAP1", "BARD1", "BMPR1A", "BRCA1", "BRCA2", "BRIP1", "CDC73",
+        "CDH1", "CDK4", "CDKN1B", "CDKN2A", "CEBPA", "CHEK2", "CTNNA1", "DDX41", "DICER1", "EGFR", "EPCAM",
+        "ETV6", "FH", "FLCN", "GATA2", "GREM1", "HOXB13", "KIT", "LZTR1", "MAX", "MBD4", "MEN1", "MET", "MITF",
+        "MLH1", "MSH2", "MSH3", "MSH6", "MUTYH", "NF1", "NF2", "NTHL1", "PALB2", "PDGFRA", "PHOX2B", "PMS2",
+        "POLD1", "POLE", "POT1", "PRKAR1A", "PTCH1", "PTEN", "RAD51C", "RAD51D", "RB1", "RET", "RUNX1", "SDHA",
+        "SDHAF2", "SDHB", "SDHC", "SDHD", "SMAD4", "SMARCA4", "SMARCB1", "SMARCE1", "STK11", "SUFU", "TMEM127",
+        "TP53", "TSC1", "TSC2", "VHL", "WT1");
+
+    private static final Map<String, Set<String>> GENES_BY_PRODUCT_CODE =
+        Map.of(CANCER_NEXT_EXPANDED_PRODUCT_CODE, CANCER_NEXT_EXPANDED_GENES);
 
     /**
      * Check for NCCN HBOC logic considering of different individual criteria
@@ -666,6 +688,16 @@ public class HbocReasoningStatementUtility {
             }
         }
 
+        //logic to check for Pathogenic Gene Tags for cancerNext Expanded
+        hbocReasoningStatement.add(checkCancerNextExpandedPathogenicGenes(familyHistoryDetailsTagsDTOList, tagsSet));
+        if (hbocReasoningStatement.contains(ReasoningStatementConstants.NCCNRS1.getValue())) {
+            ReasoningStatementAndTags reasoningStatementAndTags = new ReasoningStatementAndTags();
+            reasoningStatementAndTags.setReasoningStatementId(ReasoningStatementIdConstant.NCCNCRS1.getReasoningStatementId());
+            Set<String> tagId = new HashSet<>();
+            tagId.add(TagIdConstant.NCCNTag1.getTagId());
+            reasoningStatementAndTags.setTagIds(tagId);
+            reasoningStatementAndTagsSet.add(reasoningStatementAndTags);
+        }
 
         hbocReasoningStatement.removeIf(String::isEmpty);
         reasoningStatementObjects.setReasoningStatementEn(hbocReasoningStatement);
@@ -673,6 +705,87 @@ public class HbocReasoningStatementUtility {
 
         log.info("Exit from getHbocReasoningStatement method of HbocReasoningStatementUtility : Check for NCCN HBOC logic considering of different individual criteria");
         return reasoningStatementObjects;
+    }
+
+    /**
+     * Check if any pathogenic genes from family history tags are part of CancerNext Expanded panel.
+     * Compares the CancerNext Expanded genes (product code 8875) with pathogenic genes
+     * extracted from family history genetic testing tags.
+     *
+     * @param familyHistoryDetailsTagsDTOList List of family history DTOs containing genetic testing tags
+     * @param tagsSet The set of tags that will be saved to the database (specific tags will be removed from this set)
+     * @return NCCNRS1 reasoning statement if any pathogenic gene matches CancerNext Expanded genes, empty string otherwise
+     */
+    private String checkCancerNextExpandedPathogenicGenes(List<FamilyHistoryDetailsTagsDTO> familyHistoryDetailsTagsDTOList, Set<String> tagsSet) {
+
+        Set<String> canNxtExpGenes = getDistinctGenesByProductCode(Collections.singletonList(CANCER_NEXT_EXPANDED_PRODUCT_CODE));
+        Set<String> pathogenicGenes = getGenesFromTags(familyHistoryDetailsTagsDTOList, tagsSet);
+
+        // Check if there's any intersection between pathogenic genes and CancerNext Expanded genes
+        if (!Collections.disjoint(pathogenicGenes, canNxtExpGenes)) {
+            return ReasoningStatementConstants.NCCNRS1.getValue();
+        }
+        return "";
+    }
+
+    /**
+     * Extract gene names from genetic testing tags in the family history DTOs.
+     * Looks for tags in the format: FmPositiveGeneMutation{RelativeType}-{GENE}
+     * Example: FmPositiveGeneMutation-BRCA1 -> extracts "BRCA1"
+     * Also removes specific tags (e.g., FmPositiveGeneMutation-BRCA2) from both the DTOs and the tagsSet
+     * that will be saved to the database, keeping only the generic tag (FmPositiveGeneMutation).
+     *
+     * @param familyHistoryDetailsTagsDTOList List of family history DTOs containing tags
+     * @param tagsSet The set of tags that will be saved to the database (specific tags will be removed from this set)
+     * @return Set of unique gene names extracted from tags
+     */
+    private Set<String> getGenesFromTags(List<FamilyHistoryDetailsTagsDTO> familyHistoryDetailsTagsDTOList, Set<String> tagsSet) {
+        Set<String> genes = new HashSet<>();
+
+        if (CollectionUtils.isEmpty(familyHistoryDetailsTagsDTOList)) {
+            return genes;
+        }
+
+        String tagPrefix = "FmPositiveGeneMutation";
+        Set<String> tagsToRemoveFromTagsSet = new HashSet<>();
+
+        for (FamilyHistoryDetailsTagsDTO dto : familyHistoryDetailsTagsDTOList) {
+            if (dto == null || CollectionUtils.isEmpty(dto.getTags())) {
+                continue;
+            }
+
+            Set<String> tags = dto.getTags();
+            // Use iterator to safely remove elements during iteration
+            Iterator<String> tagIterator = tags.iterator();
+            while (tagIterator.hasNext()) {
+                String tag = tagIterator.next();
+                if (tag == null || !tag.startsWith(tagPrefix)) {
+                    continue;
+                }
+
+                // Format: FmPositiveGeneMutation-{GENE}
+                int lastHyphenIndex = tag.lastIndexOf("-");
+                if (lastHyphenIndex > 0 && lastHyphenIndex < tag.length() - 1) {
+                    String geneName = tag.substring(lastHyphenIndex + 1);
+
+                    if (!geneName.isEmpty()) {
+                        genes.add(geneName);
+                        tagIterator.remove(); // Safely remove from DTO using iterator
+                        tagsToRemoveFromTagsSet.add(tag); // Collect tags to remove from tagsSet
+                        log.debug("Extracted gene: {} from tag: {}", geneName, tag);
+                    }
+                }
+            }
+        }
+
+        // Remove specific tags from tagsSet (the set that will be saved to database)
+        if (tagsSet != null && !tagsToRemoveFromTagsSet.isEmpty()) {
+            tagsSet.removeAll(tagsToRemoveFromTagsSet);
+            log.debug("Removed {} specific tags from tagsSet: {}", tagsToRemoveFromTagsSet.size(), tagsToRemoveFromTagsSet);
+        }
+
+        log.debug("Extracted {} unique genes from tags: {}", genes.size(), genes);
+        return genes;
     }
 
 
@@ -763,6 +876,22 @@ public class HbocReasoningStatementUtility {
         return isCondition;
     }
 
-
+    /**
+     * Get distinct genes for the given genetic test product codes.
+     * <p>
+     * In CARE this read {@code genetic_test.genes} from MySQL; this service has no database, so the
+     * panel definitions are held in {@link #GENES_BY_PRODUCT_CODE}. Unknown product codes contribute no genes.
+     *
+     * @param productCodes List of product codes to filter by
+     * @return Set of gene names belonging to the given product codes
+     */
+    public Set<String> getDistinctGenesByProductCode(List<String> productCodes) {
+        Set<String> genes = new HashSet<>();
+        for (String productCode : productCodes) {
+            genes.addAll(GENES_BY_PRODUCT_CODE.getOrDefault(productCode, Collections.emptySet()));
+        }
+        log.debug("Retrieved {} genes for product codes: {}", genes.size(), productCodes);
+        return genes;
+    }
 }
 

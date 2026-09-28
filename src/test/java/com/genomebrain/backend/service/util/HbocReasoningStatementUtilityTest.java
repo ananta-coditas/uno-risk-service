@@ -1710,5 +1710,66 @@ class HbocReasoningStatementUtilityTest {
         }
         return familyHistory;
     }
-}
 
+    // ========== CancerNext-Expanded pathogenic gene (NCCNRS1) ==========
+
+    private static FamilyHistoryDetailsTagsDTO relativeWithTags(String... tags) {
+        FamilyHistoryDetailsTagsDTO relative = new FamilyHistoryDetailsTagsDTO();
+        relative.setTags(new HashSet<>(Arrays.asList(tags)));
+        return relative;
+    }
+
+    @Test
+    @DisplayName("should_addNCCNRS1_when_relativeCarriesPathogenicVariantInCancerNextExpandedGene")
+    void should_addNCCNRS1_when_relativeCarriesPathogenicVariantInCancerNextExpandedGene() throws ConnectException {
+        List<FamilyHistoryDetailsTagsDTO> familyHistory = List.of(
+            relativeWithTags("FmPositiveGeneMutation", "FmPositiveGeneMutation-BRCA2"));
+
+        ReasoningStatementObject result = utility.getHbocReasoningStatement(familyHistory, new HashSet<>());
+
+        assertThat(result.getReasoningStatementEn()).contains(ReasoningStatementConstants.NCCNRS1.getValue());
+        assertThat(result.getReasoningStatementAndTags())
+            .anySatisfy(statement -> {
+                assertThat(statement.getReasoningStatementId()).isEqualTo(ReasoningStatementIdConstant.NCCNCRS1.getReasoningStatementId());
+                assertThat(statement.getTagIds()).containsExactly(TagIdConstant.NCCNTag1.getTagId());
+            });
+    }
+
+    @Test
+    @DisplayName("should_notAddNCCNRS1_when_relativeGeneIsOutsideCancerNextExpandedPanel")
+    void should_notAddNCCNRS1_when_relativeGeneIsOutsideCancerNextExpandedPanel() throws ConnectException {
+        List<FamilyHistoryDetailsTagsDTO> familyHistory = List.of(
+            relativeWithTags("FmPositiveGeneMutation", "FmPositiveGeneMutation-CFTR"));
+
+        ReasoningStatementObject result = utility.getHbocReasoningStatement(familyHistory, new HashSet<>());
+
+        assertThat(result.getReasoningStatementEn()).doesNotContain(ReasoningStatementConstants.NCCNRS1.getValue());
+    }
+
+    @Test
+    @DisplayName("should_removeGeneSpecificTagsButKeepGenericTag_when_extractingPathogenicGenes")
+    void should_removeGeneSpecificTagsButKeepGenericTag_when_extractingPathogenicGenes() throws ConnectException {
+        FamilyHistoryDetailsTagsDTO relative = relativeWithTags(
+            "FmPositiveGeneMutation", "FmPositiveGeneMutation-BRCA1", "FmBreastMatFDR");
+        Set<String> tagsSet = new HashSet<>(Set.of("Female", "FmPositiveGeneMutation-BRCA1", "FmPositiveGeneMutation"));
+
+        utility.getHbocReasoningStatement(List.of(relative), tagsSet);
+
+        assertThat(relative.getTags()).containsExactlyInAnyOrder("FmPositiveGeneMutation", "FmBreastMatFDR");
+        assertThat(tagsSet).containsExactlyInAnyOrder("Female", "FmPositiveGeneMutation");
+    }
+
+    @Test
+    @DisplayName("should_returnCancerNextExpandedPanel_when_productCodeIs8875")
+    void should_returnCancerNextExpandedPanel_when_productCodeIs8875() {
+        Set<String> genes = utility.getDistinctGenesByProductCode(List.of("8875"));
+
+        assertThat(genes).hasSize(76).contains("BRCA1", "BRCA2", "MLH1", "TP53").doesNotContain("CFTR", "ATRIP");
+    }
+
+    @Test
+    @DisplayName("should_returnNoGenes_when_productCodeIsUnknown")
+    void should_returnNoGenes_when_productCodeIsUnknown() {
+        assertThat(utility.getDistinctGenesByProductCode(List.of("0000"))).isEmpty();
+    }
+}

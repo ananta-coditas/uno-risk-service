@@ -39,43 +39,45 @@ public class ConditionHolder {
                 NCCNTagConstants.FM_BLADDER_PAT_FDR.getValue(), NCCNTagConstants.FM_BLADDER_PAT_SDR.getValue(),
                 NCCNTagConstants.FM_GASTRIC_PAT_FDR.getValue(), NCCNTagConstants.FM_GASTRIC_PAT_SDR.getValue(), NCCNTagConstants.FM_SEB_ADENO_CAR_PAT_FDR.getValue(), NCCNTagConstants.FM_SEB_ADENO_CAR_PAT_SDR.getValue(),
                 NCCNTagConstants.FM_SM_BOWEL_PAT_FDR.getValue(), NCCNTagConstants.FM_SM_BOWEL_PAT_SDR.getValue(), NCCNTagConstants.FM_BILIARY_PAT_FDR.getValue(),
-                NCCNTagConstants.FM_BILIARY_PAT_SDR.getValue(), NCCNTagConstants.FM_URETER_PAT_FDR.getValue(), NCCNTagConstants.FM_URETER_PAT_SDR.getValue()});
+                NCCNTagConstants.FM_BILIARY_PAT_SDR.getValue(), NCCNTagConstants.FM_URETER_PAT_FDR.getValue(), NCCNTagConstants.FM_URETER_PAT_SDR.getValue(),
+                NCCNTagConstants.FM_GALLBLADDER_PAT_FDR.getValue(), NCCNTagConstants.FM_GALLBLADDER_PAT_SDR.getValue()});
         conditionMap.put("CRCTag21", new String[]{NCCNTagConstants.FM_COLON_MAT_FDR.getValue(), NCCNTagConstants.FM_COLON_MAT_SDR.getValue(), NCCNTagConstants.FM_BRAIN_MAT_FDR.getValue(),
                 NCCNTagConstants.FM_BRAIN_MAT_SDR.getValue(), NCCNTagConstants.FM_OVARIAN_MAT_FDR.getValue(), NCCNTagConstants.FM_OVARIAN_MAT_SDR.getValue(), NCCNTagConstants.FM_PANCREATIC_MAT_FDR.getValue(),
                 NCCNTagConstants.FM_PANCREATIC_MAT_SDR.getValue(), NCCNTagConstants.FM_ENDOMETRIAL_MAT_FDR.getValue(), NCCNTagConstants.FM_ENDOMETRIAL_MAT_SDR.getValue(), NCCNTagConstants.FM_BLADDER_MAT_FDR.getValue(),
                 NCCNTagConstants.FM_BLADDER_MAT_SDR.getValue(), NCCNTagConstants.FM_GASTRIC_MAT_FDR.getValue(), NCCNTagConstants.FM_GASTRIC_MAT_SDR.getValue(),
                 NCCNTagConstants.FM_SEB_ADENO_CAR_MAT_FDR.getValue(), NCCNTagConstants.FM_SEB_ADENO_CAR_MAT_SDR.getValue(), NCCNTagConstants.FM_SM_BOWEL_MAT_FDR.getValue(), NCCNTagConstants.FM_SM_BOWEL_MAT_SDR.getValue(),
-                NCCNTagConstants.FM_BILIARY_MAT_FDR.getValue(), NCCNTagConstants.FM_BILIARY_MAT_SDR.getValue(), NCCNTagConstants.FM_URETER_MAT_FDR.getValue(), NCCNTagConstants.FM_URETER_MAT_SDR.getValue()});
+                NCCNTagConstants.FM_BILIARY_MAT_FDR.getValue(), NCCNTagConstants.FM_BILIARY_MAT_SDR.getValue(), NCCNTagConstants.FM_URETER_MAT_FDR.getValue(), NCCNTagConstants.FM_URETER_MAT_SDR.getValue(),
+                NCCNTagConstants.FM_GALLBLADDER_MAT_FDR.getValue(), NCCNTagConstants.FM_GALLBLADDER_MAT_SDR.getValue()});
 
         //Condition For CRCRS10
         conditionMap.put("CRCTag19_A", new String[]{NCCNTagConstants.FM_COLON_LT_50_MAT_FDR.getValue(), NCCNTagConstants.FM_BLADDER_LT_50_MAT_FDR.getValue(), NCCNTagConstants.FM_GASTRICS_LT_50_MAT_FDR.getValue(),
                 NCCNTagConstants.FM_PANCREATIC_LT_50_MAT_FDR.getValue(), NCCNTagConstants.FM_BRAIN_LT_50_MAT_FDR.getValue(), NCCNTagConstants.FM_SM_BOWEL_LT_50_MAT_FDR.getValue(),
                 NCCNTagConstants.FM_BILITARY_LT_50_MAT_FDR.getValue(), NCCNTagConstants.FM_URETER_LT_50_MAT_FDR.getValue(), NCCNTagConstants.FM_ENDOMETRIAL_LT_50_MAT_FDR.getValue(),
-                NCCNTagConstants.FM_OVARIAN_LT_50_MAT_FDR.getValue(), NCCNTagConstants.FM_COLON_LT_50_MAT_SDR.getValue(), NCCNTagConstants.FM_BLADDER_LT_50_MAT_SDR.getValue(),
-                NCCNTagConstants.FM_GASTRICS_LT_50_MAT_SDR.getValue(), NCCNTagConstants.FM_PANCREATIC_LT_50_MAT_SDR.getValue(), NCCNTagConstants.FM_BRAIN_LT_50_MAT_SDR.getValue(),
-                NCCNTagConstants.FM_SM_BOWEL_LT_50_MAT_SDR.getValue(), NCCNTagConstants.FM_BILITARY_LT_50_MAT_SDR.getValue(), NCCNTagConstants.FM_URETER_LT_50_MAT_SDR.getValue(),
-                NCCNTagConstants.FM_ENDOMETRIAL_LT_50_MAT_SDR.getValue(), NCCNTagConstants.FM_OVARIAN_LT_50_MAT_SDR.getValue(), NCCNTagConstants.FM_SEB_ADENO_CAR_LT_50_MAT_FDR.getValue(),
-                NCCNTagConstants.FM_SEB_ADENO_CAR_LT_50_MAT_SDR.getValue()});
+                NCCNTagConstants.FM_OVARIAN_LT_50_MAT_FDR.getValue(), NCCNTagConstants.FM_GALLBLADDER_LT_50_MAT_FDR.getValue(), NCCNTagConstants.FM_COLON_LT_50_MAT_SDR.getValue(),
+                NCCNTagConstants.FM_BLADDER_LT_50_MAT_SDR.getValue(), NCCNTagConstants.FM_GASTRICS_LT_50_MAT_SDR.getValue(), NCCNTagConstants.FM_PANCREATIC_LT_50_MAT_SDR.getValue(),
+                NCCNTagConstants.FM_BRAIN_LT_50_MAT_SDR.getValue(), NCCNTagConstants.FM_SM_BOWEL_LT_50_MAT_SDR.getValue(), NCCNTagConstants.FM_BILITARY_LT_50_MAT_SDR.getValue(),
+                NCCNTagConstants.FM_URETER_LT_50_MAT_SDR.getValue(), NCCNTagConstants.FM_ENDOMETRIAL_LT_50_MAT_SDR.getValue(), NCCNTagConstants.FM_OVARIAN_LT_50_MAT_SDR.getValue(),
+                NCCNTagConstants.FM_GALLBLADDER_LT_50_MAT_SDR.getValue(), NCCNTagConstants.FM_SEB_ADENO_CAR_LT_50_MAT_FDR.getValue(), NCCNTagConstants.FM_SEB_ADENO_CAR_LT_50_MAT_SDR.getValue()});
         conditionMap.put("CRCTag19_B", new String[]{NCCNTagConstants.FM_OVARIAN_MAT_FDR.getValue(), NCCNTagConstants.FM_OVARIAN_MAT_SDR.getValue(), NCCNTagConstants.FM_PANCREATIC_MAT_FDR.getValue(),
                 NCCNTagConstants.FM_PANCREATIC_MAT_SDR.getValue(), NCCNTagConstants.FM_ENDOMETRIAL_MAT_FDR.getValue(), NCCNTagConstants.FM_ENDOMETRIAL_MAT_SDR.getValue(),
                 NCCNTagConstants.FM_BLADDER_MAT_FDR.getValue(), NCCNTagConstants.FM_BLADDER_MAT_SDR.getValue(), NCCNTagConstants.FM_GASTRIC_MAT_FDR.getValue(), NCCNTagConstants.FM_GASTRIC_MAT_SDR.getValue(),
                 NCCNTagConstants.FM_SEB_ADENO_CAR_MAT_FDR.getValue(), NCCNTagConstants.FM_SEB_ADENO_CAR_MAT_SDR.getValue(), NCCNTagConstants.FM_SM_BOWEL_MAT_FDR.getValue(), NCCNTagConstants.FM_SM_BOWEL_MAT_SDR.getValue(),
                 NCCNTagConstants.FM_BILIARY_MAT_FDR.getValue(), NCCNTagConstants.FM_BILIARY_MAT_SDR.getValue(), NCCNTagConstants.FM_URETER_MAT_FDR.getValue(), NCCNTagConstants.FM_URETER_MAT_SDR.getValue(),
-                NCCNTagConstants.FM_COLON_MAT_FDR.getValue(), NCCNTagConstants.FM_COLON_MAT_SDR.getValue(),
-                NCCNTagConstants.FM_BRAIN_MAT_FDR.getValue(), NCCNTagConstants.FM_BRAIN_MAT_SDR.getValue()});
+                NCCNTagConstants.FM_COLON_MAT_FDR.getValue(), NCCNTagConstants.FM_COLON_MAT_SDR.getValue(), NCCNTagConstants.FM_BRAIN_MAT_FDR.getValue(),
+                NCCNTagConstants.FM_BRAIN_MAT_SDR.getValue(), NCCNTagConstants.FM_GALLBLADDER_MAT_FDR.getValue(), NCCNTagConstants.FM_GALLBLADDER_MAT_SDR.getValue()});
 
         conditionMap.put("CRCTag20_A", new String[]{NCCNTagConstants.FM_COLON_LT_50_PAT_FDR.getValue(), NCCNTagConstants.FM_BLADDER_LT_50_PAT_FDR.getValue(), NCCNTagConstants.FM_GASTRICS_LT_50_PAT_FDR.getValue(),
                 NCCNTagConstants.FM_PANCREATIC_LT_50_PAT_FDR.getValue(), NCCNTagConstants.FM_BRAIN_LT_50_PAT_FDR.getValue(), NCCNTagConstants.FM_SM_BOWEL_LT_50_PAT_FDR.getValue(), NCCNTagConstants.FM_BILITARY_LT_50_PAT_FDR.getValue(),
-                NCCNTagConstants.FM_URETER_LT_50_PAT_FDR.getValue(), NCCNTagConstants.FM_ENDOMETRIAL_LT_50_PAT_FDR.getValue(), NCCNTagConstants.FM_OVARIAN_LT_50_PAT_FDR.getValue(), NCCNTagConstants.FM_COLON_LT_50_PAT_SDR.getValue(),
+                NCCNTagConstants.FM_URETER_LT_50_PAT_FDR.getValue(), NCCNTagConstants.FM_ENDOMETRIAL_LT_50_PAT_FDR.getValue(), NCCNTagConstants.FM_OVARIAN_LT_50_PAT_FDR.getValue(), NCCNTagConstants.FM_GALLBLADDER_LT_50_PAT_FDR.getValue(), NCCNTagConstants.FM_COLON_LT_50_PAT_SDR.getValue(),
                 NCCNTagConstants.FM_BLADDER_LT_50_PAT_SDR.getValue(), NCCNTagConstants.FM_GASTRICS_LT_50_PAT_SDR.getValue(), NCCNTagConstants.FM_PANCREATIC_LT_50_PAT_SDR.getValue(), NCCNTagConstants.FM_BRAIN_LT_50_PAT_SDR.getValue(),
                 NCCNTagConstants.FM_SM_BOWEL_LT_50_PAT_SDR.getValue(), NCCNTagConstants.FM_BILITARY_LT_50_PAT_SDR.getValue(), NCCNTagConstants.FM_URETER_LT_50_PAT_SDR.getValue(),
-                NCCNTagConstants.FM_ENDOMETRIAL_LT_50_PAT_SDR.getValue(), NCCNTagConstants.FM_OVARIAN_LT_50_PAT_SDR.getValue(), NCCNTagConstants.FM_SEB_ADENO_CAR_LT_50_PAT_FDR.getValue(), NCCNTagConstants.FM_SEB_ADENO_CAR_LT_50_PAT_SDR.getValue()});
+                NCCNTagConstants.FM_ENDOMETRIAL_LT_50_PAT_SDR.getValue(), NCCNTagConstants.FM_OVARIAN_LT_50_PAT_SDR.getValue(), NCCNTagConstants.FM_GALLBLADDER_LT_50_PAT_SDR.getValue(), NCCNTagConstants.FM_SEB_ADENO_CAR_LT_50_PAT_FDR.getValue(), NCCNTagConstants.FM_SEB_ADENO_CAR_LT_50_PAT_SDR.getValue()});
         conditionMap.put("CRCTag20_B", new String[]{NCCNTagConstants.FM_OVARIAN_PAT_FDR.getValue(), NCCNTagConstants.FM_OVARIAN_PAT_SDR.getValue(), NCCNTagConstants.FM_PANCREATIC_PAT_FDR.getValue(),
                 NCCNTagConstants.FM_PANCREATIC_PAT_SDR.getValue(), NCCNTagConstants.FM_ENDOMETRIAL_PAT_FDR.getValue(), NCCNTagConstants.FM_ENDOMETRIAL_PAT_SDR.getValue(), NCCNTagConstants.FM_BLADDER_PAT_FDR.getValue(),
                 NCCNTagConstants.FM_BLADDER_PAT_SDR.getValue(), NCCNTagConstants.FM_GASTRIC_PAT_FDR.getValue(), NCCNTagConstants.FM_GASTRIC_PAT_SDR.getValue(), NCCNTagConstants.FM_SEB_ADENO_CAR_PAT_FDR.getValue(),
                 NCCNTagConstants.FM_SEB_ADENO_CAR_PAT_SDR.getValue(), NCCNTagConstants.FM_SM_BOWEL_PAT_FDR.getValue(), NCCNTagConstants.FM_SM_BOWEL_PAT_SDR.getValue(), NCCNTagConstants.FM_BILIARY_PAT_FDR.getValue(),
                 NCCNTagConstants.FM_BILIARY_PAT_SDR.getValue(), NCCNTagConstants.FM_URETER_PAT_FDR.getValue(), NCCNTagConstants.FM_URETER_PAT_SDR.getValue(), NCCNTagConstants.FM_COLON_PAT_FDR.getValue(),
-                NCCNTagConstants.FM_COLON_PAT_SDR.getValue(), NCCNTagConstants.FM_BRAIN_PAT_FDR.getValue(), NCCNTagConstants.FM_BRAIN_PAT_SDR.getValue()});
+                NCCNTagConstants.FM_COLON_PAT_SDR.getValue(), NCCNTagConstants.FM_BRAIN_PAT_FDR.getValue(), NCCNTagConstants.FM_BRAIN_PAT_SDR.getValue(), NCCNTagConstants.FM_GALLBLADDER_PAT_FDR.getValue(), NCCNTagConstants.FM_GALLBLADDER_PAT_SDR.getValue()});
 
         //Condition for CRCRS 7
         conditionMap.put("CRCTag15_Mat", new String[]{NCCNTagConstants.FM_OVARIAN_MAT_FDR.getValue(), NCCNTagConstants.FM_OVARIAN_MAT_SDR.getValue(), NCCNTagConstants.FM_PANCREATIC_MAT_FDR.getValue(),
@@ -83,14 +85,13 @@ public class ConditionHolder {
                 NCCNTagConstants.FM_BLADDER_MAT_SDR.getValue(), NCCNTagConstants.FM_GASTRIC_MAT_FDR.getValue(), NCCNTagConstants.FM_GASTRIC_MAT_SDR.getValue(), NCCNTagConstants.FM_SEB_ADENO_CAR_MAT_FDR.getValue(),
                 NCCNTagConstants.FM_SEB_ADENO_CAR_MAT_SDR.getValue(), NCCNTagConstants.FM_SM_BOWEL_MAT_FDR.getValue(), NCCNTagConstants.FM_SM_BOWEL_MAT_SDR.getValue(), NCCNTagConstants.FM_BILIARY_MAT_FDR.getValue(),
                 NCCNTagConstants.FM_BILIARY_MAT_SDR.getValue(), NCCNTagConstants.FM_URETER_MAT_FDR.getValue(), NCCNTagConstants.FM_URETER_MAT_SDR.getValue(), NCCNTagConstants.FM_COLON_MAT_FDR.getValue(),
-                NCCNTagConstants.FM_COLON_MAT_SDR.getValue(), NCCNTagConstants.FM_BRAIN_MAT_FDR.getValue(), NCCNTagConstants.FM_BRAIN_MAT_SDR.getValue()});
+                NCCNTagConstants.FM_COLON_MAT_SDR.getValue(), NCCNTagConstants.FM_BRAIN_MAT_FDR.getValue(), NCCNTagConstants.FM_BRAIN_MAT_SDR.getValue(), NCCNTagConstants.FM_GALLBLADDER_MAT_FDR.getValue(), NCCNTagConstants.FM_GALLBLADDER_MAT_SDR.getValue()});
         conditionMap.put("CRCTag15_Pat", new String[]{NCCNTagConstants.FM_OVARIAN_PAT_FDR.getValue(), NCCNTagConstants.FM_OVARIAN_PAT_SDR.getValue(), NCCNTagConstants.FM_PANCREATIC_PAT_FDR.getValue(),
                 NCCNTagConstants.FM_PANCREATIC_PAT_SDR.getValue(), NCCNTagConstants.FM_ENDOMETRIAL_PAT_FDR.getValue(), NCCNTagConstants.FM_ENDOMETRIAL_PAT_SDR.getValue(), NCCNTagConstants.FM_BLADDER_PAT_FDR.getValue(),
                 NCCNTagConstants.FM_BLADDER_PAT_SDR.getValue(), NCCNTagConstants.FM_GASTRIC_PAT_FDR.getValue(), NCCNTagConstants.FM_GASTRIC_PAT_SDR.getValue(), NCCNTagConstants.FM_SEB_ADENO_CAR_PAT_FDR.getValue(),
                 NCCNTagConstants.FM_SEB_ADENO_CAR_PAT_SDR.getValue(), NCCNTagConstants.FM_SM_BOWEL_PAT_FDR.getValue(), NCCNTagConstants.FM_SM_BOWEL_PAT_SDR.getValue(), NCCNTagConstants.FM_BILIARY_PAT_FDR.getValue(),
                 NCCNTagConstants.FM_BILIARY_PAT_SDR.getValue(), NCCNTagConstants.FM_URETER_PAT_FDR.getValue(), NCCNTagConstants.FM_URETER_PAT_SDR.getValue(), NCCNTagConstants.FM_COLON_PAT_FDR.getValue(),
-                NCCNTagConstants.FM_COLON_PAT_SDR.getValue(), NCCNTagConstants.FM_BRAIN_PAT_FDR.getValue(), NCCNTagConstants.FM_BRAIN_PAT_SDR.getValue()});
-
+                NCCNTagConstants.FM_COLON_PAT_SDR.getValue(), NCCNTagConstants.FM_BRAIN_PAT_FDR.getValue(), NCCNTagConstants.FM_BRAIN_PAT_SDR.getValue(), NCCNTagConstants.FM_GALLBLADDER_PAT_FDR.getValue(), NCCNTagConstants.FM_GALLBLADDER_PAT_SDR.getValue()});
 
         //Following conditions for NCCN HBOC
         conditionMap.put("HBOCTag29_Mat", new String[]{NCCNTagConstants.FM_BREAST_MAT_FDR.getValue(), NCCNTagConstants.FM_BREAST_MAT_SDR.getValue(), NCCNTagConstants.FM_BREAST_MAT_TDR.getValue()});
@@ -168,34 +169,34 @@ public class ConditionHolder {
                 NCCNTagConstants.FM_BREAST_UNKNOWN_PAT_SDR.getValue(), NCCNTagConstants.FM_BREAST_UNKNOWN_PAT_FDR.getValue()});
         conditionMap.put("HBOCTag77_B", new String[]{NCCNTagConstants.FM_FALLO_PERITONEAL_PAT_FDR.getValue(), NCCNTagConstants.FM_FALLO_PERITONEAL_PAT_SDR.getValue(), NCCNTagConstants.FM_FALLO_PERITONEAL_PAT_TDR.getValue()});
 
-        conditionMap.put("HBOCTag78_A", new String[]{NCCNTagConstants.FM_PROSTATE_MAT_FDR.getValue()});
+        conditionMap.put("HBOCTag78_A", new String[]{NCCNTagConstants.FM_PROSTATE_MAT_FDR.getValue(), NCCNTagConstants.FM_PROSTATE_MAT_SDR.getValue()});
         conditionMap.put("HBOCTag78_B", new String[]{NCCNTagConstants.FM_FALLO_PERITONEAL_MAT_FDR.getValue(), NCCNTagConstants.FM_FALLO_PERITONEAL_MAT_SDR.getValue(), NCCNTagConstants.FM_FALLO_PERITONEAL_MAT_TDR.getValue()});
 
-        conditionMap.put("HBOCTag79_A", new String[]{NCCNTagConstants.FM_PROSTATE_PAT_FDR.getValue()});
+        conditionMap.put("HBOCTag79_A", new String[]{NCCNTagConstants.FM_PROSTATE_PAT_FDR.getValue(), NCCNTagConstants.FM_PROSTATE_PAT_SDR.getValue()});
         conditionMap.put("HBOCTag79_B", new String[]{NCCNTagConstants.FM_FALLO_PERITONEAL_PAT_FDR.getValue(), NCCNTagConstants.FM_FALLO_PERITONEAL_PAT_SDR.getValue(), NCCNTagConstants.FM_FALLO_PERITONEAL_PAT_TDR.getValue()});
 
         conditionMap.put("HBOCTag53_Mat_A", new String[]{NCCNTagConstants.FM_BREAST_LTE_50_MAT_FDR.getValue(), NCCNTagConstants.FM_BREAST_LTE_50_MAT_SDR.getValue(), NCCNTagConstants.FM_BREAST_LTE_50_MAT_TDR.getValue()});
-        conditionMap.put("HBOCTag53_Mat_B", new String[]{NCCNTagConstants.FM_PROSTATE_MAT_FDR.getValue()});
+        conditionMap.put("HBOCTag53_Mat_B", new String[]{NCCNTagConstants.FM_PROSTATE_MAT_FDR.getValue(), NCCNTagConstants.FM_PROSTATE_MAT_SDR.getValue()});
 
         conditionMap.put("HBOCTag53_Pat_A", new String[]{NCCNTagConstants.FM_BREAST_LTE_50_PAT_FDR.getValue(), NCCNTagConstants.FM_BREAST_LTE_50_PAT_SDR.getValue(), NCCNTagConstants.FM_BREAST_LTE_50_PAT_TDR.getValue()});
-        conditionMap.put("HBOCTag53_Pat_B", new String[]{NCCNTagConstants.FM_PROSTATE_PAT_FDR.getValue()});
+        conditionMap.put("HBOCTag53_Pat_B", new String[]{NCCNTagConstants.FM_PROSTATE_PAT_FDR.getValue(), NCCNTagConstants.FM_PROSTATE_PAT_SDR.getValue()});
 
-        conditionMap.put("HBOCTag54_A", new String[]{NCCNTagConstants.FM_PROSTATE_MAT_FDR.getValue()});
+        conditionMap.put("HBOCTag54_A", new String[]{NCCNTagConstants.FM_PROSTATE_MAT_FDR.getValue(), NCCNTagConstants.FM_PROSTATE_MAT_SDR.getValue()});
         conditionMap.put("HBOCTag54_B", new String[]{NCCNTagConstants.FM_OVARIAN_EPITH_MAT_FDR.getValue(), NCCNTagConstants.FM_OVARIAN_EPITH_MAT_SDR.getValue(), NCCNTagConstants.FM_OVARIAN_EPITH_MAT_TDR.getValue()});
 
-        conditionMap.put("HBOCTag55_A", new String[]{NCCNTagConstants.FM_PROSTATE_PAT_FDR.getValue()});
+        conditionMap.put("HBOCTag55_A", new String[]{NCCNTagConstants.FM_PROSTATE_PAT_FDR.getValue(), NCCNTagConstants.FM_PROSTATE_PAT_SDR.getValue()});
         conditionMap.put("HBOCTag55_B", new String[]{NCCNTagConstants.FM_OVARIAN_EPITH_PAT_FDR.getValue(), NCCNTagConstants.FM_OVARIAN_EPITH_PAT_SDR.getValue(), NCCNTagConstants.FM_OVARIAN_EPITH_PAT_TDR.getValue()});
 
-        conditionMap.put("HBOCTag56_A", new String[]{NCCNTagConstants.FM_PROSTATE_MAT_FDR.getValue()});
+        conditionMap.put("HBOCTag56_A", new String[]{NCCNTagConstants.FM_PROSTATE_MAT_FDR.getValue(), NCCNTagConstants.FM_PROSTATE_MAT_SDR.getValue()});
         conditionMap.put("HBOCTag56_B", new String[]{NCCNTagConstants.FM_PANCREATIC_MAT_FDR.getValue(), NCCNTagConstants.FM_PANCREATIC_MAT_SDR.getValue(), NCCNTagConstants.FM_PANCREATIC_MAT_TDR.getValue()});
 
-        conditionMap.put("HBOCTag57_A", new String[]{NCCNTagConstants.FM_PROSTATE_PAT_FDR.getValue()});
+        conditionMap.put("HBOCTag57_A", new String[]{NCCNTagConstants.FM_PROSTATE_PAT_FDR.getValue(), NCCNTagConstants.FM_PROSTATE_PAT_SDR.getValue()});
         conditionMap.put("HBOCTag57_B", new String[]{NCCNTagConstants.FM_PANCREATIC_PAT_FDR.getValue(), NCCNTagConstants.FM_PANCREATIC_PAT_SDR.getValue(), NCCNTagConstants.FM_PANCREATIC_PAT_TDR.getValue()});
 
-        conditionMap.put("HBOCTag58_A", new String[]{NCCNTagConstants.FM_PROSTATE_MAT_FDR.getValue()});
+        conditionMap.put("HBOCTag58_A", new String[]{NCCNTagConstants.FM_PROSTATE_MAT_FDR.getValue(), NCCNTagConstants.FM_PROSTATE_MAT_SDR.getValue()});
         conditionMap.put("HBOCTag58_B", new String[]{NCCNTagConstants.FM_BREAST_MAT_FDR.getValue(), NCCNTagConstants.FM_BREAST_MAT_SDR.getValue(), NCCNTagConstants.FM_BREAST_MAT_TDR.getValue(), NCCNTagConstants.FM_PROSTATE_MAT_FDR.getValue(), NCCNTagConstants.FM_PROSTATE_MAT_SDR.getValue(), NCCNTagConstants.FM_PROSTATE_MAT_TDR.getValue()});
 
-        conditionMap.put("HBOCTag59_A", new String[]{NCCNTagConstants.FM_PROSTATE_PAT_FDR.getValue()});
+        conditionMap.put("HBOCTag59_A", new String[]{NCCNTagConstants.FM_PROSTATE_PAT_FDR.getValue(), NCCNTagConstants.FM_PROSTATE_PAT_SDR.getValue()});
         conditionMap.put("HBOCTag59_B", new String[]{NCCNTagConstants.FM_BREAST_PAT_FDR.getValue(), NCCNTagConstants.FM_BREAST_PAT_SDR.getValue(), NCCNTagConstants.FM_BREAST_PAT_TDR.getValue(), NCCNTagConstants.FM_PROSTATE_PAT_FDR.getValue(), NCCNTagConstants.FM_PROSTATE_PAT_SDR.getValue(), NCCNTagConstants.FM_PROSTATE_PAT_TDR.getValue()});
 
         conditionMap.put("HBOCTag38_A", new String[]{NCCNTagConstants.FM_BREAST_MAT_SDR.getValue(), NCCNTagConstants.FM_BREAST_MAT_FDR.getValue(),
@@ -209,11 +210,11 @@ public class ConditionHolder {
                 NCCNTagConstants.FM_OVARIAN_EPITH_PAT_TDR.getValue()});
 
 
-        conditionMap.put("HBOCTag64_A", new String[]{NCCNTagConstants.FM_PROSTATE_MAT_FDR.getValue()});
+        conditionMap.put("HBOCTag64_A", new String[]{NCCNTagConstants.FM_PROSTATE_MAT_FDR.getValue(), NCCNTagConstants.FM_PROSTATE_MAT_SDR.getValue()});
         conditionMap.put("HBOCTag64_B", new String[]{NCCNTagConstants.FM_PROSTATE_META_MAT_FDR.getValue(), NCCNTagConstants.FM_PROSTATE_META_MAT_SDR.getValue(), NCCNTagConstants.FM_PROSTATE_META_MAT_TDR.getValue(),
                 NCCNTagConstants.FM_PROSTATE_GL7_MAT_FDR.getValue(), NCCNTagConstants.FM_PROSTATE_GL7_MAT_SDR.getValue(), NCCNTagConstants.FM_PROSTATE_GL7_MAT_TDR.getValue()});
 
-        conditionMap.put("HBOCTag65_A", new String[]{NCCNTagConstants.FM_PROSTATE_PAT_FDR.getValue()});
+        conditionMap.put("HBOCTag65_A", new String[]{NCCNTagConstants.FM_PROSTATE_PAT_FDR.getValue(), NCCNTagConstants.FM_PROSTATE_PAT_SDR.getValue()});
         conditionMap.put("HBOCTag65_B", new String[]{NCCNTagConstants.FM_PROSTATE_META_PAT_FDR.getValue(), NCCNTagConstants.FM_PROSTATE_META_PAT_SDR.getValue(), NCCNTagConstants.FM_PROSTATE_META_PAT_TDR.getValue(),
                 NCCNTagConstants.FM_PROSTATE_GL7_PAT_FDR.getValue(), NCCNTagConstants.FM_PROSTATE_GL7_PAT_SDR.getValue(), NCCNTagConstants.FM_PROSTATE_GL7_PAT_TDR.getValue()});
 
@@ -296,20 +297,20 @@ public class ConditionHolder {
                 NCCNTagConstants.FM_BREAST_MALE_PAT_TDR.getValue(),NCCNTagConstants.FM_BREAST_MALE_MAT_FDR.getValue(), NCCNTagConstants.FM_BREAST_MALE_MAT_SDR.getValue(),
                 NCCNTagConstants.FM_BREAST_MALE_MAT_TDR.getValue()});
 
-        conditionMap.put("HBOCTag109_A", new String[]{NCCNTagConstants.FM_PROSTATE_PAT_FDR.getValue()});
+        conditionMap.put("HBOCTag109_A", new String[]{NCCNTagConstants.FM_PROSTATE_PAT_FDR.getValue(), NCCNTagConstants.FM_PROSTATE_PAT_SDR.getValue()});
         conditionMap.put("HBOCTag109_B", new String[]{NCCNTagConstants.FM_BREAST_TRP_NEG_PAT_FDR.getValue(), NCCNTagConstants.FM_BREAST_TRP_NEG_PAT_SDR.getValue(),
                 NCCNTagConstants.FM_BREAST_TRP_NEG_PAT_TDR.getValue()});
 
-        conditionMap.put("HBOCTag110_A", new String[]{NCCNTagConstants.FM_PROSTATE_MAT_FDR.getValue()});
+        conditionMap.put("HBOCTag110_A", new String[]{NCCNTagConstants.FM_PROSTATE_MAT_FDR.getValue(), NCCNTagConstants.FM_PROSTATE_MAT_SDR.getValue()});
         conditionMap.put("HBOCTag110_B", new String[]{NCCNTagConstants.FM_BREAST_TRP_NEG_MAT_FDR.getValue(), NCCNTagConstants.FM_BREAST_TRP_NEG_MAT_SDR.getValue(),
                 NCCNTagConstants.FM_BREAST_TRP_NEG_MAT_TDR.getValue()});
 
 
-        conditionMap.put("HBOCTag111_A", new String[]{NCCNTagConstants.FM_PROSTATE_PAT_FDR.getValue()});
+        conditionMap.put("HBOCTag111_A", new String[]{NCCNTagConstants.FM_PROSTATE_PAT_FDR.getValue(), NCCNTagConstants.FM_PROSTATE_PAT_SDR.getValue()});
         conditionMap.put("HBOCTag111_B", new String[]{NCCNTagConstants.FM_BREAST_MALE_PAT_FDR.getValue(), NCCNTagConstants.FM_BREAST_MALE_PAT_SDR.getValue(),
                 NCCNTagConstants.FM_BREAST_MALE_PAT_TDR.getValue()});
 
-        conditionMap.put("HBOCTag112_A", new String[]{NCCNTagConstants.FM_PROSTATE_MAT_FDR.getValue()});
+        conditionMap.put("HBOCTag112_A", new String[]{NCCNTagConstants.FM_PROSTATE_MAT_FDR.getValue(), NCCNTagConstants.FM_PROSTATE_MAT_SDR.getValue()});
         conditionMap.put("HBOCTag112_B", new String[]{NCCNTagConstants.FM_BREAST_MALE_MAT_FDR.getValue(), NCCNTagConstants.FM_BREAST_MALE_MAT_SDR.getValue(),
                 NCCNTagConstants.FM_BREAST_MALE_MAT_TDR.getValue()});
 
@@ -319,26 +320,25 @@ public class ConditionHolder {
                 NCCNTagConstants.PR_PANCREATIC_LT_50.getValue(),
                 NCCNTagConstants.PR_BLADDER_LT_50.getValue(),NCCNTagConstants.PR_URETER_LT_50.getValue(),NCCNTagConstants.PR_BRAIN_LT_50.getValue(),
                 NCCNTagConstants.PR_BILIARY_LT_50.getValue(),NCCNTagConstants.PR_SMALL_BOWEL_LT_50.getValue(),
-                NCCNTagConstants.PR_SEB_ADENO_CAR_LT_50.getValue()});
+                NCCNTagConstants.PR_SEB_ADENO_CAR_LT_50.getValue(),NCCNTagConstants.PR_GALLBLADDER_LT_50.getValue()});
 
         conditionMap.put("CRCTag12", new String[]{ NCCNTagConstants.PR_COLON.getValue(),NCCNTagConstants.PR_BLADDER.getValue(),NCCNTagConstants.PR_GASTRIC.getValue(),NCCNTagConstants.PR_PANCREATIC.getValue(),
                 NCCNTagConstants.PR_BRAIN.getValue(),NCCNTagConstants.PR_SM_BOWEL.getValue(),NCCNTagConstants.PR_BILIARY.getValue(),NCCNTagConstants.PR_URETER.getValue(),NCCNTagConstants.PR_SEB_ADENO_CAR.getValue(),
-                NCCNTagConstants.PR_ENDOMETRIAL.getValue(),NCCNTagConstants.PR_OVARIAN.getValue()});
+                NCCNTagConstants.PR_ENDOMETRIAL.getValue(),NCCNTagConstants.PR_OVARIAN.getValue(),NCCNTagConstants.PR_GALLBLADDER.getValue()});
 
         conditionMap.put("CRCTag8", new String[]{NCCNTagConstants.FM_COLON_LT_50_MAT_FDR.getValue(), NCCNTagConstants.FM_BLADDER_LT_50_MAT_FDR.getValue(), NCCNTagConstants.FM_GASTRICS_LT_50_MAT_FDR.getValue(),
                 NCCNTagConstants.FM_PANCREATIC_LT_50_MAT_FDR.getValue(), NCCNTagConstants.FM_BRAIN_LT_50_MAT_FDR.getValue(), NCCNTagConstants.FM_SM_BOWEL_LT_50_MAT_FDR.getValue(),
                 NCCNTagConstants.FM_BILITARY_LT_50_MAT_FDR.getValue(), NCCNTagConstants.FM_URETER_LT_50_MAT_FDR.getValue(), NCCNTagConstants.FM_ENDOMETRIAL_LT_50_MAT_FDR.getValue(),
-                NCCNTagConstants.FM_OVARIAN_LT_50_MAT_FDR.getValue(), NCCNTagConstants.FM_COLON_LT_50_MAT_SDR.getValue(), NCCNTagConstants.FM_BLADDER_LT_50_MAT_SDR.getValue(),
+                NCCNTagConstants.FM_OVARIAN_LT_50_MAT_FDR.getValue(), NCCNTagConstants.FM_GALLBLADDER_LT_50_MAT_FDR.getValue(), NCCNTagConstants.FM_COLON_LT_50_MAT_SDR.getValue(), NCCNTagConstants.FM_BLADDER_LT_50_MAT_SDR.getValue(),
                 NCCNTagConstants.FM_GASTRICS_LT_50_MAT_SDR.getValue(), NCCNTagConstants.FM_PANCREATIC_LT_50_MAT_SDR.getValue(), NCCNTagConstants.FM_BRAIN_LT_50_MAT_SDR.getValue(),
                 NCCNTagConstants.FM_SM_BOWEL_LT_50_MAT_SDR.getValue(), NCCNTagConstants.FM_BILITARY_LT_50_MAT_SDR.getValue(), NCCNTagConstants.FM_URETER_LT_50_MAT_SDR.getValue(),
-                NCCNTagConstants.FM_ENDOMETRIAL_LT_50_MAT_SDR.getValue(), NCCNTagConstants.FM_OVARIAN_LT_50_MAT_SDR.getValue(), NCCNTagConstants.FM_SEB_ADENO_CAR_LT_50_MAT_FDR.getValue(),
+                NCCNTagConstants.FM_ENDOMETRIAL_LT_50_MAT_SDR.getValue(), NCCNTagConstants.FM_OVARIAN_LT_50_MAT_SDR.getValue(), NCCNTagConstants.FM_GALLBLADDER_LT_50_MAT_SDR.getValue(), NCCNTagConstants.FM_SEB_ADENO_CAR_LT_50_MAT_FDR.getValue(),
                 NCCNTagConstants.FM_SEB_ADENO_CAR_LT_50_MAT_SDR.getValue(),NCCNTagConstants.FM_COLON_LT_50_PAT_FDR.getValue(), NCCNTagConstants.FM_BLADDER_LT_50_PAT_FDR.getValue(), NCCNTagConstants.FM_GASTRICS_LT_50_PAT_FDR.getValue(),
                 NCCNTagConstants.FM_PANCREATIC_LT_50_PAT_FDR.getValue(), NCCNTagConstants.FM_BRAIN_LT_50_PAT_FDR.getValue(), NCCNTagConstants.FM_SM_BOWEL_LT_50_PAT_FDR.getValue(), NCCNTagConstants.FM_BILITARY_LT_50_PAT_FDR.getValue(),
-                NCCNTagConstants.FM_URETER_LT_50_PAT_FDR.getValue(), NCCNTagConstants.FM_ENDOMETRIAL_LT_50_PAT_FDR.getValue(), NCCNTagConstants.FM_OVARIAN_LT_50_PAT_FDR.getValue(), NCCNTagConstants.FM_COLON_LT_50_PAT_SDR.getValue(),
+                NCCNTagConstants.FM_URETER_LT_50_PAT_FDR.getValue(), NCCNTagConstants.FM_ENDOMETRIAL_LT_50_PAT_FDR.getValue(), NCCNTagConstants.FM_OVARIAN_LT_50_PAT_FDR.getValue(), NCCNTagConstants.FM_GALLBLADDER_LT_50_PAT_FDR.getValue(), NCCNTagConstants.FM_COLON_LT_50_PAT_SDR.getValue(),
                 NCCNTagConstants.FM_BLADDER_LT_50_PAT_SDR.getValue(), NCCNTagConstants.FM_GASTRICS_LT_50_PAT_SDR.getValue(), NCCNTagConstants.FM_PANCREATIC_LT_50_PAT_SDR.getValue(), NCCNTagConstants.FM_BRAIN_LT_50_PAT_SDR.getValue(),
                 NCCNTagConstants.FM_SM_BOWEL_LT_50_PAT_SDR.getValue(), NCCNTagConstants.FM_BILITARY_LT_50_PAT_SDR.getValue(), NCCNTagConstants.FM_URETER_LT_50_PAT_SDR.getValue(),
-                NCCNTagConstants.FM_ENDOMETRIAL_LT_50_PAT_SDR.getValue(), NCCNTagConstants.FM_OVARIAN_LT_50_PAT_SDR.getValue(), NCCNTagConstants.FM_SEB_ADENO_CAR_LT_50_PAT_FDR.getValue(), NCCNTagConstants.FM_SEB_ADENO_CAR_LT_50_PAT_SDR.getValue()});
-
+                NCCNTagConstants.FM_ENDOMETRIAL_LT_50_PAT_SDR.getValue(), NCCNTagConstants.FM_OVARIAN_LT_50_PAT_SDR.getValue(), NCCNTagConstants.FM_GALLBLADDER_LT_50_PAT_SDR.getValue(), NCCNTagConstants.FM_SEB_ADENO_CAR_LT_50_PAT_FDR.getValue(), NCCNTagConstants.FM_SEB_ADENO_CAR_LT_50_PAT_SDR.getValue()});
 
         conditionMap.put("CRCTag26_A", new String[]{NCCNTagConstants.FM_GASTRIC_MAT_FDR.getValue(),NCCNTagConstants.FM_GASTRIC_MAT_SDR.getValue()});
 
