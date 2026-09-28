@@ -21,6 +21,7 @@ import com.genomebrain.backend.service.dto.FamilyHistoryDetailsTagsDTO;
 import com.genomebrain.backend.service.dto.ReasoningStatementAndTags;
 import com.genomebrain.backend.service.dto.ReasoningStatementConstants;
 import com.genomebrain.backend.service.dto.ReasoningStatementIdConstant;
+import com.genomebrain.backend.service.dto.NCCNTagConstants;
 import com.genomebrain.backend.service.dto.ReasoningStatementObject;
 import com.genomebrain.backend.service.dto.TagIdConstant;
 
@@ -189,6 +190,70 @@ public class LynchReasoningStatementUtility {
             reasoningStatementAndTags.setReasoningStatementId(ReasoningStatementIdConstant.CRCRS13.getReasoningStatementId());
             Set<String> tagId = new HashSet<>();
             tagId.add(TagIdConstant.CRCTAG24.getTagId());
+            reasoningStatementAndTags.setTagIds(tagId);
+            reasoningStatementAndTagsSet.add(reasoningStatementAndTags);
+        }
+
+        /**
+         * CAR-753 v1.2026 - CRCCRIT7
+         * Conditions for TagId:
+         * CRCTag16
+         */
+        if (!Collections.disjoint(tagsSet, Arrays.asList(ConditionHolder.getInstance().getConditionMap().get("CRCTag16")))) {
+            lynchReasoningStatement.add(ReasoningStatementConstants.CRCRS8.getValue());
+            ReasoningStatementAndTags reasoningStatementAndTags = new ReasoningStatementAndTags();
+            reasoningStatementAndTags.setReasoningStatementId(ReasoningStatementIdConstant.CRCRS8.getReasoningStatementId());
+            Set<String> tagId = new HashSet<>();
+            tagId.add(TagIdConstant.CRCTag16.getTagId());
+            reasoningStatementAndTags.setTagIds(tagId);
+            reasoningStatementAndTagsSet.add(reasoningStatementAndTags);
+        }
+
+        /**
+         * CAR-753 v1.2026 - new CRCCRIT15
+         * "Individual w/ colorectal cancer diagnosed regardless of age"
+         * Conditions for TagId:
+         * CRCTag30
+         */
+        if (tagsSet.contains(NCCNTagConstants.PR_COLON.getValue())) {
+            lynchReasoningStatement.add(ReasoningStatementConstants.CRCRS19.getValue());
+            ReasoningStatementAndTags reasoningStatementAndTags = new ReasoningStatementAndTags();
+            reasoningStatementAndTags.setReasoningStatementId(ReasoningStatementIdConstant.CRCRS19.getReasoningStatementId());
+            Set<String> tagId = new HashSet<>();
+            tagId.add(TagIdConstant.CRCTag30.getTagId());
+            reasoningStatementAndTags.setTagIds(tagId);
+            reasoningStatementAndTagsSet.add(reasoningStatementAndTags);
+        }
+
+        /**
+         * CAR-753 v1.2026 - new CRCCRIT16
+         * "Individual w/ endometrial cancer diagnosed regardless of age"
+         * Conditions for TagId:
+         * CRCTag31
+         */
+        if (tagsSet.contains("Female") && tagsSet.contains(NCCNTagConstants.PR_ENDOMETRIAL.getValue())) {
+            lynchReasoningStatement.add(ReasoningStatementConstants.CRCRS16.getValue());
+            ReasoningStatementAndTags reasoningStatementAndTags = new ReasoningStatementAndTags();
+            reasoningStatementAndTags.setReasoningStatementId(ReasoningStatementIdConstant.CRCRS16.getReasoningStatementId());
+            Set<String> tagId = new HashSet<>();
+            tagId.add(TagIdConstant.CRCTag31.getTagId());
+            reasoningStatementAndTags.setTagIds(tagId);
+            reasoningStatementAndTagsSet.add(reasoningStatementAndTags);
+        }
+
+        /**
+         * CAR-753 v1.2026 - new CRCCRIT17
+         * "Individual w/ gastric cancer diagnosed regardless of age" - fires independently of PrGastricDiffuse;
+         * both this and the diffuse-gastric statement (CRCRS15) should display together when both tags are present
+         * Conditions for TagId:
+         * CRCTag32
+         */
+        if (tagsSet.contains(NCCNTagConstants.PR_GASTRIC.getValue())) {
+            lynchReasoningStatement.add(ReasoningStatementConstants.CRCRS17.getValue());
+            ReasoningStatementAndTags reasoningStatementAndTags = new ReasoningStatementAndTags();
+            reasoningStatementAndTags.setReasoningStatementId(ReasoningStatementIdConstant.CRCRS17.getReasoningStatementId());
+            Set<String> tagId = new HashSet<>();
+            tagId.add(TagIdConstant.CRCTag32.getTagId());
             reasoningStatementAndTags.setTagIds(tagId);
             reasoningStatementAndTagsSet.add(reasoningStatementAndTags);
         }

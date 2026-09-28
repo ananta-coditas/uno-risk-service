@@ -15,6 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import com.genomebrain.backend.service.dto.ReasoningStatementConstants;
 import com.genomebrain.backend.service.dto.ConditionHolder;
 import com.genomebrain.backend.service.dto.FamilyHistoryDetailsTagsDTO;
 import com.genomebrain.backend.service.dto.NCCNTagConstants;
@@ -788,5 +789,36 @@ class GastricReasoningStatementUtilityTest {
             assertThat(result).isTrue();
         }
     }
-}
 
+    // ========== NCCN CEEG v1.2026 (CAR-753): CRCCRIT18 ==========
+
+    private static FamilyHistoryDetailsTagsDTO relativeTagged(String... tags) {
+        FamilyHistoryDetailsTagsDTO relative = new FamilyHistoryDetailsTagsDTO();
+        relative.setTags(new HashSet<>(Arrays.asList(tags)));
+        return relative;
+    }
+
+    @Test
+    @DisplayName("should_flagCRCRS18_when_threeSameSideRelativesHadGastricCancer")
+    void should_flagCRCRS18_when_threeSameSideRelativesHadGastricCancer() throws ConnectException {
+        List<FamilyHistoryDetailsTagsDTO> family = List.of(
+            relativeTagged("FmGastricMatFDR"), relativeTagged("FmGastricMatSDR"), relativeTagged("FmGastricMatSDR"));
+
+        ReasoningStatementObject result = utility.getGastricReasoningStatement(family, new HashSet<>());
+
+        assertThat(result.getReasoningStatementEn()).contains(ReasoningStatementConstants.CRCRS18.getValue());
+        assertThat(result.getReasoningStatementAndTags()).anySatisfy(statement ->
+            assertThat(statement.getReasoningStatementId()).isEqualTo("CRCRS18"));
+    }
+
+    @Test
+    @DisplayName("should_notFlagCRCRS18_when_gastricRelativesAreSplitAcrossSides")
+    void should_notFlagCRCRS18_when_gastricRelativesAreSplitAcrossSides() throws ConnectException {
+        List<FamilyHistoryDetailsTagsDTO> family = List.of(
+            relativeTagged("FmGastricMatFDR"), relativeTagged("FmGastricMatSDR"), relativeTagged("FmGastricPatSDR"));
+
+        ReasoningStatementObject result = utility.getGastricReasoningStatement(family, new HashSet<>());
+
+        assertThat(result.getReasoningStatementEn()).doesNotContain(ReasoningStatementConstants.CRCRS18.getValue());
+    }
+}

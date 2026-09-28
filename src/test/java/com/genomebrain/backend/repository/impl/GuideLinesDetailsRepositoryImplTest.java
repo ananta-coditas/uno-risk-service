@@ -55,14 +55,18 @@ class GuideLinesDetailsRepositoryImplTest {
         }
 
         @Test
-        @DisplayName("should_loadBundledDataset_when_usingDefaultClasspathLocation")
-        void should_loadBundledDataset_when_usingDefaultClasspathLocation() {
+        @DisplayName("should_loadOnlyIdentifiedRecords_when_usingBundledDataset")
+        void should_loadOnlyIdentifiedRecords_when_usingBundledDataset() {
             GuideLinesDetailsRepositoryImpl repository = new GuideLinesDetailsRepositoryImpl(
                 new DefaultResourceLoader(), "classpath:risk_model_data/nccn_guide_lines_details.json");
 
             repository.loadGuidelines();
 
-            assertThat(repository.findAll()).hasSizeGreaterThan(4000);
+            // Every bundled record must carry criteria IDs, otherwise it surfaces as statement text with no ID
+            assertThat(repository.findAll()).isNotEmpty().allSatisfy(guideline -> {
+                assertThat(guideline.getTagsId()).isNotBlank();
+                assertThat(guideline.getReasoningStatementId()).isNotBlank();
+            });
         }
 
         @Test

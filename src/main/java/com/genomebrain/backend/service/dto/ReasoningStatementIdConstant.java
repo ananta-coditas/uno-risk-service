@@ -36,7 +36,13 @@ public enum ReasoningStatementIdConstant {
     CRCRS12("CRCRS12"),
     CRCRS13("CRCRS13"),
     CRCRS14("CRCRS14"),
-    CRCRS15("CRCRS15");
+    CRCRS15("CRCRS15"),
+    CRCRS8("CRCRS8"),
+    CRCRS9("CRCRS9"),
+    CRCRS16("CRCRS16"),
+    CRCRS17("CRCRS17"),
+    CRCRS18("CRCRS18"),
+    CRCRS19("CRCRS19");
 
 
     private final String reasoningStatementId;

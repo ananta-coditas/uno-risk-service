@@ -76,7 +76,14 @@ public enum TagIdConstant {
     CRCTag26("CRCTag26"),
     CRCTAG27("CRCTag27"),
     CRCTAG28("CRCTag28"),
-    CRCTAG29("CRCTag29");
+    CRCTAG29("CRCTag29"),
+    CRCTag16("CRCTag16"),
+    CRCTag17("CRCTag17"),
+    CRCTag18("CRCTag18"),
+    CRCTag30("CRCTag30"),
+    CRCTag31("CRCTag31"),
+    CRCTag32("CRCTag32"),
+    CRCTag33("CRCTag33");
 
 
     private final String tagId;

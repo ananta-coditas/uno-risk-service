@@ -27,7 +27,8 @@ public class NCCNRiskModelUtils {
     static final String PROBAND = "PROBAND";
     static final String UNCLASSIFIED_RELATIVE = "OTHERS";
 
-    private static final int FEMALE = 0;
+    /** UNO gender code for male; like the other risk models, every other code (2, legacy 0) is treated as female. */
+    private static final int MALE = 1;
 
     private NCCNRiskModelUtils() {
     }
@@ -196,7 +197,7 @@ public class NCCNRiskModelUtils {
     }
 
     private static boolean isFemale(Person person) {
-        return Objects.equals(person.getGender(), FEMALE);
+        return !Objects.equals(person.getGender(), MALE);
     }
 
     private static boolean isParentOf(Person parent, Person child) {

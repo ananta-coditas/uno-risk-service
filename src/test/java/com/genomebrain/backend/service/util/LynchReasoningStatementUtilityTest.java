@@ -15,6 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import com.genomebrain.backend.service.dto.ReasoningStatementConstants;
 import com.genomebrain.backend.service.dto.ConditionHolder;
 import com.genomebrain.backend.service.dto.FamilyHistoryDetailsTagsDTO;
 import com.genomebrain.backend.service.dto.ReasoningStatementObject;
@@ -1314,5 +1315,70 @@ class LynchReasoningStatementUtilityTest {
         String result = (String) method.invoke(utility, familyHistory, "CRCTag19_A", "CRCTag19_B");
         assertThat(result).isEmpty();
     }
-}
 
+    // ========== NCCN CEEG v1.2026 (CAR-753) ==========
+
+    private ReasoningStatementObject lynchFor(String... tags) throws ConnectException {
+        return utility.getLynchReasoningStatement(new ArrayList<>(), new HashSet<>(Arrays.asList(tags)));
+    }
+
+    @Test
+    @DisplayName("should_flagCRCRS19_when_patientHasColorectalCancerAtAnyAge")
+    void should_flagCRCRS19_when_patientHasColorectalCancerAtAnyAge() throws ConnectException {
+        ReasoningStatementObject result = lynchFor("Male", "PrColon");
+
+        assertThat(result.getReasoningStatementEn()).contains(ReasoningStatementConstants.CRCRS19.getValue());
+        assertThat(result.getReasoningStatementAndTags()).anySatisfy(statement ->
+            assertThat(statement.getReasoningStatementId()).isEqualTo("CRCRS19"));
+    }
+
+    @Test
+    @DisplayName("should_flagCRCRS16_when_femalePatientHasEndometrialCancerAtAnyAge")
+    void should_flagCRCRS16_when_femalePatientHasEndometrialCancerAtAnyAge() throws ConnectException {
+        assertThat(lynchFor("Female", "PrEndometrial").getReasoningStatementEn())
+            .contains(ReasoningStatementConstants.CRCRS16.getValue());
+    }
+
+    @Test
+    @DisplayName("should_flagCRCRS17_when_patientHasGastricCancerAtAnyAge")
+    void should_flagCRCRS17_when_patientHasGastricCancerAtAnyAge() throws ConnectException {
+        assertThat(lynchFor("Female", "PrGastric").getReasoningStatementEn())
+            .contains(ReasoningStatementConstants.CRCRS17.getValue());
+    }
+
+    @Test
+    @DisplayName("should_flagCRCRS8_when_firstDegreeRelativeHadGastricCancerUnder50")
+    void should_flagCRCRS8_when_firstDegreeRelativeHadGastricCancerUnder50() throws ConnectException {
+        ReasoningStatementObject result = lynchFor("Female", "FmGastric<50MatFDR");
+
+        assertThat(result.getReasoningStatementEn()).contains(ReasoningStatementConstants.CRCRS8.getValue());
+        assertThat(result.getReasoningStatementAndTags()).anySatisfy(statement -> {
+            assertThat(statement.getReasoningStatementId()).isEqualTo("CRCRS8");
+            assertThat(statement.getTagIds()).containsExactly(TagIdConstant.CRCTag16.getTagId());
+        });
+    }
+
+    @Test
+    @DisplayName("should_notFlagCRCRS8_when_underFiftyRelativeIsSecondDegree")
+    void should_notFlagCRCRS8_when_underFiftyRelativeIsSecondDegree() throws ConnectException {
+        assertThat(lynchFor("Female", "FmColon<50MatSDR").getReasoningStatementEn())
+            .doesNotContain(ReasoningStatementConstants.CRCRS8.getValue());
+    }
+
+    @Test
+    @DisplayName("should_flagOnlyAnyAgeCriterion_when_colorectalCancerWasUnder50")
+    void should_flagOnlyAnyAgeCriterion_when_colorectalCancerWasUnder50() throws ConnectException {
+        ReasoningStatementObject result = lynchFor("Female", "PrColon", "PrColon<50");
+
+        assertThat(result.getReasoningStatementEn())
+            .contains(ReasoningStatementConstants.CRCRS19.getValue())
+            .doesNotContain(ReasoningStatementConstants.CRCRS13.getValue());
+    }
+
+    @Test
+    @DisplayName("should_stillFlagCRCRS13_when_otherLynchCancerWasUnder50")
+    void should_stillFlagCRCRS13_when_otherLynchCancerWasUnder50() throws ConnectException {
+        assertThat(lynchFor("Female", "PrOvarian", "PrOvarian<50").getReasoningStatementEn())
+            .contains(ReasoningStatementConstants.CRCRS13.getValue());
+    }
+}

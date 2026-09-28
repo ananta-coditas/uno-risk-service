@@ -30,6 +30,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 import com.genomebrain.backend.quesstionnaire.QuestionSet;
 import com.genomebrain.backend.quesstionnaire.Questionnaire;
 import com.genomebrain.backend.quesstionnaire.CancerDetails;
@@ -3497,5 +3498,32 @@ class CareAPIUtilTest {
         careAPIUtil.getQuestionObject(request);
 
         assertThat(questionnaire.getValue().getDemographic()).extracting(QuestionSet::getAnswerKey).doesNotContainNull();
+    }
+
+    @Test
+    @DisplayName("should_reportConfiguredGuidelineVersions_when_mappingTheResponse")
+    void should_reportConfiguredGuidelineVersions_when_mappingTheResponse() throws Exception {
+        ReflectionTestUtils.setField(careAPIUtil, "hbocVersion", "V3.2026");
+        ReflectionTestUtils.setField(careAPIUtil, "crcVersion", "V1.2026");
+
+        NCCNCoreResponse result = careAPIUtil.CAREAPIResponseMapper(guidelineDetails(new ClinicalSummary()), new NCCNCoreRequest());
+
+        assertThat(result.getHbocVersion()).isEqualTo("V3.2026");
+        assertThat(result.getCrcVersion()).isEqualTo("V1.2026");
+    }
+
+    @Test
+    @DisplayName("should_reportNewLynchCriteriaIds_when_v12026CriteriaAreMet")
+    void should_reportNewLynchCriteriaIds_when_v12026CriteriaAreMet() throws Exception {
+        ClinicalSummary clinicalSummary = new ClinicalSummary();
+        clinicalSummary.setRiskAssessmentNccnForLYNCH(new HashSet<>(Set.of("lynch statement")));
+        clinicalSummary.setRiskAssessmentNccnForGastric(new HashSet<>(Set.of("gastric statement")));
+        GuidelineDetailsDTO guidelineDetailsDTO = guidelineDetails(clinicalSummary, "CRCRS16", "CRCRS17", "CRCRS19", "CRCRS18");
+        guidelineDetailsDTO.setLYNCH(true);
+
+        NCCNCoreResponse result = careAPIUtil.CAREAPIResponseMapper(guidelineDetailsDTO, new NCCNCoreRequest());
+
+        assertThat(result.getLynchCriteriaMetIds()).containsExactlyInAnyOrder("CRCRS16", "CRCRS17", "CRCRS19");
+        assertThat(result.getGastricCriteriaMetIds()).containsExactly("CRCRS18");
     }
 }

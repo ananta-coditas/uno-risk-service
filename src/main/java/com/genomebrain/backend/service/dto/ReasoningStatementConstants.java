@@ -64,7 +64,7 @@ public enum ReasoningStatementConstants {
 
     CRCRS7("Personal history of a Lynch syndrome-related cancer at any age and ≥2 first- or second- degree blood relatives with Lynch syndrome-related cancers at any age on the same side of the family"),
 
-    CRCRS9("Family history of ≥1 first-degree or second-degree blood relative with colorectal or endometrial cancer and another synchronous or metachronous Lynch syndrome-related cancer at any age"),
+    CRCRS9("Family history of ≥1 first-degree or second-degree blood relative with synchronous or metachronous Lynch syndrome-related cancers at any age"),
 
     CRCRS10("Family history of ≥2 first- or second- degree blood relatives with Lynch syndrome-related cancers on the same side of the family, with at least 1 diagnosed <50y"),
 
@@ -76,7 +76,17 @@ public enum ReasoningStatementConstants {
 
     CRCRS14("Family history of ≥2 first- or second- degree blood relatives with gastric cancer, with at least one diagnosed ≤50y or at least one confirmed as diffuse gastric cancer"),
 
-    CRCRS15("Personal history of diffuse gastric cancer at any age");
+    CRCRS15("Personal history of diffuse gastric cancer at any age"),
+
+    CRCRS8("Family history of ≥1 first-degree blood relative with colorectal, endometrial, or gastric cancer diagnosed <50y"),
+
+    CRCRS16("Personal history of endometrial cancer at any age"),
+
+    CRCRS17("Personal history of gastric cancer at any age"),
+
+    CRCRS18("Family history of ≥3 first- or second- degree blood relatives with gastric cancers at any age on the same side of the family"),
+
+    CRCRS19("Personal history of colorectal cancer at any age");
 
     private String value;
 

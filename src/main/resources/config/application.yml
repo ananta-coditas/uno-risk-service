@@ -218,3 +218,8 @@ nccn:
     # Spring resource location of the NCCN guideline dataset (classpath:, file:, ...).
     # Override with NCCN_GUIDELINES_DATA_PATH to point at an externally managed copy.
     data-path: ${NCCN_GUIDELINES_DATA_PATH:classpath:risk_model_data/nccn_guide_lines_details.json}
+  # NCCN guideline versions implemented by the flagging logic; reported as hbocVersion / crcVersion.
+  # Update together with the logic when a new NCCN version is adopted.
+  versions:
+    hboc: ${NCCN_HBOC_VERSION:V3.2026}
+    crc: ${NCCN_CRC_VERSION:V1.2026}

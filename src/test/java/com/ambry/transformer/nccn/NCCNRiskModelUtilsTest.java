@@ -488,4 +488,14 @@ class NCCNRiskModelUtilsTest {
 
         assertRelationship(sister, "SISTER", "OTHER");
     }
+
+    @Test
+    @DisplayName("should_labelMotherAndSister_when_femalesUseUnoGenderCode2")
+    void should_labelMotherAndSister_when_femalesUseUnoGenderCode2() {
+        mother.setGender(2);
+        sister.setGender(2);
+
+        assertRelationship(mother, "MOTHER", "OTHER");
+        assertRelationship(sister, "SISTER", "OTHER");
+    }
 }

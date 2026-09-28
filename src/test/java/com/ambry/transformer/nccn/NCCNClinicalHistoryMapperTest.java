@@ -482,13 +482,48 @@ class NCCNClinicalHistoryMapperTest {
     }
 
     @Test
-    @DisplayName("should_reportUnknownSex_when_genderCodeIsNeitherFemaleNorMale")
-    void should_reportUnknownSex_when_genderCodeIsNeitherFemaleNorMale() {
+    @DisplayName("should_reportFemale_when_unoGenderCodeIs2")
+    void should_reportFemale_when_unoGenderCodeIs2() {
         person.setGender(2);
 
         ClinicalHistory result = mapper.transform(person, relationshipDetails);
 
-        assertThat(result.getSexAtBirth()).isEqualTo("unknown");
+        assertThat(result.getSexAtBirth()).isEqualTo("female");
+    }
+
+    @Test
+    @DisplayName("should_flagSecondBreastPrimary_when_breastCancerIsBilateral")
+    void should_flagSecondBreastPrimary_when_breastCancerIsBilateral() {
+        CancerDetails cancerDetails = new CancerDetails();
+        cancerDetails.setBilateral(com.objex.risk.beans.AffectedType.ONE);
+        Cancer breast = new Cancer();
+        breast.setCancerType(CancerType.BREAST);
+        breast.setDiagnoseAge(50);
+        breast.setCancerDetails(cancerDetails);
+        person.setCancers(new ArrayList<>(List.of(breast)));
+
+        ClinicalHistory result = mapper.transform(person, relationshipDetails);
+
+        assertThat(result.getCancerFeatureDetails()).singleElement().satisfies(details -> {
+            assertThat(details.getBreastBilateral()).isEqualTo("Yes");
+            assertThat(details.getMultiplePrimaries()).isEqualTo("YES");
+        });
+    }
+
+    @Test
+    @DisplayName("should_notFlagSecondBreastPrimary_when_bilateralIsNone")
+    void should_notFlagSecondBreastPrimary_when_bilateralIsNone() {
+        CancerDetails cancerDetails = new CancerDetails();
+        cancerDetails.setBilateral(com.objex.risk.beans.AffectedType.NONE);
+        Cancer breast = new Cancer();
+        breast.setCancerType(CancerType.BREAST);
+        breast.setCancerDetails(cancerDetails);
+        person.setCancers(new ArrayList<>(List.of(breast)));
+
+        ClinicalHistory result = mapper.transform(person, relationshipDetails);
+
+        assertThat(result.getCancerFeatureDetails()).singleElement()
+            .extracting(CancerFeatureDetails::getBreastBilateral).isNull();
     }
 
     @Test
@@ -512,5 +547,20 @@ class NCCNClinicalHistoryMapperTest {
 
         assertThat(result.getPolypOverall()).isEqualTo("NOT_PROVIDED");
         assertThat(result.getPolypDetails()).isNullOrEmpty();
+    }
+
+    @org.junit.jupiter.params.ParameterizedTest(name = "{0} -> {1}")
+    @org.junit.jupiter.params.provider.CsvSource({"ENDOMETRIAL, Uterine", "Fallopian, Fallopian_Tube", "Biliary, BILIARY_TRACT", "BREAST, BREAST"})
+    @DisplayName("should_useNccnCancerType_when_unoSendsAnAliasUsedByOtherModels")
+    void should_useNccnCancerType_when_unoSendsAnAliasUsedByOtherModels(CancerType unoType, String expectedFeature) {
+        Cancer cancer = new Cancer();
+        cancer.setCancerType(unoType);
+        cancer.setDiagnoseAge(60);
+        person.setCancers(new ArrayList<>(List.of(cancer)));
+
+        ClinicalHistory result = mapper.transform(person, relationshipDetails);
+
+        assertThat(result.getCancerFeatureDetails()).singleElement()
+            .extracting(CancerFeatureDetails::getCancerFeature).isEqualTo(expectedFeature);
     }
 }

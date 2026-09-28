@@ -2618,81 +2618,70 @@ public class TagGenerationUtility {
         Set<String> lynchReasoningStatements = new HashSet<>();
 
         if (!CollectionUtils.isEmpty(tags)) {
-            List<String> lynchSameRelativeTagsForMatA = new ArrayList<>();
-            lynchSameRelativeTagsForMatA.add("FmColonMatFDR");
-            lynchSameRelativeTagsForMatA.add("FmEndometrialMatFDR");
+            // CAR-753 v1.2026 - CRCCRIT8/CRCTag18: broadened from {colon, endometrial} anchor to any 2 distinct
+            // LS-related cancers in the same relative (synchronous or metachronous), Mat side
+            List<String> lynchSameRelativeTagsForMat = new ArrayList<>();
+            lynchSameRelativeTagsForMat.add("FmColonMatFDR");
+            lynchSameRelativeTagsForMat.add("FmColonMatSDR");
+            lynchSameRelativeTagsForMat.add("FmEndometrialMatFDR");
+            lynchSameRelativeTagsForMat.add("FmEndometrialMatSDR");
+            lynchSameRelativeTagsForMat.add("FmBiliaryMatFDR");
+            lynchSameRelativeTagsForMat.add("FmBiliaryMatSDR");
+            lynchSameRelativeTagsForMat.add("FmBrainMatFDR");
+            lynchSameRelativeTagsForMat.add("FmBrainMatSDR");
+            lynchSameRelativeTagsForMat.add("FmGastricMatFDR");
+            lynchSameRelativeTagsForMat.add("FmGastricMatSDR");
+            lynchSameRelativeTagsForMat.add("FmOvarianMatFDR");
+            lynchSameRelativeTagsForMat.add("FmOvarianMatSDR");
+            lynchSameRelativeTagsForMat.add("FmPancreaticMatFDR");
+            lynchSameRelativeTagsForMat.add("FmPancreaticMatSDR");
+            lynchSameRelativeTagsForMat.add("FmSebAdenoCarMatFDR");
+            lynchSameRelativeTagsForMat.add("FmSebAdenoCarMatSDR");
+            lynchSameRelativeTagsForMat.add("FmSmBowelMatFDR");
+            lynchSameRelativeTagsForMat.add("FmSmBowelMatSDR");
+            lynchSameRelativeTagsForMat.add("FmUreterMatFDR");
+            lynchSameRelativeTagsForMat.add("FmUreterMatSDR");
+            lynchSameRelativeTagsForMat.add("FmBladderMatFDR");
+            lynchSameRelativeTagsForMat.add("FmBladderMatSDR");
+            lynchSameRelativeTagsForMat.add("FmGallbladderMatFDR");
+            lynchSameRelativeTagsForMat.add("FmGallbladderMatSDR");
 
-            lynchSameRelativeTagsForMatA.add("FmColonMatSDR");
-            lynchSameRelativeTagsForMatA.add("FmEndometrialMatSDR");
-
-            List<String> lynchSameRelativeTagsForMatB = new ArrayList<>();
-            lynchSameRelativeTagsForMatB.add("FmBiliaryMatFDR");
-            lynchSameRelativeTagsForMatB.add("FmBrainMatFDR");
-            lynchSameRelativeTagsForMatB.add("FmGastricMatFDR");
-            lynchSameRelativeTagsForMatB.add("FmOvarianMatFDR");
-            lynchSameRelativeTagsForMatB.add("FmPancreaticMatFDR");
-            lynchSameRelativeTagsForMatB.add("FmSebAdenoCarMatFDR");
-            lynchSameRelativeTagsForMatB.add("FmSmBowelMatFDR");
-            lynchSameRelativeTagsForMatB.add("FmUreterMatFDR");
-            lynchSameRelativeTagsForMatB.add("FmBladderMatFDR");
-            lynchSameRelativeTagsForMatB.add("FmGallbladderMatFDR");
-            lynchSameRelativeTagsForMatB.add("FmEndometrialMatFDR");
-
-            lynchSameRelativeTagsForMatB.add("FmBiliaryMatSDR");
-            lynchSameRelativeTagsForMatB.add("FmBrainMatSDR");
-            lynchSameRelativeTagsForMatB.add("FmGastricMatSDR");
-            lynchSameRelativeTagsForMatB.add("FmOvarianMatSDR");
-            lynchSameRelativeTagsForMatB.add("FmPancreaticMatSDR");
-            lynchSameRelativeTagsForMatB.add("FmSebAdenoCarMatSDR");
-            lynchSameRelativeTagsForMatB.add("FmSmBowelMatSDR");
-            lynchSameRelativeTagsForMatB.add("FmUreterMatSDR");
-            lynchSameRelativeTagsForMatB.add("FmBladderMatSDR");
-            lynchSameRelativeTagsForMatB.add("FmGallbladderMatSDR");
-            lynchSameRelativeTagsForMatB.add("FmEndometrialMatSDR");
-
+            // CRCTag17: unchanged - ≥2 colon diagnoses in the same relative
             if (tags.contains("FmColon>=2DxMatFDR") || tags.contains("FmColon>=2DxMatSDR") ||
-                    hasDistinctAandBMatch(lynchSameRelativeTagsForMatA, lynchSameRelativeTagsForMatB, tags) ||
-                    tags.containsAll(lynchSameRelativeTagsForMatA)) {
+                    hasDistinctAandBMatch(lynchSameRelativeTagsForMat, lynchSameRelativeTagsForMat, tags)) {
                 lynchReasoningStatements.add(ReasoningStatementConstants.CRCRS9.getValue());
             }
 
+            // CAR-753 v1.2026 - CRCCRIT8/CRCTag18: broadened, Pat side
+            List<String> lynchSameRelativeTagsForPat = new ArrayList<>();
+            lynchSameRelativeTagsForPat.add("FmColonPatFDR");
+            lynchSameRelativeTagsForPat.add("FmColonPatSDR");
+            lynchSameRelativeTagsForPat.add("FmEndometrialPatFDR");
+            lynchSameRelativeTagsForPat.add("FmEndometrialPatSDR");
+            lynchSameRelativeTagsForPat.add("FmBiliaryPatFDR");
+            lynchSameRelativeTagsForPat.add("FmBiliaryPatSDR");
+            lynchSameRelativeTagsForPat.add("FmBrainPatFDR");
+            lynchSameRelativeTagsForPat.add("FmBrainPatSDR");
+            lynchSameRelativeTagsForPat.add("FmGastricPatFDR");
+            lynchSameRelativeTagsForPat.add("FmGastricPatSDR");
+            lynchSameRelativeTagsForPat.add("FmOvarianPatFDR");
+            lynchSameRelativeTagsForPat.add("FmOvarianPatSDR");
+            lynchSameRelativeTagsForPat.add("FmPancreaticPatFDR");
+            lynchSameRelativeTagsForPat.add("FmPancreaticPatSDR");
+            lynchSameRelativeTagsForPat.add("FmSebAdenoCarPatFDR");
+            lynchSameRelativeTagsForPat.add("FmSebAdenoCarPatSDR");
+            lynchSameRelativeTagsForPat.add("FmSmBowelPatFDR");
+            lynchSameRelativeTagsForPat.add("FmSmBowelPatSDR");
+            lynchSameRelativeTagsForPat.add("FmUreterPatFDR");
+            lynchSameRelativeTagsForPat.add("FmUreterPatSDR");
+            lynchSameRelativeTagsForPat.add("FmBladderPatFDR");
+            lynchSameRelativeTagsForPat.add("FmBladderPatSDR");
+            lynchSameRelativeTagsForPat.add("FmGallbladderPatFDR");
+            lynchSameRelativeTagsForPat.add("FmGallbladderPatSDR");
 
-            List<String> lynchSameRelativeTagsForPatA = new ArrayList<>();
-            lynchSameRelativeTagsForPatA.add("FmColonPatFDR");
-            lynchSameRelativeTagsForPatA.add("FmEndometrialPatFDR");
-
-            lynchSameRelativeTagsForPatA.add("FmColonPatSDR");
-            lynchSameRelativeTagsForPatA.add("FmEndometrialPatSDR");
-
-            List<String> lynchSameRelativeTagsForPatB = new ArrayList<>();
-            lynchSameRelativeTagsForPatB.add("FmBiliaryPatFDR");
-            lynchSameRelativeTagsForPatB.add("FmBrainPatFDR");
-            lynchSameRelativeTagsForPatB.add("FmGastricPatFDR");
-            lynchSameRelativeTagsForPatB.add("FmOvarianPatFDR");
-            lynchSameRelativeTagsForPatB.add("FmPancreaticPatFDR");
-            lynchSameRelativeTagsForPatB.add("FmSebAdenoCarPatFDR");
-            lynchSameRelativeTagsForPatB.add("FmSmBowelPatFDR");
-            lynchSameRelativeTagsForPatB.add("FmUreterPatFDR");
-            lynchSameRelativeTagsForPatB.add("FmBladderPatFDR");
-            lynchSameRelativeTagsForPatB.add("FmGallbladderPatFDR");
-            lynchSameRelativeTagsForPatB.add("FmEndometrialPatFDR");
-
-            lynchSameRelativeTagsForPatB.add("FmBiliaryPatSDR");
-            lynchSameRelativeTagsForPatB.add("FmBrainPatSDR");
-            lynchSameRelativeTagsForPatB.add("FmGastricPatSDR");
-            lynchSameRelativeTagsForPatB.add("FmOvarianPatSDR");
-            lynchSameRelativeTagsForPatB.add("FmPancreaticPatSDR");
-            lynchSameRelativeTagsForPatB.add("FmSebAdenoCarPatSDR");
-            lynchSameRelativeTagsForPatB.add("FmSmBowelPatSDR");
-            lynchSameRelativeTagsForPatB.add("FmUreterPatSDR");
-            lynchSameRelativeTagsForPatB.add("FmBladderPatSDR");
-            lynchSameRelativeTagsForPatB.add("FmGallbladderPatSDR");
-            lynchSameRelativeTagsForPatB.add("FmEndometrialPatSDR");
-
-
+            // CRCTag17: unchanged - ≥2 colon diagnoses in the same relative
             if (tags.contains("FmColon>=2DxPatFDR") || tags.contains("FmColon>=2DxPatSDR") ||
-                    hasDistinctAandBMatch(lynchSameRelativeTagsForPatA, lynchSameRelativeTagsForPatB, tags) ||
-                    tags.containsAll(lynchSameRelativeTagsForPatA)) {
+                    hasDistinctAandBMatch(lynchSameRelativeTagsForPat, lynchSameRelativeTagsForPat, tags)) {
                 lynchReasoningStatements.add(ReasoningStatementConstants.CRCRS9.getValue());
             }
         }

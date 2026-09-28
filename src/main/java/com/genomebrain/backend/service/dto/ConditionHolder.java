@@ -315,12 +315,21 @@ public class ConditionHolder {
                 NCCNTagConstants.FM_BREAST_MALE_MAT_TDR.getValue()});
 
 
-        conditionMap.put("CRCTag24", new String[]{  NCCNTagConstants.PR_COLON_LT_50.getValue(), NCCNTagConstants.PR_ENDOMETRIAL_LT_50.getValue(),
-                NCCNTagConstants.PR_GASTRIC_LT_50.getValue(),NCCNTagConstants.PR_OVARIAN_LT_50.getValue(),
+        //CAR-753 v1.2026: colon/endometrial/gastric <50y now flag via their own any-age criteria (CRCCRIT15/16/17), so removed here to avoid double-counting
+        conditionMap.put("CRCTag24", new String[]{  NCCNTagConstants.PR_OVARIAN_LT_50.getValue(),
                 NCCNTagConstants.PR_PANCREATIC_LT_50.getValue(),
                 NCCNTagConstants.PR_BLADDER_LT_50.getValue(),NCCNTagConstants.PR_URETER_LT_50.getValue(),NCCNTagConstants.PR_BRAIN_LT_50.getValue(),
                 NCCNTagConstants.PR_BILIARY_LT_50.getValue(),NCCNTagConstants.PR_SMALL_BOWEL_LT_50.getValue(),
                 NCCNTagConstants.PR_SEB_ADENO_CAR_LT_50.getValue(),NCCNTagConstants.PR_GALLBLADDER_LT_50.getValue()});
+
+        //CAR-753 v1.2026: CRCCRIT7 - NCCN criteria v1.2026: "individual w/ CRC, endometrial, or gastric ca dx <50y" (FDR only)
+        conditionMap.put("CRCTag16", new String[]{NCCNTagConstants.FM_COLON_LT_50_MAT_FDR.getValue(), NCCNTagConstants.FM_COLON_LT_50_PAT_FDR.getValue(),
+                NCCNTagConstants.FM_ENDOMETRIAL_LT_50_MAT_FDR.getValue(), NCCNTagConstants.FM_ENDOMETRIAL_LT_50_PAT_FDR.getValue(),
+                NCCNTagConstants.FM_GASTRICS_LT_50_MAT_FDR.getValue(), NCCNTagConstants.FM_GASTRICS_LT_50_PAT_FDR.getValue()});
+
+        //CAR-753 v1.2026: new CRCCRIT18 - "≥3 FDR or SDR with gastric cancer regardless of age" on the same side of the family
+        conditionMap.put("CRCTag33_Mat", new String[]{NCCNTagConstants.FM_GASTRIC_MAT_FDR.getValue(), NCCNTagConstants.FM_GASTRIC_MAT_SDR.getValue()});
+        conditionMap.put("CRCTag33_Pat", new String[]{NCCNTagConstants.FM_GASTRIC_PAT_FDR.getValue(), NCCNTagConstants.FM_GASTRIC_PAT_SDR.getValue()});
 
         conditionMap.put("CRCTag12", new String[]{ NCCNTagConstants.PR_COLON.getValue(),NCCNTagConstants.PR_BLADDER.getValue(),NCCNTagConstants.PR_GASTRIC.getValue(),NCCNTagConstants.PR_PANCREATIC.getValue(),
                 NCCNTagConstants.PR_BRAIN.getValue(),NCCNTagConstants.PR_SM_BOWEL.getValue(),NCCNTagConstants.PR_BILIARY.getValue(),NCCNTagConstants.PR_URETER.getValue(),NCCNTagConstants.PR_SEB_ADENO_CAR.getValue(),

@@ -15,6 +15,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
@@ -86,6 +87,14 @@ public class CareAPIUtil{
     @Autowired
     DateConversionUtil dateConversionUtil;
 
+    /** NCCN HBOP guideline version the HBOC logic implements (CARE kept this in application_configuration). */
+    @Value("${nccn.versions.hboc:V3.2026}")
+    String hbocVersion;
+
+    /** NCCN CEEG (Lynch/colorectal) guideline version the Lynch, APS and gastric logic implements. */
+    @Value("${nccn.versions.crc:V1.2026}")
+    String crcVersion;
+
     ClinicalHistory probandClinicalHistory = new ClinicalHistory();
     private final String PROBAND = "Proband";
 
@@ -156,8 +165,8 @@ public class CareAPIUtil{
 
     List<String> otherDXAge = Arrays.asList("PRENATAL", "BIRTH", "NEWBORN", "INFANCY", "CHILDHOOD", "TEENS", "EARLY TEENS", "MID TEENS", "LATE TEENS", "EARLY", "YOUNG", "PREMENOPAUSAL");
     List<String> apsRSIds = Arrays.asList("CRCRS1","CRCRS2","CRCRS12");
-    List<String> gastricRSIds = Arrays.asList("CRCRS14","CRCRS15");
-    List<String> lynchRSIds = Arrays.asList("CRCRS3", "CRCRS4", "CRCRS5", "CRCRS6", "CRCRS7", "CRCRS8", "CRCRS9", "CRCRS10", "CRCRS11","CRCRS13");
+    List<String> gastricRSIds = Arrays.asList("CRCRS14","CRCRS15","CRCRS18");
+    List<String> lynchRSIds = Arrays.asList("CRCRS3", "CRCRS4", "CRCRS5", "CRCRS6", "CRCRS7", "CRCRS8", "CRCRS9", "CRCRS10", "CRCRS11","CRCRS13","CRCRS16","CRCRS17","CRCRS19");
     public NCCNCoreResponse getQuestionObject(NCCNCoreRequest nonCareQuestionnaireDTO) {
         NCCNCoreResponse careapiResponseDTO = new NCCNCoreResponse();
         List<QuestionSet> demographic = new ArrayList<>();
@@ -888,6 +897,8 @@ public class CareAPIUtil{
 
     public NCCNCoreResponse CAREAPIResponseMapper(GuidelineDetailsDTO guidelineDetailsDTO, NCCNCoreRequest nonCareQuestionnaireDTO) throws Exception {
         NCCNCoreResponse careapiResponseDTO = new NCCNCoreResponse();
+        careapiResponseDTO.setHbocVersion(hbocVersion);
+        careapiResponseDTO.setCrcVersion(crcVersion);
 
         ClinicalSummary clinicalSummary = guidelineDetailsDTO.getClinicalSummary();
         List<String> inputList = parseJson(guidelineDetailsDTO.getReasoningStatementAndTagsSet());

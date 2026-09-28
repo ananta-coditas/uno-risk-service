@@ -23,6 +23,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.genomebrain.backend.service.dto.ReasoningStatementConstants;
 import com.genomebrain.backend.quesstionnaire.CancerDetails;
 import com.genomebrain.backend.quesstionnaire.FamilyCancerDetails;
 import com.genomebrain.backend.quesstionnaire.PersonalHistory;
@@ -3377,5 +3378,39 @@ class TagGenerationUtilityTest {
     @DisplayName("should_mapAgeRangeToRepresentativeAge_when_rangeIsKnown")
     void should_mapAgeRangeToRepresentativeAge_when_rangeIsKnown(String ageRange, int expectedAge) {
         assertThat(tagGenerationUtility.getAgeFromAgeRange(ageRange)).isEqualTo(expectedAge);
+    }
+
+    // ========== NCCN CEEG v1.2026 (CAR-753): CRCCRIT8 same-relative, any two Lynch cancers ==========
+
+    private static QuestionSet ageAnswer(String questionKey, String answerKey, String age) {
+        QuestionSet questionSet = new QuestionSet();
+        questionSet.setQuestionKey(questionKey);
+        questionSet.setAnswerKey(answerKey);
+        questionSet.setAnswerText(age);
+        return questionSet;
+    }
+
+    private Set<String> sisterLynchStatements(boolean withOvarian) {
+        FamilyCancerDetails familyCancerDetails = new FamilyCancerDetails();
+        Sister sister = new Sister();
+        sister.setBasicQuestions(Collections.emptyList());
+        sister.setStomach(Arrays.asList(ageAnswer("AMBRY071", "AMBRY071_001", "60")));
+        if (withOvarian) {
+            sister.setOvarian(Arrays.asList(ageAnswer("AMBRY061", "AMBRY061_001", "65")));
+        }
+        familyCancerDetails.setSisters(Arrays.asList(sister));
+        return tagGenerationUtility.getFamilyCancerTags(familyCancerDetails, "v1", "").get(0).getLynchReasoningStatements();
+    }
+
+    @Test
+    @DisplayName("should_flagCRCRS9_when_sameRelativeHasTwoNonColorectalLynchCancers")
+    void should_flagCRCRS9_when_sameRelativeHasTwoNonColorectalLynchCancers() {
+        assertThat(sisterLynchStatements(true)).contains(ReasoningStatementConstants.CRCRS9.getValue());
+    }
+
+    @Test
+    @DisplayName("should_notFlagCRCRS9_when_relativeHasSingleLynchCancer")
+    void should_notFlagCRCRS9_when_relativeHasSingleLynchCancer() {
+        assertThat(sisterLynchStatements(false)).doesNotContain(ReasoningStatementConstants.CRCRS9.getValue());
     }
 }

@@ -15,14 +15,24 @@ import com.genomebrain.backend.service.dto.CancerFeatureDetails;
 import com.genomebrain.backend.service.dto.ClinicalHistory;
 import com.genomebrain.backend.service.dto.PolypDetails;
 import com.objex.risk.beans.uno.Cancer;
+import com.objex.risk.beans.AffectedType;
 import com.objex.risk.beans.uno.Person;
 
 @Component
 public class NCCNClinicalHistoryMapper {
 
-    private static final int GENDER_FEMALE = 0;
-
     private static final int GENDER_MALE = 1;
+
+    private static final String MULTIPLE_PRIMARIES_YES = "YES";
+
+    /**
+     * UNO cancer types that other risk models use for a cancer the NCCN logic knows under another name
+     * (e.g. MMRPro/PREMM send endometrial cancer as ENDOMETRIAL; NCCN handles it as Uterine).
+     */
+    private static final Map<Cancer.CancerType, Cancer.CancerType> NCCN_CANCER_TYPE_ALIASES = Map.of(
+        Cancer.CancerType.ENDOMETRIAL, Cancer.CancerType.Uterine,
+        Cancer.CancerType.Fallopian, Cancer.CancerType.Fallopian_Tube,
+        Cancer.CancerType.Biliary, Cancer.CancerType.BILIARY_TRACT);
 
     private static final Set<Cancer.CancerType> CLINICAL_FEATURE_TYPES = EnumSet.of(
         Cancer.CancerType.DESMOIDS, Cancer.CancerType.SEBACEOUS_ADENOMA, Cancer.CancerType.SEBACEOUS_ADENOMAS);
@@ -53,13 +63,20 @@ public class NCCNClinicalHistoryMapper {
         if (person.getCancers() != null) {
             for (Cancer cancer : person.getCancers()) {
                 CancerFeatureDetails details = new CancerFeatureDetails();
-                details.setCancerFeature(cancer.getCancerType().toString());
+                details.setCancerFeature(toNccnCancerType(cancer.getCancerType()).toString());
                 details.setCancerFeatureType("cancer");
                 //details.setExactDxAge(String.valueOf(cancer.getDiagnoseAge() + 0.5));
                 details.setExactDxAge(String.valueOf(cancer.getDiagnoseAge()));
                 if (cancer.getCancerDetails() != null) {
                     details.setMetastatic(cancer.getCancerDetails().getMetastatic());
                     details.setMultiplePrimaries(cancer.getCancerDetails().getMultiplePrimaries());
+                    if (cancer.getCancerType() == Cancer.CancerType.BREAST && hasSecondBreastPrimary(cancer.getCancerDetails())) {
+                        details.setBreastBilateral("Yes");
+                        // NCCN counts a bilateral breast cancer as a second primary; this answer drives HBOCRS27
+                        if (details.getMultiplePrimaries() == null || details.getMultiplePrimaries().isBlank()) {
+                            details.setMultiplePrimaries(MULTIPLE_PRIMARIES_YES);
+                        }
+                    }
                     if (cancer.getCancerDetails().getBreastCancerTypes() != null) {
                         List<String> cancerTypes = cancer.getCancerDetails().getBreastCancerTypes().stream().map(Enum::name)
                             .collect(Collectors.toList());
@@ -83,17 +100,27 @@ public class NCCNClinicalHistoryMapper {
     }
 
     /**
-     * Maps the UNO gender code (0 = female, 1 = male, as used by the other risk models) to the
-     * NCCN sex-at-birth value; any other code is reported as unknown rather than guessed.
+     * Maps the UNO gender code to the NCCN sex-at-birth value. UNO sends 1 for male and 2 for female;
+     * like the other risk models, anything other than 1 (including the legacy 0) is treated as female.
      */
     private String getSexAtBirth(Integer gender) {
-        if (Objects.equals(gender, GENDER_MALE)) {
-            return "male";
-        }
-        if (Objects.equals(gender, GENDER_FEMALE)) {
-            return "female";
-        }
-        return "unknown";
+        return Objects.equals(gender, GENDER_MALE) ? "male" : "female";
+    }
+
+    /**
+     * A bilateral or contralateral breast cancer is a second breast primary, which NCCN asks about as
+     * "both breasts" (HBOCRS27 for relatives).
+     */
+    private static boolean hasSecondBreastPrimary(com.objex.risk.beans.uno.CancerDetails cancerDetails) {
+        return isAffected(cancerDetails.getBilateral()) || isAffected(cancerDetails.getContralateral());
+    }
+
+    private static boolean isAffected(AffectedType affectedType) {
+        return affectedType != null && affectedType != AffectedType.NONE;
+    }
+
+    private static Cancer.CancerType toNccnCancerType(Cancer.CancerType cancerType) {
+        return NCCN_CANCER_TYPE_ALIASES.getOrDefault(cancerType, cancerType);
     }
 
     /** Desmoid tumours and sebaceous adenomas are NCCN clinical features, reported through UNO as cancer types. */

@@ -75,6 +75,22 @@ public class GastricReasoningStatementUtility {
         }
 
         /**
+         * CAR-753 v1.2026 - new CRCCRIT18
+         * "≥3 FDR or SDR with gastric cancer regardless of age" on the same side of the family
+         * Conditions for TagId:
+         * CRCTag33
+         */
+        if (getValue(familyHistoryDetailsTagsDTOList, "CRCTag33_Mat", 3) || getValue(familyHistoryDetailsTagsDTOList, "CRCTag33_Pat", 3)) {
+            gastricReasoningStatement.add(ReasoningStatementConstants.CRCRS18.getValue());
+            ReasoningStatementAndTags reasoningStatementAndTags = new ReasoningStatementAndTags();
+            reasoningStatementAndTags.setReasoningStatementId(ReasoningStatementIdConstant.CRCRS18.getReasoningStatementId());
+            Set<String> tagId = new HashSet<>();
+            tagId.add(TagIdConstant.CRCTag33.getTagId());
+            reasoningStatementAndTags.setTagIds(tagId);
+            reasoningStatementAndTagsSet.add(reasoningStatementAndTags);
+        }
+
+        /**
          * Conditions for TagId:
          * CRCTag25
          */
